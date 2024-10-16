@@ -8,8 +8,10 @@ export function setupCounter(element) {
 
     element.innerText = resultMessage
 
+    const test = []; //husky test
+
     try {
-      const response = await fetch(`/api/counter?latest=${counter}`)
+      const response = await fetch("/api/counter?latest=${counter}") //husky test
 
       if (!response.ok) {
         throw new Error('Fetch error!!')
