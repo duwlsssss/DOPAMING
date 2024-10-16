@@ -9,7 +9,6 @@
     "build": "vite build",
     "preview": "vite preview",
     "postinstall": "husky install",
-    "lint": "eslint --cache .",
     "prepare": "husky && husky install"
   },
   "devDependencies": {
