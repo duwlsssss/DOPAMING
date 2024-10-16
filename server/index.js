@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const THRESHOLD = 2000;
-const port = process.env.PORT || 8080;
+const port = import.meta.env.VITE_PORT || 8080;
 const app = express();
 
 app.use((req, res, next) => {

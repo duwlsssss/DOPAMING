@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 
 export function setupCounter(element) {
   let counter = 0;
@@ -9,7 +9,7 @@ export function setupCounter(element) {
     element.innerText = resultMessage;
 
     try {
-      const response = await fetch('/api/counter?latest=${counter}'); 
+      const response = await fetch('/api/counter?latest=${counter}');
 
       if (!response.ok) {
         throw new Error('Fetch error!!');
