@@ -2,6 +2,9 @@ import express from 'express';
 import morgan from 'morgan';
 import fs from 'fs';
 import db from './database.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const THRESHOLD = 2000;
 const port = process.env.PORT || 8080;
