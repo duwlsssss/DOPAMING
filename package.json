@@ -29,7 +29,7 @@
     "sqlite3": "^5.1.7"
   },
   "lint-staged": {
-    "*.{js,jsx}": "eslint --fix",
+    "*.js": "eslint --fix",
     "*.{js,css,md}": "prettier --write"
   }
 }
