@@ -6,6 +6,7 @@ addAssignees: author
 
 # A list of reviewers to be added to pull requests (GitHub user name)
 reviewers:
+  - bbjbc
   - ALIX-Technology
   - Chajaesik01
   - duwlsssss
