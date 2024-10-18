@@ -1,13 +1,21 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <script type="module" src="/@vite/client"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <script defer type="module" src="./server/signin.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+</head>
+<body>
+    <h1>환영합니다</h1>
+    <form id="signin-form">
+        <input type="email" id="email" placeholder="이메일" required>
+        <input type="password" id="password" placeholder="비밀번호" required>
+        <button type="submit">로그인</button>
+        <a href="../html/signup.html">회원가입</a>
+    </form>
+    <div id="error-message" class="error"></div>
+</body>
 </html>
