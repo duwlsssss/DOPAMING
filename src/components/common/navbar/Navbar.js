@@ -1,6 +1,6 @@
 import './Navbar.css';
 
-export function RenderNavbar(navbar, menu) {
+export function RenderNavbar(navbar, isUser, menu) {
   if (!navbar) {
     console.error('navbar element is not found');
     return;
@@ -20,14 +20,12 @@ export function RenderNavbar(navbar, menu) {
           return `
             <li class="menu-item">
               <a href="${menu.path}" class="menu-link ${isActive ? 'active' : ''}">
-                <span class="material-symbols-rounded">
-                  ${menu.icon}
-                </span>   
-                ${menu.title}   
+                <span class="material-symbols-rounded">${menu.icon}</span>   
+                <span class="menu-link-title">${menu.title}</span>
               </a>
             </li>`;
         })
         .join('')}      
-      </ul>
+    </ul>
   `;
 }

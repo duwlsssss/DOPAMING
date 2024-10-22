@@ -1,3 +1,4 @@
+// import Router from  '../../../routes/Router'
 import './Header.css';
 
 export function RenderHeader(header, isUser, editProfilePath = '') {
@@ -12,7 +13,8 @@ export function RenderHeader(header, isUser, editProfilePath = '') {
       <button class="logout">로그아웃</button>
     </div>
     <div class="circle" style="cursor: ${isUser ? 'pointer' : 'default'}">
-      ${isUser ? '' : `<a href="${editProfilePath}"></a>`}
+      ${isUser ? `<a href="${editProfilePath}" class="hidden-link">.</a>` : ''}
     </div>
+    <div class="header-mobile">DOPAMING</div>
   `;
 }

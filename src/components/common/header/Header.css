@@ -20,3 +20,25 @@
   border-radius: 5px;
   font-size: var(--font-medium);
 }
+
+.circle a.hidden-link {
+  display: block;
+  opacity: 0;
+  width: 80px;
+  height: 80px;
+  /* background-color: black;  */
+}
+
+.header-mobile {
+  display: none;
+}
+
+@media (width<=767px) {
+  .header-items,
+  .circle {
+    display: none;
+  }
+  .header-mobile {
+    display: block;
+  }
+}

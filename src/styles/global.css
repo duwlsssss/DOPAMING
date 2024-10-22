@@ -8,11 +8,17 @@
   --color-blue: #a8d0ff;
   /* supporting */
   --color-skyblue-light: #e0faff;
+  --color-skyblue-light-dark: #93e9f9;
   --color-coral: #ffb5b5;
+  --color-coral-dark: #ff7f7f;
   --color-green: #3bbf0a;
+  --color-green-dark: #54d88b;
   --color-green-light: #a2e5be;
+  --color-green-light-dark: #62d793;
   --color-green-muted: #ccdaaf;
+  --color-green-muted-dark: #b3c197;
   --color-caramel: #e4bc84;
+  --color-caramel-dark: #cd9342;
 
   /* Grayscale */
   --color-dark-gray: #777777;
@@ -26,6 +32,7 @@
   --font-small: clamp(0.5rem, 1vw, 0.75rem);
 
   /* size */
+  --space-xsmall: 4px;
   --space-small: 8px;
   --space-medium: 16px;
   --space-large: 32px;
