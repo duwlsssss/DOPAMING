@@ -1,4 +1,5 @@
 import { ADMIN_PATH, USER_PATH } from '../../../utils/constants';
+import { setItem } from '../../../utils/storage';
 import './LogInForm.css';
 
 export const RenderLogInForm = container => {
@@ -8,7 +9,7 @@ export const RenderLogInForm = container => {
         <form id="loginForm" class="login-form">
           <div class="input-group">
             <label for="email">이메일</label>
-            <input type="text" id="email" placeholder="이메일을 입력해주세요." required>
+            <input type="email" id="email" placeholder="이메일을 입력해주세요." required>
           </div>
           <div class="input-group">
             <label for="password">비밀번호</label>
@@ -51,7 +52,7 @@ export const RenderLogInForm = container => {
     );
 
     if (user) {
-      localStorage.setItem('userRole', user.role);
+      setItem('userRole', user.role);
 
       const redirectPath =
         user.role === 'admin' ? ADMIN_PATH.HOME : USER_PATH.HOME;

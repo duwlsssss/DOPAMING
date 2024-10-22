@@ -21,11 +21,11 @@ import {
   USER_ICON,
   // ICONS,
 } from '../utils/constants';
-import { getUserRole } from '../utils/storage';
+import { getItem } from '../utils/storage';
 
 export default function Router(newPath) {
   const path = window.location.pathname;
-  const role = getUserRole();
+  const role = getItem('userRole');
 
   if (newPath && newPath !== path) {
     history.pushState(null, null, newPath);
