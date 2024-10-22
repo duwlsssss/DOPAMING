@@ -18,12 +18,11 @@ export const RenderNotFound = container => {
   `;
 
   document.querySelector('button').addEventListener('click', () => {
-    // SPA 방식으로 상태 유지하며 페이지 전환
+    // SPA 방식으로 새로고침하지 않고 페이지 전환
     getItem('userRole') === 'admin'
       ? Router(ADMIN_PATH.HOME)
       : Router(USER_PATH.HOME);
-    // or 브라우저 히스토리에 안 남기면서 페이지 새로고침함
-    // const redirectPath = getItem('userRole') === 'admin' ? ADMIN_PATH.HOME : USER_PATH.HOME;
-    // window.location.replace(redirectPath);
+    history.pushState(null, null, ADMIN_PATH.HOME);
+    Router();
   });
 };
