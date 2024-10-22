@@ -1,2 +1,2 @@
-export { RenderHeader } from './header/Header';
-export { RenderNavbar } from './navbar/Navbar';
+export { RenderHeader } from './common/header/Header';
+export { RenderNavbar } from './common/navbar/Navbar';
