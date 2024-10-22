@@ -27,6 +27,7 @@
   --color-pale-gray: #f4f4f4;
 
   /* font-size */
+  --font-xlarge: clamp(2rem, 3vw, 4rem);
   --font-large: clamp(1.25rem, 1.5vw, 2rem);
   --font-medium: clamp(0.75rem, 1vw, 1.25rem);
   --font-small: clamp(0.5rem, 1vw, 0.75rem);

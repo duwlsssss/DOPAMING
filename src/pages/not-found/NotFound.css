@@ -1,0 +1,28 @@
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.error-inner {
+  text-align: center;
+  width: 80%;
+}
+
+.error-inner h1 {
+  font-size: var(--font-xlarge);
+}
+
+.error-inner h4 {
+  margin: var(--space-medium) 0;
+  line-height: 1.5;
+  word-break: keep-all;
+  color: var(--color-dark-gray);
+}
+
+.error-inner button {
+  padding: var(--space-small);
+  font-size: var(--font-medium);
+  border-radius: 5px;
+}

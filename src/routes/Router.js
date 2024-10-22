@@ -22,7 +22,7 @@ import {
   // ICONS,
 } from '../utils/constants';
 import { getIsMobile } from '../utils/responsive';
-import { getUserRole } from '../utils/storage';
+import { getItem } from '../utils/storage';
 
 export default function Router(newPath) {
   const path = newPath ?? window.location.pathname;
@@ -35,7 +35,7 @@ export default function Router(newPath) {
   const contentEl = document.querySelector('.content');
 
   const isMobile = getIsMobile();
-  const role = getUserRole();
+  const role = getItem('userRole');
 
   if (role === 'admin') {
     RenderHeader(headerEl, false);
