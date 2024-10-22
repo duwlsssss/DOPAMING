@@ -39,14 +39,14 @@
   margin-left: 100px;
 }
 
-.left-outside-box {
+.outside-box {
   margin-top: 40px;
   background-color: #d9d9d9;
   padding: 20px;
   border-radius: 8px;
 }
 
-.left-inside-box {
+.inside-box {
   display: flex;
   flex-direction: column;
   align-items: center;

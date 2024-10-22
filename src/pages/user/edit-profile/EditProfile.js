@@ -8,8 +8,8 @@ export const RenderUserEditProfile = container => {
   <div class="edit-box">
     <div class="profile-panel"> <!-- 새로운 클래스 추가 -->
       <div class="profile-picture">
-        <div class="left-outside-box">
-          <div class="left-inside-box">
+        <div class="outside-box">
+          <div class="inside-box">
             <div class="profile-box">
               <div class="inside-circle" id="profileImage">
                 <span class="circle-text">Upload</span>
