@@ -4,16 +4,16 @@ import './LogIn.css';
 
 export const RenderLogIn = container => {
   const loginHTML = `
-    <div class="login-page">
-      <div class="login-box">
-        <div class="login-left">
+    <main class="login-page">
+      <section class="login-box">
+        <aside class="login-left">
           <img src="${loginImage}" alt="login" />
-        </div>
-        <div class="login-right">
+        </aside>
+        <article class="login-right">
           <div class="login-form-container"></div>
-        </div>
-      </div>
-    </div>
+        </article>
+      </section>
+    </main>
   `;
 
   container.innerHTML = loginHTML;

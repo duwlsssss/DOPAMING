@@ -4,23 +4,23 @@ import './LogInForm.css';
 
 export const RenderLogInForm = container => {
   const logInFormHTML = `
-      <div class="login-container">
+      <main class="login-container">
         <h2>도파밍 부트캠프에 오신 것을 환영합니다!</h2>
         <form id="loginForm" class="login-form">
-          <div class="input-group">
+          <fieldset class="input-group">
             <label for="email">이메일</label>
             <input type="email" id="email" placeholder="이메일을 입력해주세요." required>
-          </div>
-          <div class="input-group">
+          </fieldset>
+          <fieldset class="input-group">
             <label for="password">비밀번호</label>
             <input type="password" id="password" placeholder="비밀번호를 입력해주세요." required>
-          </div>
+          </fieldset>
           <button type="submit" class="login-btn">로그인</button>
-          <div class="forgot-password">
+          <nav class="forgot-password">
             <a href="#">회원가입이 되어 있지 않으신가요?</a>
-          </div>
+          </nav>
         </form>
-      </div>
+      </main>
     `;
 
   container.innerHTML = logInFormHTML;
