@@ -10,6 +10,7 @@ import {
   RenderUserHome,
   RenderUserPeer,
   RenderNotFound,
+  RenderLogIn,
 } from '../pages';
 import {
   ADMIN_PATH,
@@ -30,6 +31,12 @@ export default function Router(newPath) {
   }
 
   const root = document.querySelector('#root');
+
+  if (path === '/login') {
+    RenderLogIn(root);
+    return;
+  }
+
   RenderLayout(root);
 
   const headerEl = document.querySelector('.header');
