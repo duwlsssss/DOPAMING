@@ -1,13 +1,6 @@
-import Container from '../../../Container';
-export default class HomePage extends Container {
-  constructor() {
-    super('.content');
-    this.render();
-  }
-
-  render() {
-    this.$container.innerHTML = /* HTML */ `
-        <div class="my-info desktop-only">
+export const RenderUserHome = container => {
+  container.innerHTML = `
+     <div class="my-info desktop-only">
           <div class="wrapper">
             <h2 class="home-subtitle">내 정보</h2>
           </div>
@@ -32,6 +25,5 @@ export default class HomePage extends Container {
           </div>
         </section>
       </div>
-    `;
-  }
-}
+  `;
+};

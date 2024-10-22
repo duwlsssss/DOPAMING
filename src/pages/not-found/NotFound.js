@@ -1,17 +1,28 @@
-export default class NotFound {
-  constructor() {}
+import route from '/src/routes/Router';
+import { getUserRole } from '../../utils/storage';
+import './NotFound.css';
 
-  render() {
-    this.$container.innerHTML = /* HTML */ `
-      <div class="not-found-container">
-        <div class="wrapper">
-          <img class="not-found-image" alt="404" />
-          <h1 class="not-found-title">페이지를 찾을 수 없습니다</h1>
-          <p>페이지가 존재하지 않거나, 사용할 수 없는 페이지입니다.</p>
-          <p>입력하신 주소가 정확한지 다시 한 번 확인해주세요.</p>
-          <a class="home-link">홈으로 이동</a>
+export const RenderNotFound = container => {
+  container.innerHTML = `
+      <div class="error-404__container">
+        <div class="error-404__inner">
+          <h1>PAGE NOT FOUND</h1>
+          <h4>
+            페이지의 주소가 잘못 입력되었거나,<br />
+            요청하신 페이지의 주소가 변경 혹은 삭제되어 찾을 수 없습니다.
+          </h4>
+          <button data-color="positive" data-shape="line">홈으로</button>
         </div>
       </div>
-    `;
-  }
-}
+  `;
+
+  document.querySelector('button').addEventListener('click', () => {
+    if (getUserRole() === 'admin') {
+      history.pushState(null, null, '/admin');
+      route();
+    } else {
+      history.pushState(null, null, '/');
+      route();
+    }
+  });
+};

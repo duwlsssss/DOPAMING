@@ -1,103 +1,111 @@
+import { RenderHeader, RenderNavbar } from '../components';
+import RenderLayout from '../layout/Layout';
+// import { RenderAdminHome, RenderAdminMemberManagement, RenderAdminVacationManagement, RenderAdminNoticeManagement
+//   ,RenderUserHome,RenderUserEditProfile,RenderUserWorkDetail,RenderUserVacationManagement,RenderUserNotice,RenderUserPeer,RenderUserCourse
+//   ,RenderNotFound,RenderSignIn
+// } from '../pages';
+import {
+  RenderAdminHome,
+  RenderAdminMemberManagement,
+  RenderUserHome,
+  RenderUserPeer,
+  RenderNotFound,
+} from '../pages';
 import {
   ADMIN_PATH,
   USER_PATH,
   ADMIN_TITLE,
   USER_TITLE,
+  ADMIN_ICON,
+  USER_ICON,
+  // ICONS,
 } from '../utils/constants';
-import AdminHomePage from '../pages/admin/home/Home';
-import AdminMemberPage from '../pages/admin/member/Member';
-import AdminNoticePage from '../pages/admin/notice/Notice';
-import AdminVactionManagementPage from '../pages/admin/vacation-management/VacationManagement';
-import UserHomePage from '../pages/user/home/Home';
-import UserEditProfilePage from '../pages/user/edit-profile/EditProfile';
-import UserVacationManagementPage from '../pages/user/vacation-management/VacationManagement';
-import UserNoticePage from '../pages/user/notice/Notice';
-import UserCoursePage from '../pages/user/course/Course';
-import UserPeerPage from '../pages/user/peer/Peer';
-import UserWorkDetailPage from '../pages/user/work-detail/WorkDetail';
-import NotFound from '../pages/not-found/NotFound';
+import { getUserRole } from '../utils/storage';
 
-export default class Router {
-  constructor(layout) {
-    this.layout = layout;
-    this.currentPage = null;
-    this.routes = {
-      [ADMIN_PATH.HOME]: { title: ADMIN_TITLE.HOME, component: AdminHomePage },
-      [ADMIN_PATH.MEMBER]: {
+export default function Router(newPath) {
+  const path = window.location.pathname;
+
+  if (newPath && newPath !== path) {
+    history.pushState(null, null, newPath);
+  }
+
+  const root = document.querySelector('#root');
+  RenderLayout(root);
+
+  const headerEl = document.querySelector('.header');
+  const navbarEl = document.querySelector('.navbar');
+  const contentEl = document.querySelector('.content');
+
+  const role = getUserRole();
+
+  if (role === 'admin') {
+    RenderHeader(headerEl, false);
+    RenderNavbar(navbarEl, [
+      { path: ADMIN_PATH.HOME, title: ADMIN_TITLE.HOME, icon: ADMIN_ICON.HOME },
+      {
+        path: ADMIN_PATH.MEMBER,
         title: ADMIN_TITLE.MEMBER,
-        component: AdminMemberPage,
+        icon: ADMIN_ICON.MEMBER,
       },
-      [ADMIN_PATH.VACATION]: {
+      {
+        path: ADMIN_PATH.VACATION,
         title: ADMIN_TITLE.VACATION,
-        component: AdminVactionManagementPage,
+        icon: ADMIN_ICON.VACATION,
       },
-      [ADMIN_PATH.NOTICE]: {
+      {
+        path: ADMIN_PATH.NOTICE,
         title: ADMIN_TITLE.NOTICE,
-        component: AdminNoticePage,
+        icon: ADMIN_ICON.NOTICE,
       },
-
-      [USER_PATH.HOME]: { title: USER_TITLE.HOME, component: UserHomePage },
-      [USER_PATH.EDIT_PROFILE]: {
+    ]);
+  } else {
+    RenderHeader(headerEl, true, USER_PATH.EDIT_PROFILE);
+    RenderNavbar(navbarEl, [
+      { path: USER_PATH.HOME, title: USER_TITLE.HOME, icon: USER_ICON.HOME },
+      {
+        path: USER_PATH.EDIT_PROFILE,
         title: USER_TITLE.EDIT_PROFILE,
-        component: UserEditProfilePage,
+        icon: USER_ICON.EDIT_PROFILE,
       },
-      [USER_PATH.VACATION]: {
-        title: USER_TITLE.VACATION,
-        component: UserVacationManagementPage,
-      },
-      [USER_PATH.NOTICE]: {
-        title: USER_TITLE.NOTICE,
-        component: UserNoticePage,
-      },
-      [USER_PATH.COURSE]: {
-        title: USER_TITLE.COURSE,
-        component: UserCoursePage,
-      },
-      [USER_PATH.PEER]: { title: USER_TITLE.PEER, component: UserPeerPage },
-      [USER_PATH.WORK_DETAIL]: {
+      {
+        path: USER_PATH.WORK_DETAIL,
         title: USER_TITLE.WORK_DETAIL,
-        component: UserWorkDetailPage,
+        icon: USER_ICON.WORK_DETAIL,
       },
-    };
-    this.notFoundPage = new NotFound();
+      {
+        path: USER_PATH.VACATION,
+        title: USER_TITLE.VACATION,
+        icon: USER_ICON.VACATION,
+      },
+      {
+        path: USER_PATH.NOTICE,
+        title: USER_TITLE.NOTICE,
+        icon: USER_ICON.NOTICE,
+      },
+      { path: USER_PATH.PEER, title: USER_TITLE.PEER, icon: USER_ICON.PEER },
+      {
+        path: USER_PATH.COURSE,
+        title: USER_TITLE.COURSE,
+        icon: USER_ICON.COURSE,
+      },
+    ]);
   }
 
-  // 라우터 초기화
-  init(isAdmin) {
-    this.isAdmin = isAdmin;
-    window.addEventListener('popstate', () => this.route());
-    this.route();
-  }
-
-  navigate(url) {
-    window.history.pushState(null, null, url);
-    this.route();
-  }
-
-  route() {
-    const path = window.location.pathname;
-
-    const route = this.routes[path];
-    if (route) {
-      this.renderPage(route);
-      this.layout.updateActiveNavLink(path);
-    } else {
-      this.renderNotFound();
-    }
-  }
-
-  // 이전 페이지 정리, 새 페이지 생성 및 렌더링
-  renderPage(route) {
-    if (this.currentPage && this.currentPage.cleanUp) {
-      this.currentPage.cleanUp();
-    }
-    this.currentPage = new route.component();
-    document.title = route.title;
-    this.layout.setContent(this.currentPage);
-    this.layout.updateActiveNavLink(route.path);
-  }
-
-  renderNotFound() {
-    this.layout.setContent(this.notFoundPage);
+  switch (path) {
+    case ADMIN_PATH.HOME:
+      RenderAdminHome(contentEl);
+      break;
+    case ADMIN_PATH.MEMBER:
+      RenderAdminMemberManagement(contentEl);
+      break;
+    case USER_PATH.HOME:
+      RenderUserHome(contentEl);
+      break;
+    case USER_PATH.PEER:
+      RenderUserPeer(contentEl);
+      break;
+    default:
+      RenderNotFound(root);
+      break;
   }
 }
