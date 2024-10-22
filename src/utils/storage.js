@@ -15,5 +15,10 @@ export const clearStorage = () => {
   localStorage.clear();
 };
 
-export const getUserRole = () =>
-  window.location.pathname.includes('/admin') ? 'admin' : 'user';
+export const getUserRole = () => localStorage.getItem('userRole');
+
+// 로그아웃 시 사용
+export const clearUserRole = () => {
+  localStorage.removeItem('userRole');
+  window.location.replace('/login');
+};
