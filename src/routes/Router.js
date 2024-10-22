@@ -24,8 +24,8 @@ import {
 import { getIsMobile } from '../utils/responsive';
 import { getItem } from '../utils/storage';
 
-export default function Router(newPath) {
-  const path = newPath ?? window.location.pathname;
+export default function Router() {
+  const path = window.location.pathname;
 
   const root = document.querySelector('#root');
   RenderLayout(root);
