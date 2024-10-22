@@ -10,6 +10,7 @@ import {
   RenderUserHome,
   RenderUserPeer,
   RenderNotFound,
+  RenderUserEditProfile,
 } from '../pages';
 import {
   ADMIN_PATH,
@@ -103,6 +104,9 @@ export default function Router(newPath) {
       break;
     case USER_PATH.PEER:
       RenderUserPeer(contentEl);
+      break;
+    case USER_PATH.EDIT_PROFILE:
+      RenderUserEditProfile(contentEl);
       break;
     default:
       RenderNotFound(root);
