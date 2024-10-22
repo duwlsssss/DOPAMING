@@ -10,7 +10,7 @@ export function RenderNavbar(navbar, isUser, menu) {
 
   navbar.innerHTML = `
     <div class="navbar-top">
-      <div class="logo-circle"></div>      
+      <figure class="logo-circle"></figure>      
       <h1>DOPAMING</h1>
     </div>
     <ul class="menu">

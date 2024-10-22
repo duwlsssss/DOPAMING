@@ -37,16 +37,27 @@
   --space-medium: 16px;
   --space-large: 32px;
 
+  /* box-shadow */
+  --box-shadow-small: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  --box-shadow--medium: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  --box-shadow-large: 0px 4px 8px rgba(0, 0, 0, 0.15);
+
+  /* button */
+  button[color='transparent'][shape='line'] {
+    background-color: transparent;
+    border: 1.5px solid var(--color-black);
+    color: var(--color-black);
+  }
+  button[color='transparent'][shape='line']:hover {
+    background: var(--color-dark-gray);
+    color: var(--color-white);
+  }
+
   --size-button-small: 50px;
   --size-button-medium: 100px;
   --size-button-large: 150px;
   --size-button-xlarge: 200px;
   --size-button-jumbo: 250px;
-
-  /* box-shadow */
-  --box-shadow-small: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  --box-shadow--medium: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  --box-shadow-large: 0px 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 body {

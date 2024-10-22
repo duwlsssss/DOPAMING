@@ -30,8 +30,8 @@ export default function Router(newPath) {
   const root = document.querySelector('#root');
   RenderLayout(root);
 
-  const headerEl = document.querySelector('.header');
-  const navbarEl = document.querySelector('.navbar');
+  const headerEl = document.querySelector('header');
+  const navbarEl = document.querySelector('nav');
   const contentEl = document.querySelector('.content');
 
   const isMobile = getIsMobile();
