@@ -6,7 +6,6 @@ const handleResize = () => {
   const newisMobile = window.matchMedia('(max-width: 767px)').matches; // 화면 크기 변경 시 업데이트
   if (newisMobile !== isMobile) {
     isMobile = newisMobile;
-    console.log('isMobile 변경됨', isMobile);
     Router();
   }
 };

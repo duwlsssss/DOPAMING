@@ -25,11 +25,7 @@ import { getIsMobile } from '../utils/responsive';
 import { getUserRole } from '../utils/storage';
 
 export default function Router(newPath) {
-  const path = window.location.pathname;
-
-  if (newPath && newPath !== path) {
-    history.pushState(null, null, newPath); //새로고침 없이 url 업
-  }
+  const path = newPath ?? window.location.pathname;
 
   const root = document.querySelector('#root');
   RenderLayout(root);
