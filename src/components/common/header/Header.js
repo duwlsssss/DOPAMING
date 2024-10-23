@@ -1,5 +1,6 @@
-// import Router from  '../../../routes/Router'
+import Router from '../../../routes/Router';
 import './Header.css';
+import { clearStorage } from '../../../utils/storage';
 
 export function RenderHeader(header, isUser, editProfilePath = '') {
   if (!header) {
@@ -17,4 +18,9 @@ export function RenderHeader(header, isUser, editProfilePath = '') {
     </figure>
     <div class="header-mobile">DOPAMING</div>
   `;
+
+  document.querySelector('.logoutBtn').addEventListener('click', () => {
+    clearStorage(); // 로그아웃 누르면 로컬 스토리지 정리
+    Router();
+  });
 }
