@@ -12,7 +12,7 @@ export const RenderNotFound = container => {
             페이지의 주소가 잘못 입력되었거나,<br />
             요청하신 페이지의 주소가 변경 혹은 삭제되어 찾을 수 없습니다.
           </h4>
-          <button color="transparent" shape="line">홈으로</button>
+          <button color="white" shape="line">홈으로</button>
         </div>
       </div>
   `;
