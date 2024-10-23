@@ -33,8 +33,6 @@ export default function Router() {
   const isMobile = getIsMobile();
   const role = getItem('userRole');
 
-  console.log(role);
-
   const root = document.querySelector('#root');
 
   // 로그인하지 않은 사용자

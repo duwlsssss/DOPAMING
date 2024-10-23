@@ -1,11 +1,13 @@
 import axios from 'axios';
-import { RenderNotice } from '../../../components';
+import { RenderNotice } from '../../../../components';
 import './Notice.css';
 
 export const RenderUserNotice = async (container, jsonFilePath) => {
   try {
     const response = await axios.get(jsonFilePath);
-    const posts = response.data;
+    const posts = response.data.sort(
+      (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
+    ); // updated_at 기준 최신순 정렬
 
     const postIds = posts.map(post => post.post_id); // post_id 필터링
 
@@ -16,7 +18,7 @@ export const RenderUserNotice = async (container, jsonFilePath) => {
             const post = posts.find(post => post.post_id === postId);
             return post
               ? `
-            <div class="notice-container" id="notice-${postId}"></div> 
+            <div class="notice-item-container" id="notice-${postId}"></div> 
           `
               : '';
           })

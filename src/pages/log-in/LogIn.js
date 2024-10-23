@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { RenderLogInForm } from '../../components/common/log-in-form/LogInForm';
-import loginImage from '../../assets/auth/login_page.png';
+import loginImage from '/assets/imgs/auth/login_page.png';
 import './LogIn.css';
 
 export const RenderLogIn = async (container, jsonFilePath) => {
