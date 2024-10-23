@@ -21,7 +21,7 @@
 
 .input-field {
   width: calc(var(--space-large) * 10);
-  height: var(--space-large);
+  height: calc(var(--space-large) * 1.2);
   font-size: var(--space-medium);
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -29,12 +29,13 @@
   transition: border-color 0.3s;
   margin-bottom: var(--space-small);
   margin-left: calc(var(--space-large));
-  margin-right: calc(var(--space-medium) * 10);
+  margin-right: calc(var(--space-medium) * 2);
+  padding: var(--space-small);
 }
 
 .input-select {
   width: calc(var(--space-large) * 10);
-  height: var(--space-large);
+  height: calc(var(--space-large) * 1.2);
   font-size: var(--space-medium);
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -42,5 +43,6 @@
   transition: border-color 0.3s;
   /* min-width: calc(var(--space-large) * 5); */
   margin-left: calc(var(--space-large));
-  margin-right: calc(var(--space-medium) * 10);
+  margin-right: calc(var(--space-medium) * 2);
+  padding: var(--space-small);
 }
