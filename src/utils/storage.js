@@ -14,6 +14,3 @@ export const removeItem = key => {
 export const clearStorage = () => {
   localStorage.clear();
 };
-
-export const getUserRole = () =>
-  window.location.pathname.includes('/admin') ? 'admin' : 'user';

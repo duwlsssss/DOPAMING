@@ -1,4 +1,4 @@
-import route from './routes/Router';
+import Router from './routes/Router';
 import './styles/global.css';
 
 const navigate = event => {
@@ -6,15 +6,21 @@ const navigate = event => {
 
   if (anchor?.href) {
     event.preventDefault();
-    history.pushState(null, null, anchor.href);
-    route();
+
+    const newPath = new URL(anchor.href).pathname;
+
+    // newPath가 현재 경로와 다를 때만 history.pushState와 Router를 호출
+    if (newPath !== window.location.pathname) {
+      history.pushState(null, null, newPath);
+      Router();
+    }
   }
 };
 
 function App() {
-  window.addEventListener('popstate', route); //브라우저에서 뒤로 가기 또는 앞으로 가기 버튼을 눌렀을 때 발생, 이에 맞게 페이지를 다시 렌더링함
-  document.body.addEventListener('click', navigate); //navBar의 링크를 클릭할 때 주소를 변경하고, 해당 페이지를 렌더링함
-  route(); //페이지가 로드될 때 한 번 바로 실행
+  window.addEventListener('popstate', Router); //뒤로 가기 또는 앞으로 가기 버튼을 눌렀을 때 페이지를 렌더링함
+  document.body.addEventListener('click', navigate); //navBar의 링크를 클릭할 때 이동 처리
+  Router(); // 초기 로드 시 렌더링
 }
 
 document.addEventListener('DOMContentLoaded', App);

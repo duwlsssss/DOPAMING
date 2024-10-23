@@ -8,6 +8,7 @@ import {
   RenderAdminHome,
   RenderAdminMemberManagement,
   RenderUserHome,
+  RenderUserEditProfile,
   RenderUserPeer,
   RenderNotFound,
   RenderLogIn,
@@ -21,15 +22,15 @@ import {
   USER_ICON,
   // ICONS,
 } from '../utils/constants';
+
+import { getIsMobile } from '../utils/responsive';
 import { getItem } from '../utils/storage';
 
-export default function Router(newPath) {
+export default function Router() {
   const path = window.location.pathname;
-  const role = getItem('userRole');
 
-  if (newPath && newPath !== path) {
-    history.pushState(null, null, newPath);
-  }
+  const isMobile = getIsMobile();
+  const role = getItem('userRole');
 
   const root = document.querySelector('#root');
 
@@ -56,13 +57,13 @@ export default function Router(newPath) {
 
   RenderLayout(root);
 
-  const headerEl = document.querySelector('.header');
-  const navbarEl = document.querySelector('.navbar');
+  const headerEl = document.querySelector('header');
+  const navbarEl = document.querySelector('nav');
   const contentEl = document.querySelector('.content');
 
   if (role === 'admin') {
     RenderHeader(headerEl, false);
-    RenderNavbar(navbarEl, [
+    RenderNavbar(navbarEl, false, [
       { path: ADMIN_PATH.HOME, title: ADMIN_TITLE.HOME, icon: ADMIN_ICON.HOME },
       {
         path: ADMIN_PATH.MEMBER,
@@ -82,35 +83,53 @@ export default function Router(newPath) {
     ]);
   } else {
     RenderHeader(headerEl, true, USER_PATH.EDIT_PROFILE);
-    RenderNavbar(navbarEl, [
-      { path: USER_PATH.HOME, title: USER_TITLE.HOME, icon: USER_ICON.HOME },
-      {
-        path: USER_PATH.EDIT_PROFILE,
-        title: USER_TITLE.EDIT_PROFILE,
-        icon: USER_ICON.EDIT_PROFILE,
-      },
-      {
-        path: USER_PATH.WORK_DETAIL,
-        title: USER_TITLE.WORK_DETAIL,
-        icon: USER_ICON.WORK_DETAIL,
-      },
-      {
-        path: USER_PATH.VACATION,
-        title: USER_TITLE.VACATION,
-        icon: USER_ICON.VACATION,
-      },
-      {
-        path: USER_PATH.NOTICE,
-        title: USER_TITLE.NOTICE,
-        icon: USER_ICON.NOTICE,
-      },
-      { path: USER_PATH.PEER, title: USER_TITLE.PEER, icon: USER_ICON.PEER },
-      {
-        path: USER_PATH.COURSE,
-        title: USER_TITLE.COURSE,
-        icon: USER_ICON.COURSE,
-      },
-    ]);
+    if (isMobile) {
+      RenderNavbar(navbarEl, true, [
+        { path: USER_PATH.NOTICE, title: '공지목록', icon: USER_ICON.NOTICE },
+        {
+          path: USER_PATH.VACATION,
+          title: '휴가/공가',
+          icon: USER_ICON.VACATION,
+        },
+        { path: USER_PATH.HOME, title: USER_TITLE.HOME, icon: USER_ICON.HOME },
+        { path: USER_PATH.PEER, title: '수강생', icon: USER_ICON.PEER },
+        {
+          path: USER_PATH.COURSE,
+          title: USER_TITLE.COURSE,
+          icon: USER_ICON.COURSE,
+        },
+      ]);
+    } else {
+      RenderNavbar(navbarEl, true, [
+        { path: USER_PATH.HOME, title: USER_TITLE.HOME, icon: USER_ICON.HOME },
+        {
+          path: USER_PATH.EDIT_PROFILE,
+          title: USER_TITLE.EDIT_PROFILE,
+          icon: USER_ICON.EDIT_PROFILE,
+        },
+        {
+          path: USER_PATH.WORK_DETAIL,
+          title: USER_TITLE.WORK_DETAIL,
+          icon: USER_ICON.WORK_DETAIL,
+        },
+        {
+          path: USER_PATH.VACATION,
+          title: USER_TITLE.VACATION,
+          icon: USER_ICON.VACATION,
+        },
+        {
+          path: USER_PATH.NOTICE,
+          title: USER_TITLE.NOTICE,
+          icon: USER_ICON.NOTICE,
+        },
+        { path: USER_PATH.PEER, title: USER_TITLE.PEER, icon: USER_ICON.PEER },
+        {
+          path: USER_PATH.COURSE,
+          title: USER_TITLE.COURSE,
+          icon: USER_ICON.COURSE,
+        },
+      ]);
+    }
   }
 
   switch (path) {
@@ -122,6 +141,9 @@ export default function Router(newPath) {
       break;
     case USER_PATH.HOME:
       RenderUserHome(contentEl);
+      break;
+    case USER_PATH.EDIT_PROFILE:
+      RenderUserEditProfile(contentEl);
       break;
     case USER_PATH.PEER:
       RenderUserPeer(contentEl);

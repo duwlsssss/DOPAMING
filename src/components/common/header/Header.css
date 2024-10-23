@@ -7,16 +7,39 @@
   margin-bottom: var(--space-small);
 }
 
-.circle {
+.profile-circle {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: #d9d9d9;
+  background: url('../../../assets/imgs/profile/profile_null.jpg') no-repeat
+    center;
+  background-size: contain;
 }
 
-.logout {
-  padding: 5px;
-  border: 2px solid black;
+.logoutBtn {
+  padding: var(--space-small);
   border-radius: 5px;
   font-size: var(--font-medium);
+}
+
+.profile-circle a.hidden-link {
+  display: block;
+  opacity: 0;
+  width: 80px;
+  height: 80px;
+  /* background-color: black;  */
+}
+
+.header-mobile {
+  display: none;
+}
+
+@media (width<=767px) {
+  .header-items,
+  .profile-circle {
+    display: none;
+  }
+  .header-mobile {
+    display: block;
+  }
 }
