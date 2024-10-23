@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { RenderNotice } from '../../../../components';
+import { RenderNotice } from '../../../components';
 import './Notice.css';
 
 export const RenderUserNotice = async (container, jsonFilePath) => {

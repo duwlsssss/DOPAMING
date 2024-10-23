@@ -1,0 +1,5 @@
+.header-title {
+  font-size: var(--font-medium);
+  font-weight: bold;
+  color: black;
+}
