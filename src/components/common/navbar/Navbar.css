@@ -32,11 +32,11 @@
 }
 
 .menu-item a:hover {
-  background-color: var(--color-sky-blue);
+  background-color: var(--color-skyblue);
 }
 
 a.menu-link.active {
-  background-color: var(--color-sky-blue);
+  background-color: var(--color-skyblue);
 }
 
 @media (width<=900px) {
