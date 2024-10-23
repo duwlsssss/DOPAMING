@@ -15,4 +15,4 @@ export { RenderUserCourse } from './user/course/Course';
 
 // 공통
 export { RenderNotFound } from './not-found/NotFound';
-export { RenderSignIn } from './sign-in/SignIn';
+export { RenderLogIn } from './log-in/LogIn';

@@ -10,6 +10,7 @@ import {
   RenderUserHome,
   RenderUserPeer,
   RenderNotFound,
+  RenderLogIn,
 } from '../pages';
 import {
   ADMIN_PATH,
@@ -20,23 +21,44 @@ import {
   USER_ICON,
   // ICONS,
 } from '../utils/constants';
-import { getUserRole } from '../utils/storage';
+import { getItem } from '../utils/storage';
 
 export default function Router(newPath) {
   const path = window.location.pathname;
+  const role = getItem('userRole');
 
   if (newPath && newPath !== path) {
     history.pushState(null, null, newPath);
   }
 
   const root = document.querySelector('#root');
+
+  // 로그인하지 않은 사용자
+  if (!role) {
+    // 로그인 페이지가 아닌 다른 페이지에 접근하려고 할 때
+    if (path !== '/login') {
+      window.location.replace('/login');
+      return;
+    }
+
+    RenderLogIn(root);
+    return;
+  }
+
+  // 로그인한 사용자의 권한에 맞지 않는 경로로 접근하려고 할 때
+  if (role === 'admin' && !path.startsWith(ADMIN_PATH.HOME)) {
+    window.location.replace(ADMIN_PATH.HOME);
+    return;
+  } else if (role === 'user' && path.startsWith(ADMIN_PATH.HOME)) {
+    window.location.replace(USER_PATH.HOME);
+    return;
+  }
+
   RenderLayout(root);
 
   const headerEl = document.querySelector('.header');
   const navbarEl = document.querySelector('.navbar');
   const contentEl = document.querySelector('.content');
-
-  const role = getUserRole();
 
   if (role === 'admin') {
     RenderHeader(headerEl, false);
