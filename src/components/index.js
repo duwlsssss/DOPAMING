@@ -4,3 +4,4 @@ export { RenderNavbar } from './common/navbar/Navbar';
 export { RenderNotice } from './common/notice/Notice';
 
 //ui
+export { Button } from './ui/button/Button';

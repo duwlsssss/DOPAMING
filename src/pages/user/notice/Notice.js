@@ -13,6 +13,12 @@ export const RenderUserNotice = async (container, jsonFilePath) => {
 
     container.innerHTML = `
       <div class="notice-list">
+        <input type="text" placeholder="Search"/>
+          <button>
+            <span class="material-symbols-rounded">
+              search
+            </span> 
+          </button>
         ${postIds
           .map(postId => {
             const post = posts.find(post => post.post_id === postId);
