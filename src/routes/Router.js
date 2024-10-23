@@ -106,7 +106,7 @@ export default function Router(newPath) {
       RenderUserPeer(contentEl);
       break;
     case USER_PATH.EDIT_PROFILE:
-      RenderUserEditProfile(contentEl);
+      RenderUserEditProfile(contentEl, '../../server/data/users.json');
       break;
     default:
       RenderNotFound(root);
