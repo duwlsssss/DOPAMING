@@ -14,7 +14,7 @@
 }
 
 .user-input {
-  font-size: var(--font-large);
+  font-size: var(--font-medium);
   margin-right: var(--space-medium);
   font-weight: 500;
 }
@@ -33,11 +33,14 @@
 }
 
 .input-select {
+  width: calc(var(--space-large) * 10);
+  height: var(--space-large);
   font-size: var(--space-medium);
   border: 1px solid #ccc;
   border-radius: 10px;
   outline: none;
   transition: border-color 0.3s;
-  min-width: calc(var(--space-large) * 5);
-  margin-right: calc(var(--space-large) * 10);
+  /* min-width: calc(var(--space-large) * 5); */
+  margin-left: calc(var(--space-large));
+  margin-right: calc(var(--space-medium) * 10);
 }
