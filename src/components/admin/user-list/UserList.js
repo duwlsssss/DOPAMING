@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { sortByName } from '../../../utils/sortByName';
 import './UserList.css';
 
 export const RenderUserList = async (container, filter = 'all') => {
@@ -25,12 +26,13 @@ export const RenderUserList = async (container, filter = 'all') => {
           });
 
     const displayUsers = filteredUsers.slice(0, 10);
+    const sortedDisplayUsers = sortByName(displayUsers);
 
     container.innerHTML = `
       <section class="member-section">
         <div class="member-list">
           <ul class="member-grid">
-            ${displayUsers
+            ${sortedDisplayUsers
               .map(
                 user => `
                 <li class="member-item">
