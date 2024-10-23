@@ -1,4 +1,5 @@
 import { RenderTitle } from '../../common/title/Title';
+import { RenderUserList } from './UserList';
 import { ADMIN_PATH } from '../../../utils/constants';
 import { navigate } from '../../../utils/navigation';
 import './UserListHeader.css';
@@ -17,6 +18,13 @@ export const RenderUserListHeader = container => {
       </div>
     </header>
     `;
+
+  const memberFilter = container.querySelector('.member-filter');
+  memberFilter.addEventListener('change', e => {
+    const selectedFilter = e.target.value;
+    const userListContainer = document.querySelector('#userListSection');
+    RenderUserList(userListContainer, selectedFilter);
+  });
 
   // 더 보기 버튼 클릭 시
   const moreButton = container.querySelector('.more-btn');

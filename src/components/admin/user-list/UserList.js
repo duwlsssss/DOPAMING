@@ -1,7 +1,7 @@
 import axios from 'axios';
 import './UserList.css';
 
-export const RenderUserList = async container => {
+export const RenderUserList = async (container, filter = 'all') => {
   container.innerHTML =
     '<div class="loading">직원 정보를 가져오는 중입니다.</div>';
 
@@ -9,7 +9,22 @@ export const RenderUserList = async container => {
     const response = await axios.get('../../../../server/data/users.json');
     const users = response.data;
 
-    const displayUsers = users.slice(0, 10);
+    // 필터링
+    const filteredUsers =
+      filter === 'all'
+        ? users
+        : users.filter(user => {
+            switch (filter) {
+              case 'student':
+                return user.user_position === '수강생';
+              case 'manager':
+                return user.user_position === '매니저';
+              default:
+                return true;
+            }
+          });
+
+    const displayUsers = filteredUsers.slice(0, 10);
 
     container.innerHTML = `
       <section class="member-section">
