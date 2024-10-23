@@ -26,7 +26,7 @@
   font-size: var(--font-small);
 }
 
-img {
+.notice-item img {
   width: 100%;
   height: 200px;
   object-fit: cover;

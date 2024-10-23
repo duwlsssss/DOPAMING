@@ -1,14 +1,11 @@
 import { RenderHeader, RenderNavbar } from '../components';
 import RenderLayout from '../layout/Layout';
-// import { RenderAdminHome, RenderAdminMemberManagement, RenderAdminVacationManagement, RenderAdminNoticeManagement
-//   ,RenderUserHome,RenderUserEditProfile,RenderUserWorkDetail,RenderUserVacationManagement,RenderUserNotice,RenderUserPeer,RenderUserCourse
-//   ,RenderNotFound,RenderSignIn
-// } from '../pages';
 import {
   RenderAdminHome,
   RenderAdminMemberManagement,
   RenderUserHome,
-  RenderUserNotice,
+  RenderUserNoticeList,
+  RenderUserNoticeDetail,
   RenderUserEditProfile,
   RenderUserPeer,
   RenderNotFound,
@@ -133,6 +130,10 @@ export default function Router() {
     }
   }
 
+  //notice:id에서 id 뽑음
+  const noticeDetailMatch = path.match(/^\/notice\/([a-zA-Z0-9_-]+)$/); //["/notice/post1","post1"]
+  const noticeId = noticeDetailMatch ? noticeDetailMatch[1] : null;
+
   switch (path) {
     case ADMIN_PATH.HOME:
       RenderAdminHome(contentEl);
@@ -144,7 +145,12 @@ export default function Router() {
       RenderUserHome(contentEl);
       break;
     case USER_PATH.NOTICE:
-      RenderUserNotice(contentEl, '../../server/data/company_posts.json');
+      RenderUserNoticeList(contentEl, '../../server/data/company_posts.json');
+      break;
+    case `${USER_PATH.NOTICE}/${noticeId}`:
+      if (noticeId) {
+        RenderUserNoticeDetail(contentEl, noticeId);
+      }
       break;
     case USER_PATH.EDIT_PROFILE:
       RenderUserEditProfile(contentEl);
