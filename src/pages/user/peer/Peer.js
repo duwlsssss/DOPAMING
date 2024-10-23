@@ -1,8 +1,8 @@
 import './Peer.css';
 
 const users = Array.from({ length: 50 }, (_, index) => ({
-  name: `조병찬 ${index + 1}`,
-  email: `whqudcks${index + 1}@naver.com`,
+  name: `수강생 ${index + 1}`,
+  email: `N${index + 1}@naver.com`,
 }));
 
 let currentIndex = 0;
@@ -16,7 +16,9 @@ const renderUsers = (container, startIndex, endIndex) => {
     .map(
       user => `
     <div class="peer-frame">
-      <div class="image-circle">이미지</div>
+      <div class="image-circle">
+        <img src="/assets/imgs/profile/profile_null.jpg" />
+      </div>
       <p class="peer-name">${user.name}</p>
       <p class="peer-email">${user.email}</p>
     </div>
@@ -51,7 +53,7 @@ const handleSearch = (input, peerBox) => {
 export const RenderUserPeer = container => {
   container.innerHTML = `
     <div class="peer-header">
-      <div class="peer-title">여러분들의 동료 수강생 목록입니다.</div>
+      <p class="peer-title">여러분들의 동료 수강생 목록입니다.</p>
       <div class="search-bar">
         <input type="text" placeholder="Search" id="searchInput">
         <button id="searchButton">검색</button>

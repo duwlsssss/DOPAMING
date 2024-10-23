@@ -13,8 +13,9 @@
 }
 
 .search-bar {
-  margin-left: 20px; /* 제목과 검색 바 간의 여백 */
-  margin-right: 230px; /* 오른쪽 여백 */
+  margin-right: 0; /* 오른쪽 여백 제거 */
+  display: flex; /* 내부 요소를 flexbox로 설정 */
+  align-items: center; /* 내부 요소 수직 중앙 정렬 */
 }
 
 .peer-box {
@@ -37,6 +38,12 @@
   display: flex; /* Flexbox 활성화 */
   flex-direction: column; /* 수직 정렬 */
   align-items: center; /* 내부 요소 수평 중앙 정렬 */
+  transition: box-shadow 0.3s ease; /* 부드러운 전환 효과 추가 */
+  border-radius: 10px;
+}
+
+.peer-frame:hover {
+  box-shadow: var(--box-shadow-xlarge);
 }
 
 .image-circle {
@@ -51,6 +58,13 @@
   font-size: 1.2em; /* 텍스트 크기 */
   text-align: center; /* 텍스트 중앙 정렬 */
   margin: 20px;
+  overflow: hidden; /* 원을 넘어가는 부분 숨기기 추가 */
+}
+
+.image-circle img {
+  width: 50%; /* 이미지 너비를 100%로 설정 */
+  height: 50%; /* 이미지 높이를 100%로 설정 */
+  object-fit: cover; /* 이미지 비율 유지하면서 잘라내기 */
 }
 
 .peer-name,
@@ -65,11 +79,15 @@
 }
 
 #searchInput {
-  border-radius: 10px; /* 모서리를 약간 둥글게 설정 */
+  border-radius: 10px;
   height: 30px;
   border: 1px solid #ccc; /* 연한 회색 테두리 추가 */
   outline: none; /* 포커스 시 나타나는 외곽선 제거 */
   padding: 10px;
+}
+
+#searchButton {
+  margin-right: 40px;
 }
 
 /* 반응형 디자인을 위한 미디어 쿼리 */
