@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { sortByName } from '../../../utils/sortByName';
+import { sortByName } from '../../../../utils/sortByName';
 import './UserList.css';
 
 export const RenderUserList = async (container, filter = 'all') => {
