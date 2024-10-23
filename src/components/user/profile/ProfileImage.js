@@ -8,7 +8,7 @@ export const ProfileImage = () => {
         <div class="outside-box">
           <div class="inside-box">
             <div class="profile-box">
-              <div class="inside-circle" id="profileImage" style="background-size: cover; background-position: center;">
+              <div class="inside-circle" id="profileImage">
                 <span class="circle-text">Upload</span>
                 <span class="circle-text">Your</span>
                 <span class="circle-text">Profile</span>
@@ -23,7 +23,7 @@ export const ProfileImage = () => {
           </div>
         </div>
         <button class="picture-button" id="uploadButton">사진 선택하기</button>
-        <input type="file" id="fileInput" accept="image/jpeg, image/png" style="display: none;" />
+        <input type="file" id="fileInput" accept="image/jpeg, image/png"/>
       </div>
     </section>
   `;

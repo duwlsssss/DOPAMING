@@ -1,3 +1,5 @@
+@import '../../../styles/global.css';
+
 /* 레이아웃 */
 .profile-panel {
   display: flex;
@@ -14,13 +16,12 @@
 }
 
 .outside-box {
-  width: 443px;
-  height: 450px;
-  background-color: #d9d9d9;
-  padding: 40px;
-  border-radius: 8px;
+  height: calc(var(--space-large) * 14);
+  background-color: var(--color-light-gray);
+  padding: var(--space-large);
+  border-radius: 10px;
   margin-top: 0px;
-  margin-left: 50px;
+  margin-left: calc(var(--space-medium) * 2);
 }
 
 .inside-box {
@@ -30,17 +31,17 @@
 }
 
 .profile-box {
-  width: 300px;
-  height: 700px;
+  width: calc(var(--space-large) * 10);
+  height: calc(var(--space-large) * 20);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .inside-circle {
-  width: 300px;
-  height: 300px;
-  background-color: #fff;
+  width: calc(var(--space-large) * 9);
+  height: calc(var(--space-large) * 9);
+  background-color: var(--color-white);
   border-radius: 50%; /* 타원형을 만들기 위한 설정 */
   display: flex;
   flex-direction: column;
@@ -52,45 +53,50 @@
 
 /* Upload Your Profile  */
 .circle-text {
-  width: 160px;
-  margin: 10px 0;
-  letter-spacing: 2px;
-  font-size: 40px;
+  width: calc(var(--space-large) * 5); /* 너비 계산 */
+  margin: var(--space-small) 0; /* 여백 설정 */
+  letter-spacing: 2px; /* 글자 간격 설정 */
+  font-size: var(--font-large); /* 변수 사용 */
 }
 
 /* 프로필 이미지를 업로드 해주세요! 부분 */
 .profile-description {
-  font-size: 22px;
+  font-size: var(--font-medium);
   font-weight: 700;
   text-align: center;
   margin: 0;
-  margin-top: 30px;
-  width: 443px;
-  margin-bottom: 10px;
+  margin-top: var(--space-large);
+  width: calc(var(--space-large) * 15);
+  margin-bottom: var(--space-small);
 }
+
 /* (단, jpg/png/jpeg 확장자 파일만 적용됩니다.) */
 .profile-description-constraint {
-  margin: 0;
-  width: 500px;
+  margin: var(--space-small);
+  width: calc(var(--space-large) * 20);
   height: auto;
-  font-size: 18px;
+  font-size: calc(var(--font-small) * 1.4) !important;
   text-align: center;
 }
 
 /* 이미지 파일 선택 버튼 */
 .picture-button {
-  width: 443px;
-  height: 49px;
+  width: calc(var(--size-button-xlarge) * 1.8);
+  height: calc(var(--space-medium) * 3);
   background-color: transparent;
   border: 2px solid black;
   border-radius: 10px;
-  font-size: 18px;
+  font-size: var(--font-medium);
   cursor: pointer;
   margin: 0; /* 여백 제거 */
+  margin-left: calc(var(--space-medium) * 2);
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin-top: 10px;
-  margin-left: 45px;
+  margin-top: var(--space-small);
+}
+
+#fileInput {
+  display: none; /* 파일 입력 숨김 */
 }

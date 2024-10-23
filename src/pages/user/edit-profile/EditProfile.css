@@ -1,56 +1,65 @@
+@import '../../../styles/global.css';
+
 /* 레이아웃 */
 .box-title {
-  margin-left: 80px;
+  margin-left: calc(var(--space-medium) * 5);
   width: auto;
 }
 
 .edit-title {
-  font-size: 25px;
+  font-size: var(--font-large);
 }
 
 .edit-box {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 1400px;
-  height: 600px;
-  margin: 20px auto;
+  max-width: 1400px !important;
+  max-width: calc(var(--space--large) * 1);
+  height: calc(var(--space--large) * 13);
+  margin: var(--space-medium) auto;
   margin-bottom: 0;
-  background-color: #f4f4f4;
-  padding: 30px;
+  background-color: var(--color-pale-gray);
+  padding: var(--space-large);
 }
 
 .profile-and-form {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-top: 30px;
+  margin-top: var(--space-large);
 }
 
-/* 버튼 */
+/* 버튼 뒷 공간 */
 .button-space {
   width: 1400px;
-  height: 100px;
-  background-color: #f4f4f4;
+  height: calc(var(--space-large) * 2);
+  background-color: var(--color-pale-gray);
   display: flex;
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
-  margin-left: 78px;
+  margin-left: calc(var(--space-large) * 2.4);
 }
 
 .button-wrapper {
   display: flex;
   justify-content: center;
   width: 100%;
+  margin-top: calc(var(--space-large) * 2);
 }
 
 .submit-button {
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: var(--space-small) var(--space-medium);
+  font-size: var(--font-medium);
   background-color: #e0faff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 10000px;
-  max-width: 1250px; /* 버튼의 최대 너비 설정 (여유 공간 고려) */
+  width: calc(var(--size-button-jumbo) * 4.5);
+  max-width: calc(var(--size-button-jumbo) * 5);
+  margin-bottom: calc(var(--space-large) * 3);
+}
+
+.submit-button:hover {
+  background-color: var(--color-blue); /* 변수 사용 */
 }

@@ -1,3 +1,5 @@
+@import '../../../../styles/global.css';
+
 /* 레이아웃 */
 .profile-inputs {
   display: flex;
@@ -8,33 +10,34 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 22px;
+  margin-bottom: var(--space-medium);
 }
 
 .user-input {
-  font-size: 30px;
-  margin-right: 130px;
+  font-size: var(--font-large);
+  margin-right: var(--space-medium);
   font-weight: 500;
 }
 
 .input-field {
-  width: 300px;
-  height: 39px;
-  font-size: 16px;
+  width: calc(var(--space-large) * 10);
+  height: var(--space-large);
+  font-size: var(--space-medium);
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
   outline: none;
   transition: border-color 0.3s;
-  margin-bottom: 10px;
-  margin-right: 50px;
+  margin-bottom: var(--space-small);
+  margin-left: calc(var(--space-large));
+  margin-right: calc(var(--space-medium) * 10);
 }
 
 .input-select {
-  font-size: 16px;
+  font-size: var(--space-medium);
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
   outline: none;
   transition: border-color 0.3s;
-  min-width: 150px;
-  margin-right: 200px;
+  min-width: calc(var(--space-large) * 5);
+  margin-right: calc(var(--space-large) * 10);
 }
