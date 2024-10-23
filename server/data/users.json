@@ -1,17 +1,15 @@
-[
-  {
-    "user_id": "231231231",
-    "created_at": "2024-10-21",
-    "user_birthday": "2001-01-01",
-    "user_bootcamp": "도파밍",
-    "user_email": "dodam@naver.com",
-    "user_holidayCount": 5,
-    "user_image": "../../src/assets/imgs/profile/profile1.png",
-    "user_name": "김도담",
-    "user_password": "1234",
-    "user_phone": "010-1234-1234",
-    "user_position": "매니저",
-    "user_sex": "남",
-    "user_type": true
-  }
-]
+{
+  "status": "OK",
+  "data": [
+    {
+      "id": 1,
+      "userId": "abcd",
+      "email": "abcd@company.com"
+    },
+    {
+      "id": 2,
+      "userId": "xyz",
+      "email": "xyz@company.com"
+    }
+  ]
+}
