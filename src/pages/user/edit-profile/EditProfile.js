@@ -61,6 +61,6 @@ const fetchUserData = async (container, jsonFilePath) => {
       // 비밀번호는 보안상의 이유로 채우지 않음
     }
   } catch (error) {
-    console.error('사용자 데이터를 가져오는 중 오류 발생:', error);
+    console.error('사용자 데이터를 가져오는 중 오류 발생 ! :', error);
   }
 };
