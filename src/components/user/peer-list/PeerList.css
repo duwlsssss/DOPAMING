@@ -23,11 +23,11 @@
 
 .peer-frame {
   width: calc(20% - 40px); /* 기본적으로 5개가 들어갈 수 있도록 설정 */
-  height: 300px;
+  height: calc(var(--space-large) * 9.5);
   background-color: var(--color-skyblue);
-  margin: 20px; /* 여백 추가 */
+  margin: var(--space-medium); /* 여백 추가 */
   margin-top: 0;
-  padding: 6px;
+  padding: var(--space-xsmall);
   display: flex; /* Flexbox 활성화 */
   flex-direction: column; /* 수직 정렬 */
   align-items: center; /* 내부 요소 수평 중앙 정렬 */
@@ -40,17 +40,14 @@
 }
 
 .image-circle {
-  width: 150px; /* 원의 너비 */
-  height: 150px; /* 원의 높이 */
+  width: calc(var(--space-large) * 5); /* 원의 너비 */
+  height: calc(var(--space-large) * 5); /* 원의 높이 */
   background-color: var(--color-caramel-dark); /* 배경색 */
   border-radius: 50%; /* 원형으로 만들기 */
   display: flex; /* 내부 요소 중앙 정렬 */
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
-  color: white; /* 텍스트 색상 */
-  font-size: 1.2em; /* 텍스트 크기 */
-  text-align: center; /* 텍스트 중앙 정렬 */
-  margin: 20px;
+  margin: var(--space-medium);
   overflow: hidden; /* 원을 넘어가는 부분 숨기기 추가 */
 }
 
@@ -64,7 +61,7 @@
 .peer-email {
   text-align: center;
   font-size: var(--font-medium);
-  padding: 10px;
+  padding: var(--space-medium);
 }
 
 .peer-email {
@@ -73,15 +70,15 @@
 
 #searchInput {
   border-radius: 10px;
-  height: 30px;
+  height: var(--space-large);
   border: 1px solid #ccc; /* 연한 회색 테두리 추가 */
   outline: none; /* 포커스 시 나타나는 외곽선 제거 */
-  padding: 10px;
+  padding: var(--space-xsmall);
 }
 
 #searchButton {
-  margin-right: 40px;
-  margin-left: 10px;
+  margin-right: calc(var(--space-large) * 2.5);
+  margin-left: var(--space-xsmall);
 }
 
 /* 반응형 디자인을 위한 미디어 쿼리 */
@@ -95,7 +92,7 @@
   }
 
   .search-bar {
-    margin-right: 10px; /* 오른쪽 여백을 약간 추가 */
+    margin-right: var(--space-small); /* 오른쪽 여백을 약간 추가 */
   }
 }
 
@@ -109,7 +106,7 @@
   }
 
   .search-bar {
-    margin-right: 5px; /* 오른쪽 여백을 줄임 */
+    margin-right: var(--space-xsmall); /* 오른쪽 여백을 줄임 */
   }
   #searchInput {
     width: 100%; /* 검색 바 전체 폭 사용 */

@@ -4,16 +4,5 @@
   display: flex; /* Flexbox 활성화 */
   justify-content: space-between; /* 요소 간의 간격을 균등하게 설정 */
   align-items: center; /* 수직 중앙 정렬 */
-  margin-bottom: 20px; /* 아래쪽 여백 */
-}
-
-.peer-title {
-  font-size: var(--font-large);
-  flex: 1; /* 제목이 가능한 공간을 차지하도록 설정 */
-}
-
-.search-bar {
-  margin-right: 0; /* 오른쪽 여백 제거 */
-  display: flex; /* 내부 요소를 flexbox로 설정 */
-  align-items: center; /* 내부 요소 수직 중앙 정렬 */
+  margin-bottom: var(--space-medium); /* 아래쪽 여백 */
 }
