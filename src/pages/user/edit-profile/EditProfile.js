@@ -1,6 +1,9 @@
+// 메인 렌더링 코드
 import './EditProfile.css';
-
-import { ProfileImage } from '../../../../src/components/user/profile/ProfileImage';
+import {
+  ProfileImage,
+  attachProfileImageEvents,
+} from '../../../../src/components/user/profile/ProfileImage';
 import {
   EditProfileForm,
   attachEditProfileFormEvents,
@@ -19,11 +22,17 @@ export const RenderUserEditProfile = container => {
     </div>
     <div class="button-space">
       <div class="button-wrapper"> 
-    <button color="transparent" shape="line">사진 선택하기</button>
+        <button class="submit-button">수정하기</button>
       </div>
     </div>
   `;
 
-  // 이벤트 리스너 추가
+  // EditProfileForm 이벤트 리스너 추가
   attachEditProfileFormEvents(container);
+
+  // ProfileImage 이벤트 리스너 추가
+  const profileImageContainer = container.querySelector('.profile-panel'); // ProfileImage의 부모 요소 선택
+  if (profileImageContainer) {
+    attachProfileImageEvents(profileImageContainer);
+  }
 };
