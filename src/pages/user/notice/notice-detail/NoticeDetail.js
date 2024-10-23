@@ -32,6 +32,6 @@ export const RenderUserNoticeDetail = async (container, postId) => {
         history.back();
       });
   } catch (e) {
-    console.error('공지 가져오다 에러 발생:', e);
+    console.error('공지를 가져오는 과정에서 에러가 발생했습니다:', e);
   }
 };

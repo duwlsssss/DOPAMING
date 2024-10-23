@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { RenderNotice } from '../../../../components';
+import { RenderNoticeItem } from '../../../../components';
 import { getItem } from '../../../../utils/storage';
 import Router from '../../../../routes/Router';
 import './NoticeList.css';
 
-export const RenderUserNoticeList = async (container, jsonFilePath) => {
+export const RenderUserNoticeList = async container => {
   try {
-    const response = await axios.get(jsonFilePath);
+    const response = await axios.get('../../server/data/company_posts.json');
     let posts = response.data.sort(
       (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
     ); //업데이트 일자 기준 내림차순 정렬
@@ -27,11 +27,11 @@ export const RenderUserNoticeList = async (container, jsonFilePath) => {
       <header class="notice-header">
         <div class="explain"><span class="strong">${bcName}</span>의 공지목록입니다.</div> 
         <div class="search">
-          <input type="text" id="searchInput" placeholder="Search"/>
+          <input type="text" class="search-input" placeholder="Search"/>
           <span class="material-symbols-rounded">search</span> 
         </div>
       </header>
-      <div class="notice-list" id="noticeList">
+      <div class="notice-list">
         ${renderNoticeItems(posts)}
       </div>
     `;
@@ -51,19 +51,29 @@ export const RenderUserNoticeList = async (container, jsonFilePath) => {
 
     // 필터링 결과에 따라 DOM 업데이트할 함수
     const updateNotices = filteredPosts => {
-      const noticeList = document.getElementById('noticeList');
-      noticeList.innerHTML = renderNoticeItems(filteredPosts);
-      filteredPosts.forEach(post => {
-        const postContainer = document.getElementById(`notice-${post.post_id}`);
-        if (postContainer) {
-          RenderNotice(postContainer, post); //각 공지 렌더링
-        }
-      });
+      const noticeList = document.querySelector('.notice-list');
+      if (filteredPosts.length === 0) {
+        //검색 결과 없으면
+        noticeList.innerHTML = `
+         <div class="notice-filter-error-message">찾으시는 결과가 없습니다.</div>
+        `;
+      } else {
+        noticeList.innerHTML = renderNoticeItems(filteredPosts);
+        filteredPosts.forEach(post => {
+          const postContainer = document.getElementById(
+            `notice-${post.post_id}`,
+          );
+          if (postContainer) {
+            //해당 id를 가진 post가 있으면
+            RenderNoticeItem(postContainer, post); //각 공지 렌더링
+          }
+        });
+      }
       attachClickHandlersToNotices();
     };
 
     // 검색 함수
-    const searchInput = document.getElementById('searchInput');
+    const searchInput = document.querySelector('.search-input');
     searchInput.addEventListener('input', e => {
       const searchTerm = e.target.value.toLowerCase(); //소문자로 맞춰서 검색할 거임
       const filteredPosts = posts.filter(post => {
@@ -82,9 +92,8 @@ export const RenderUserNoticeList = async (container, jsonFilePath) => {
       updateNotices(filteredPosts);
     });
 
-    //처음엔 전체 공지 렌더링
-    updateNotices(posts);
+    updateNotices(posts); //처음엔 전체 공지 렌더링
   } catch (e) {
-    console.error('공지 가져오다 에러 발생:', e);
+    console.error('공지를 가져오는 과정에서 에러가 발생했습니다:', e);
   }
 };

@@ -145,7 +145,7 @@ export default function Router() {
       RenderUserHome(contentEl);
       break;
     case USER_PATH.NOTICE:
-      RenderUserNoticeList(contentEl, '../../server/data/company_posts.json');
+      RenderUserNoticeList(contentEl);
       break;
     case `${USER_PATH.NOTICE}/${noticeId}`:
       if (noticeId) {
