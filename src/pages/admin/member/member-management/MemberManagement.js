@@ -32,10 +32,11 @@ export const RenderAdminMemberManagement = async container => {
     return users
       .map(user => {
         const detailButton = Button({
-          width: 100,
+          width: 150,
           text: '상세보기',
-          color: 'var(--color-skyblue)',
+          color: 'skyblue',
           id: user.user_id,
+          shape: 'block',
         });
         return `
         <div class="user-wrapper">
@@ -51,18 +52,21 @@ export const RenderAdminMemberManagement = async container => {
             </div>
             <div class="user-list">
               <p>${user.user_position}</p>
+              <p>${user.user_name}</p>
+              <p>${user.user_email}</p>
+              <p>${user.user_phone}</p>
+              ${detailButton.outerHTML}
             </div>
             <div class="user-list">
-              <p>${user.user_name}</p>
             </div>
             <div class="user-list" >
-              <p>${user.user_email}</p>
+
             </div>
             <div class="user-list">
-              <p>${user.user_phone}</p>
+              
             </div>
             <div class="user-list">
-              ${detailButton.outerHTML}
+              
              </div>
           </div>
         </div>

@@ -63,7 +63,7 @@ select {
   position: relative;
 }
 
-.user-list {
+.user-list p {
   display: flex;
   align-items: center;
   border-left: 1px solid black;
@@ -94,12 +94,12 @@ select {
   margin-left: 20px;
 }
 
-.user-item .user-list:nth-child(3) {
+.user-item .user-list p:nth-child(1) {
   border: none;
   padding: 0;
 }
 
-.user-item .user-list:last-child {
+.user-item .user-list p:last-child {
   border: none;
   padding: 0;
 }
