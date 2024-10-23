@@ -1,22 +1,24 @@
+import './Button.css';
+
 export default function Button({
-  width = 80,
-  height = 42,
   text,
   color,
+  shape,
+  width = 65,
+  height = 42,
+  borderRadius = 10,
   onClick,
-  borderRedius = 10,
-  id,
 }) {
-  const button = document.createElement('button');
-  button.style.backgroundColor = color;
+  const button = document.createElement('button'); // 버튼의 기본 스타일 및 속성 설정
   button.textContent = text;
   button.style.width = `${width}px`;
   button.style.height = `${height}px`;
-  button.style.borderRadius = `${borderRedius}px`; // 수정된 부분
-  button.id = id;
+  button.style.borderRadius = `${borderRadius}px`; // 동적으로 color와 shape 속성 추가
+  button.setAttribute('color', color); // 예: 'white'
+  button.setAttribute('shape', shape); // 예: 'line'
+
   if (onClick) {
     button.addEventListener('click', onClick);
-  }
-
+  } // 버튼을 DOM에 추가
   return button;
 }

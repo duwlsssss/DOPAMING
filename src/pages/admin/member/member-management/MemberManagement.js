@@ -6,12 +6,14 @@ export const RenderAdminMemberManagement = async container => {
   const deleteButton = Button({
     width: 80,
     text: '삭제',
-    color: 'var(--color-coral)',
+    color: 'coral',
+    shape: 'block',
   });
   const uploadButton = Button({
     width: 80,
     text: '업로드',
-    color: 'var(--color-skyblue-light)',
+    color: 'skyblue-light',
+    shape: 'block',
   });
 
   const USER_URL = '../../../../../server/data/users.json';
