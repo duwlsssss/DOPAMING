@@ -1,15 +1,9 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
-
-.content {
-  font-family: 'Pretendard', sans-serif; /* 프리텐다드 글꼴 적용 */
-}
-
 /* 레이아웃 */
 .box-title {
-  margin-left: 100px;
+  margin-left: 80px;
   width: auto;
-  margin-top: 40px;
 }
+
 .edit-title {
   font-size: 25px;
 }
@@ -17,151 +11,37 @@
 .edit-box {
   display: flex;
   flex-direction: column;
-  width: 1304px;
-  height: auto;
-  margin-left: 100px;
-  margin-right: 100px;
+  width: 100%;
+  max-width: 1400px;
+  height: 600px;
+  margin: 20px auto;
+  margin-bottom: 0;
   background-color: #f4f4f4;
-  padding-bottom: 30px;
+  padding: 30px;
 }
 
-.profile-panel {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-}
-
-.profile-picture {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-  margin-left: 100px;
-}
-
-.outside-box {
-  margin-top: 40px;
-  background-color: #d9d9d9;
-  padding: 20px;
-  border-radius: 8px;
-}
-
-.inside-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Box */
-.profile-box {
-  width: 443px;
-  height: 557px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.inside-circle {
-  width: 293px;
-  height: 293px;
-  background-color: #fff;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-size: 50px;
-  margin-top: 30px;
-  margin-bottom: 20px;
-}
-
-.circle-text {
-  width: 160px;
-  margin: 5px 0;
-  letter-spacing: 2px;
-}
-
-.profile-description {
-  font-size: 22px;
-  font-weight: 700;
-  text-align: center;
-  margin-top: 50px;
-}
-
-.profile-description-constraint {
-  margin-top: 40px;
-  width: 500px;
-  height: auto;
-  font-size: 22px;
-  text-align: center;
-}
-
-/* 배경 */
-.picture-button {
-  width: 443px;
-  height: 49px;
-  background-color: transparent;
-  border: 2px solid black;
-  border-radius: 10px;
-  font-size: 18px;
-  cursor: pointer;
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-/* 폰트 */
-.profile-inputs {
-  display: flex;
-  flex-direction: column;
-  margin-top: 60px;
-  margin-left: 100px;
-}
-
-.input-box {
+.profile-and-form {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
+  align-items: flex-start;
+  margin-top: 30px;
 }
 
-.user-input {
-  font-size: 30px;
-  margin-right: 10px;
-  font-weight: 500;
+/* 버튼 */
+.button-space {
+  width: 1400px;
+  height: 100px;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  margin-left: 78px;
 }
 
-.input-field {
-  width: 353px;
-  height: 39px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none;
-  transition: border-color 0.3s;
-  margin-left: 30px;
-  margin-bottom: 10px;
-}
-
-.input-select {
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none;
-  transition: border-color 0.3s;
-  min-width: 150px;
-  margin-right: 200px;
-}
-
-/* 동작 */
 .button-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  width: 100%;
 }
 
 .submit-button {
@@ -171,5 +51,6 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 1070px;
+  width: 10000px;
+  max-width: 1250px; /* 버튼의 최대 너비 설정 (여유 공간 고려) */
 }

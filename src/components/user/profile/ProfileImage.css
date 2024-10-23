@@ -1,0 +1,96 @@
+/* 레이아웃 */
+.profile-panel {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin: 0;
+}
+
+.profile-picture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 0;
+}
+
+.outside-box {
+  width: 443px;
+  height: 450px;
+  background-color: #d9d9d9;
+  padding: 40px;
+  border-radius: 8px;
+  margin-top: 0px;
+  margin-left: 50px;
+}
+
+.inside-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-box {
+  width: 300px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inside-circle {
+  width: 300px;
+  height: 300px;
+  background-color: #fff;
+  border-radius: 50%; /* 타원형을 만들기 위한 설정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0; /* 여백 제거 */
+}
+
+/* Upload Your Profile  */
+.circle-text {
+  width: 160px;
+  margin: 10px 0;
+  letter-spacing: 2px;
+  font-size: 40px;
+}
+
+/* 프로필 이미지를 업로드 해주세요! 부분 */
+.profile-description {
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+  margin-top: 30px;
+  width: 443px;
+  margin-bottom: 10px;
+}
+/* (단, jpg/png/jpeg 확장자 파일만 적용됩니다.) */
+.profile-description-constraint {
+  margin: 0;
+  width: 500px;
+  height: auto;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* 이미지 파일 선택 버튼 */
+.picture-button {
+  width: 443px;
+  height: 49px;
+  background-color: transparent;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  margin: 0; /* 여백 제거 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 10px;
+  margin-left: 45px;
+}
