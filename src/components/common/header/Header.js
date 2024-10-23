@@ -10,7 +10,7 @@ export function RenderHeader(header, isUser, editProfilePath = '') {
   header.innerHTML = `
     <div class="header-items">
       <div class="user-name">김아무</div>
-      <button color="transparent" shape="line" class="logoutBtn">로그아웃</button>
+        <button color="white" shape="line" class="logoutBtn">로그아웃</button>
     </div>
     <figure class="profile-circle" style="cursor: ${isUser ? 'pointer' : 'default'}">
       ${isUser ? `<a href="${editProfilePath}" class="hidden-link">.</a>` : ''}
