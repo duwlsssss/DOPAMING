@@ -4,7 +4,7 @@
     "post_title": "도파민 부트캠프 소개",
     "post_content": "안녕하세요! \n 도파민 부트캠프에 오신 것을 환영합니다. \n 도파민 부트캠프는 여러분의 성장을 위해 전폭적인 지원을 할 것입니다. \n 함께 학습하며 성장해나갈 멋진 기회입니다.",
     "post_description": "도파민 부트캠프를 소개합니다",
-    "post_image": "../../assets/post/post1.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-10 09:00",
     "updated_at": "2024-10-20 11:00"
   },
@@ -13,7 +13,7 @@
     "post_title": "출결 및 학습 규칙 안내",
     "post_content": "출석 및 학습 규칙을 준수하는 것은 여러분의 성공적인 부트캠프 참여에 필수적입니다. \n 매일 출석은 필수이며, 온라인 시스템을 통해 출석 체크를 해주세요.",
     "post_description": "출결 및 학습 규칙을 설명합니다",
-    "post_image": "../../assets/post/post2.png",
+    "post_image": "/assets/imgs/post/post2.jpg",
     "created_at": "2024-10-11 10:15",
     "updated_at": "2024-10-21 12:30"
   },
@@ -22,7 +22,7 @@
     "post_title": "휴가/공가 신청 방법",
     "post_content": "부득이하게 부트캠프 기간 중 휴가나 공가가 필요할 경우, 사전에 온라인 시스템을 통해 신청서를 제출해주세요.",
     "post_description": "휴가 및 공가 신청 절차를 안내합니다",
-    "post_image": "../../assets/post/post3.png",
+    "post_image": "/assets/imgs/post/post3.jpg",
     "created_at": "2024-10-12 08:45",
     "updated_at": "2024-10-19 14:00"
   },
@@ -31,7 +31,7 @@
     "post_title": "팀 프로젝트 발표",
     "post_content": "부트캠프 마지막 주에 진행될 팀 프로젝트 주제를 발표합니다. \n 이번 주제는 '실시간 채팅 애플리케이션 개발'입니다. \n 조별로 협업하여 멋진 결과물을 만들어보세요.",
     "post_description": "팀 프로젝트 발표에 대한 설명입니다.",
-    "post_image": "../../assets/post/post4.png",
+    "post_image": "/assets/imgs/post/post4.jpg",
     "created_at": "2024-10-13 14:00",
     "updated_at": "2024-10-18 16:45"
   },
@@ -40,7 +40,7 @@
     "post_title": "알고리즘 챌린지 안내",
     "post_content": "이번 주 알고리즘 챌린지는 '정렬 알고리즘'입니다. \n 다양한 문제를 풀어보며 실력을 향상시키세요.",
     "post_description": "알고리즘 챌린지 참여 방법을 설명합니다",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-14 11:30",
     "updated_at": "2024-10-17 09:15"
   },
@@ -49,7 +49,7 @@
     "post_title": "코딩 마라톤 이벤트",
     "post_content": "도파민 부트캠프에서 첫 번째 코딩 마라톤 이벤트를 개최합니다! \n 주제는 '간단한 게임 개발'이며, 참가자들에게는 특별한 혜택이 주어집니다.",
     "post_description": "코딩 마라톤 이벤트 참여 안내입니다",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-15 15:00",
     "updated_at": "2024-10-16 10:00"
   },
@@ -58,7 +58,7 @@
     "post_title": "커리어 개발 세션",
     "post_content": "취업 준비와 커리어 개발을 위한 특별 세션을 준비했습니다. \n 업계 전문가들과 함께하는 시간을 놓치지 마세요!",
     "post_description": "커리어 개발 세션에 대한 정보입니다",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-16 13:30",
     "updated_at": "2024-10-15 12:20"
   },
@@ -67,7 +67,7 @@
     "post_title": "데모 데이 안내",
     "post_content": "부트캠프 마지막 날, 여러분이 개발한 프로젝트를 발표하는 데모 데이가 열립니다. \n 최고의 프로젝트에 선정된 팀에게는 상금이 주어집니다.",
     "post_description": "데모 데이 일정 및 세부 사항 안내입니다",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-17 10:00",
     "updated_at": "2024-10-14 14:30"
   },
@@ -76,7 +76,7 @@
     "post_title": "기술 인터뷰 준비 세션",
     "post_content": "기술 인터뷰 준비를 위한 특별 세션을 진행합니다. \n 다양한 실전 문제를 풀어보며 준비하세요.",
     "post_description": "기술 인터뷰 준비에 관한 정보입니다",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-18 09:45",
     "updated_at": "2024-10-13 11:15"
   },
@@ -85,7 +85,7 @@
     "post_title": "취업 박람회 참여 안내",
     "post_content": "부트캠프 종료 후, 국내 주요 IT 기업이 참여하는 취업 박람회가 개최됩니다. \n 여러분의 커리어를 한 단계 도약시킬 수 있는 기회입니다.",
     "post_description": "취업 박람회 일정 및 참여 방법입니다",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-19 11:00",
     "updated_at": "2024-10-12 10:30"
   },
@@ -94,7 +94,7 @@
     "post_title": "데이터베이스 워크숍 안내",
     "post_content": "이번 워크숍에서는 SQL과 NoSQL 데이터베이스의 차이점과 실무에서의 활용법을 배웁니다. \n 실습을 통해 실무에 바로 적용할 수 있는 지식을 쌓을 수 있습니다.",
     "post_description": "데이터베이스 워크숍 참여 방법 안내",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-21 09:00",
     "updated_at": "2024-10-22 11:00"
   },
@@ -103,7 +103,7 @@
     "post_title": "비동기 프로그래밍 마스터 클래스",
     "post_content": "JavaScript의 비동기 프로그래밍을 심도 있게 학습하는 마스터 클래스를 진행합니다. \n 비동기 처리 패턴을 이해하고 효율적으로 활용하는 방법을 배워보세요.",
     "post_description": "비동기 프로그래밍 마스터 클래스 안내",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-22 10:30",
     "updated_at": "2024-10-23 13:00"
   },
@@ -112,7 +112,7 @@
     "post_title": "코딩 문제 풀이 세션",
     "post_content": "매주 진행되는 코딩 문제 풀이 세션을 통해 알고리즘 문제 해결 능력을 강화하세요. \n 다양한 문제를 함께 풀고 토론하며 실력을 쌓을 수 있습니다.",
     "post_description": "코딩 문제 풀이 세션 일정 안내",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-23 14:00",
     "updated_at": "2024-10-24 15:00"
   },
@@ -121,7 +121,7 @@
     "post_title": "API 설계 및 구현 워크숍",
     "post_content": "RESTful API 설계 및 구현에 대한 워크숍을 진행합니다. \n 실습을 통해 백엔드 개발의 기본기를 탄탄히 다질 수 있는 기회를 놓치지 마세요.",
     "post_description": "API 설계 및 구현 워크숍 안내",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-24 09:30",
     "updated_at": "2024-10-25 10:00"
   },
@@ -130,7 +130,7 @@
     "post_title": "오픈소스 프로젝트 참여 방법",
     "post_content": "오픈소스 프로젝트에 기여하는 방법을 배워보세요. \n GitHub를 통한 협업과 오픈소스에 기여하는 경험을 통해 포트폴리오를 강화할 수 있습니다.",
     "post_description": "오픈소스 프로젝트 참여 방법 안내",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-25 11:00",
     "updated_at": "2024-10-26 12:00"
   },
@@ -139,7 +139,7 @@
     "post_title": "개발 환경 설정 및 최적화 가이드",
     "post_content": "개발 환경을 효율적으로 설정하고 최적화하는 방법을 배우는 시간을 마련했습니다. \n 개발 생산성을 높이기 위한 팁과 도구들을 소개합니다.",
     "post_description": "개발 환경 최적화 가이드 세션 안내",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-26 13:30",
     "updated_at": "2024-10-27 14:00"
   },
@@ -148,7 +148,7 @@
     "post_title": "리팩토링 기술 세션",
     "post_content": "더 나은 코드 작성을 위한 리팩토링 기법을 소개합니다. \n 유지 보수성과 확장성을 고려한 리팩토링 방법을 학습할 수 있습니다.",
     "post_description": "리팩토링 기술 세션 안내",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-27 09:00",
     "updated_at": "2024-10-28 10:00"
   },
@@ -157,7 +157,7 @@
     "post_title": "테스트 주도 개발(TDD) 워크숍",
     "post_content": "테스트 주도 개발(TDD)의 원리와 실습을 통해 코드를 작성하는 방법을 배웁니다. \n 테스트를 통한 안정적인 코드 개발을 목표로 합니다.",
     "post_description": "TDD 워크숍 참여 안내",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-28 11:00",
     "updated_at": "2024-10-29 12:00"
   },
@@ -166,15 +166,16 @@
     "post_title": "풀스택 개발자 커리어 세션",
     "post_content": "풀스택 개발자로 성장하기 위한 커리어 세션을 준비했습니다. \n 백엔드와 프론트엔드의 다양한 기술을 통합하는 방법을 배워보세요.",
     "post_description": "풀스택 개발 커리어 세션 안내",
-    "post_image": "../../assets/post/post.png",
-    "created_at": "2024-10-29 14"
+    "post_image": "/assets/imgs/post/post1.jpg",
+    "created_at": "2024-10-29 14:00",
+    "updated_at": "2024-10-29 14:00"
   },
   {
     "post_id": "post20",
     "post_title": "애자일 개발 프로세스 워크숍",
     "post_content": "효율적인 소프트웨어 개발을 위한 애자일 프로세스를 학습합니다. \n 팀 내 협업과 빠른 피드백을 통한 개발 방법을 익혀보세요.",
     "post_description": "애자일 개발 프로세스 워크숍 안내",
-    "post_image": "../../assets/post/post.png",
+    "post_image": "/assets/imgs/post/post1.jpg",
     "created_at": "2024-10-30 09:30",
     "updated_at": "2024-10-31 10:30"
   }

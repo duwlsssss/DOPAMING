@@ -8,6 +8,7 @@ import {
   RenderAdminHome,
   RenderAdminMemberManagement,
   RenderUserHome,
+  RenderUserNotice,
   RenderUserEditProfile,
   RenderUserPeer,
   RenderNotFound,
@@ -42,7 +43,7 @@ export default function Router() {
       return;
     }
 
-    RenderLogIn(root);
+    RenderLogIn(root, '../../server/data/users.json');
     return;
   }
 
@@ -141,6 +142,9 @@ export default function Router() {
       break;
     case USER_PATH.HOME:
       RenderUserHome(contentEl);
+      break;
+    case USER_PATH.NOTICE:
+      RenderUserNotice(contentEl, '../../server/data/company_posts.json');
       break;
     case USER_PATH.EDIT_PROFILE:
       RenderUserEditProfile(contentEl);
