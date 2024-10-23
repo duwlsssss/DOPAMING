@@ -1,5 +1,6 @@
 import { RenderHeader, RenderNavbar } from '../components';
 import RenderLayout from '../layout/Layout';
+import extractParams from '../utils/extractParams';
 import {
   RenderAdminHome,
   RenderAdminMemberManagement,
@@ -129,37 +130,28 @@ export default function Router() {
       ]);
     }
   }
+  // 경로에서 동적 매개변수 추출
 
-  //notice:id에서 id 뽑음
-  const noticeDetailMatch = path.match(/^\/notice\/([a-zA-Z0-9_-]+)$/); //["/notice/post1","post1"]
-  const noticeId = noticeDetailMatch ? noticeDetailMatch[1] : null;
+  //postId 추출
+  const paramsFormNotice = extractParams(`${USER_PATH.NOTICE}/:postId`, path);
+  const postId = paramsFormNotice ? paramsFormNotice.postId : null;
 
-  switch (path) {
-    case ADMIN_PATH.HOME:
-      RenderAdminHome(contentEl);
-      break;
-    case ADMIN_PATH.MEMBER:
-      RenderAdminMemberManagement(contentEl);
-      break;
-    case USER_PATH.HOME:
-      RenderUserHome(contentEl);
-      break;
-    case USER_PATH.NOTICE:
-      RenderUserNoticeList(contentEl);
-      break;
-    case `${USER_PATH.NOTICE}/${noticeId}`:
-      if (noticeId) {
-        RenderUserNoticeDetail(contentEl, noticeId);
-      }
-      break;
-    case USER_PATH.EDIT_PROFILE:
-      RenderUserEditProfile(contentEl);
-      break;
-    case USER_PATH.PEER:
-      RenderUserPeer(contentEl);
-      break;
-    default:
-      RenderNotFound(root);
-      break;
+  if (path === ADMIN_PATH.HOME) {
+    RenderAdminHome(contentEl);
+  } else if (path === ADMIN_PATH.MEMBER) {
+    RenderAdminMemberManagement(contentEl);
+  } else if (path === USER_PATH.HOME) {
+    RenderUserHome(contentEl);
+  } else if (path === USER_PATH.NOTICE) {
+    RenderUserNoticeList(contentEl);
+  } else if (postId) {
+    // postId가 있는 경우(동적 경로가 매칭된 경우)
+    RenderUserNoticeDetail(contentEl, postId);
+  } else if (path === USER_PATH.EDIT_PROFILE) {
+    RenderUserEditProfile(contentEl);
+  } else if (path === USER_PATH.PEER) {
+    RenderUserPeer(contentEl);
+  } else {
+    RenderNotFound(root);
   }
 }

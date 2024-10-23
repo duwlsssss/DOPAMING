@@ -1,5 +1,6 @@
 import axios from 'axios';
 import './NoticeDetail.css';
+import { RenderNotFound } from '../../../not-found/NotFound';
 
 export const RenderUserNoticeDetail = async (container, postId) => {
   try {
@@ -9,8 +10,7 @@ export const RenderUserNoticeDetail = async (container, postId) => {
     const post = posts.find(post => post.post_id === postId);
 
     if (!post) {
-      container.innerHTML = `<div class="error-message>공지사항을 찾을 수 없습니다.</div>`;
-      return;
+      RenderNotFound(document.querySelector('#root'));
     }
 
     container.innerHTML = `

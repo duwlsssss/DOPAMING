@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { RenderNoticeItem } from '../../../../components';
 import { getItem } from '../../../../utils/storage';
-import Router from '../../../../routes/Router';
+import navigate from '../../../../utils/navigation';
 import './NoticeList.css';
 
 export const RenderUserNoticeList = async container => {
@@ -43,8 +43,7 @@ export const RenderUserNoticeList = async container => {
       noticeItems.forEach(item => {
         item.addEventListener('click', () => {
           const postId = item.getAttribute('post-id');
-          history.pushState(null, null, `/notice/${postId}`);
-          Router();
+          navigate(`/notice/${postId}`);
         });
       });
     };
