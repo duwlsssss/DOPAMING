@@ -7,11 +7,14 @@ import './NoticeList.css';
 export const RenderUserNoticeList = async container => {
   try {
     const response = await axios.get('../../server/data/company_posts.json');
-    let posts = response.data.sort(
+    const posts = response.data.sort(
       (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
     ); //업데이트 일자 기준 내림차순 정렬
 
-    const bcName = getItem('userBCName');
+    const usersResponse = await axios.get('../../server/data/users.json');
+    let users = usersResponse.data;
+    const userId = getItem('userID');
+    const bcName = users.find(user => user.user_id === userId).user_bootcamp;
 
     const renderNoticeItems = filteredPosts => {
       return filteredPosts
@@ -92,7 +95,7 @@ export const RenderUserNoticeList = async container => {
     });
 
     updateNotices(posts); //처음엔 전체 공지 렌더링
-  } catch (e) {
-    console.error('공지를 가져오는 과정에서 에러가 발생했습니다:', e);
+  } catch (error) {
+    console.error('공지 리스트 렌더링 중 에러가 발생했습니다:', error);
   }
 };
