@@ -54,5 +54,5 @@ export const VacationRequestForm = () => {
     textarea.addEventListener('input', () => handleResizeHeight(textarea));
   };
 
-  return { renderForm };
+  return { renderForm }; //객체로 반환
 };
