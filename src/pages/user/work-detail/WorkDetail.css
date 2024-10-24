@@ -1,47 +1,44 @@
 @import url('../../../styles/global.css');
 
+/* WorkDetail HEADER */
 .work-header {
   width: 1300px;
   height: 100px;
-  background-color: orange;
-  display: flex; /* Flexbox 사용 */
-  align-items: center; /* 수직 정렬 */
+}
+
+.work-title,
+.work-content {
+  display: flex; /* 각각의 내부 요소도 Flexbox로 설정 */
+  align-items: center; /* 수평 중앙 정렬 */
+  margin: 0 var(--space-large); /* 양쪽 여백 조정 */
   justify-content: space-between; /* 양쪽 끝으로 정렬 */
 }
 
-.work-title {
-  font-size: var(--font-medium);
+.work-title-text {
+  font-size: var(--font-large);
+  font-weight: 700;
 }
 
 .punch-date {
-  width: 300px;
-  padding: 15px; /* 내부 여백 */
+  width: calc(var(--space-large) * 16);
+  padding: calc(var(--space-medium) * 1.5); /* 내부 여백 */
   font-size: var(--font-medium);
-  height: 40px;
+  height: var(--space-medium);
   border: 1px solid #ccc; /* 테두리 */
-  border-radius: 4px; /* 테두리 둥글게 */
+  border-radius: 10px; /* 테두리 둥글게 */
 }
 
-.work-content {
-  width: 1300px;
-  height: 100px;
-  background-color: aqua;
-  display: flex; /* Flexbox 사용 */
-  flex-direction: row; /* 가로 방향으로 배치 */
-  justify-content: space-between; /* 양쪽 끝으로 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
-}
-
-.work-content .work-desc {
+.work-desc {
   font-size: var(--font-large);
   margin: 0; /* 기본 여백 제거 */
+  line-height: 1.5; /* 줄 간격 조정 (1.5는 예시, 필요에 따라 조정 가능) */
 }
 
 .punch-info {
-  width: 400px;
-  height: 100px;
-  background-color: #ccc;
-  margin-top: 10px; /* 아래 여백 추가 */
+  width: calc(var(--space-large) * 16);
+  height: calc(var(--space-large) * 3);
+  background-color: #f9f9f9;
+  margin-top: var(--space-xsmall); /* 아래 여백 추가 */
   display: flex; /* Flexbox 사용 */
   flex-direction: column; /* 세로 방향으로 배치 */
   justify-content: center; /* 수직 중앙 정렬 */
@@ -83,6 +80,12 @@
   margin: 0; /* 기본 마진 제거 */
 }
 
+.calendar-before,
+.calendar-after {
+  width: 100px;
+  background-color: orange;
+}
+
 .work-calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -91,7 +94,7 @@
 
 .calendar-day {
   border: 1px solid black; /* 각 날짜 칸의 검은색 실선 테두리 */
-  width: 150px;
+  width: 200px;
   height: 70px;
   padding: 10px;
   border-bottom: 0;

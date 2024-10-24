@@ -1,11 +1,11 @@
 import './Layout.css';
 const RenderLayout = container => {
   container.innerHTML = `
-    <div class="header"></div>
-    <div class="content-container">
-      <div class="navbar"></div>
-      <div class="content"></div>
-    </div>
+    <header class="header"></header>
+    <main class="content-container">
+      <nav class="navbar"></nav>
+      <section class="content"></section>
+    </main>
   `;
 };
 

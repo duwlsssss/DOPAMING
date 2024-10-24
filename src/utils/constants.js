@@ -64,5 +64,6 @@ export const ICONS = {
   SURFING: 'surfing',
   ARROW_DOWN: 'keyboard_arrow_down',
   ARROW_UP: 'keyboard_arrow_up',
+  ARROW_LEFT: 'arrow_left_alt',
   CALENDAR: 'calendar_month',
 };
