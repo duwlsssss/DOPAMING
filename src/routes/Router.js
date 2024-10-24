@@ -13,6 +13,7 @@ import {
   RenderUserPeer,
   RenderNotFound,
   RenderLogIn,
+  RenderUserWorkDetail,
 } from '../pages';
 import {
   ADMIN_PATH,
@@ -151,6 +152,9 @@ export default function Router() {
       break;
     case USER_PATH.PEER:
       RenderUserPeer(contentEl);
+      break;
+    case USER_PATH.WORK_DETAIL:
+      RenderUserWorkDetail(contentEl);
       break;
     default:
       RenderNotFound(root);
