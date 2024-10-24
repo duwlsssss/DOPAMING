@@ -1,5 +1,6 @@
 import { ApiClient } from '../../../../apis/ApiClient';
 import { Button } from '../../../../components';
+import { Pagenation } from '../../../../components/common/pagenation/Pagenation';
 import './MemberManagement.css';
 
 export const RenderAdminMemberManagement = async container => {
@@ -38,32 +39,6 @@ export const RenderAdminMemberManagement = async container => {
     return users.slice(startIndex, endIndex);
   };
 
-  // 페이지네이션 버튼 생성
-  const renderPaginationButtons = (totalUsers, itemsPerPage) => {
-    const totalPages = Math.ceil(totalUsers / itemsPerPage);
-    const paginationContainer = document.createElement('div'); // 페이지네이션 버튼들을 담을 컨테이너
-
-    for (let i = 1; i <= totalPages; i++) {
-      const paginationButton = Button({
-        width: 50, // 너비는 필요에 맞게 조정
-        text: `${i}`, // 버튼에 페이지 번호 표시
-        color: 'transparent', // 필요에 따라 색상 설정
-        id: `page-${i}`, // 페이지 번호를 id로 설정
-        shape: 'white', // 버튼 모양 지정
-      });
-      if (i === 1) {
-        paginationButton.classList.add('active');
-      }
-      // 페이지 번호를 data 속성에 추가
-      paginationButton.setAttribute('data-page', i);
-      paginationButton.classList.add('pagination-btn'); // 버튼 클릭을 처리할 클래스를 추가
-
-      // 페이지네이션 컨테이너에 버튼 추가
-      paginationContainer.appendChild(paginationButton);
-    }
-    return paginationContainer; // HTML 요소를 반환
-  };
-
   // 페이지 변경 시 사용자 목록을 업데이트하는 함수
   const updateUserList = page => {
     const paginatedUsers = paginateUsers(users.data, page, itemsPerPage);
@@ -74,10 +49,6 @@ export const RenderAdminMemberManagement = async container => {
   // 초기 렌더링
   const initialUsers = paginateUsers(users.data, currentPage, itemsPerPage);
   const userList = renderUserList(initialUsers);
-  const paginationButtons = renderPaginationButtons(
-    users.data.length,
-    itemsPerPage,
-  );
 
   function renderUserList(users) {
     return users
@@ -142,22 +113,27 @@ export const RenderAdminMemberManagement = async container => {
     </div>
     </div>
   `;
-  // 페이지네이션 버튼을 추가
-  container.querySelector('.pagination').appendChild(paginationButtons);
-
-  // 페이지네이션 버튼 클릭 이벤트 처리
-  container.querySelector('.pagination').addEventListener('click', e => {
-    if (e.target.classList.contains('pagination-btn')) {
-      currentPage = parseInt(e.target.dataset.page);
-
+  const paginationContainer = Pagenation(
+    users.data.length,
+    itemsPerPage,
+    currentPage,
+    page => {
+      // 현재 페이지 몇번째 페이지인지 확인
+      currentPage = page;
+      // 모든 버튼의 활성화 상태를 제거하고 새로운 페이지 버튼을 활성화
       const allButtons = container.querySelectorAll('.pagination-btn');
       allButtons.forEach(button => button.classList.remove('active'));
 
-      e.target.classList.add('active');
+      const activeButton = container.querySelector(`[data-page="${page}"]`);
+      if (activeButton) {
+        activeButton.classList.add('active');
+      }
 
-      updateUserList(currentPage);
-    }
-  });
+      updateUserList(page);
+    },
+  );
+
+  container.querySelector('.pagination').appendChild(paginationContainer);
 
   const userTop = container.querySelector('.user-update');
   userTop.appendChild(deleteButton);
