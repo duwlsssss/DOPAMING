@@ -67,10 +67,22 @@
 }
 
 .work-calendar-box {
-  width: 1300px;
-  height: 500px;
-  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 배치 */
+  align-items: center; /* 가로 중앙 정렬 */
 }
+
+.title-content {
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  height: 100px; /* 원하는 높이 설정 */
+}
+
+.calendar-title {
+  margin: 0; /* 기본 마진 제거 */
+}
+
 .work-calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -82,8 +94,17 @@
   height: 80px;
   padding: 10px;
   text-align: center;
+  border-bottom: 0;
 }
-
+.calendar-day:nth-child(-n + 7) {
+  height: 40px;
+}
 .calendar-day:nth-child(7n + 1) {
-  border-left: 0px solid black;
+  border-left: 0px;
+}
+.calendar-day:nth-child(7n) {
+  border-right: 0px; /* 매주 마지막 날짜 칸의 오른쪽 테두리 제거 */
+}
+.calendar-day:nth-last-child(-n + 7) {
+  border-bottom: 0px; /* 맨 아래 줄의 하단 테두리 제거 */
 }
