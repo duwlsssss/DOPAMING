@@ -53,6 +53,7 @@ body {
   color: var(--color-black);
   font-family: 'Pretendard', sans-serif;
   font-weight: 500;
+  word-break: keep-all;
   font-optical-sizing: auto; /*가변 글꼴에서 글자 더 읽기 쉽게 만듦*/
   background-color: var(--color-white);
 }

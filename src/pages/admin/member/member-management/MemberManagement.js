@@ -1,5 +1,5 @@
-import { ApiClient } from '../../../../apis/ApiClient';
-import Button from '../../../../components/ui/button/Button';
+import { ApiClient } from '../../../../apis/apiClient';
+import { Button } from '../../../../components';
 import './MemberManagement.css';
 
 export const RenderAdminMemberManagement = async container => {

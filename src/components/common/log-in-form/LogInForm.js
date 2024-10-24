@@ -40,6 +40,7 @@ export const RenderLogInForm = (container, users) => {
     if (user) {
       const userRole = user.user_type ? 'admin' : 'user';
       setItem('userRole', userRole);
+      setItem('userID', user.user_id); // 유저 아이디 저장
 
       const redirectPath =
         user.role === 'admin' ? ADMIN_PATH.HOME : USER_PATH.HOME;

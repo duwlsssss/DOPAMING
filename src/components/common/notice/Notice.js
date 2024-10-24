@@ -1,6 +1,6 @@
 import './Notice.css';
 
-export const RenderNotice = (container, post) => {
+export const RenderNoticeItem = (container, post) => {
   container.innerHTML = `
     <div class="notice-item">
       <img src="${post.post_image}" alt="${post.post_title}" />

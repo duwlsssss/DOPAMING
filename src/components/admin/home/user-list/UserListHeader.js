@@ -1,7 +1,7 @@
 import { RenderTitle } from '../../../common/title/Title';
 import { RenderUserList } from './UserList';
-import { ADMIN_PATH } from '../../../../utils/constants';
-import { navigate } from '../../../../utils/navigation';
+import { ADMIN_PATH } from '../../../utils/constants';
+import navigate from '../../../utils/navigation';
 import './UserListHeader.css';
 
 export const RenderUserListHeader = container => {
