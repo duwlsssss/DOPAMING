@@ -85,10 +85,10 @@ const updatePunchInfo = (container, selectedDate) => {
       : null;
 
     punchInfoTime.innerHTML = `
-      <p class="punch-in-time">출근: ${punchInTime.getHours()}시 ${punchInTime.getMinutes()}분</p>
-      <p class="punch-out-time">퇴근: ${punchOutTime.getHours()}시 ${punchOutTime.getMinutes()}분</p>
-      ${breakOutTime ? `<p class="break-outtime">외출: ${breakOutTime.getHours()}시 ${breakOutTime.getMinutes()}분</p>` : ''}
-      ${breakInTime ? `<p class="break-in-time">복귀: ${breakInTime.getHours()}시 ${breakInTime.getMinutes()}분</p>` : ''}
+      <p class="punch-in-time">${punchInTime.getHours()}시 ${punchInTime.getMinutes()}분</p>
+      <p class="punch-out-time">${punchOutTime.getHours()}시 ${punchOutTime.getMinutes()}분</p>
+      ${breakOutTime ? `<p class="break-outtime">${breakOutTime.getHours()}시 ${breakOutTime.getMinutes()}분</p>` : ''}
+      ${breakInTime ? `<p class="break-in-time">${breakInTime.getHours()}시 ${breakInTime.getMinutes()}분</p>` : ''}
     `;
   } else {
     punchInfoTime.innerHTML = `
