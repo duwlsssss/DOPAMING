@@ -1,7 +1,8 @@
 import { RenderTitle } from '../../../common/title/Title';
 import { RenderUserList } from './UserList';
-import { ADMIN_PATH } from '../../../utils/constants';
-import navigate from '../../../utils/navigation';
+import { ADMIN_PATH } from '../../../../utils/constants';
+import { Button } from '../../../ui/button/Button';
+import navigate from '../../../../utils/navigation';
 import './UserListHeader.css';
 
 export const RenderUserListHeader = container => {
@@ -14,7 +15,7 @@ export const RenderUserListHeader = container => {
             <option value="student">수강생</option> 
             <option value="manager">매니저</option>
           </select>
-          <button color="gray" shape="block" class="user-more-btn">더 보기</button>
+          <div class="admin-main-user-list-more-button"></div>
       </div>
     </header>
     `;
@@ -22,16 +23,26 @@ export const RenderUserListHeader = container => {
   const memberFilter = container.querySelector('.member-filter');
   memberFilter.addEventListener('change', e => {
     const selectedFilter = e.target.value;
-    const userListContainer = document.querySelector('#userListSection');
+    const userListContainer = document.querySelector(
+      '#adminMainUserListSection',
+    );
     RenderUserList(userListContainer, selectedFilter);
   });
 
   // 더 보기 버튼 클릭 시
-  const moreButton = container.querySelector('.user-more-btn');
-  moreButton.addEventListener('click', e => {
-    e.preventDefault();
-    navigate(ADMIN_PATH.MEMBER);
+  const moreButtonContainer = container.querySelector(
+    '.admin-main-user-list-more-button',
+  );
+  const moreButton = new Button({
+    text: '더 보기',
+    color: 'gray',
+    shape: 'block',
+    padding: '6px 12px',
+    fontSize: 'var(--font-small)',
+    onClick: () => navigate(ADMIN_PATH.MEMBER),
   });
+
+  moreButtonContainer.appendChild(moreButton);
 
   const titleContainer = document.querySelector('#titleContainer');
   RenderTitle(titleContainer, '직원 목록');
