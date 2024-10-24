@@ -2,7 +2,7 @@ import './Peer.css';
 import { setupSearch } from '../../../components/user/peer-list/PeerList';
 import axios from 'axios';
 
-export const RenderUserPeer = async (container, jsonFilePath) => {
+export const RenderUserPeer = async container => {
   container.innerHTML = `
     <div class="peer-header">
       <p class="peer-title">여러분들의 동료 수강생 목록입니다.</p>
@@ -40,6 +40,7 @@ export const RenderUserPeer = async (container, jsonFilePath) => {
   };
 
   const peerBox = container.querySelector('.peer-box');
+  const jsonFilePath = '../../server/data/users.json';
 
   // 사용자 데이터 가져오기
   const fetchUserData = async jsonFilePath => {
