@@ -136,3 +136,8 @@ input[type='checkbox']:checked + .custom-checkbox::after {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+
+.search_no_data {
+  color: var(--color-coral-dark);
+  margin: 20px;
+}
