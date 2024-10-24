@@ -36,10 +36,10 @@ export const setupSearch = (
   initialItems,
   setFilteredUsers,
 ) => {
-  const searchButton = container.querySelector('#searchButton');
   const searchInput = container.querySelector('#searchInput');
+  const searchIcon = container.querySelector('#searchIcon'); // 수정된 부분
 
-  searchButton.addEventListener('click', () => {
+  searchIcon.addEventListener('click', () => {
     handleSearch(
       searchInput.value,
       peerBox,
@@ -47,6 +47,6 @@ export const setupSearch = (
       renderUsers,
       initialItems,
       setFilteredUsers,
-    ); // 검색 버튼 클릭 시 검색 수행
+    ); // 아이콘 클릭 시 검색 수행
   });
 };

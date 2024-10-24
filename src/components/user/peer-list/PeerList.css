@@ -76,7 +76,7 @@
   padding: var(--space-xsmall);
 }
 
-#searchButton {
+#searchIcon {
   margin-right: calc(var(--space-large) * 2.5);
   margin-left: var(--space-xsmall);
 }

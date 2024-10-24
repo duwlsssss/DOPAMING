@@ -7,7 +7,7 @@ export const RenderUserPeer = container => {
       <p class="peer-title">여러분들의 동료 수강생 목록입니다.</p>
       <div class="search-bar">
         <input type="text" placeholder="Search" id="searchInput">
-        <button id="searchButton">검색</button>
+        <span class="material-symbols-rounded" id = "searchIcon">search</span>
       </div>
     </div>
     <div class="peer-box"></div>
