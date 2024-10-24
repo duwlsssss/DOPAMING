@@ -74,7 +74,9 @@ export const RenderUserWorkDetail = container => {
     </div>
 
     <div class="work-calendar-box">
-      캘린더
+      <div class="title-content"> 
+        <p class="calendar-title">캘린더</p>
+      </div>
       <div class="work-calendar">
       </div>
     </div>
@@ -82,4 +84,8 @@ export const RenderUserWorkDetail = container => {
 
   // 동적 달력 생성
   generateCalendar(container, year, month);
+
+  // calendar-title의 값을 변경
+  const calendarTitle = container.querySelector('.calendar-title');
+  calendarTitle.textContent = `캘린더 - ${year}년 ${month + 1}월`; // 원하는 값으로 변경
 };
