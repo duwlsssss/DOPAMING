@@ -1,4 +1,4 @@
-import { RenderTitle } from '../../common/title/Title';
+import { RenderTitle } from '../../../common/title/Title';
 import { RenderUserList } from './UserList';
 import { ADMIN_PATH } from '../../../utils/constants';
 import navigate from '../../../utils/navigation';
@@ -14,7 +14,7 @@ export const RenderUserListHeader = container => {
             <option value="student">수강생</option> 
             <option value="manager">매니저</option>
           </select>
-          <button color="gray" shape="block" class="more-btn">더 보기</button>
+          <button color="gray" shape="block" class="user-more-btn">더 보기</button>
       </div>
     </header>
     `;
@@ -27,7 +27,7 @@ export const RenderUserListHeader = container => {
   });
 
   // 더 보기 버튼 클릭 시
-  const moreButton = container.querySelector('.more-btn');
+  const moreButton = container.querySelector('.user-more-btn');
   moreButton.addEventListener('click', e => {
     e.preventDefault();
     navigate(ADMIN_PATH.MEMBER);
