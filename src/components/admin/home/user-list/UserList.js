@@ -1,10 +1,11 @@
 import axios from 'axios';
+
 import { sortByName } from '../../../../utils/sortByName';
+import { Button } from '../../../ui/button/Button';
 import './UserList.css';
 
 export const RenderUserList = async (container, filter = 'all') => {
-  container.innerHTML =
-    '<div class="loading">직원 정보를 가져오는 중입니다.</div>';
+  container.innerHTML = `<div class="loading">직원 정보를 가져오는 중입니다.</div>`;
 
   try {
     const response = await axios.get('../../../../server/data/users.json');
@@ -34,7 +35,7 @@ export const RenderUserList = async (container, filter = 'all') => {
           <ul class="member-grid">
             ${sortedDisplayUsers
               .map(
-                user => `
+                (user, index) => `
                 <li class="member-item">
                   <div class="member-info">
                     <div class="status-dot active"></div>
@@ -44,7 +45,7 @@ export const RenderUserList = async (container, filter = 'all') => {
                     <span class="email">${user.user_email}</span>
                     <span class="phone">${user.user_phone}</span>
                   </div>
-                  <button color="skyblue" shape="block" class="detail-btn">상세 보기</button>
+                  <div class="admin-main-user-list-detail-button-container" data-index="${index}"></div>
                 </li>
               `,
               )
@@ -54,11 +55,25 @@ export const RenderUserList = async (container, filter = 'all') => {
       </section>
     `;
 
-    const detailButtons = container.querySelectorAll('.detail-btn');
-    detailButtons.forEach((button, index) => {
-      button.addEventListener('click', () => {
-        handleDetailClick(displayUsers[index]);
+    // 상세 보기 버튼 처리
+    const handleDetailClick = user => {
+      console.log('선택된 직원 정보: ', user);
+    };
+
+    // 각 detail-button-container에 버튼 추가
+    const buttonContainers = container.querySelectorAll(
+      '.admin-main-user-list-detail-button-container',
+    );
+    buttonContainers.forEach((container, index) => {
+      const detailButton = Button({
+        text: '상세 보기',
+        color: 'skyblue',
+        shape: 'block',
+        width: 200,
+        onClick: () => handleDetailClick(sortedDisplayUsers[index]),
       });
+
+      container.appendChild(detailButton);
     });
   } catch (error) {
     let errorMessage = '데이터를 불러오는 중 오류가 발생했습니다.';
@@ -78,8 +93,4 @@ export const RenderUserList = async (container, filter = 'all') => {
     `;
     console.error('Error fetching users:', error);
   }
-
-  const handleDetailClick = user => {
-    console.log('선택된 직원 정보: ', user);
-  };
 };
