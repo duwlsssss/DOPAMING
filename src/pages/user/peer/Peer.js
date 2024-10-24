@@ -21,22 +21,17 @@ export const RenderUserPeer = async (container, jsonFilePath) => {
   let filteredUsers = []; // 필터링된 사용자 목록
 
   const renderUsers = (container, startIndex, endIndex) => {
-    if (!Array.isArray(filteredUsers)) {
-      console.error('filteredUsers는 배열이 아닙니다:', filteredUsers);
-      return;
-    }
-
     const userMarkup = filteredUsers
       .slice(startIndex, endIndex)
       .map(
         user => `
-      <div class="peer-frame">
-        <div class="image-circle">
-          <img src='/assets/imgs/profile/profile_null.jpg'/>
-        </div>
-        <p class="peer-name">${user.user_name}</p>
-        <p class="peer-email">${user.user_email}</p>
+    <div class="peer-frame">
+      <div class="image-circle">
+        <img src='/assets/imgs/profile/profile_null.jpg'/>
       </div>
+      <p class="peer-name">${user.user_name}</p>
+      <p class="peer-email">${user.user_email}</p>
+    </div>
     `,
       )
       .join('');
@@ -49,10 +44,9 @@ export const RenderUserPeer = async (container, jsonFilePath) => {
   // 사용자 데이터 가져오기
   const fetchUserData = async jsonFilePath => {
     try {
-      const response = await axios.get(jsonFilePath); // JSON 파일에서 데이터 가져오기
-      users = response.data; // 응답 데이터
-      console.log('가져온 사용자 데이터:', users); // 데이터 확인
-      filteredUsers = users; // 필터링된 사용자 목록 초기화
+      const response = await axios.get(jsonFilePath);
+      users = response.data;
+      filteredUsers = users;
 
       // 초기 사용자 렌더링
       renderUsers(peerBox, currentIndex, initialItems);
@@ -74,13 +68,13 @@ export const RenderUserPeer = async (container, jsonFilePath) => {
   };
 
   // 사용자 데이터 가져오기 후 검색 기능 설정
-  await fetchUserData(jsonFilePath); // fetchUserData 호출
+  await fetchUserData(jsonFilePath);
 
   // 검색 기능 설정
   setupSearch(
     container,
     peerBox,
-    users, // 이 시점에서 users 배열이 비어 있지 않음
+    users,
     renderUsers,
     initialItems,
     newFilteredUsers => {
