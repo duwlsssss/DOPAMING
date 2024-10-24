@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { Accordion } from '../../ui/accordion/Accordion';
+import { Button } from '../../ui/button/Button';
 import './VacationList.css';
 
 export const RenderAdminVacationManagementList = async container => {
@@ -26,6 +27,61 @@ export const RenderAdminVacationManagementList = async container => {
       };
     });
 
+    // 다운로드 버튼
+    const downloadButton = new Button({
+      text: '다운로드',
+      color: 'white',
+      shape: 'line',
+      padding: 'var(--space-xsmall) var(--space-small)',
+    });
+
+    // 승인, 거부, 대기 버튼
+    const renderButtons = status => {
+      switch (status) {
+        case '승인':
+          return '';
+        case '거부': {
+          const cancelButton = new Button({
+            text: '거부 취소',
+            color: 'gray',
+            shape: 'block',
+            padding: 'var(--space-small) var(--space-large)',
+          });
+
+          return `
+            <div class="approval-button-group">
+              ${cancelButton.outerHTML}
+            </div>
+          `;
+        }
+        case '대기': {
+          const approveButton = new Button({
+            text: '승인하기',
+            color: 'skyblue',
+            shape: 'block',
+            padding: 'var(--space-small) var(--space-large)',
+          });
+
+          const rejectButton = new Button({
+            text: '거부하기',
+            color: 'coral',
+            shape: 'block',
+            padding: 'var(--space-small) var(--space-large)',
+          });
+
+          return `
+            <div class="approval-button-group">
+              ${approveButton.outerHTML}
+              ${rejectButton.outerHTML}
+            </div>
+          `;
+        }
+        default:
+          return '';
+      }
+    };
+
+    // 아코디언 헤더
     const renderHeader = item => `
       <div class="admin-vacation-info">
         <div class="admin-vacation-status-dot active"></div>
@@ -39,6 +95,7 @@ export const RenderAdminVacationManagementList = async container => {
       </div>
     `;
 
+    // 아코디언 컨텐츠
     const renderContent = (item, index) => `
       <div class="detail-content">
         <div class="detail-grid">
@@ -60,7 +117,7 @@ export const RenderAdminVacationManagementList = async container => {
             <div class="detail-label">첨부 파일</div>
             <div class="download-file">
               <div class="detail-value">FE_${item.user_name}_${item.abs_type}.pdf</div>
-              <button class="detail-download-btn">다운로드</button>
+              ${downloadButton.outerHTML}
             </div>
           </div>
 
@@ -68,10 +125,13 @@ export const RenderAdminVacationManagementList = async container => {
             <div class="detail-label">휴가 내용</div>
             <div class="detail-value content-box" data-index="${index}">${item.abs_content}</div>
           </div>
-          </div>
+        </div>
+
+        ${renderButtons(item.abs_status)}
       </div>
     `;
 
+    // 아코디언 렌더링
     container.innerHTML = `
       <section class="admin-vacation-list-section">
         <div class="admin-vacation-list">

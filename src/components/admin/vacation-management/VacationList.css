@@ -141,18 +141,17 @@
   text-overflow: ellipsis;
 }
 
-.detail-download-btn {
-  background: var(--color-green-light-dark);
-  color: var(--color-black);
-  padding: var(--space-xsmall) var(--space-small);
-  border-radius: var(--space-small);
-  cursor: pointer;
+.approval-button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-small);
+  margin-top: var(--space-medium);
 }
 
-.detail-download-btn:hover {
-  background: var(--color-green-dark);
-  color: var(--color-white);
-  transition: all 0.3s;
+.approval-button {
+  padding: var(--space-small) var(--space-large);
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 /* 반응형 스타일 */
@@ -209,8 +208,5 @@
   .content-box {
     padding: var(--space-small);
     min-height: 60px;
-  }
-  .detail-download-btn {
-    font-size: 0.8rem;
   }
 }
