@@ -1,13 +1,13 @@
 .user-profileImg-container {
   position: relative;
   width: 100%;
-  max-height: 500px;
 }
 
 .user-profileImg-container .profileImg-box {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   position: relative;
   padding: var(--space-large);
@@ -55,23 +55,6 @@
   margin-top: -0.5rem;
   font-size: var(--font-small);
 }
-
-/* 이미지 파일 선택 버튼 */
-/* .user-profileImg-container .picture-button {
-  width: calc(var(--size-button-xlarge) * 1.8);
-  height: calc(var(--space-medium) * 3);
-  background-color: transparent;
-  border: 2px solid black;
-  border-radius: 10px;
-  font-size: var(--font-medium);
-  cursor: pointer;
-  margin-left: calc(var(--space-medium) * 2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-top: var(--space-small);
-} */
 
 #fileInput {
   display: none; /* 파일 입력 숨김 */

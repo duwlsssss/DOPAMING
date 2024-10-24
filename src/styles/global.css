@@ -37,6 +37,8 @@
   --space-small: 8px;
   --space-medium: 16px;
   --space-large: 32px;
+  --space-xlarge: 64px;
+  --space-xxlarge: 128px;
 
   /* box-shadow */
   --box-shadow-small: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -56,4 +58,8 @@ body {
   word-break: keep-all;
   font-optical-sizing: auto; /*가변 글꼴에서 글자 더 읽기 쉽게 만듦*/
   background-color: var(--color-white);
+}
+
+body button {
+  font-family: 'Pretendard', sans-serif;
 }

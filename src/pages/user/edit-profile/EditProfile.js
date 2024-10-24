@@ -1,14 +1,12 @@
 import './EditProfile.css';
+import { getItem } from '../../../utils/storage';
 import {
+  Button,
+  validInput,
+  EditProfileForm,
   ProfileImage,
   attachProfileImageEvents,
-} from '../../../../src/components/user/profile/ProfileImage';
-import {
-  EditProfileForm,
-  attachEditProfileFormEvents,
-} from '../../../../src/components/user/form/edit-profile-form/EditProfileForm';
-import { getItem } from '../../../utils/storage';
-import { Button } from '../../../components';
+} from '../../../components';
 import axios from 'axios';
 
 export const RenderUserEditProfile = async container => {
@@ -27,30 +25,30 @@ export const RenderUserEditProfile = async container => {
     </div>
   `;
 
-  // 사용자 데이터 가져오기
-  await fetchUserData(container);
-
-  // EditProfileForm 이벤트 리스너 추가
-  attachEditProfileFormEvents(container);
-
-  // ProfileImage 이벤트 리스너 추가
-  attachProfileImageEvents(container);
-
   // 버튼 추가
-  const buttonPosition = container.querySelector('.user-edit-form');
+  const buttonPosition = container.querySelector('.user-edit-form-container');
   const submitBtn = Button({
-    className: 'img-upload-btn',
+    className: 'edit-submit-btn',
     text: '수정하기',
     color: 'skyblue',
     shape: 'block',
-    padding: 'var(--space-small)',
+    padding: 'var(--space-medium)',
+    fontWeight: 700,
     onClick: e => {
       e.preventDefault();
+      if (validInput()) {
+        alert('모든 입력이 유효합니다.');
+        // 추가적인 작업 수행 가능
+      }
     },
   });
   buttonPosition.append(submitBtn);
 
-  // <button class="submit-button">수정하기</button>
+  // 사용자 데이터 가져오기
+  await fetchUserData(container);
+
+  // ProfileImage 이벤트 리스너 추가
+  attachProfileImageEvents(container);
 };
 
 const fetchUserData = async container => {

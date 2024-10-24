@@ -1,10 +1,9 @@
 import './EditProfileForm.css';
-import { validInput } from '../../../../components/ui/form/FormValidation.js';
 
 export const EditProfileForm = () => {
   return `
       <fieldset class="user-profile-inputs">
-      
+
         <div class="input-box">
           <label class="user-input" for="role">직책</label>
            <select class="input-select" id="role">
@@ -54,15 +53,4 @@ export const EditProfileForm = () => {
         </div>
       </fieldset>
     `;
-};
-
-export const attachEditProfileFormEvents = container => {
-  const submitButton = container.querySelector('.submit-button');
-  submitButton.addEventListener('click', event => {
-    event.preventDefault();
-    if (validInput()) {
-      alert('모든 입력이 유효합니다.');
-      // 추가적인 작업 수행 가능
-    }
-  });
 };
