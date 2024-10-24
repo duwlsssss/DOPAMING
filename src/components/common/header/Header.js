@@ -13,8 +13,6 @@ export function RenderHeader(header, isUser, editProfilePath = '') {
     text: '로그아웃',
     color: 'white',
     shape: 'line',
-    width: '70',
-    height: '30',
     onClick: () => {
       clearStorage(); // 로그아웃 누르면 로컬 스토리지 정리
       Router();

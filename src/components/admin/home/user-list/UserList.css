@@ -64,17 +64,6 @@
   padding: 0 var(--space-small);
 }
 
-.detail-btn {
-  padding: 8px 16px;
-  border-radius: var(--space-small);
-  cursor: pointer;
-  width: 200px;
-}
-
-.detail-btn:hover {
-  transition: background-color 0.3s;
-}
-
 .loading {
   text-align: center;
   padding: 20px;
