@@ -1,0 +1,25 @@
+.admin-notice-list {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  padding: var(--space-medium);
+  border-radius: var(--base-border-radius);
+  background-color: var(--color-pale-gray);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.admin-notice-container {
+  width: 240px;
+  height: 300px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--color-dark-gray);
+  border-radius: var(--base-border-radius);
+  background-color: var(--color-white);
+  cursor: pointer;
+}
+
+.admin-notice-container:hover {
+  box-shadow: var(--box-shadow-large);
+  transition: box-shadow 0.3s;
+}
