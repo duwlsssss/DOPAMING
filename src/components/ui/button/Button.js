@@ -28,5 +28,6 @@ export function Button({
   if (onClick) {
     button.addEventListener('click', onClick);
   } // 버튼을 DOM에 추가
+
   return button;
 }
