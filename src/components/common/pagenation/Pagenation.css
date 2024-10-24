@@ -1,0 +1,19 @@
+/* 페이지네이션 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination-btn {
+  transition: all 0.3s ease;
+}
+
+.pagination-btn:hover {
+  background-color: #d4d4d4;
+}
+
+.pagination-btn.active {
+  color: var(--color-blue);
+  border: none;
+}

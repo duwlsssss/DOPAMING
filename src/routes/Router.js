@@ -1,14 +1,12 @@
 import { RenderHeader, RenderNavbar } from '../components';
 import RenderLayout from '../layout/Layout';
-// import { RenderAdminHome, RenderAdminMemberManagement, RenderAdminVacationManagement, RenderAdminNoticeManagement
-//   ,RenderUserHome,RenderUserEditProfile,RenderUserWorkDetail,RenderUserVacationManagement,RenderUserNotice,RenderUserPeer,RenderUserCourse
-//   ,RenderNotFound,RenderSignIn
-// } from '../pages';
+import extractParams from '../utils/extractParams';
 import {
   RenderAdminHome,
   RenderAdminMemberManagement,
   RenderUserHome,
-  RenderUserNotice,
+  RenderUserNoticeList,
+  RenderUserNoticeDetail,
   RenderUserEditProfile,
   RenderUserPeer,
   RenderNotFound,
@@ -132,28 +130,28 @@ export default function Router() {
       ]);
     }
   }
+  // 경로에서 동적 매개변수 추출
 
-  switch (path) {
-    case ADMIN_PATH.HOME:
-      RenderAdminHome(contentEl);
-      break;
-    case ADMIN_PATH.MEMBER:
-      RenderAdminMemberManagement(contentEl);
-      break;
-    case USER_PATH.HOME:
-      RenderUserHome(contentEl);
-      break;
-    case USER_PATH.NOTICE:
-      RenderUserNotice(contentEl, '../../server/data/company_posts.json');
-      break;
-    case USER_PATH.EDIT_PROFILE:
-      RenderUserEditProfile(contentEl);
-      break;
-    case USER_PATH.PEER:
-      RenderUserPeer(contentEl, '../../server/data/users.json');
-      break;
-    default:
-      RenderNotFound(root);
-      break;
+  //postId 추출
+  const paramsFormNotice = extractParams(`${USER_PATH.NOTICE}/:postId`, path);
+  const postId = paramsFormNotice ? paramsFormNotice.postId : null;
+
+  if (path === ADMIN_PATH.HOME) {
+    RenderAdminHome(contentEl);
+  } else if (path === ADMIN_PATH.MEMBER) {
+    RenderAdminMemberManagement(contentEl);
+  } else if (path === USER_PATH.HOME) {
+    RenderUserHome(contentEl);
+  } else if (path === USER_PATH.NOTICE) {
+    RenderUserNoticeList(contentEl);
+  } else if (postId) {
+    // postId가 있는 경우(동적 경로가 매칭된 경우)
+    RenderUserNoticeDetail(contentEl, postId);
+  } else if (path === USER_PATH.EDIT_PROFILE) {
+    RenderUserEditProfile(contentEl);
+  } else if (path === USER_PATH.PEER) {
+    RenderUserPeer(contentEl);
+  } else {
+    RenderNotFound(root);
   }
 }

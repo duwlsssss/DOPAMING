@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-/* button */
->>>>>>> 6b117a6ba559f9be0e0edca66480fdfd1e09b544
 button[color='white'][shape='line'] {
   background-color: var(--color-white);
   border: 1.5px solid var(--color-black);
