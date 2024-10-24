@@ -150,7 +150,7 @@ export default function Router() {
       RenderUserEditProfile(contentEl);
       break;
     case USER_PATH.PEER:
-      RenderUserPeer(contentEl);
+      RenderUserPeer(contentEl, '../../server/data/users.json');
       break;
     default:
       RenderNotFound(root);
