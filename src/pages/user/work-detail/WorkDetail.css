@@ -85,10 +85,11 @@
 .punch-info-time p {
   font-size: var(--font-medium);
   margin-left: var(--space-medium);
-  margin-right: var(--space-small);
+  margin-right: var(--space-xsmall);
   padding-right: var(--space-medium);
 }
 
+/* CALENDAR css */
 /* .punch-info-time p:not(:last-child), */
 .punch-info-title p:not(:last-child) {
   border-right: 1px solid var(--color-light-gray); /* 오른쪽 테두리 추가 */
@@ -113,20 +114,30 @@
   height: 100px; /* 원하는 높이 설정 */
 }
 
+/* 캘린더 title */
 .calendar-title {
   margin: 0; /* 기본 마진 제거 */
+  font-size: var(--font-medium);
+  font-weight: 700;
+}
+#calendar-after,
+#calendar-before {
+  font-size: 30px; /* 아이콘 크기 조정 */
+  color: #333; /* 아이콘 색상 */
+  cursor: pointer; /* 마우스 커서 변경 */
+  transition: color 0.3s; /* 색상 변화에 애니메이션 추가 */
 }
 
-.calendar-before,
-.calendar-after {
-  width: 100px;
-  background-color: orange;
+#calendar-after:hover,
+#calendar-before:hover {
+  color: #007bff; /* 마우스 오버 시 색상 변화 */
 }
 
+/* 캘린더 구성 */
 .work-calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  padding: 10px; /* 내부 여백 추가 (선택 사항) */
+  padding: 10px;
 }
 
 .calendar-day {
@@ -135,6 +146,7 @@
   height: 70px;
   padding: 10px;
   border-bottom: 0;
+  font-weight: 700;
 }
 .calendar-day:nth-child(-n + 7) {
   height: 40px;
@@ -147,4 +159,41 @@
 }
 .calendar-day:nth-last-child(-n + 7) {
   border-bottom: 0px; /* 맨 아래 줄의 하단 테두리 제거 */
+}
+
+.cal-punch-info {
+  display: flex; /* Flexbox 사용 */
+  flex-direction: column; /* 세로 방향으로 배치 */
+}
+
+.cal-punch-group {
+  display: flex; /* Flexbox 사용 */
+  justify-content: space-between; /* 요소들 사이에 고르게 여백 배분 */
+  margin-bottom: var(--space-small); /* 그룹 간의 여백 추가 */
+}
+
+.cal-punch-in-time,
+.cal-punch-out-time,
+.cal-break-in,
+.cal-break-out {
+  width: calc(var(--space-large) * 5.5);
+  height: var(--space-medium);
+  border-radius: 10px;
+  padding-left: var(--space-medium);
+}
+
+.cal-punch-in-time {
+  background-color: var(--color-blue);
+}
+
+.cal-punch-out-time {
+  background-color: var(--color-coral);
+}
+
+.cal-break-in {
+  background-color: var(--color-green-muted);
+}
+
+.cal-break-out {
+  background-color: var(--color-caramel);
 }

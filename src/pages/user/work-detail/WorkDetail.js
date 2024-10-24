@@ -45,10 +45,23 @@ const generateCalendar = (container, year, month) => {
 
     // 사용자 데이터가 있을 경우
     if (userDataForDate.length > 0) {
+      const userData = userDataForDate[0]; // 사용자 데이터 가져오기
       dayElement.innerHTML += `
-        <p class="cal-punch-in-time">출근</p>
-        <p class="cal-punch-out-time">퇴근</p>
+      <div class="cal-punch-group">
+        ${userData.punch_in ? `<p class="cal-punch-in-time">출근</p>` : ''}
+        ${userData.break_out ? `<p class="cal-break-out">외출</p>` : ''}
+      </div>
+    `;
+
+      // 퇴근과 복귀가 있는 경우에만 추가
+      if (userData.punch_out || userData.break_in) {
+        dayElement.innerHTML += `
+        <div class="cal-punch-group">
+          ${userData.punch_out ? `<p class="cal-punch-out-time">퇴근 </p>` : ''}
+          ${userData.break_in ? `<p class="cal-break-in">복귀</p>` : ''}
+        </div>
       `;
+      }
     }
 
     calendarContainer.appendChild(dayElement);
@@ -131,7 +144,7 @@ export const RenderUserWorkDetail = container => {
     </div>
     <div class="work-calendar-box">
       <div class="title-content"> 
-        <span class="material-symbols-rounded" id="calendar-befor">arrow_circle_right</span>
+        <span class="material-symbols-rounded" id="calendar-before">arrow_circle_left</span>
         <p class="calendar-title"></p>
         <span class="material-symbols-rounded" id="calendar-after">arrow_circle_right</span>
       </div>
@@ -155,7 +168,7 @@ export const RenderUserWorkDetail = container => {
 
         // 버튼 클릭 이벤트 리스너 추가
         container
-          .querySelector('#calendar-befor')
+          .querySelector('#calendar-before')
           .addEventListener('click', () => {
             if (currentMonth === 0) {
               currentYear -= 1;
