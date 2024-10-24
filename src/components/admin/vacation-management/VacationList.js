@@ -83,52 +83,52 @@ export const RenderAdminVacationManagementList = async container => {
 
     // 아코디언 헤더
     const renderHeader = item => `
-      <div class="admin-vacation-info">
+      <header class="admin-vacation-info">
         <div class="admin-vacation-status-dot active"></div>
         <img src="${item.user_image}" alt="${item.user_name}" class="admin-vacation-avatar">
         <span class="admin-vacation-abs-type">${item.abs_type}</span>
         <span class="admin-vacation-name">${item.user_name}</span>
         <span class="admin-vacation-position">${item.user_position}</span>
         <span class="admin-vacation-phone">${item.user_phone}</span>
-        <span class="admin-vacation-create-date">${item.abs_created_at}</span>
+        <time class="admin-vacation-create-date">${item.abs_created_at}</time>
         <span class="admin-vacation-status status-${item.abs_status}">${item.abs_status}</span>
-      </div>
+      </header>
     `;
 
     // 아코디언 컨텐츠
     const renderContent = (item, index) => `
-      <div class="detail-content">
+      <article class="detail-content">
         <div class="detail-grid">
-          <div class="detail-item">
-            <div class="detail-label">휴가 제목</div>
+          <section class="detail-item">
+            <h3 class="detail-label">휴가 제목</h3>
             <div class="detail-value">${item.abs_title}</div>
-          </div>
+          </section>
           
           <div class="detail-item">
-            <div class="detail-label">휴가 기간</div>
+            <h3 class="detail-label">휴가 기간</h3>
             <div class="detail-value">
-              <span class="date">${item.abs_start_date}</span>
+              <time class="date">${item.abs_start_date}</time>
               <span class="date-separator">~</span>
-              <span class="date">${item.abs_end_date}</span>
+              <time class="date">${item.abs_end_date}</time>
             </div>
           </div>
 
-          <div class="detail-item">
-            <div class="detail-label">첨부 파일</div>
+          <section class="detail-item">
+            <h3 class="detail-label">첨부 파일</h3>
             <div class="download-file">
-              <div class="detail-value">FE_${item.user_name}_${item.abs_type}.pdf</div>
+              <p class="detail-value">FE_${item.user_name}_${item.abs_type}.pdf</p>
               ${downloadButton.outerHTML}
             </div>
-          </div>
+          </section>
 
-          <div class="detail-item detail-content-box">
-            <div class="detail-label">휴가 내용</div>
-            <div class="detail-value content-box" data-index="${index}">${item.abs_content}</div>
-          </div>
+          <section class="detail-item detail-content-box">
+            <h3 class="detail-label">휴가 내용</h3>
+            <p class="detail-value content-box" data-index="${index}">${item.abs_content}</p>
+          </section>
         </div>
 
         ${renderButtons(item.abs_status)}
-      </div>
+      </article>
     `;
 
     // 아코디언 렌더링
