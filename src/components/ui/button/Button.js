@@ -17,8 +17,7 @@ export function Button({
 
   if (width) button.style.width = `${width}px`;
   if (height) button.style.height = `${height}px`;
-  button.style.width = `${width}px`;
-  button.style.height = `${height}px`;
+
   button.style.padding = padding;
   button.style.borderRadius = `${borderRadius}px`;
   button.style.fontSize = fontSize;
