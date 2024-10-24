@@ -3,10 +3,11 @@ import { validInput } from '../../../../components/ui/form/FormValidation.js';
 
 export const EditProfileForm = () => {
   return `
-      <fieldset class="profile-inputs">
+      <fieldset class="user-profile-inputs">
+      
         <div class="input-box">
           <label class="user-input" for="role">직책</label>
-          <select class="input-select" id="role">
+           <select class="input-select" id="role">
             <option value="">선택하세요</option>
             <option value="student">수강생</option>
             <option value="manager">매니저</option>
