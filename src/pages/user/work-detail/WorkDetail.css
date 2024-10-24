@@ -91,9 +91,9 @@
 
 .calendar-day {
   border: 1px solid black; /* 각 날짜 칸의 검은색 실선 테두리 */
-  height: 80px;
+  width: 150px;
+  height: 70px;
   padding: 10px;
-  text-align: center;
   border-bottom: 0;
 }
 .calendar-day:nth-child(-n + 7) {

@@ -75,7 +75,9 @@ export const RenderUserWorkDetail = container => {
 
     <div class="work-calendar-box">
       <div class="title-content"> 
-        <p class="calendar-title">캘린더</p>
+        <span class="material-icons">arrow_circle_left</span>
+        <p class="calendar-title"></p>
+        <span class="material-icons">arrow_circle_right</span>
       </div>
       <div class="work-calendar">
       </div>
@@ -87,5 +89,5 @@ export const RenderUserWorkDetail = container => {
 
   // calendar-title의 값을 변경
   const calendarTitle = container.querySelector('.calendar-title');
-  calendarTitle.textContent = `캘린더 - ${year}년 ${month + 1}월`; // 원하는 값으로 변경
+  calendarTitle.textContent = `${year}년 ${month + 1}월`;
 };
