@@ -63,3 +63,8 @@ body {
 body button {
   font-family: 'Pretendard', sans-serif;
 }
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-regular-gray);
+}

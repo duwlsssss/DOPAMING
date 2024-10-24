@@ -1,0 +1,30 @@
+.vacation-request-title {
+  width: 100%;
+  font-weight: 700;
+  margin-bottom: var(--space-medium);
+}
+
+.vacation-request-form {
+  width: 100%;
+  padding: var(--space-large);
+  border-radius: var(--base-border-radius);
+  background-color: var(--color-pale-gray);
+}
+
+.vacation-request-form .vacation-request-submit-btn {
+  width: 100%;
+  margin-top: var(--space-medium);
+}
+
+@media (width<=1200px) {
+  .vacation-request-form {
+    padding: var(--space-large) var(--space-xlarge);
+    flex-direction: column;
+  }
+}
+
+@media (width <= 1000px) {
+  .vacation-request-form {
+    padding: var(--space-small);
+  }
+}

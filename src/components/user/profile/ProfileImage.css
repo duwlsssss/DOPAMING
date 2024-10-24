@@ -65,6 +65,6 @@
   font-size: var(--font-small);
 }
 
-#fileInput {
+.user-profileImg-container #fileInput {
   display: none; /* 파일 입력 숨김 */
 }

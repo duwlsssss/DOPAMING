@@ -28,7 +28,6 @@ export const ProfileImage = () => {
   `;
 };
 
-// 버튼 추가
 export const attachProfileImageEvents = container => {
   const fileInput = container.querySelector('#fileInput');
   const profileImgPosition = container.querySelector('.real-profileImg');
