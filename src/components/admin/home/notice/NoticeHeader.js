@@ -1,5 +1,5 @@
 import { RenderTitle } from '../../../common/title/Title';
-import { navigate } from '../../../../utils/navigation';
+import navigate from '../../../../utils/navigation';
 import { ADMIN_PATH } from '../../../../utils/constants';
 import './NoticeHeader.css';
 
