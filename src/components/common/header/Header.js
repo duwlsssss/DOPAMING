@@ -1,9 +1,11 @@
 import Router from '../../../routes/Router';
 import './Header.css';
 import { Button } from '../../ui/button/Button';
-import { clearStorage } from '../../../utils/storage';
-import { getItem } from '../../../utils/storage';
-import axios from 'axios';
+import { getItem, clearStorage } from '../../../utils/storage';
+import {
+  applyProfileImage,
+  listenForProfileImageUpdate,
+} from '../../../utils/handleProfileImg';
 
 export async function RenderHeader(header, isUser, editProfilePath = '') {
   try {
@@ -34,20 +36,18 @@ export async function RenderHeader(header, isUser, editProfilePath = '') {
     const headerItem = header.querySelector('.header-items');
     headerItem.append(logoutBtn);
 
-    const response = await axios.get('../../server/data/users.json');
-    const users = response.data; // 응답 데이터
-
     // userId로 사용자 정보 가져오기
     const isAdmin = getItem('userRole') === 'admin' ? true : false;
-    const userId = getItem('userID');
-    const currUser = users.find(user => user.user_id === userId);
 
-    const profileImg = header.querySelector('.profile-circle');
+    const profileImgPosition = header.querySelector('.profile-circle');
 
     if (isAdmin) {
-      profileImg.style.backgroundImage = `url(/assets/imgs/profile/profile_null.jpg)`;
+      profileImgPosition.style.backgroundImage = `url(/assets/imgs/profile/profile_null.jpg)`; // 관리자는 프로필 고정
     } else {
-      profileImg.style.backgroundImage = `url(${currUser.user_image})`;
+      // 처음에 프로필 사진 적용
+      applyProfileImage(profileImgPosition);
+      // 업데이트 반영
+      listenForProfileImageUpdate(profileImgPosition);
     }
   } catch (e) {
     console.error('사용자 데이터를 가져오는 중 오류 발생 ! :', e);

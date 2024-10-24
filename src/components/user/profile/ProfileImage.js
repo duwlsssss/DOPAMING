@@ -1,5 +1,9 @@
 import './ProfileImage.css';
 import { Button } from '../../../components';
+import {
+  deleteProfileImage,
+  uploadProfileImg,
+} from '../../../utils/handleProfileImg';
 
 export const ProfileImage = () => {
   return `
@@ -18,6 +22,7 @@ export const ProfileImage = () => {
           (단, jpg/png/jpeg 확장자 파일만 적용됩니다.)
         </p>
       </div>
+      <div class="user-profileImg-button-container">
       <input type="file" id="fileInput" accept="image/jpeg, image/png"/>
     </section>
   `;
@@ -26,8 +31,10 @@ export const ProfileImage = () => {
 // 버튼 추가
 export const attachProfileImageEvents = container => {
   const fileInput = container.querySelector('#fileInput');
-  const profileImg = container.querySelector('.real-profileImg');
-  const buttonPosition = container.querySelector('.user-profileImg-container'); // 업로드 버튼 선택
+  const profileImgPosition = container.querySelector('.real-profileImg');
+  const buttonPosition = container.querySelector(
+    '.user-profileImg-button-container',
+  ); // 업로드 버튼 선택
 
   const imgUploadBtn = Button({
     className: 'img-upload-btn',
@@ -40,8 +47,21 @@ export const attachProfileImageEvents = container => {
       fileInput.click();
     },
   });
+  const imgDeleteBtn = Button({
+    className: 'img-delete-btn',
+    text: '기본 이미지로 변경',
+    color: 'white',
+    shape: 'line',
+    padding: 'var(--space-small)',
+    onClick: e => {
+      e.preventDefault();
+      // 프로필 사진 삭제
+      deleteProfileImage(profileImgPosition);
+    },
+  });
 
   buttonPosition.append(imgUploadBtn);
+  buttonPosition.append(imgDeleteBtn);
 
   // Change event 리스너를 설정
   fileInput.addEventListener('change', () => {
@@ -52,8 +72,9 @@ export const attachProfileImageEvents = container => {
 
       // 파일 읽기가 완료되었을 때 실행되는 이벤트
       reader.onload = event => {
-        // 선택된 파일의 데이터 URL을 사용하여 배경 이미지로 설정
-        profileImg.style.backgroundImage = `url(${event.target.result})`;
+        // 선택된 파일의 데이터 URL을 로컬 스토리지에 저장, 사용
+        // 프로필 사진 삭제 수정 && 업로드
+        uploadProfileImg(profileImgPosition, event.target.result);
       };
 
       // 파일 읽기 시작

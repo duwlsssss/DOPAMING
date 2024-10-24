@@ -11,6 +11,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem; /* 최소 공백*/
+  position: relative; /* 비번 눈 아이콘 배치용 */
 }
 
 .user-profile-inputs .input-box .user-input {
@@ -34,4 +35,14 @@
 .user-profile-inputs .input-box .input-field:hover,
 .user-profile-inputs .input-box .input-select:hover {
   border: 1.5px solid var(--color-regular-gray);
+}
+
+.user-profile-inputs .input-box #toggle-password,
+.user-profile-inputs .input-box #toggle-confirm-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--color-regular-gray);
 }

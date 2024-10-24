@@ -19,7 +19,6 @@
 .profile-circle a.hidden-link {
   display: block;
   opacity: 0;
-  visibility: hidden;
   width: 80px;
   height: 80px;
   z-index: 1;

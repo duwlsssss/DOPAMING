@@ -42,15 +42,18 @@ export const EditProfileForm = () => {
           <input class="input-field" type="text" id="email">
         </div>
         
-        <div class="input-box">
-          <label class="user-input" for="password">비밀번호</label>
-          <input class="input-field" type="password" id="password">
-        </div>
-        
-        <div class="input-box">
-          <label class="user-input" for="confirm-password">비밀번호 확인</label>
-          <input class="input-field" type="password" id="confirm-password">
-        </div>
+       <div class="input-box">
+        <label class="user-input" for="password">비밀번호</label>
+        <input class="input-field" type="password" id="password">
+        <span class="material-symbols-rounded" id="toggle-password">visibility_off</span>
+      </div>
+
+      <div class="input-box">
+        <label class="user-input" for="confirm-password">비밀번호 확인</label>
+        <input class="input-field" type="password" id="confirm-password">
+        <span class="material-symbols-rounded" id="toggle-confirm-password">visibility_off</span>
+      </div>
+
       </fieldset>
     `;
 };
