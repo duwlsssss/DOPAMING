@@ -146,7 +146,7 @@ export default function Router() {
     RenderUserNoticeList(contentEl);
   } else if (postId) {
     // postId가 있는 경우(동적 경로가 매칭된 경우)
-    RenderUserNoticeDetail(contentEl);
+    RenderUserNoticeDetail(contentEl, postId);
   } else if (path === USER_PATH.EDIT_PROFILE) {
     RenderUserEditProfile(contentEl);
   } else if (path === USER_PATH.PEER) {
