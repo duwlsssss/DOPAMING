@@ -1,5 +1,15 @@
+import { RenderAdminVacationManagementHeader } from '../../../components/admin/vacation-management/VacationHeader';
+
 export const RenderAdminVacationManagement = container => {
   container.innerHTML = `
-    <div>이 곳은 관리자 휴가/공가 관리 페이지입니다.</div>
+    <main class="admin-vacation-management-container">
+      <div id="adminVacationManagementHeaderSection"></div>
+    </main>
   `;
+
+  const headerSection = document.querySelector(
+    '#adminVacationManagementHeaderSection',
+  );
+
+  RenderAdminVacationManagementHeader(headerSection);
 };
