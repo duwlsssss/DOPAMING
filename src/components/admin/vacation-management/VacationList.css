@@ -6,7 +6,7 @@
 
 .admin-vacation-list {
   border-radius: 10px;
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 700px;
 }
 
@@ -39,19 +39,40 @@
   flex: 1;
   align-items: center;
   display: grid;
-  grid-template-columns: 60px 60px 60px 60px 100px 150px 150px;
+  grid-template-columns: 40px 60px 60px 60px 100px 150px 150px 80px;
   gap: var(--space-small);
 }
 
 .admin-vacation-info span {
   white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
-  padding: 0 var(--space-small);
+}
+
+.admin-vacation-status {
+  padding: var(--space-xsmall) var(--space-small);
+  border-radius: var(--space-small);
+  text-align: center;
+}
+
+.status-승인 {
+  background-color: var(--color-green);
+  color: var(--color-white);
+}
+
+.status-대기 {
+  background-color: var(--color-light-gray);
+  color: var(--color-black);
+}
+
+.status-거부 {
+  background-color: #c85159;
+  color: var(--color-white);
 }
 
 .loading {
   text-align: center;
-  padding: 20px;
+  padding: var(--space-medium);
   color: #6c6c6c;
 }
 
@@ -79,7 +100,7 @@
 }
 
 .detail-label {
-  min-width: 100px;
+  min-width: 60px;
   font-size: 0.9rem;
   font-weight: 700;
 }
@@ -110,10 +131,14 @@
   min-height: 80px;
 }
 
+/* 다운로드 파일 */
 .download-file {
   display: flex;
   align-items: center;
   gap: var(--space-medium);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .detail-download-btn {
@@ -125,6 +150,67 @@
 }
 
 .detail-download-btn:hover {
-  background: var(--color-green-light);
+  background: var(--color-green-dark);
+  color: var(--color-white);
   transition: all 0.3s;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 1200px) {
+  .admin-vacation-info {
+    grid-template-columns: 40px 60px 60px 60px 100px 150px 80px;
+  }
+  .admin-vacation-create-date {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .admin-vacation-info {
+    grid-template-columns: 40px 60px 60px 60px 100px 80px;
+  }
+  .admin-vacation-phone {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-vacation-info {
+    grid-template-columns: 40px 60px 60px 60px 80px;
+  }
+  .admin-vacation-avatar {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-vacation-info {
+    grid-template-columns: 40px 60px 60px 60px;
+    gap: var(--space-xsmall);
+    font-size: 0.9rem;
+    padding: var(--space-xsmall);
+  }
+  .admin-vacation-abs-type {
+    display: none;
+  }
+  .detail-item {
+    flex-direction: column;
+    gap: var(--space-small);
+    align-items: flex-start;
+  }
+  .detail-label {
+    font-size: 0.9rem;
+    min-width: auto;
+  }
+  .detail-value {
+    font-size: 0.8rem;
+    width: 100%;
+  }
+  .content-box {
+    padding: var(--space-small);
+    min-height: 60px;
+  }
+  .detail-download-btn {
+    font-size: 0.8rem;
+  }
 }
