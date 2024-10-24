@@ -15,12 +15,14 @@ export const Accordion = ({ items, renderHeader, renderContent }) => {
     allItems.forEach(item => {
       item.classList.remove('open');
       const itemDetail = item.querySelector('.accordion-detail');
-      itemDetail.style.display = 'none';
+      itemDetail.style.maxHeight = '0';
+      itemDetail.style.opacity = '0';
     });
 
     if (!isOpen) {
       accordionItem.classList.add('open');
-      detail.style.display = 'block';
+      detail.style.maxHeight = `${detail.scrollHeight}px`;
+      detail.style.opacity = '1';
     }
   };
 

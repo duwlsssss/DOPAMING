@@ -21,8 +21,12 @@
 
 .accordion-detail {
   overflow: hidden;
-  display: none;
-  transition: all 0.3s ease;
+  max-height: 0;
+  opacity: 0;
+  transition:
+    max-height 0.3s ease-in-out,
+    opacity 0.3s ease-in-out,
+    padding 0.3s ease-in-out;
   padding: 0 var(--space-medium);
 }
 
