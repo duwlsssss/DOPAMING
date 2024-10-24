@@ -15,7 +15,7 @@ export const RenderAdminVacationManagementList = async container => {
     const absences = absencesResponse.data;
     const users = usersResponse.data;
 
-    const mergedData = absences.map(absence => {
+    const absenceUsersData = absences.map(absence => {
       const user = users.find(user => user.user_id === absence.user_id);
       return {
         ...absence,
@@ -35,6 +35,7 @@ export const RenderAdminVacationManagementList = async container => {
         <span class="admin-vacation-position">${item.user_position}</span>
         <span class="admin-vacation-phone">${item.user_phone}</span>
         <span class="admin-vacation-create-date">${item.abs_created_at}</span>
+        <span class="admin-vacation-status status-${item.abs_status}">${item.abs_status}</span>
       </div>
     `;
 
@@ -49,9 +50,9 @@ export const RenderAdminVacationManagementList = async container => {
           <div class="detail-item">
             <div class="detail-label">휴가 기간</div>
             <div class="detail-value">
-            <span class="date">${item.abs_start_date}</span>
-            <span class="date-separator">~</span>
-            <span class="date">${item.abs_end_date}</span>
+              <span class="date">${item.abs_start_date}</span>
+              <span class="date-separator">~</span>
+              <span class="date">${item.abs_end_date}</span>
             </div>
           </div>
 
@@ -75,7 +76,7 @@ export const RenderAdminVacationManagementList = async container => {
       <section class="admin-vacation-list-section">
         <div class="admin-vacation-list">
             ${Accordion({
-              items: mergedData,
+              items: absenceUsersData,
               renderHeader,
               renderContent,
             })}
