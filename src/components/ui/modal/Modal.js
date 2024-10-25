@@ -40,38 +40,51 @@ class Modal {
   }
 
   createModalContent(type) {
+    const { date, time } = this.getCurrentDateTime(); // 현재 날짜 및 시간 가져오기
     let content;
     switch (type) {
       case 'punch-in':
         content = `
-          <h2>출근하시겠습니까?</h2>
-          <p>출근 버튼을 클릭하여 출근을 확인하세요.</p>
-          <button id="confirm-punch-in">확인</button>
-          <button id="cancel-punch-in">취소</button>
+          <p class="modal-title">출근 하시겠습니까?</p>
+          <p class="modal-date">날짜: ${date}</p>
+          <p class="modal-time">현재 시간: ${time}</p>
+          <div class="button-container">
+            <button class="confirm-button punch-in">예</button>
+            <button class="cancel-button">아니요</button>
+          </div>
         `;
         break;
       case 'punch-out':
         content = `
-          <h2>퇴근하시겠습니까?</h2>
-          <p>퇴근 버튼을 클릭하여 퇴근을 확인하세요.</p>
-          <button id="confirm-punch-out">확인</button>
-          <button id="cancel-punch-out">취소</button>
+          <p class="modal-title">퇴근 하시겠습니까?</p>
+          <p class="modal-date">날짜: ${date}</p>
+          <p class="modal-time">현재 시간: ${time}</p>
+          <div class="button-container">
+            <button class="confirm-button punch-out">예</button>
+            <button class="cancel-button">아니요</button>
+          </div>
         `;
         break;
       case 'break-out':
         content = `
-          <h2>외출하시겠습니까?</h2>
-          <p>외출 버튼을 클릭하여 외출을 확인하세요.</p>
-          <button id="confirm-break-out">확인</button>
-          <button id="cancel-break-out">취소</button>
+          <p class="modal-title">외출 하시겠습니까?</p>
+          <p class="modal-date">날짜: ${date}</p>
+          <p class="modal-time">현재 시간: ${time}</p>
+          <div class="button-container">
+            <button class="confirm-button break-out">예</button>
+            <button class="cancel-button">아니요</button>
+          </div>
         `;
         break;
       case 'break-in':
         content = `
-          <h2>복귀하시겠습니까?</h2>
-          <p>복귀 버튼을 클릭하여 복귀를 확인하세요.</p>
-          <button id="confirm-break-in">확인</button>
-          <button id="cancel-break-in">취소</button>
+          <p class="modal-title">복귀 하시겠습니까?</p>
+          <p class="modal-date">날짜: ${date}</p>
+          <p class="modal-time">현재 시간: ${time}</p>
+          <div class="button-container">
+            <button class="confirm-button break-in">예</button>
+            <button class="cancel-button">아니요</button>
+          </div>
         `;
         break;
       default:
@@ -82,15 +95,16 @@ class Modal {
     fragment.innerHTML = content;
 
     // 이벤트 리스너 추가
-    const confirmButton = fragment.querySelector('button[id^="confirm"]');
+    const confirmButton = fragment.querySelector('.confirm-button');
     if (confirmButton) {
       confirmButton.addEventListener('click', () => {
-        this.handleConfirm(type); // 확인 버튼 클릭 시 처리
+        const actionType = confirmButton.getAttribute('data-type');
+        this.handleConfirm(actionType); // 확인 버튼 클릭 시 처리
       });
     }
 
     // 취소 버튼 이벤트 리스너 추가
-    const cancelButton = fragment.querySelector('button[id^="cancel"]');
+    const cancelButton = fragment.querySelector('.cancel-button');
     if (cancelButton) {
       cancelButton.addEventListener('click', () => {
         this.handleCancel(); // 취소 버튼 클릭 시 처리
@@ -98,6 +112,17 @@ class Modal {
     }
 
     return fragment;
+  }
+
+  getCurrentDateTime() {
+    const now = new Date();
+    const date = now.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+    const time = now.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }); // HH:mm 형식 (24시간제)
+    return { date, time };
   }
 
   handleConfirm(type) {
