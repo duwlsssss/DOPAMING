@@ -5,19 +5,21 @@
   padding: var(--space-medium);
   height: calc(100vh - 430px);
   overflow-y: scroll;
+  position: relative; /* 오류 메시지 정렬 위함 */
 }
 
 .user-vacation-list {
-  overflow-y: auto;
   border-radius: var(--base-border-radius);
 }
 
 .user-vacation-info {
   flex: 1;
+  flex-basis: 0;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  display: grid;
-  grid-template-columns: 80px 100px 150px 150px 150px 100px;
-  gap: var(--space-small);
+  text-align: center;
+  padding: 0 var(--space-medium);
 }
 
 .user-vacation-info span {
@@ -28,8 +30,7 @@
 
 .user-vacation-status {
   padding: var(--space-xsmall) var(--space-small);
-  border-radius: var(--space-small);
-  text-align: center;
+  border-radius: var(--base-border-radius);
 }
 
 .status-승인 {
@@ -45,18 +46,6 @@
 .status-거부 {
   background-color: #c85159;
   color: var(--color-white);
-}
-
-.loading {
-  text-align: center;
-  padding: var(--space-medium);
-  color: #6c6c6c;
-}
-
-.error {
-  text-align: center;
-  padding: 20px;
-  color: #f44336;
 }
 
 /* detail 컨텐츠 */
@@ -78,7 +67,6 @@
 
 .detail-label {
   min-width: 60px;
-  font-size: 0.9rem;
   font-weight: 700;
 }
 
@@ -129,6 +117,16 @@
   padding: var(--space-small) var(--space-large);
   border-radius: 8px;
   cursor: pointer;
+}
+
+.user-vacation-list-section .user-vacation-filter-error-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: var(--font-medium);
+  color: var(--color-dark-gray);
 }
 
 /* 반응형 스타일 */

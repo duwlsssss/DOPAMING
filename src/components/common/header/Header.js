@@ -6,13 +6,35 @@ import {
   applyProfileImage,
   listenForProfileImageUpdate,
 } from '../../../utils/handleProfileImg';
+import axios from 'axios';
 
-export async function RenderHeader(header, isUser, editProfilePath = '') {
+export async function RenderHeader(header, editProfilePath) {
   try {
     if (!header) {
       console.error('header element is not found');
       return;
     }
+
+    // userId로 사용자 정보 가져오기
+    const isAdmin = getItem('userRole') === 'admin' ? true : false;
+    let userName;
+    if (!isAdmin) {
+      const usersResponse = await axios.get('../../server/data/users.json');
+      const users = usersResponse.data;
+      userName = users.find(
+        user => user.user_id === getItem('userID'),
+      ).user_name;
+    }
+
+    header.innerHTML = `
+      <div class="header-items">
+        <div class="user-name"> ${isAdmin ? '관리자' : userName}</div>
+      </div>
+      <figure class="profile-circle" style="cursor: ${isAdmin ? 'default' : 'pointer'}">
+        ${isAdmin ? '' : `<a href="${editProfilePath}" class="hidden-link">.</a>`}
+      </figure>
+      <div class="header-mobile">DOPAMING</div>
+    `;
 
     const logoutBtn = Button({
       text: '로그아웃',
@@ -23,24 +45,10 @@ export async function RenderHeader(header, isUser, editProfilePath = '') {
         Router();
       },
     });
-    header.innerHTML = `
-      <div class="header-items">
-        <div class="user-name">김아무</div>
-      </div>
-      <figure class="profile-circle" style="cursor: ${isUser ? 'pointer' : 'default'}">
-        ${isUser ? `<a href="${editProfilePath}" class="hidden-link">.</a>` : ''}
-      </figure>
-      <div class="header-mobile">DOPAMING</div>
-    `;
-
     const headerItem = header.querySelector('.header-items');
     headerItem.append(logoutBtn);
 
-    // userId로 사용자 정보 가져오기
-    const isAdmin = getItem('userRole') === 'admin' ? true : false;
-
     const profileImgPosition = header.querySelector('.profile-circle');
-
     if (isAdmin) {
       profileImgPosition.style.backgroundImage = `url(/assets/imgs/profile/profile_null.jpg)`; // 관리자는 프로필 고정
     } else {

@@ -65,7 +65,7 @@ export default function Router() {
   const contentEl = document.querySelector('.content');
 
   if (role === 'admin') {
-    RenderHeader(headerEl, false);
+    RenderHeader(headerEl);
     RenderNavbar(navbarEl, false, [
       { path: ADMIN_PATH.HOME, title: ADMIN_TITLE.HOME, icon: ADMIN_ICON.HOME },
       {
@@ -85,7 +85,7 @@ export default function Router() {
       },
     ]);
   } else {
-    RenderHeader(headerEl, true, USER_PATH.EDIT_PROFILE);
+    RenderHeader(headerEl, USER_PATH.EDIT_PROFILE);
     if (isMobile) {
       RenderNavbar(navbarEl, true, [
         { path: USER_PATH.NOTICE, title: '공지목록', icon: USER_ICON.NOTICE },

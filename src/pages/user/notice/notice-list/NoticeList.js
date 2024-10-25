@@ -59,7 +59,7 @@ export const RenderUserNoticeList = async container => {
       if (filteredPosts.length === 0) {
         //검색 결과 없으면
         noticeList.innerHTML = `
-         <div class="user-notice-filter-error-message">찾으시는 결과가 없습니다.</div>
+         <div class="user-notice-filter-error-message">찾으시는 공지가 없습니다.</div>
         `;
       } else {
         noticeList.innerHTML = renderNoticeItems(filteredPosts);

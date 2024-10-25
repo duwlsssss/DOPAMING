@@ -71,7 +71,7 @@ export const RenderUserVacationManagement = async container => {
       color: 'skyblue',
       shape: 'block',
       fontSize: 'var(--font-small)',
-      onClick: () => navigate(USER_PATH.VACATIONREQUEST),
+      onClick: () => navigate(USER_PATH.VACATIONREQUSET),
     });
 
     const titleContainer = container.querySelector(

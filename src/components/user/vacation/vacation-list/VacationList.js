@@ -18,59 +18,32 @@ export const RenderUserVacationList = async (container, userAbsData) => {
 
   // 승인, 거부, 대기 버튼
   const renderButtons = status => {
-    switch (status) {
-      case '승인': {
-        const cancelApproveButton = new Button({
-          text: '승인 취소',
-          color: 'gray',
-          shape: 'block',
-          padding: 'var(--space-small) var(--space-large)',
-        });
+    if (status === '대기') {
+      const approveButton = new Button({
+        text: '수정하기',
+        color: 'green-light',
+        shape: 'block',
+        padding: 'var(--space-small) var(--space-large)',
+        onClick: () => {
+          //수정 모드 열기
+        },
+      });
 
-        return `
-          <div class="approval-button-group">
-            ${cancelApproveButton.outerHTML}
-          </div>
-        `;
-      }
-      case '거부': {
-        const cancelDenyButton = new Button({
-          text: '거부 취소',
-          color: 'gray',
-          shape: 'block',
-          padding: 'var(--space-small) var(--space-large)',
-        });
+      const rejectButton = new Button({
+        text: '삭제',
+        color: 'coral',
+        shape: 'block',
+        padding: 'var(--space-small) var(--space-large)',
+      });
 
-        return `
-          <div class="approval-button-group">
-            ${cancelDenyButton.outerHTML}
-          </div>
-        `;
-      }
-      case '대기': {
-        const approveButton = new Button({
-          text: '승인하기',
-          color: 'skyblue-light',
-          shape: 'block',
-          padding: 'var(--space-small) var(--space-large)',
-        });
-
-        const rejectButton = new Button({
-          text: '거부하기',
-          color: 'coral',
-          shape: 'block',
-          padding: 'var(--space-small) var(--space-large)',
-        });
-
-        return `
-          <div class="approval-button-group">
-            ${approveButton.outerHTML}
-            ${rejectButton.outerHTML}
-          </div>
-        `;
-      }
-      default:
-        return '';
+      return `
+        <div class="approval-button-group">
+          ${approveButton.outerHTML}
+          ${rejectButton.outerHTML}
+        </div>
+      `;
+    } else {
+      return '';
     }
   };
 
@@ -134,4 +107,9 @@ export const RenderUserVacationList = async (container, userAbsData) => {
       </div>
     </section>
   `;
+
+  if (userAbsData.length === 0) {
+    const inner = container.querySelector('.user-vacation-list-section');
+    inner.innerHTML = ` <div class="user-vacation-filter-error-message">찾으시는 부재 신청 내역이 없습니다.</div>`;
+  }
 };
