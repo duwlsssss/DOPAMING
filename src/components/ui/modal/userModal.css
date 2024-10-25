@@ -36,12 +36,62 @@ button[data-type='punch-out'] {
   width: 100%; /* 버튼 컨테이너의 너비를 100%로 설정 */
 }
 
-button {
+/* modal의 버튼에만 해당 */
+.modal button {
   padding: 10px 20px; /* 버튼 패딩 */
   font-size: 16px; /* 버튼 폰트 크기 */
   border: none; /* 기본 테두리 제거 */
   border-radius: 5px; /* 모서리 둥글게 */
   cursor: pointer; /* 커서 모양 변경 */
-  margin-top: 20px; /* 버튼과 이전 요소 사이의 간격 */
   margin-bottom: 20px; /* 버튼 아래 간격 추가 */
+}
+
+/* 성공한 경우 */
+
+/* 성공 메시지 스타일 */
+.success-message {
+  text-align: center; /* 중앙 정렬 */
+  font-size: 1.2em; /* 글자 크기 */
+  margin-top: 20px; /* 위 여백 */
+}
+
+.success-message p {
+  line-height: 1.5; /* 줄 간격을 1.5로 설정 */
+}
+
+.modal-content .material-symbols-rounded {
+  font-size: 150px; /* 원하는 크기로 수정 */
+  display: block; /* 블록으로 표시 */
+  margin: 0 auto; /* 중앙 정렬 */
+}
+.success-message .close-button {
+  width: 100px;
+  height: 40px;
+  background-color: var(--color-light-gray);
+}
+
+/* 실패한 경우 */
+.error-message {
+  text-align: center; /* 중앙 정렬 */
+  font-size: 1.2em; /* 글자 크기 */
+  margin-top: 20px; /* 위 여백 */
+}
+
+.error-message p {
+  line-height: 1.5; /* 줄 간격을 1.5로 설정 */
+}
+
+.error-message .retry-button,
+.error-message .close-button {
+  width: 100px;
+  height: 40px;
+  margin: 20px 10px;
+}
+
+.error-message .close-button {
+  background-color: var(--color-light-gray);
+}
+
+.retry-button {
+  background-color: var(--color-green-light);
 }
