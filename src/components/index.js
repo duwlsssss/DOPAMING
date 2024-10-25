@@ -1,7 +1,7 @@
 //common
 export { RenderHeader } from './common/header/Header';
 export { RenderNavbar } from './common/navbar/Navbar';
-export { RenderNoticeItem } from './common/notice/Notice';
+export { RenderNoticeItem } from './common/notice/NoticeItem';
 
 //ui
 export { Button } from './ui/button/Button';
