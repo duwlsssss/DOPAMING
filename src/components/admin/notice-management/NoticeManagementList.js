@@ -5,6 +5,7 @@ import './NoticeManagementList.css';
 export const RenderAdminNoticeManagementList = async (
   container,
   onDataLoad,
+  searchInput = '',
 ) => {
   await RenderAdminNoticeList({
     container,
@@ -13,5 +14,6 @@ export const RenderAdminNoticeManagementList = async (
     itemClassName: 'admin-notice-manage-container',
     itemIdPrefix: 'admin-notice-manage',
     onDataLoad,
+    searchInput,
   });
 };

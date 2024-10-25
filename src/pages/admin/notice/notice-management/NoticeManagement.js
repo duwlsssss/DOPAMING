@@ -12,11 +12,6 @@ export const RenderAdminNoticeManagement = container => {
     </main>
   `;
 
-  const updateTotalCount = count => {
-    const titleContainer = document.querySelector('#adminNoticeTitleContainer');
-    RenderTitle(titleContainer, `공지사항 (${count}개)`);
-  };
-
   const headerSection = document.querySelector(
     '#adminNoticeManagementHeaderSection',
   );
@@ -24,6 +19,21 @@ export const RenderAdminNoticeManagement = container => {
     '#adminNoticeManagementListSection',
   );
 
-  RenderAdminNoticeManagementHeader(headerSection);
+  // 공지사항 개수를 업데이트
+  const updateTotalCount = count => {
+    const titleContainer = document.querySelector('#adminNoticeTitleContainer');
+    RenderTitle(titleContainer, `공지사항 (${count}개)`);
+  };
+
+  // 검색어 입력 시 공지사항 목록을 필터링
+  const handleSearch = searchInput => {
+    RenderAdminNoticeManagementList(
+      noticeListSection,
+      updateTotalCount,
+      searchInput,
+    );
+  };
+
+  RenderAdminNoticeManagementHeader(headerSection, handleSearch);
   RenderAdminNoticeManagementList(noticeListSection, updateTotalCount);
 };

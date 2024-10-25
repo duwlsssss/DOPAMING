@@ -11,20 +11,12 @@
   align-items: center;
 }
 
-.admin-notice-search {
-  display: flex;
-  gap: 0.8rem;
-  align-items: center;
-  cursor: pointer;
-}
-
-.admin-notice-search input[type='text'] {
-  padding: var(--space-small);
+.admin-notice-search-input {
   max-height: 30px;
 }
 
 @media screen and (max-width: 600px) {
-  .admin-notice-search input[type='text'] {
+  .admin-notice-search-input {
     max-width: 150px;
   }
 }

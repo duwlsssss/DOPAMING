@@ -4,19 +4,21 @@ import { Button } from '../../ui/button/Button';
 import { ADMIN_PATH } from '../../../utils/constants';
 import './NoticeManagementHeader.css';
 
-export const RenderAdminNoticeManagementHeader = container => {
+export const RenderAdminNoticeManagementHeader = (container, onSearch) => {
   container.innerHTML = `
         <header class="admin-notice-management-header">
             <div id="adminNoticeTitleContainer"></div>
             <div class="admin-notice-management-header-controls">
-              <div class="admin-notice-search">
-                <input type="text" class="admin-notice-search-input" placeholder="Search"/>
-                <span class="material-symbols-rounded">search</span> 
-              </div>
+              <input type="text" class="admin-notice-search-input" placeholder="Search"/>
               <div class="admin-notice-management-more-button"></div>
             </div>
         </header>
     `;
+
+  const searchInput = document.querySelector('.admin-notice-search-input');
+  searchInput.addEventListener('input', e => {
+    onSearch(e.target.value);
+  });
 
   const moreBtnContainer = document.querySelector(
     '.admin-notice-management-more-button',
