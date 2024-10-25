@@ -1,42 +1,14 @@
 import './Home.css';
 import { WorkInfo } from '../../../components/user/work-info/WorkInfo';
 import Modal from '../../../components/ui/modal/Modal'; // Modal 클래스 임포트
+import {
+  formatDate,
+  formatUserTime,
+  updateCurrentTime,
+} from '../../../utils/currentTime'; // currentTime.js에서 함수 가져오기
+import navigate from '../../../utils/navigation'; // navigate 함수 임포트
 
 const USER_ID = '231231232'; // 실제 사용자 ID를 입력하세요.
-
-const formatDate = date => {
-  const d = new Date(date);
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${d.getFullYear()}-${month}-${day}`;
-};
-
-const formatTimeWithSeconds = date => {
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
-  return `${hours}시 ${minutes}분 ${seconds}초`;
-};
-
-const formatTimeWithoutSeconds = date => {
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  return `${hours}시 ${minutes}분`;
-};
-
-const formatUserTime = time => {
-  return time ? formatTimeWithoutSeconds(new Date(time)) : '--시 --분';
-};
-
-const updateCurrentTime = () => {
-  const now = new Date();
-  const formattedDate = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일`;
-  const currentTime = `${formattedDate} ${formatTimeWithSeconds(now)}`;
-  const punchTimeElement = document.querySelector('.punch-time');
-  if (punchTimeElement) {
-    punchTimeElement.innerText = currentTime; // 현재 시각 업데이트
-  }
-};
 
 const timePunchContainer = async () => {
   const today = formatDate(new Date());
@@ -105,7 +77,7 @@ export const RenderUserHome = async container => {
   const punchDetailButton = container.querySelector('.punch-detail-button');
   if (punchDetailButton) {
     punchDetailButton.addEventListener('click', () => {
-      window.location.href = 'http://localhost:5173/work-detail';
+      navigate('/work-detail');
     });
   }
 

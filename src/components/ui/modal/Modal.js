@@ -1,6 +1,5 @@
 import './Modal.css';
 import { userModalContent } from './user/userModal';
-
 class Modal {
   constructor() {
     this.modalElement = this.createModalElement();
@@ -37,6 +36,7 @@ class Modal {
     modalContent.innerHTML = ''; // 이전 내용 초기화
 
     switch (type) {
+      // user
       case 'punch-in':
         modalContent.appendChild(userModalContent('punch-in', this));
         break;
@@ -96,12 +96,16 @@ class Modal {
         modalContent.appendChild(userModalContent('profile-edit-fail', this));
         break;
 
+      // ADMIN
       default:
         modalContent.innerHTML = '<p>잘못된 요청입니다.</p>';
         break;
     }
 
-    this.modalElement.style.display = 'flex'; // 모달 열기
+    this.modalElement.style.display = 'flex';
+    setTimeout(() => {
+      this.modalElement.classList.add('show');
+    }, 300);
   }
 
   handleConfirm(type) {
