@@ -36,11 +36,19 @@ export default async function RenderAdminMemberDetail(container, memberId) {
   const memberDetail = await handleMemberInformation();
   const memberVationDetail = await handleMemberDetailVacation();
 
+  const buttonElement = Button({
+    width: 40,
+    text: '상세보기',
+    color: 'coral',
+    shape: 'block',
+    className: 'detail_button',
+    onClick: () => console.log('log'),
+  });
+
   const downloadButton = new Button({
     text: '다운로드',
     color: 'white',
     shape: 'line',
-
     padding: 'var(--space-xsmall) var(--space-xsmall)',
   });
 
@@ -94,7 +102,10 @@ export default async function RenderAdminMemberDetail(container, memberId) {
   };
   container.innerHTML = /*html*/ `
     <div class="member-detail-container">    
-      <h1>직원 상세</h1>
+      <div class="member-detail-header">
+        <h1>직원 상세</h1>
+        ${buttonElement.outerHTML}
+      </div>
       <div class="member-detail-wapper">
         <div class="member-detail-items">
           <div class="profile-top">
