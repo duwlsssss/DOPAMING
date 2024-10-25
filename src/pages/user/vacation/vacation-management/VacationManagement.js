@@ -11,6 +11,7 @@ import { USER_PATH } from '../../../../utils/constants';
 import navigate from '../../../../utils/navigation';
 
 export const RenderUserVacationManagement = async container => {
+  container.innerHTML = `<div class="loading">휴가 정보를 가져오는 중입니다.</div>`;
   try {
     // 사용자 정보, 부재 정보 가져오기
     const userAbsDatas = await fetchAbsData();
@@ -87,7 +88,7 @@ export const RenderUserVacationManagement = async container => {
     const vacationListSection = container.querySelector(
       '#userVacationListSection',
     );
-    RenderUserVacationHeader(headerSection);
+    RenderUserVacationHeader(headerSection, userAbsData);
     RenderUserVacationList(vacationListSection, userAbsData);
   } catch (error) {
     let errorMessage = '데이터를 불러오는 중 오류가 발생했습니다.';

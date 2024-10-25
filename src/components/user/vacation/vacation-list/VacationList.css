@@ -1,45 +1,22 @@
+/* 전체 부분 */
 .user-vacation-list-section {
   background: var(--color-pale-gray);
-  border-radius: 10px;
-  padding: 20px;
+  border-radius: var(--base-border-radius);
+  padding: var(--space-medium);
+  height: calc(100vh - 430px);
+  overflow-y: scroll;
 }
 
 .user-vacation-list {
-  border-radius: 10px;
   overflow-y: auto;
-  max-height: 700px;
-}
-
-.user-vacation-status-dot {
-  margin-left: var(--space-medium);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #ccc;
-}
-
-.user-vacation-status-dot.active {
-  background-color: var(--color-green);
-  box-shadow:
-    0 0 4px 2px rgba(76, 175, 80, 0.4),
-    0 0 8px 4px rgba(76, 175, 80, 0.2);
-  filter: blur(1px);
-  animation: glow 2s ease-in-out infinite;
-}
-
-.user-vacation-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: var(--color-pale-gray);
-  object-fit: cover;
+  border-radius: var(--base-border-radius);
 }
 
 .user-vacation-info {
   flex: 1;
   align-items: center;
   display: grid;
-  grid-template-columns: 40px 60px 60px 60px 100px 150px 150px 80px;
+  grid-template-columns: 80px 100px 150px 150px 150px 100px;
   gap: var(--space-small);
 }
 
@@ -174,6 +151,9 @@
 }
 
 @media (max-width: 768px) {
+  .user-vacation-list-section {
+    height: calc(100vh - 310px);
+  }
   .user-vacation-info {
     grid-template-columns: 40px 60px 60px 60px 80px;
   }
@@ -183,6 +163,10 @@
 }
 
 @media (max-width: 576px) {
+  .user-vacation-list-section {
+    height: calc(100vh - 310px);
+  }
+
   .user-vacation-info {
     grid-template-columns: 40px 60px 60px 60px;
     gap: var(--space-xsmall);

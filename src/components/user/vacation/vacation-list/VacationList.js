@@ -3,7 +3,10 @@ import { Button } from '../../../ui/button/Button';
 import './VacationList.css';
 
 export const RenderUserVacationList = async (container, userAbsData) => {
-  console.log(userAbsData);
+  if (!container) {
+    console.error('Container가 준비되지 않음');
+    return;
+  }
 
   // 다운로드 버튼
   const downloadButton = new Button({
@@ -74,8 +77,6 @@ export const RenderUserVacationList = async (container, userAbsData) => {
   // 아코디언 헤더
   const renderHeader = item => `
     <header class="user-vacation-info">
-      <div class="user-vacation-status-dot active"></div>
-      <img src="${item.user_image}" alt="${item.user_name}" class="user-vacation-avatar">
       <span class="user-vacation-abs-type">${item.abs_type}</span>
       <span class="user-vacation-name">${item.user_name}</span>
       <span class="user-vacation-position">${item.user_position}</span>
@@ -125,11 +126,11 @@ export const RenderUserVacationList = async (container, userAbsData) => {
   container.innerHTML = `
     <section class="user-vacation-list-section">
       <div class="user-vacation-list">
-          ${Accordion({
-            items: userAbsData,
-            renderHeader,
-            renderContent,
-          })}
+        ${Accordion({
+          items: userAbsData,
+          renderHeader,
+          renderContent,
+        })}
       </div>
     </section>
   `;
