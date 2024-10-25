@@ -5,23 +5,15 @@ import { generateCalendar } from '../../../utils/generateCalendar';
 
 let currentYear;
 let currentMonth;
-let filteredUsers = []; // 필터링된 사용자 데이터
+let filteredUsers = [];
 
 const updatePunchInfo = (container, selectedDate) => {
   const punchInfoTime = container.querySelector('.punch-info-time');
 
-  // 선택 날짜에 해당 데이터 찾기
   const selectedUserData = filteredUsers.find(user => {
-    const punchDate = new Date(user.punch_date);
+    const punchDate = user.punch_date;
 
-    // selectedDate에서 하루 전날 계산
-    const dayBeforeSelectedDate = new Date(selectedDate);
-    dayBeforeSelectedDate.setDate(dayBeforeSelectedDate.getDate() - 1);
-
-    return (
-      punchDate.toISOString().split('T')[0] ===
-      dayBeforeSelectedDate.toISOString().split('T')[0]
-    ); // ISO 형식으로 비교
+    return punchDate === selectedDate; // 직접 비교
   });
 
   if (selectedUserData) {
@@ -70,7 +62,7 @@ export const RenderUserWorkDetail = async container => {
   const specificUserId = '231231232'; // 특정 테스트 ID
 
   // WorkInfo 컴포넌트 호출 및 HTML 및 사용자 데이터 삽입
-  const { html: workInfoHTML } = await WorkInfo(specificUserId);
+  const { html: workInfoHTML } = await WorkInfo(specificUserId, today);
   filteredUsers = await fetchFilteredUsers(specificUserId);
 
   container.innerHTML = `
@@ -82,13 +74,12 @@ export const RenderUserWorkDetail = async container => {
         <span class="material-symbols-rounded" id="calendar-after">arrow_circle_right</span>
       </div>
       <div class="work-calendar"></div>
-      <div class="punch-info-time"></div> <!-- 추가: Punch 정보 컨테이너 -->
+      <div class="punch-info-time"></div>
     </div>
   `;
 
-  // generateCalendar 호출 시 filteredUsers 전달
   generateCalendar(container, currentYear, currentMonth, filteredUsers);
-  updatePunchInfo(container, today.toISOString().split('T')[0]); // 오늘 날짜로 초기화
+  updatePunchInfo(container, today.toISOString().split('T')[0]);
 
   // 아이콘 클릭
   container.querySelector('#calendar-before').addEventListener('click', () => {
@@ -98,8 +89,8 @@ export const RenderUserWorkDetail = async container => {
     } else {
       currentMonth -= 1;
     }
-    generateCalendar(container, currentYear, currentMonth, filteredUsers); // 필터링된 사용자 데이터 전달
-    updatePunchInfo(container, container.querySelector('.punch-date').value); // 날짜 업데이트
+    generateCalendar(container, currentYear, currentMonth, filteredUsers);
+    updatePunchInfo(container, container.querySelector('.punch-date').value);
   });
 
   container.querySelector('#calendar-after').addEventListener('click', () => {

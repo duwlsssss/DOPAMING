@@ -1,5 +1,5 @@
 import './WorkInfo.css';
-import axios from 'axios'; // axios 임포트 추가
+import axios from 'axios';
 
 export const WorkInfo = async (userId, date) => {
   const jsonFilePath = '../../../../server/data/time_punch.json';
@@ -10,12 +10,20 @@ export const WorkInfo = async (userId, date) => {
 
     console.log('전체 사용자 데이터:', users);
 
+    // date가 Date 객체가 아니라면 형식 변환
+    if (!(date instanceof Date)) {
+      date = new Date(date);
+    }
+    const dateString = date.toISOString().split('T')[0]; // "YYYY-MM-DD" 형식
+
     // 특정 사용자 필터링 (punch_date 사용)
     const filteredUsers = users.filter(
-      user => user.user_id === userId && user.punch_date === date,
+      user => user.user_id === userId && user.punch_date === dateString,
     );
 
-    console.log(`Filtering with userId: ${userId} and punchDate: ${date}`);
+    console.log(
+      `Filtering with userId: ${userId} and punchDate: ${dateString}`,
+    );
     console.log('필터링된 사용자 데이터:', filteredUsers);
 
     // 기본 사용자 정보 초기화
@@ -33,7 +41,7 @@ export const WorkInfo = async (userId, date) => {
         ? new Date(selectedUserData.punch_in).toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit',
-            hour12: false, // 24시간 형식으로 출력
+            hour12: false,
           })
         : punchInTime;
 
@@ -41,7 +49,7 @@ export const WorkInfo = async (userId, date) => {
         ? new Date(selectedUserData.punch_out).toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit',
-            hour12: false, // 24시간 형식으로 출력
+            hour12: false,
           })
         : punchOutTime;
 
@@ -49,7 +57,7 @@ export const WorkInfo = async (userId, date) => {
         ? new Date(selectedUserData.break_out).toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit',
-            hour12: false, // 24시간 형식으로 출력
+            hour12: false,
           })
         : breakOutTime;
 
@@ -57,7 +65,7 @@ export const WorkInfo = async (userId, date) => {
         ? new Date(selectedUserData.break_in).toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit',
-            hour12: false, // 24시간 형식으로 출력
+            hour12: false,
           })
         : breakInTime;
     }
@@ -65,14 +73,14 @@ export const WorkInfo = async (userId, date) => {
     const currentTime = new Date().toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false, // 24시간 형식으로 출력
+      hour12: false,
     });
 
     const htmlOutput = `
       <div class="work-header">
         <div class="work-title">
           <p class="work-title-text">출/퇴근 상세정보</p>
-          <input type="date" class="punch-date" value="${date}" />
+          <input type="date" class="punch-date" value="${dateString}" />
         </div>
         <div class="work-content">
           <p class="work-desc">오늘 하루도 파이팅 하세요!<br>${userName}님의 매일을 응원합니다</p>
@@ -101,6 +109,6 @@ export const WorkInfo = async (userId, date) => {
     };
   } catch (error) {
     console.error('사용자 데이터를 가져오는 중 오류 발생! :', error);
-    return { userInfo: null, html: '', currentTime: '' }; // 에러 발생 시 기본값 반환
+    return { userInfo: null, html: '', currentTime: '' };
   }
 };
