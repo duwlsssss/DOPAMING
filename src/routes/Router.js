@@ -14,6 +14,7 @@ import {
   RenderLogIn,
   RenderAdminVacationManagement,
   RenderUserWorkDetail,
+  RenderUserVacationManagement,
 } from '../pages';
 import {
   ADMIN_PATH,
@@ -155,7 +156,7 @@ export default function Router() {
   } else if (path === USER_PATH.EDIT_PROFILE) {
     RenderUserEditProfile(contentEl);
   } else if (path === USER_PATH.VACATION) {
-    RenderUserVacationRequest(contentEl, true); //isVacationPage 맞음
+    RenderUserVacationManagement(contentEl);
   } else if (path === USER_PATH.VACATIONREQUSET) {
     RenderUserVacationRequest(contentEl, false); //isVacationPage 아님
   } else if (path === USER_PATH.PEER) {

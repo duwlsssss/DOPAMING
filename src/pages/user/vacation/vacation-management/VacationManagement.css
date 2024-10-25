@@ -1,0 +1,99 @@
+.user-vaction-management-title-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.vacation-management-explain-container {
+  display: flex;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  margin-top: var(--space-small);
+  margin-bottom: var(--space-large);
+  border-radius: var(--base-border-radius);
+  background-color: var(--color-light-gray);
+}
+
+.vacation-management-explain-container .user-info-container {
+  flex: 3.5;
+  flex-basis: 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: var(--space-medium);
+  background-color: var(--color-skyblue);
+}
+.vacation-management-explain-container
+  .user-info-container
+  .user-info-text
+  .explain1 {
+  margin-bottom: var(--space-small);
+}
+.vacation-management-explain-container
+  .user-info-container
+  .user-info-text
+  .explain1
+  .strong {
+  font-size: var(--font-large);
+  font-weight: 700;
+}
+.vacation-management-explain-container .user-info-container .icon {
+  font-size: var(--font-xxlarge);
+}
+
+.vacation-management-explain-container .user-vc-container {
+  flex: 2.5;
+  flex-basis: 0;
+  text-align: center;
+  padding: var(--space-large) 0;
+  border-right: 0.1px solid var(--color-regular-gray);
+}
+
+.vacation-management-explain-container .user-vc-container .user-vc-number {
+  margin-top: var(--space-medium);
+  font-size: var(--font-xlarge);
+  font-weight: 700;
+}
+
+.vacation-management-explain-container .user-vc-container:last-child {
+  border-right: none;
+}
+
+@media (width <= 767px) {
+  .vc-upload-btn {
+    padding: var(--space-xsmall) var(--space-small) !important;
+  }
+
+  .vacation-management-explain-container {
+    height: 100px;
+    margin-top: var(--space-xsmall);
+    margin-bottom: var(--space-small);
+  }
+
+  .vacation-management-explain-container .user-info-container {
+    gap: 0.2rem;
+  }
+
+  .vacation-management-explain-container .user-info-container .user-info-text {
+    font-size: var(--font-small);
+  }
+  .vacation-management-explain-container
+    .user-info-container
+    .user-info-text
+    .explain1
+    .strong {
+    font-size: var(--font-medium);
+  }
+  .vacation-management-explain-container .user-info-container .icon {
+    font-size: var(--font-large);
+  }
+
+  .vacation-management-explain-container .user-vc-container .user-vc-title {
+    font-size: var(--font-small);
+  }
+  .vacation-management-explain-container .user-vc-container .user-vc-number {
+    margin-top: var(--space-small);
+    font-size: var(--font-large);
+    font-weight: 700;
+  }
+}

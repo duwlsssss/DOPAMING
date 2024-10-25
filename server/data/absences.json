@@ -1,6 +1,6 @@
 [
   {
-    "user_id": "231231231",
+    "user_id": "231231232",
     "abs_id": "abs1",
     "abs_type": "병가",
     "abs_title": "감기로 인한 병가 신청",
@@ -24,7 +24,7 @@
     "abs_status": "대기"
   },
   {
-    "user_id": "231231233",
+    "user_id": "231231232",
     "abs_id": "abs3",
     "abs_type": "휴가",
     "abs_title": "여행으로 인한 휴가 신청",
@@ -36,7 +36,7 @@
     "abs_status": "대기"
   },
   {
-    "user_id": "231231234",
+    "user_id": "231231232",
     "abs_id": "abs4",
     "abs_type": "병가",
     "abs_title": "치과 치료로 인한 병가 신청",
@@ -48,7 +48,7 @@
     "abs_status": "대기"
   },
   {
-    "user_id": "231231235",
+    "user_id": "231231232",
     "abs_id": "abs5",
     "abs_type": "공가",
     "abs_title": "결혼식 참석으로 인한 공가 신청",
@@ -60,7 +60,7 @@
     "abs_status": "대기"
   },
   {
-    "user_id": "231231236",
+    "user_id": "231231232",
     "abs_id": "abs6",
     "abs_type": "휴가",
     "abs_title": "휴가로 인한 휴가 신청",
@@ -72,7 +72,7 @@
     "abs_status": "거부"
   },
   {
-    "user_id": "231231237",
+    "user_id": "231231232",
     "abs_id": "abs7",
     "abs_type": "병가",
     "abs_title": "알레르기 반응으로 인한 병가 신청",
@@ -84,7 +84,7 @@
     "abs_status": "거부"
   },
   {
-    "user_id": "231231238",
+    "user_id": "231231232",
     "abs_id": "abs8",
     "abs_type": "공가",
     "abs_title": "학교 행사 참석으로 인한 공가 신청",
