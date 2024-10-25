@@ -6,6 +6,7 @@ export const RenderAdminNoticeList = async ({
   containerClassName,
   itemClassName,
   itemIdPrefix,
+  onDataLoad,
 }) => {
   try {
     const response = await axios.get(
@@ -14,6 +15,11 @@ export const RenderAdminNoticeList = async ({
     const posts = response.data.sort(
       (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
     );
+
+    // 데이터 로드 후 총 개수를 상위 컴포넌트로 전달
+    if (onDataLoad) {
+      onDataLoad(posts.length);
+    }
 
     container.innerHTML = `
       <ul class="${containerClassName}">

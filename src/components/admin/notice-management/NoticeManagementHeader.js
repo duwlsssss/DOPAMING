@@ -33,5 +33,5 @@ export const RenderAdminNoticeManagementHeader = container => {
   moreBtnContainer.appendChild(moreButton);
 
   const titleContainer = document.querySelector('#adminNoticeTitleContainer');
-  RenderTitle(titleContainer, '공지사항 관리');
+  RenderTitle(titleContainer, '공지사항 (0개)');
 };

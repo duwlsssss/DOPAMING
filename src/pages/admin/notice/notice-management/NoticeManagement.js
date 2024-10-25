@@ -1,5 +1,6 @@
 import { RenderAdminNoticeManagementHeader } from '../../../../components/admin/notice-management/NoticeManagementHeader';
 import { RenderAdminNoticeManagementList } from '../../../../components/admin/notice-management/NoticeManagementList';
+import { RenderTitle } from '../../../../components/common/title/Title';
 
 import './NoticeManagement.css';
 
@@ -11,6 +12,11 @@ export const RenderAdminNoticeManagement = container => {
     </main>
   `;
 
+  const updateTotalCount = count => {
+    const titleContainer = document.querySelector('#adminNoticeTitleContainer');
+    RenderTitle(titleContainer, `공지사항 (${count}개)`);
+  };
+
   const headerSection = document.querySelector(
     '#adminNoticeManagementHeaderSection',
   );
@@ -19,5 +25,5 @@ export const RenderAdminNoticeManagement = container => {
   );
 
   RenderAdminNoticeManagementHeader(headerSection);
-  RenderAdminNoticeManagementList(noticeListSection);
+  RenderAdminNoticeManagementList(noticeListSection, updateTotalCount);
 };
