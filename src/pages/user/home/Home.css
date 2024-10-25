@@ -52,12 +52,13 @@
   font-size: var(--font-medium);
   text-align: left; /* 텍스트를 왼쪽으로 정렬 */
   width: 100%; /* 부모 요소의 너비를 100%로 설정 */
-  margin-left: 100px; /* 기본 마진 제거 */
+  margin-top: 0px;
+  margin-left: 30px;
   margin-bottom: 10px;
 }
 
 .current-time-board {
-  width: 400px;
+  width: 450px;
   height: 70px;
   background-color: var(--color-pale-gray);
   display: flex; /* Flexbox 사용 */
@@ -83,7 +84,7 @@
 }
 
 .punch-time-header p {
-  margin-left: 35px;
+  margin-bottom: 10px;
   font-size: var(--font-medium);
 }
 
@@ -93,6 +94,7 @@
   border-radius: var(--base-border-radius);
   background-color: var(--color-light-gray);
   padding: 5px;
+  margin-bottom: 10px;
 }
 
 /* PUNCH-MANAGE BOARD */
@@ -103,9 +105,7 @@
 
 .punch-time-board {
   display: flex; /* Flexbox를 사용하여 가로로 나열 */
-
   justify-content: space-between; /* 요소들 사이의 공간을 균등하게 배치 */
-  background-color: orange;
 }
 
 .punch-time-board p {
@@ -115,17 +115,15 @@
 
 .punch-time-board-box {
   width: 100px;
-  height: 120px;
+  height: 130px;
   background-color: var(--color-pale-gray);
-  margin-left: 20px;
+  margin-left: 15px;
   border-radius: var(--base-border-radius);
   display: flex;
   flex-direction: column;
-  padding: 10px; /* 여백 추가 */
 }
 
 .punch-time-board-box-title {
-  margin: 0; /* 기본 여백 제거 */
   align-self: flex-start; /* 왼쪽 상단에 위치하도록 설정 */
 }
 
@@ -135,34 +133,37 @@
   justify-content: center; /* 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
   flex-grow: 1; /* 남은 공간을 차지하여 중앙 위치 */
+  font-size: var(--font-medium);
 }
 
 .punch-in-button,
 .punch-out-button,
 .break-out-button,
 .break-in-button {
-  width: 100px;
+  width: 85px;
   height: 30px;
-  background-color: orange;
-  margin: 0;
+  border-radius: 5px;
+  font-size: var(--font-medium);
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 
 .punch-in-button {
+  background-color: #3bbf0a;
 }
 .punch-out-button {
+  background-color: var(--color-regular-gray);
 }
 .break-out-button {
+  background-color: rgba(128, 128, 128, 0.3); /* 30% 투명도 */
 }
 .break-in-button {
+  background-color: rgba(59, 191, 10, 0.3); /* 30% 투명 */
 }
 
 /* SECTION 분리 */
 .main-notice {
   background-color: orange;
-}
-
-.main-time-punch {
-  background-color: blanchedalmond;
 }
 
 .main-notice-gallery {

@@ -49,7 +49,7 @@ export const RenderUserHome = async container => {
                     : '--시 --분'
                 }
             </span>
-            <button class="punch-in-button">출근하기</button>
+                          <button class="punch-in-button">출근하기</button>
         </div>
         <div class="punch-time-board-box">
             <p class="punch-time-board-box-title">퇴근 시간</p>
