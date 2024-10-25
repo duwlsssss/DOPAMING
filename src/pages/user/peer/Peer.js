@@ -2,6 +2,7 @@ import './Peer.css';
 import { setupSearch } from '../../../components/user/peer-list/PeerList';
 import axios from 'axios';
 
+
 export const RenderUserPeer = async container => {
   container.innerHTML = `
     <div class="peer-header">

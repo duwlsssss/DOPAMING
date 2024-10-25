@@ -12,6 +12,7 @@ import {
   RenderUserPeer,
   RenderNotFound,
   RenderLogIn,
+  RenderAdminVacationManagement,
 } from '../pages';
 import {
   ADMIN_PATH,
@@ -141,6 +142,8 @@ export default function Router() {
     RenderAdminHome(contentEl);
   } else if (path === ADMIN_PATH.MEMBER) {
     RenderAdminMemberManagement(contentEl);
+  } else if (path === ADMIN_PATH.VACATION) {
+    RenderAdminVacationManagement(contentEl);
   } else if (path === USER_PATH.HOME) {
     RenderUserHome(contentEl);
   } else if (path === USER_PATH.NOTICE) {
