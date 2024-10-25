@@ -63,8 +63,6 @@ export function userModalContent(type, modalInstance) {
         `;
       break;
 
-    //p class=modal-time은 동일한 css를 갖고 있다고 생각하여
-    //수정하지 않았습니다.
     case 'vacation':
       content = `
       <p class="modal-time">정말로 부재를 신청하시겠습니까?</p>
@@ -117,10 +115,11 @@ export function userModalContent(type, modalInstance) {
       content = `
         <div class="success-message">
           <span class="material-symbols-rounded">check_circle</span>
-          <p>프로필 수정이 정상적으로 처리 되었습니다.<br>다시 힘내봐요!</p>
+          <p>프로필 수정이 정상적으로 처리 되었습니다.<br>저장되었습니다!</p>
           <button class="close-button">닫기</button>
         </div>`;
       break;
+
     case 'vacation-success':
       content = `
       <div class="success-message">
@@ -131,7 +130,6 @@ export function userModalContent(type, modalInstance) {
       break;
 
     // 실패한 경우
-
     case 'punch-in-fail':
       content = `
           <div class="error-message">
@@ -176,7 +174,7 @@ export function userModalContent(type, modalInstance) {
       content = `
         <div class="error-message">
           <span class="material-symbols-rounded">warning</span>
-          <p>제재 절차에서 오류가 발생했어요!</p>
+          <p>휴가 신청 절차에서 오류가 발생했어요!</p>
           <button class="retry-button">다시 시도</button>
           <button class="close-button">닫기</button>
         </div>`;

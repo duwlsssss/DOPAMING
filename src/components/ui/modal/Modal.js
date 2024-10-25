@@ -1,5 +1,5 @@
 import './Modal.css';
-import { userModalContent } from './userModal';
+import { userModalContent } from './user/userModal';
 
 class Modal {
   constructor() {

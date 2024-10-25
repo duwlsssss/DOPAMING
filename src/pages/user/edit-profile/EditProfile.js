@@ -12,6 +12,7 @@ import {
   listenForProfileImageUpdate,
 } from '../../../utils/handleProfileImg';
 import axios from 'axios';
+import Modal from '../../../components/ui/modal/Modal';
 
 // validInput에 넘길 비번
 let userPassword = '';
@@ -35,6 +36,9 @@ export const RenderUserEditProfile = async container => {
   // 사용자 데이터 가져오기
   await fetchUserData(container);
 
+  // 모달 인스턴스 생성
+  const modal = new Modal();
+
   // 버튼 추가
   const buttonPosition = container.querySelector('.user-edit-form-container');
   const submitBtn = Button({
@@ -47,8 +51,10 @@ export const RenderUserEditProfile = async container => {
     onClick: e => {
       e.preventDefault();
       if (validInput(userPassword)) {
-        alert('모든 입력이 유효합니다.');
-        // 추가적인 작업 수행 가능
+        // 모달 열기
+        modal.open('edit-profile-success');
+      } else {
+        alert('입력이 유효하지 않습니다.');
       }
     },
   });
@@ -57,15 +63,15 @@ export const RenderUserEditProfile = async container => {
   // ProfileImage 이벤트 리스너 추가
   attachProfileImageEvents(container);
 
-  // 비번 눈 아이콘 토글
-  // 텍스트면 숨기기, 비번이면 보기 버튼 표시
+  // 비밀번호 눈 아이콘 토글
   function togglePasswordVisibility(passwordField, visibilityIcon) {
     visibilityIcon.addEventListener('click', function () {
-      const isPassword = this.textContent === 'visibility_off'; //초기 상태-비번이 숨겨짐
-      passwordField.setAttribute('type', isPassword ? 'text' : 'password'); // 클릭했을때 비번이면 text로
-      this.textContent = isPassword ? 'visibility' : 'visibility_off'; //아이콘도 바꿈
+      const isPassword = this.textContent === 'visibility_off';
+      passwordField.setAttribute('type', isPassword ? 'text' : 'password');
+      this.textContent = isPassword ? 'visibility' : 'visibility_off';
     });
   }
+
   const passwordField = container.querySelector('#password');
   const passwordConfirmField = container.querySelector('#confirm-password');
 
@@ -80,19 +86,17 @@ export const RenderUserEditProfile = async container => {
 
 const fetchUserData = async container => {
   try {
-    const response = await axios.get('../../server/data/users.json'); // JSON 파일에서 데이터 가져오기
-    const users = response.data; // 응답 데이터
+    const response = await axios.get('../../server/data/users.json');
+    const users = response.data;
 
-    // userId로 사용자 정보 가져오기
     const userId = getItem('userID');
     const currUser = users.find(user => user.user_id === userId);
 
     if (currUser) {
-      // 프로필 사진 적용
       const profileImgPosition = container.querySelector('.real-profileImg');
       applyProfileImage(profileImgPosition);
       listenForProfileImageUpdate(profileImgPosition);
-      // 사용자 정보를 폼 필드에 채우기
+
       container.querySelector('#role').value =
         currUser.user_position === '매니저' ? 'manager' : 'student';
       container.querySelector('#name').value = currUser.user_name ?? '';
@@ -102,9 +106,7 @@ const fetchUserData = async container => {
         currUser.user_birthday ?? '';
       container.querySelector('#phone').value = currUser.user_phone ?? '';
       container.querySelector('#email').value = currUser.user_email ?? '';
-      // 비밀번호는 보안상의 이유로 채우지 않음
 
-      //validInput에 넘길 거
       userPassword = currUser.user_password;
     }
   } catch (error) {
