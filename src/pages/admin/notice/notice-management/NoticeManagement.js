@@ -1,5 +1,23 @@
+import { RenderAdminNoticeManagementHeader } from '../../../../components/admin/notice-management/NoticeManagementHeader';
+import { RenderAdminNoticeManagementList } from '../../../../components/admin/notice-management/NoticeManagementList';
+
+import './NoticeManagement.css';
+
 export const RenderAdminNoticeManagement = container => {
   container.innerHTML = `
-    <div>이 곳은 관리자 공지 목록 페이지입니다.</div>
+    <main class="admin-notice-management-container">
+      <div id="adminNoticeManagementHeaderSection"></div>
+      <div id="adminNoticeManagementListSection"></div>
+    </main>
   `;
+
+  const headerSection = document.querySelector(
+    '#adminNoticeManagementHeaderSection',
+  );
+  const noticeListSection = document.querySelector(
+    '#adminNoticeManagementListSection',
+  );
+
+  RenderAdminNoticeManagementHeader(headerSection);
+  RenderAdminNoticeManagementList(noticeListSection);
 };

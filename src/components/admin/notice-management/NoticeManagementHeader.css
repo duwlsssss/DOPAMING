@@ -1,0 +1,30 @@
+.admin-notice-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-medium);
+}
+
+.admin-notice-management-header-controls {
+  display: flex;
+  gap: var(--space-small);
+  align-items: center;
+}
+
+.admin-notice-search {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  cursor: pointer;
+}
+
+.admin-notice-search input[type='text'] {
+  padding: var(--space-small);
+  max-height: 30px;
+}
+
+@media screen and (max-width: 600px) {
+  .admin-notice-search input[type='text'] {
+    max-width: 150px;
+  }
+}

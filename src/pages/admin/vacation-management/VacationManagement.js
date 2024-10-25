@@ -1,5 +1,6 @@
 import { RenderAdminVacationManagementHeader } from '../../../components/admin/vacation-management/VacationHeader';
 import { RenderAdminVacationManagementList } from '../../../components/admin/vacation-management/VacationList';
+import './VacationManagement.css';
 
 export const RenderAdminVacationManagement = container => {
   container.innerHTML = `

@@ -1,0 +1,47 @@
+.admin-notice-manage-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  width: 100%;
+  height: 700px;
+  padding: var(--space-medium);
+  border-radius: var(--base-border-radius);
+  background-color: var(--color-pale-gray);
+  overflow-y: auto;
+}
+
+.admin-notice-manage-container {
+  width: 100%;
+  height: 300px;
+  border: 1.5px solid var(--color-dark-gray);
+  border-radius: var(--base-border-radius);
+  background-color: var(--color-white);
+  cursor: pointer;
+}
+
+.admin-notice-manage-container:hover {
+  box-shadow: var(--box-shadow-large);
+  transition: box-shadow 0.3s;
+}
+
+@media screen and (max-width: 1200px) {
+  .admin-notice-manage-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .admin-notice-manage-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .admin-notice-manage-list {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-notice-manage-container {
+    height: 250px;
+  }
+}
