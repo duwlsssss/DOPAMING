@@ -76,7 +76,7 @@ export function userModalContent(type, modalInstance) {
     `;
       break;
 
-    // 성공 및 실패 모달 처리
+    // 성공한 경우
     case 'punch-in-success':
       content = `
         <div class="success-message">
@@ -112,6 +112,25 @@ export function userModalContent(type, modalInstance) {
           <button class="close-button">닫기</button>
         </div>`;
       break;
+
+    case 'edit-profile-success':
+      content = `
+        <div class="success-message">
+          <span class="material-symbols-rounded">check_circle</span>
+          <p>프로필 수정이 정상적으로 처리 되었습니다.<br>다시 힘내봐요!</p>
+          <button class="close-button">닫기</button>
+        </div>`;
+      break;
+    case 'vacation-success':
+      content = `
+      <div class="success-message">
+        <span class="material-symbols-rounded">check_circle</span>
+        <p>휴가 신청이 정상적으로 처리 되었습니다.<br>다시 힘내봐요!</p>
+        <button class="close-button">닫기</button>
+      </div>`;
+      break;
+
+    // 실패한 경우
 
     case 'punch-in-fail':
       content = `
@@ -203,6 +222,16 @@ export function userModalContent(type, modalInstance) {
     });
   }
 
+  // 닫기 버튼 이벤트 리스너 추가
+  const closeButton = fragment.querySelector('.close-button');
+  if (closeButton) {
+    closeButton.addEventListener('click', () => {
+      modalInstance.close(); // Modal 인스턴스의 close 메서드 호출
+    });
+  }
+
+  // 임시 테스트를 위한 클릭 리스너 코드
+
   // 출근실패 버튼 이벤트 리스너 추가
   const punchInFailButton = fragment.querySelector('.punch-in-fail');
   if (punchInFailButton) {
@@ -232,14 +261,6 @@ export function userModalContent(type, modalInstance) {
   if (breakInFailButton) {
     breakInFailButton.addEventListener('click', () => {
       modalInstance.handleConfirm('break-in-fail'); // 복귀 실패 처리
-    });
-  }
-
-  // 닫기 버튼 이벤트 리스너 추가
-  const closeButton = fragment.querySelector('.close-button');
-  if (closeButton) {
-    closeButton.addEventListener('click', () => {
-      modalInstance.close(); // Modal 인스턴스의 close 메서드 호출
     });
   }
 
