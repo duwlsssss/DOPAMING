@@ -2,9 +2,13 @@ import axios from 'axios';
 
 import { Accordion } from '../../ui/accordion/Accordion';
 import { Button } from '../../ui/button/Button';
+import { sortByName } from '../../../utils/sortByName';
 import './VacationList.css';
 
-export const RenderAdminVacationManagementList = async container => {
+export const RenderAdminVacationManagementList = async (
+  container,
+  filter = { type: 'vacation-all', status: 'approved-all' },
+) => {
   container.innerHTML = `<div class="loading">휴가 정보를 가져오는 중입니다.</div>`;
 
   try {
@@ -16,7 +20,7 @@ export const RenderAdminVacationManagementList = async container => {
     const absences = absencesResponse.data;
     const users = usersResponse.data;
 
-    const absenceUsersData = absences.map(absence => {
+    let absenceUsersData = absences.map(absence => {
       const user = users.find(user => user.user_id === absence.user_id);
       return {
         ...absence,
@@ -26,6 +30,30 @@ export const RenderAdminVacationManagementList = async container => {
         user_position: user.user_position,
       };
     });
+    let sortedAbsenceUsersData = sortByName(absenceUsersData);
+
+    // 필터링
+    if (filter.type !== 'vacation-all') {
+      const absType = {
+        vacation: '휴가',
+        sick: '병가',
+        official: '공가',
+      };
+      sortedAbsenceUsersData = sortedAbsenceUsersData.filter(
+        absence => absence.abs_type === absType[filter.type],
+      );
+    }
+
+    if (filter.status !== 'approved-all') {
+      const statusType = {
+        approved: '승인',
+        rejected: '거부',
+        pending: '대기',
+      };
+      sortedAbsenceUsersData = sortedAbsenceUsersData.filter(
+        absence => absence.abs_status === statusType[filter.status],
+      );
+    }
 
     // 다운로드 버튼
     const downloadButton = new Button({
@@ -148,7 +176,7 @@ export const RenderAdminVacationManagementList = async container => {
       <section class="admin-vacation-list-section">
         <div class="admin-vacation-list">
             ${Accordion({
-              items: absenceUsersData,
+              items: sortedAbsenceUsersData,
               renderHeader,
               renderContent,
             })}
