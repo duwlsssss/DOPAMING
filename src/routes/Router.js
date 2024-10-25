@@ -12,6 +12,7 @@ import {
   RenderNotFound,
   RenderLogIn,
   RenderAdminVacationManagement,
+  RenderUserWorkDetail,
 } from '../pages';
 import {
   ADMIN_PATH,
@@ -154,6 +155,8 @@ export default function Router() {
     RenderUserEditProfile(contentEl);
   } else if (path === USER_PATH.PEER) {
     RenderUserPeer(contentEl);
+  } else if (path === USER_PATH.WORK_DETAIL) {
+    RenderUserWorkDetail(contentEl);
   } else {
     RenderNotFound(root);
   }
