@@ -1,10 +1,9 @@
 import './Home.css';
 import { WorkInfo } from '../../../components/user/work-info/WorkInfo';
+import Modal from '../../../components/ui/modal/Modal'; // Modal 클래스 임포트
 
-// 사용자 ID를 상수로 정의
 const USER_ID = '231231232'; // 실제 사용자 ID를 입력하세요.
 
-// 날짜 형식 변환 함수
 const formatDate = date => {
   const d = new Date(date);
   const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -12,7 +11,6 @@ const formatDate = date => {
   return `${d.getFullYear()}-${month}-${day}`;
 };
 
-// 시간 형식 변환 함수 (초 포함)
 const formatTimeWithSeconds = date => {
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -20,14 +18,12 @@ const formatTimeWithSeconds = date => {
   return `${hours}시 ${minutes}분 ${seconds}초`;
 };
 
-// 시간 형식 변환 함수 (초 제외)
 const formatTimeWithoutSeconds = date => {
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
   return `${hours}시 ${minutes}분`;
 };
 
-// 시간을 포맷하는 헬퍼 함수
 const formatUserTime = time => {
   return time ? formatTimeWithoutSeconds(new Date(time)) : '--시 --분';
 };
@@ -45,15 +41,13 @@ const updateCurrentTime = () => {
 const timePunchContainer = async () => {
   const today = formatDate(new Date());
   const { userInfo } = await WorkInfo(USER_ID, today);
-
-  // 초기 현재 시간 설정
   updateCurrentTime();
 
   return `
     <p class="punch-time-title">현재 시각</p>
     <div class="current-time-board">
         <span class="material-symbols-rounded">alarm</span>
-        <p class="punch-time"></p> <!-- 현재 시각을 여기에 업데이트 -->
+        <p class="punch-time"></p>
     </div>
     <div class="punch-time-header">
         <p>출/퇴근 관리</p>
@@ -90,12 +84,8 @@ export const RenderUserHome = async container => {
     <div class="my-view">
       <div class="main-view">
         <div class="main-left">
-          <section class="main-notice">
-            메인뷰
-          </section>
-          <section class="main-notice-gallery">
-            공지사항 갤러리
-          </section>
+          <section class="main-notice">메인뷰</section>
+          <section class="main-notice-gallery">공지사항 갤러리</section>
         </div>
         <div class="main-right">
           <section class="main-time-punch">
@@ -103,14 +93,40 @@ export const RenderUserHome = async container => {
               ${userTimePunch}
             </div>
           </section>
-          <section class="main-vaction">
-            휴가 결재 현황
-          </section>
+          <section class="main-vaction">휴가 결재 현황</section>
         </div>
       </div>
     </div>
   `;
 
-  // DOM이 렌더링된 후에 호출
+  const modal = new Modal(); // Modal 인스턴스 생성
+
+  // "상세보기" 버튼 클릭 이벤트 추가
+  const punchDetailButton = container.querySelector('.punch-detail-button');
+  if (punchDetailButton) {
+    punchDetailButton.addEventListener('click', () => {
+      window.location.href = 'http://localhost:5173/work-detail';
+    });
+  }
+
+  // 각 버튼에 대한 클릭 이벤트 추가
+  const buttons = {
+    '.punch-in-button': 'punch-in',
+    '.punch-out-button': 'punch-out',
+    '.break-out-button': 'break-out',
+    '.break-in-button': 'break-in',
+  };
+
+  for (const [selector, type] of Object.entries(buttons)) {
+    const button = container.querySelector(selector);
+    if (button) {
+      button.addEventListener('click', () => {
+        console.log(`${type} 버튼 클릭됨`);
+        modal.open(type); // 모달 열기
+      });
+    }
+  }
+
+  // 실시간 시간 반영하기 위해 DOM이 렌더링된 후에 호출
   setInterval(updateCurrentTime, 1000); // 1초마다 현재 시간 업데이트
 };
