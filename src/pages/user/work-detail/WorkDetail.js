@@ -69,8 +69,8 @@ export const RenderUserWorkDetail = async container => {
 
   const specificUserId = '231231232'; // 특정 테스트 ID
 
-  // WorkInfo 컴포넌트 호출 및 HTML 삽입
-  const workInfoHTML = await WorkInfo(specificUserId);
+  // WorkInfo 컴포넌트 호출 및 HTML 및 사용자 데이터 삽입
+  const { html: workInfoHTML } = await WorkInfo(specificUserId);
   filteredUsers = await fetchFilteredUsers(specificUserId);
 
   container.innerHTML = `
@@ -78,10 +78,11 @@ export const RenderUserWorkDetail = async container => {
     <div class="work-calendar-box">
       <div class="title-content"> 
         <span class="material-symbols-rounded" id="calendar-before">arrow_circle_left</span>
-        <p class="calendar-title"></p>
+        <p class="calendar-title">${currentYear}년 ${currentMonth + 1}월</p>
         <span class="material-symbols-rounded" id="calendar-after">arrow_circle_right</span>
       </div>
       <div class="work-calendar"></div>
+      <div class="punch-info-time"></div> <!-- 추가: Punch 정보 컨테이너 -->
     </div>
   `;
 
