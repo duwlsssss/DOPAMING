@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { Accordion } from '../../ui/accordion/Accordion';
 import { Button } from '../../ui/button/Button';
+import { sortByName } from '../../../utils/sortByName';
 import './VacationList.css';
 
 export const RenderAdminVacationManagementList = async (
@@ -29,6 +30,7 @@ export const RenderAdminVacationManagementList = async (
         user_position: user.user_position,
       };
     });
+    let sortedAbsenceUsersData = sortByName(absenceUsersData);
 
     // 필터링
     if (filter.type !== 'vacation-all') {
@@ -37,7 +39,7 @@ export const RenderAdminVacationManagementList = async (
         sick: '병가',
         official: '공가',
       };
-      absenceUsersData = absenceUsersData.filter(
+      sortedAbsenceUsersData = sortedAbsenceUsersData.filter(
         absence => absence.abs_type === absType[filter.type],
       );
     }
@@ -48,7 +50,7 @@ export const RenderAdminVacationManagementList = async (
         rejected: '거부',
         pending: '대기',
       };
-      absenceUsersData = absenceUsersData.filter(
+      sortedAbsenceUsersData = sortedAbsenceUsersData.filter(
         absence => absence.abs_status === statusType[filter.status],
       );
     }
@@ -162,7 +164,7 @@ export const RenderAdminVacationManagementList = async (
       <section class="admin-vacation-list-section">
         <div class="admin-vacation-list">
             ${Accordion({
-              items: absenceUsersData,
+              items: sortedAbsenceUsersData,
               renderHeader,
               renderContent,
             })}
