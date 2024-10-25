@@ -6,8 +6,6 @@
 
 .user-edit-form-container {
   width: 100%;
-  height: calc(100vh - 200px);
-  overflow-y: scroll;
   padding: var(--space-large);
   border-radius: var(--base-border-radius);
   background-color: var(--color-pale-gray);
@@ -20,10 +18,12 @@
 
 .user-edit-form .user-edit-profileImg {
   flex: 4;
+  flex-basis: 0;
 }
 
 .user-edit-form .user-edit-profile {
   flex: 6;
+  flex-basis: 0;
 }
 
 .user-edit-form-container .edit-submit-btn {

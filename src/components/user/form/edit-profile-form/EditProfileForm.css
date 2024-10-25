@@ -16,12 +16,14 @@
 
 .user-profile-inputs .input-box .user-input {
   flex: 2;
+  flex-basis: 0;
   font-weight: 500;
 }
 
 .user-profile-inputs .input-box .input-field,
 .user-profile-inputs .input-box .input-select {
   flex: 8;
+  flex-basis: 0;
   width: 100%;
   height: 40px;
   padding: var(--space-small);

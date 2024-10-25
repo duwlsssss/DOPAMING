@@ -33,11 +33,13 @@
 
 .vacation-request-form-inputs .input-box .vacation-input {
   flex: 2;
+  flex-basis: 0;
 }
 
 .vacation-request-form-inputs .input-box .input-field,
 .vacation-request-form-inputs .input-box .input-select {
   flex: 8;
+  flex-basis: 0;
   width: 100%;
   height: 40px;
   padding: var(--space-small);

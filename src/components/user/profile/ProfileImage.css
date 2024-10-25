@@ -16,18 +16,18 @@
   overflow: hidden;
 }
 
-.user-profileImg-button-container {
+.user-profileImg-container .user-profileImg-button-container {
   display: flex;
-  justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
   margin-top: var(--space-medium);
 }
-.user-profileImg-container
-  .img-upload-btn
-  .user-profileImg-container
-  .img-delete-btn {
+.user-profileImg-container .img-upload-btn,
+.user-profileImg-container .img-delete-btn {
   flex: 1;
+  flex-basis: 0;
+  flex-basis: 0;
+  width: 100%;
 }
 
 .user-profileImg-container .profileImg-box .real-profileImg {
