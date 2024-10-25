@@ -6,6 +6,7 @@ export const RenderAdminNoticeList = async ({
   containerClassName,
   itemClassName,
   itemIdPrefix,
+  emptyClassName,
   onDataLoad,
   searchInput = '',
 }) => {
@@ -34,15 +35,19 @@ export const RenderAdminNoticeList = async ({
 
     container.innerHTML = `
       <ul class="${containerClassName}">
-        ${posts
-          .map(
-            post => `
+        ${
+          posts.length
+            ? posts
+                .map(
+                  post => `
             <li class="${itemClassName}" id="${itemIdPrefix}-${post.post_id}">
               ${renderItemComponent(post)}
             </li>
             `,
-          )
-          .join('')}
+                )
+                .join('')
+            : `<li class="${emptyClassName}">공지사항이 없습니다.</li>`
+        }
       </ul>
     `;
   } catch (e) {

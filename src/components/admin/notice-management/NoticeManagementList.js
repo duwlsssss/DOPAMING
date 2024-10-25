@@ -13,6 +13,7 @@ export const RenderAdminNoticeManagementList = async (
     containerClassName: 'admin-notice-manage-list',
     itemClassName: 'admin-notice-manage-container',
     itemIdPrefix: 'admin-notice-manage',
+    emptyClassName: 'admin-notice-manage-empty',
     onDataLoad,
     searchInput,
   });
