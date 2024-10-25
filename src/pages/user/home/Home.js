@@ -32,19 +32,28 @@ const formatUserTime = time => {
   return time ? formatTimeWithoutSeconds(new Date(time)) : '--시 --분';
 };
 
+const updateCurrentTime = () => {
+  const now = new Date();
+  const formattedDate = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일`;
+  const currentTime = `${formattedDate} ${formatTimeWithSeconds(now)}`;
+  const punchTimeElement = document.querySelector('.punch-time');
+  if (punchTimeElement) {
+    punchTimeElement.innerText = currentTime; // 현재 시각 업데이트
+  }
+};
+
 const timePunchContainer = async () => {
   const today = formatDate(new Date());
   const { userInfo } = await WorkInfo(USER_ID, today);
 
-  const now = new Date();
-  const formattedDate = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일`;
-  const currentTime = `${formattedDate} ${formatTimeWithSeconds(now)}`; // 포맷된 현재 시간
+  // 초기 현재 시간 설정
+  updateCurrentTime();
 
   return `
     <p class="punch-time-title">현재 시각</p>
     <div class="current-time-board">
         <span class="material-symbols-rounded">alarm</span>
-        <p class="punch-time">${currentTime}</p>
+        <p class="punch-time"></p> <!-- 현재 시각을 여기에 업데이트 -->
     </div>
     <div class="punch-time-header">
         <p>출/퇴근 관리</p>
@@ -101,4 +110,7 @@ export const RenderUserHome = async container => {
       </div>
     </div>
   `;
+
+  // DOM이 렌더링된 후에 호출
+  setInterval(updateCurrentTime, 1000); // 1초마다 현재 시간 업데이트
 };
