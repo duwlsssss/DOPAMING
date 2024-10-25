@@ -5,7 +5,7 @@ import {
   VacationRequestForm,
 } from '../../../../components';
 
-export const RenderUserVacationRequest = async container => {
+export const RenderUserVacationRequest = async (container, isVacationPage) => {
   // 기본 HTML 구조 설정
   container.innerHTML = `
     <div class="vacation-request-title">부재 신청</div>
@@ -40,6 +40,10 @@ export const RenderUserVacationRequest = async container => {
 
   // proofFile 이벤트 리스너 추가
   attachProofFileEvents(container);
+
+  if (isVacationPage) {
+    console.log('휴가/공가 관리 페이지');
+  }
 };
 
 const attachProofFileEvents = container => {

@@ -150,8 +150,10 @@ export default function Router() {
     RenderUserNoticeDetail(contentEl, postId);
   } else if (path === USER_PATH.EDIT_PROFILE) {
     RenderUserEditProfile(contentEl);
+  } else if (path === USER_PATH.VACATION) {
+    RenderUserVacationRequest(contentEl, true); //isVacationPage 맞음
   } else if (path === USER_PATH.VACATIONREQUSET) {
-    RenderUserVacationRequest(contentEl);
+    RenderUserVacationRequest(contentEl, false); //isVacationPage 아님
   } else if (path === USER_PATH.PEER) {
     RenderUserPeer(contentEl);
   } else {
