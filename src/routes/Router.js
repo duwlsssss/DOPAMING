@@ -14,6 +14,7 @@ import {
   RenderLogIn,
   RenderAdminVacationManagement,
   RenderUserWorkDetail,
+  RenderAdminMemberDetail,
 } from '../pages';
 import {
   ADMIN_PATH,
@@ -27,7 +28,6 @@ import {
 
 import { getIsMobile } from '../utils/responsive';
 import { getItem } from '../utils/storage';
-import RenderAdminMemberDetail from '../pages/admin/member/member-detail/MemberDetail.js';
 
 export default function Router() {
   const path = window.location.pathname;

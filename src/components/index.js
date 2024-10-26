@@ -6,6 +6,7 @@ export { RenderNoticeItem } from './common/notice/Notice';
 //ui
 export { Button } from './ui/button/Button';
 export { validInput } from './ui/form/FormValidation';
+export { Pagenation } from './common/pagenation/Pagenation';
 
 //user
 //프로필 폼 관련

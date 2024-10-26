@@ -6,7 +6,7 @@ import './MemberDetail.css';
 const MEMBER_INFORMATION_URL = '../../../../../server/data/users.json';
 const MEMBER_VACATION_URL = '../../../../../server/data/absences.json';
 
-export default async function RenderAdminMemberDetail(container, memberId) {
+export async function RenderAdminMemberDetail(container, memberId) {
   const handleMemberInformation = async () => {
     try {
       const data = await ApiClient.get(MEMBER_INFORMATION_URL);

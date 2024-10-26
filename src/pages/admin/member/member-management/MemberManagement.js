@@ -1,6 +1,6 @@
 import { ApiClient } from '../../../../apis/ApiClient';
 import { Button } from '../../../../components';
-import { Pagenation } from '../../../../components/common/pagenation/Pagenation';
+import { Pagenation } from '../../../../components/index';
 import navigate from '../../../../utils/navigation';
 import './MemberManagement.css';
 
