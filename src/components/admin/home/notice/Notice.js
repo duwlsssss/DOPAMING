@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { RenderNoticeItem } from './NoticeItem';
+import { RenderNoticeItem } from '../../../common/notice/NoticeItem';
 import './Notice.css';
 
 export const RenderAdminHomeNotice = async container => {
@@ -17,7 +17,7 @@ export const RenderAdminHomeNotice = async container => {
               .map(
                 post => `
                 <li class="admin-notice-container" id="admin-notice-${post.post_id}">
-                  ${RenderNoticeItem(post)}
+                  ${RenderNoticeItem(null, post)}
                 </li>
                 `,
               )

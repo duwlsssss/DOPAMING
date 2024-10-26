@@ -58,18 +58,30 @@ export const RenderAdminVacationManagementList = async (
     // 다운로드 버튼
     const downloadButton = new Button({
       text: '다운로드',
-      color: 'white',
-      shape: 'line',
+      color: 'skyblue',
+      shape: 'block',
       padding: 'var(--space-xsmall) var(--space-small)',
     });
 
     // 승인, 거부, 대기 버튼
     const renderButtons = status => {
       switch (status) {
-        case '승인':
-          return '';
+        case '승인': {
+          const cancelApproveButton = new Button({
+            text: '승인 취소',
+            color: 'gray',
+            shape: 'block',
+            padding: 'var(--space-small) var(--space-large)',
+          });
+
+          return `
+            <div class="approval-button-group">
+              ${cancelApproveButton.outerHTML}
+            </div>
+          `;
+        }
         case '거부': {
-          const cancelButton = new Button({
+          const cancelDenyButton = new Button({
             text: '거부 취소',
             color: 'gray',
             shape: 'block',
@@ -78,14 +90,14 @@ export const RenderAdminVacationManagementList = async (
 
           return `
             <div class="approval-button-group">
-              ${cancelButton.outerHTML}
+              ${cancelDenyButton.outerHTML}
             </div>
           `;
         }
         case '대기': {
           const approveButton = new Button({
             text: '승인하기',
-            color: 'skyblue',
+            color: 'skyblue-light',
             shape: 'block',
             padding: 'var(--space-small) var(--space-large)',
           });

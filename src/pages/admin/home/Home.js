@@ -1,8 +1,9 @@
-import { RenderUserListHeader } from '../../../components/admin/home/user-list/UserListHeader';
-import { RenderUserList } from '../../../components/admin/home/user-list/UserList';
-import { RenderAdminHomeNoticeHeader } from '../../../components/admin/home/notice/NoticeHeader';
-import { RenderAdminHomeNotice } from '../../../components/admin/home/notice/Notice';
-
+import {
+  RenderUserListHeader,
+  RenderUserList,
+  RenderAdminHomeNoticeHeader,
+  RenderAdminHomeNotice,
+} from '../../../components';
 import './Home.css';
 
 export const RenderAdminHome = container => {

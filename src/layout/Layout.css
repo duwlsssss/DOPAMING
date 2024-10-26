@@ -33,7 +33,7 @@
 
 @media (width<=767px) {
   .header {
-    justify-content: flex-start;
+    justify-content: space-between;
     width: 100%;
     max-height: 50px;
     padding: var(--space-small);

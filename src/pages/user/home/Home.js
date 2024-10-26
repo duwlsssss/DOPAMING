@@ -1,3 +1,5 @@
+import './Home.css';
+
 export const RenderUserHome = container => {
   container.innerHTML = `
      <div class="my-info desktop-only">
