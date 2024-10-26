@@ -14,8 +14,10 @@ import {
   RenderLogIn,
   RenderAdminVacationManagement,
   RenderUserWorkDetail,
+  RenderAdminMemberDetail,
   RenderUserVacationManagement,
   RenderAdminNoticeManagement,
+
 } from '../pages';
 import {
   ADMIN_PATH,
@@ -139,12 +141,21 @@ export default function Router() {
 
   //postId 추출
   const paramsFormNotice = extractParams(`${USER_PATH.NOTICE}/:postId`, path);
+  //memberId 추출
+  const paramsFormMember = extractParams(
+    `${ADMIN_PATH.MEMBER}/:memberId`,
+    path,
+  );
   const postId = paramsFormNotice ? paramsFormNotice.postId : null;
+  const memberId = paramsFormMember ? paramsFormMember.memberId : null;
 
   if (path === ADMIN_PATH.HOME) {
     RenderAdminHome(contentEl);
   } else if (path === ADMIN_PATH.MEMBER) {
     RenderAdminMemberManagement(contentEl);
+  } else if (memberId) {
+    // postId가 있는 경우(동적 경로가 매칭된 경우)
+    RenderAdminMemberDetail(contentEl, memberId);
   } else if (path === ADMIN_PATH.VACATION) {
     RenderAdminVacationManagement(contentEl);
   } else if (path === ADMIN_PATH.NOTICE) {

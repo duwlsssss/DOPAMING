@@ -8,6 +8,7 @@ export { RenderTitle } from './common/title/Title';
 export { Button } from './ui/button/Button';
 export { Accordion } from './ui/accordion/Accordion';
 export { validInput } from './ui/form/FormValidation';
+export { Pagenation } from './common/pagenation/Pagenation';
 
 //admin
 //vacation management
