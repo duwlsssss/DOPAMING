@@ -3,6 +3,7 @@ export const ADMIN_PATH = {
   MEMBER: '/admin/member',
   VACATION: '/admin/vacation',
   NOTICE: '/admin/notice',
+  NOTICE_UPLOAD: '/admin/notice/upload',
 };
 
 export const ADMIN_TITLE = {
