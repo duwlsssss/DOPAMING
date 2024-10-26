@@ -38,7 +38,7 @@ export async function RenderAdminMemberDetail(container, memberId) {
 
   const buttonElement = Button({
     width: 40,
-    text: '상세보기',
+    text: '삭제',
     color: 'coral',
     shape: 'block',
     className: 'detail_button',
@@ -51,7 +51,6 @@ export async function RenderAdminMemberDetail(container, memberId) {
     shape: 'line',
     padding: 'var(--space-xsmall) var(--space-xsmall)',
   });
-
   const renderHeader = () => /*html*/ `
   <header class="member-detail-info">
     <div class="member-detail-status-dot active">
