@@ -158,7 +158,7 @@ export default function Router() {
   } else if (path === USER_PATH.VACATION) {
     RenderUserVacationManagement(contentEl);
   } else if (path === USER_PATH.VACATIONREQUSET) {
-    RenderUserVacationRequest(contentEl, false); //isVacationPage 아님
+    RenderUserVacationRequest(contentEl);
   } else if (path === USER_PATH.PEER) {
     RenderUserPeer(contentEl);
   } else if (path === USER_PATH.WORK_DETAIL) {

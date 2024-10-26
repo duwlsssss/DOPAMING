@@ -49,146 +49,254 @@
 }
 
 /* detail 컨텐츠 */
-.detail-content {
+.user-detail-content-container {
   padding: var(--space-medium);
 }
 
-.detail-grid {
+.user-detail-content-container .user-detail-content {
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: var(--space-medium);
 }
 
-.detail-item {
+.user-detail-content-container .user-detail-content .user-detail-item {
   display: flex;
   gap: var(--space-large);
   align-items: center;
+  width: 100%;
 }
 
-.detail-label {
-  min-width: 60px;
+.user-detail-content-container
+  .user-detail-content
+  .user-detail-item
+  .user-detail-label {
+  flex: 2;
   font-weight: 700;
 }
 
-.detail-value {
-  flex: 1;
-  font-size: 1rem;
+.user-detail-content-container
+  .user-detail-content
+  .user-detail-item
+  .user-detail-value {
+  flex: 8;
 }
 
-.date {
+.user-detail-content-container
+  .user-detail-content
+  .user-detail-item
+  .user-detail-value
+  .user-date {
   color: #130640;
-  font-weight: 500;
 }
 
-.date-separator {
+.user-detail-content-container
+  .user-detail-content
+  .user-detail-item
+  .user-detail-value
+  .user-date-separator {
   margin: 0 var(--space-xsmall);
 }
 
-.detail-content-box {
+.user-detail-content-container .user-detail-content .user-detail-content-box {
   align-items: flex-start;
 }
 
-.content-box {
+.user-detail-content-container
+  .user-detail-content
+  .user-detail-content-box
+  .user-detail-value
+  .user-content-box {
   background: var(--color-pale-gray);
   padding: var(--space-medium);
-  border-radius: var(--space-small);
   line-height: 1.5;
-  min-height: 80px;
 }
 
 /* 다운로드 파일 */
-.download-file {
+.user-detail-content-container
+  .user-detail-content
+  .user-detail-item
+  .user-download-file {
+  flex: 8;
   display: flex;
   align-items: center;
-  gap: var(--space-medium);
+  gap: var(--space-small);
+}
+
+.user-detail-content-container
+  .user-detail-content
+  .user-detail-item
+  .user-download-file
+  .user-detail-value {
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.approval-button-group {
+.user-detail-content-container .user-approval-button-group {
   display: flex;
   justify-content: flex-end;
   gap: var(--space-small);
   margin-top: var(--space-medium);
 }
 
-.approval-button {
-  padding: var(--space-small) var(--space-large);
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.user-vacation-list-section .user-vacation-filter-error-message {
+.user-vacation-filter-error-message {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  font-size: var(--font-medium);
   color: var(--color-dark-gray);
 }
 
-/* 반응형 스타일 */
-@media (max-width: 1200px) {
-  .user-vacation-info {
-    grid-template-columns: 40px 60px 60px 60px 100px 150px 80px;
-  }
-  .user-vacation-create-date {
-    display: none;
-  }
+/* form 부분 */
+.user-detail-content-container .vacation-request-form-inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
 }
 
-@media (max-width: 1000px) {
-  .user-vacation-info {
-    grid-template-columns: 40px 60px 60px 60px 100px 80px;
-  }
+.user-detail-content-container .vacation-request-form-inputs .input-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-detail-content-container
+  .vacation-request-form-inputs
+  .input-box
+  .vacation-input {
+  flex: 2;
+  flex-basis: 0;
+  font-weight: 700;
+}
+
+.user-detail-content-container
+  .vacation-request-form-inputs
+  .input-box
+  .input-field,
+.user-detail-content-container
+  .vacation-request-form-inputs
+  .input-box
+  .input-select {
+  flex: 8;
+  flex-basis: 0;
+  width: 100%;
+  height: 40px;
+  padding: var(--space-xsmall);
+  border: 1.5px solid var(--color-light-gray);
+  border-radius: var(--base-border-radius);
+  background-color: var(--color-white);
+  transition: border-color 0.3s;
+}
+
+.user-detail-content-container
+  .vacation-request-form-inputs
+  .input-box
+  .input-field:hover,
+.user-detail-content-container
+  .vacation-request-form-inputs
+  .input-box
+  .input-select:hover {
+  border: 1.5px solid var(--color-regular-gray);
+}
+
+.user-detail-content-container .vacation-request-form-inputs #vacation-content {
+  line-height: 1.2;
+}
+
+.user-detail-content-container
+  .vacation-request-form-inputs
+  .proof-file
+  .proof-file-preview {
+  flex: 8;
+  width: 100%;
+  text-align: center;
+}
+.file-title {
+  text-decoration: underline;
+  color: var(--color-dark-gray);
+  cursor: pointer;
+}
+
+.user-detail-content-container .vacation-request-form-inputs #fileInput {
+  display: none;
+}
+
+/* 반응형 스타일 */
+@media (width <= 1000px) {
   .user-vacation-phone {
     display: none;
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 767px) {
+  .user-detail-content-container {
+    padding: 0 var(--space-small) var(--space-medium);
+  }
   .user-vacation-list-section {
     height: calc(100vh - 310px);
   }
-  .user-vacation-info {
-    grid-template-columns: 40px 60px 60px 60px 80px;
+  .user-detail-content-container
+    .vacation-request-form-inputs
+    .input-box
+    .input-field,
+  .user-detail-content-container
+    .vacation-request-form-inputs
+    .input-box
+    .input-select {
+    height: 30px;
   }
-  .user-vacation-avatar {
+  .user-detail-content-container .user-vcDownload-btn,
+  .user-detail-content-container .proof-file-upload-btn {
+    padding: var(--space-xsmall) var(--space-small) !important;
+  }
+  .user-approval-button-group .user-vcEdit-button,
+  .user-approval-button-group .user-vcDelete-button,
+  .user-approval-button-group .user-vcSubmit-button {
+    padding: var(--space-small) var(--space-medium) !important;
+  }
+}
+
+@media (width <= 576px) {
+  .user-vacation-list-section {
+    height: calc(100vh - 310px);
+  }
+  .user-vacation-name {
+    display: none;
+  }
+  .user-vacation-position {
     display: none;
   }
 }
 
-@media (max-width: 576px) {
-  .user-vacation-list-section {
-    height: calc(100vh - 310px);
-  }
-
+@media (width<=400px) {
   .user-vacation-info {
-    grid-template-columns: 40px 60px 60px 60px;
-    gap: var(--space-xsmall);
-    font-size: 0.9rem;
-    padding: var(--space-xsmall);
+    font-size: var(--font-small);
   }
-  .user-vacation-abs-type {
-    display: none;
+  .user-detail-content-container {
+    font-size: var(--font-small);
   }
-  .detail-item {
-    flex-direction: column;
-    gap: var(--space-small);
-    align-items: flex-start;
+  .user-detail-content-container
+    .vacation-request-form-inputs
+    .input-box
+    .input-field,
+  .user-detail-content-container
+    .vacation-request-form-inputs
+    .input-box
+    .input-select {
+    font-size: var(--font-small);
   }
-  .detail-label {
-    font-size: 0.9rem;
-    min-width: auto;
+  .user-detail-content-container .user-vcDownload-btn,
+  .user-detail-content-container .proof-file-upload-btn {
+    font-size: var(--font-small) !important;
   }
-  .detail-value {
-    font-size: 0.8rem;
-    width: 100%;
-  }
-  .content-box {
-    padding: var(--space-small);
-    min-height: 60px;
+  .user-approval-button-group .user-vcEdit-button,
+  .user-approval-button-group .user-vcDelete-button,
+  .user-approval-button-group .user-vcSubmit-button {
+    font-size: var(--font-small) !important;
   }
 }

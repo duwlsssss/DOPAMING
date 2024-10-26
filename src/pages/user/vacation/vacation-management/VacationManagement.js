@@ -11,14 +11,20 @@ import { USER_PATH } from '../../../../utils/constants';
 import navigate from '../../../../utils/navigation';
 
 export const RenderUserVacationManagement = async container => {
+  if (!container) {
+    console.error('Container가 준비되지 않음');
+    return;
+  }
   container.innerHTML = `<div class="loading">휴가 정보를 가져오는 중입니다.</div>`;
+
   try {
     // 사용자 정보, 부재 정보 가져오기
     const userAbsDatas = await fetchAbsData();
 
-    const userAbsData = userAbsDatas.filter(
-      data => data.user_id === getItem('userID'),
-    );
+    // 현재 사용자 ID
+    const userID = getItem('userID');
+
+    const userAbsData = userAbsDatas.filter(data => data.user_id === userID);
 
     const userAbsDatafirst = userAbsData[0];
 
@@ -112,23 +118,32 @@ export const RenderUserVacationManagement = async container => {
 };
 
 const fetchAbsData = async () => {
-  const [absencesResponse, usersResponse] = await Promise.all([
-    axios.get('../../server/data/absences.json'),
-    axios.get('../../server/data/users.json'),
-  ]);
+  console.log('fetchAbsData 함수 호출됨'); // 호출 확인
+  try {
+    const [absencesResponse, usersResponse] = await Promise.all([
+      axios.get('../../server/data/absences.json'),
+      axios.get('../../server/data/users.json'),
+    ]);
 
-  const absences = absencesResponse.data;
-  const users = usersResponse.data;
+    console.log('absencesResponse:', absencesResponse.data);
+    console.log('usersResponse:', usersResponse.data);
 
-  return absences.map(absence => {
-    const user = users.find(user => user.user_id === absence.user_id);
-    return {
-      ...absence,
-      user_name: user.user_name,
-      user_phone: user.user_phone,
-      user_position: user.user_position,
-      user_leftHoliday: user.user_leftHoliday,
-      user_totalHoliday: user.user_totalHoliday,
-    };
-  });
+    const absences = absencesResponse.data;
+    const users = usersResponse.data;
+
+    return absences.map(absence => {
+      const user = users.find(user => user.user_id === absence.user_id);
+      return {
+        ...absence,
+        user_name: user.user_name,
+        user_phone: user.user_phone,
+        user_position: user.user_position,
+        user_leftHoliday: user.user_leftHoliday,
+        user_totalHoliday: user.user_totalHoliday,
+      };
+    });
+  } catch (error) {
+    console.error('데이터 가져오기 실패:', error);
+    return null; // 실패 시 null 반환
+  }
 };

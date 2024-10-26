@@ -30,10 +30,19 @@
 }
 
 @media (width<=767px) {
-  .header-items,
-  .profile-circle {
+  .profile-circle,
+  .header-items .user-name {
     display: none;
   }
+
+  .header-items {
+    order: 1;
+  }
+
+  .logout-btn {
+    padding: var(--space-xsmall) var(--space-small) !important;
+  }
+
   .header-mobile {
     display: block;
   }

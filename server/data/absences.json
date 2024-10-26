@@ -96,7 +96,7 @@
     "abs_status": "거부"
   },
   {
-    "user_id": "231231239",
+    "user_id": "231231233",
     "abs_id": "abs9",
     "abs_type": "휴가",
     "abs_title": "가족 여행으로 인한 휴가 신청",
@@ -108,7 +108,7 @@
     "abs_status": "거부"
   },
   {
-    "user_id": "231231240",
+    "user_id": "231231233",
     "abs_id": "abs10",
     "abs_type": "병가",
     "abs_title": "식중독으로 인한 병가 신청",
@@ -117,10 +117,10 @@
     "abs_created_at": "2024-10-30",
     "abs_start_date": "2024-11-04",
     "abs_end_date": "2024-11-05",
-    "abs_status": "거부"
+    "abs_status": "대기"
   },
   {
-    "user_id": "231231241",
+    "user_id": "231231233",
     "abs_id": "abs11",
     "abs_type": "공가",
     "abs_title": "친구 결혼식 참석으로 인한 공가 신청",
@@ -132,7 +132,7 @@
     "abs_status": "승인"
   },
   {
-    "user_id": "231231242",
+    "user_id": "231231233",
     "abs_id": "abs12",
     "abs_type": "휴가",
     "abs_title": "여행 준비로 인한 휴가 신청",
@@ -144,7 +144,7 @@
     "abs_status": "승인"
   },
   {
-    "user_id": "231231243",
+    "user_id": "231231233",
     "abs_id": "abs13",
     "abs_type": "병가",
     "abs_title": "두통으로 인한 병가 신청",
@@ -156,7 +156,7 @@
     "abs_status": "승인"
   },
   {
-    "user_id": "231231244",
+    "user_id": "231231233",
     "abs_id": "abs14",
     "abs_type": "공가",
     "abs_title": "부모님 병원 진료로 인한 공가 신청",
@@ -168,7 +168,7 @@
     "abs_status": "승인"
   },
   {
-    "user_id": "231231245",
+    "user_id": "231231233",
     "abs_id": "abs15",
     "abs_type": "휴가",
     "abs_title": "친구 방문으로 인한 휴가 신청",

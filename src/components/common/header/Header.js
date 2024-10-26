@@ -37,6 +37,7 @@ export async function RenderHeader(header, editProfilePath) {
     `;
 
     const logoutBtn = Button({
+      className: 'logout-btn',
       text: '로그아웃',
       color: 'white',
       shape: 'line',
