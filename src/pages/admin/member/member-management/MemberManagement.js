@@ -74,10 +74,7 @@ export const RenderAdminMemberManagement = async container => {
         id: user.user_id,
         shape: 'block',
         className: 'detail_button',
-        onClick: () => {
-          handleNavgiateMemberDatail(user.user_id, USER_URL);
-          console.log(123);
-        },
+        onClick: () => handleNavgiateMemberDatail(user.user_id, USER_URL),
       });
 
       const userWrapper = document.getElementById(`member-${user.user_id}`);

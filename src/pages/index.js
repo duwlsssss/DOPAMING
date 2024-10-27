@@ -5,6 +5,8 @@ export { RenderAdminVacationManagement } from './admin/vacation-management/Vacat
 export { RenderAdminNoticeManagement } from './admin/notice/notice-management/NoticeManagement';
 export { RenderAdminMemberDetail } from '../pages/admin/member/member-detail/MemberDetail.js';
 export { RenderAdminUploadMember } from '../pages/admin/member/upload-member/UploadMember';
+export { RenderAdminUploadNotice } from '../pages/admin/notice/upload-notice/UploadNotice';
+
 // 사용자
 export { RenderUserHome } from './user/home/Home';
 export { RenderUserEditProfile } from './user/edit-profile/EditProfile';

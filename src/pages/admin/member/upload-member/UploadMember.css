@@ -3,6 +3,7 @@
   padding: var(--space-large);
   border-radius: var(--base-border-radius);
   background-color: var(--color-pale-gray);
+  margin-top: 20px;
 }
 .member-edit-form {
   display: flex;
