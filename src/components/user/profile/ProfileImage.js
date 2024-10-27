@@ -4,7 +4,6 @@ import {
   deleteProfileImage,
   uploadProfileImg,
 } from '../../../utils/handleProfileImg';
-
 export const ProfileImage = () => {
   return `
     <section class="user-profileImg-container">
