@@ -31,6 +31,7 @@ import {
 
 import { getIsMobile } from '../utils/responsive';
 import { getItem } from '../utils/storage';
+import { RenderAdminNoticeDetail } from '../pages/admin/notice/notice-detail/NoticeDetail';
 
 export default function Router() {
   const path = window.location.pathname;
@@ -141,12 +142,19 @@ export default function Router() {
 
   //postId 추출
   const paramsFormNotice = extractParams(`${USER_PATH.NOTICE}/:postId`, path);
+  const paramsFormAdminNotice = extractParams(
+    `${ADMIN_PATH.NOTICE}/:noticeId`,
+    path,
+  );
   //memberId 추출
   const paramsFormMember = extractParams(
     `${ADMIN_PATH.MEMBER}/:memberId`,
     path,
   );
   const postId = paramsFormNotice ? paramsFormNotice.postId : null;
+  const noticeId = paramsFormAdminNotice
+    ? paramsFormAdminNotice.noticeId
+    : null;
   const memberId = paramsFormMember ? paramsFormMember.memberId : null;
 
   if (path === ADMIN_PATH.HOME) {
@@ -155,6 +163,8 @@ export default function Router() {
     RenderAdminMemberManagement(contentEl);
   } else if (path === ADMIN_PATH.MEMBER_UPLOAD) {
     RenderAdminUploadMember(contentEl);
+  } else if (noticeId) {
+    RenderAdminNoticeDetail(contentEl, noticeId);
   } else if (memberId && memberId !== 'upload') {
     // postId가 있는 경우(동적 경로가 매칭된 경우)
     RenderAdminMemberDetail(contentEl, memberId);
