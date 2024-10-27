@@ -1,6 +1,8 @@
 import { ApiClient } from '../../../../apis/ApiClient';
 import { Button } from '../../../../components';
-import { Pagenation } from '../../../../components/common/pagenation/Pagenation';
+import { Pagenation } from '../../../../components/index';
+import { ADMIN_PATH } from '../../../../utils/constants';
+import navigate from '../../../../utils/navigation';
 import './MemberManagement.css';
 
 export const RenderAdminMemberManagement = async container => {
@@ -21,6 +23,7 @@ export const RenderAdminMemberManagement = async container => {
     text: '업로드',
     color: 'skyblue-light',
     shape: 'block',
+    onClick: () => navigate(ADMIN_PATH.MEMBER_UPLOAD),
   });
 
   const USER_URL = '../../../../../server/data/users.json';
@@ -34,7 +37,6 @@ export const RenderAdminMemberManagement = async container => {
   }
 
   const users = await fetchUsers();
-
   // 데이터를 페이지와 검색어에 따라 필터링하고 페이지네이션 적용
   const paginateUsers = (users, page, itemsPerPage) => {
     // 사용자 필터링 조건
@@ -63,6 +65,24 @@ export const RenderAdminMemberManagement = async container => {
       const userList = renderUserList(paginatedUsers);
       userSection.innerHTML = userList;
     }
+
+    paginatedUsers.forEach(user => {
+      const buttonElement = Button({
+        width: 150,
+        text: '상세보기',
+        color: 'skyblue',
+        id: user.user_id,
+        shape: 'block',
+        className: 'detail_button',
+        onClick: () => {
+          handleNavgiateMemberDatail(user.user_id, USER_URL);
+          console.log(123);
+        },
+      });
+
+      const userWrapper = document.getElementById(`member-${user.user_id}`);
+      userWrapper.querySelector('.user-list').appendChild(buttonElement);
+    });
   };
 
   // 초기 렌더링
@@ -71,15 +91,8 @@ export const RenderAdminMemberManagement = async container => {
   function renderUserList(users) {
     return users
       .map(user => {
-        const detailButton = Button({
-          width: 150,
-          text: '상세보기',
-          color: 'skyblue',
-          id: user.user_id,
-          shape: 'block',
-        });
         return `
-        <div class="user-wrapper">
+        <div class="user-wrapper"  id="member-${user.user_id}" member-id="${user.user_id}">
           <label>
             <input type="checkbox" id=${user.user_id}>
             <span class="custom-checkbox">
@@ -89,14 +102,13 @@ export const RenderAdminMemberManagement = async container => {
             <div class="circle1">              
             </div>
             <div class="circle">      
-              <img src="${user.user_image}" alt="프로필 이미지"/>        
+              <img src="${user.user_image}" alt="프로필 이미지" class="img"/>        
             </div>
             <div class="user-list">
               <p>${user.user_position}</p>
               <p>${user.user_name}</p>
               <p>${user.user_email}</p>
               <p>${user.user_phone}</p>
-              ${detailButton.outerHTML}
             </div>
           </div>
         </div>
@@ -131,6 +143,16 @@ export const RenderAdminMemberManagement = async container => {
       </div>
     </div>
   `;
+
+  function handleNavgiateMemberDatail() {
+    const memberItems = document.querySelectorAll('.user-wrapper');
+    memberItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const memberId = item.getAttribute('member-id');
+        navigate(`/admin/member/${memberId}`);
+      });
+    });
+  }
 
   const paginationContainer = Pagenation(
     users.data.length,

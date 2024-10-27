@@ -1,0 +1,67 @@
+.question {
+  width: 300px;
+  height: 200px;
+  background-color: orange;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 50px;
+}
+
+.success {
+  width: 300px;
+  height: 250px;
+  background-color: antiquewhite;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 50px;
+}
+
+.fail {
+  width: 300px;
+  height: 200px;
+  background-color: cadetblue;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* 버튼 스타일 */
+button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+/* 질문 섹션 버튼 스타일 */
+.question button {
+  background-color: #ff9800;
+  color: white;
+}
+
+.question button:hover {
+  background-color: #e68a00;
+}
+
+/* 성공 섹션 버튼 스타일 */
+.success button {
+  background-color: #ffeb3b;
+  color: black;
+}
+
+.success button:hover {
+  background-color: #fdd835;
+}
+
+/* 실패 섹션 버튼 스타일 */
+.fail button {
+  background-color: #2196f3;
+  color: white;
+}
+
+.fail button:hover {
+  background-color: #1976d2;
+}

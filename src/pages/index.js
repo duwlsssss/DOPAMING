@@ -3,7 +3,8 @@ export { RenderAdminHome } from './admin/home/Home';
 export { RenderAdminMemberManagement } from './admin/member/member-management/MemberManagement';
 export { RenderAdminVacationManagement } from './admin/vacation-management/VacationManagement';
 export { RenderAdminNoticeManagement } from './admin/notice/notice-management/NoticeManagement';
-
+export { RenderAdminMemberDetail } from '../pages/admin/member/member-detail/MemberDetail.js';
+export { RenderAdminUploadMember } from '../pages/admin/member/upload-member/UploadMember';
 // 사용자
 export { RenderUserHome } from './user/home/Home';
 export { RenderUserEditProfile } from './user/edit-profile/EditProfile';

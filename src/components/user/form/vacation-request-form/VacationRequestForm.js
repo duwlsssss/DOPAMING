@@ -1,4 +1,5 @@
 import './VacationRequestForm.css';
+import { Button } from '../../../ui/button/Button';
 export const VacationRequestForm = () => {
   const form = `
       <fieldset class="vacation-request-form-inputs">
@@ -47,12 +48,68 @@ export const VacationRequestForm = () => {
     textarea.style.height = 'auto';
     textarea.style.height = textarea.scrollHeight + 'px'; // 스크롤 높이에 맞춰 조정
   };
+
+  // 파일 업로드 이벤트를 처리하는 함수
+  const attachProofFileEvents = container => {
+    const fileInput = container.querySelector('#fileInput');
+    const buttonPosition = container.querySelector('.input-box.proof-file'); // 업로드 버튼 위치
+
+    // 업로드 버튼 추가
+    const proofFileUploadBtn = new Button({
+      className: 'proof-file-upload-btn',
+      text: '첨부파일 업로드',
+      color: 'transparent',
+      shape: 'line',
+      padding: 'var(--space-small)',
+      onClick: e => {
+        e.preventDefault();
+        fileInput.click();
+      },
+    });
+    buttonPosition.appendChild(proofFileUploadBtn);
+
+    // 파일 선택 시 미리보기와 다운로드 기능 설정
+    fileInput.addEventListener('change', () => {
+      const files = fileInput.files;
+      const filePreviewContainer = container.querySelector(
+        '.proof-file-preview',
+      );
+      filePreviewContainer.innerHTML = ''; // 기존 파일 목록 초기화
+
+      if (files.length > 0) {
+        const file = files[0];
+
+        const reader = new FileReader();
+        reader.onload = event => {
+          const filePreview = document.createElement('div');
+          filePreview.classList.add('file-title');
+          filePreview.textContent = file.name;
+
+          // 파일 클릭 시 다운로드 기능 추가
+          filePreview.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.href = event.target.result;
+            link.download = file.name;
+            link.click();
+          });
+
+          filePreviewContainer.appendChild(filePreview);
+        };
+
+        reader.readAsDataURL(file); // 파일을 base64로 읽기
+      } else {
+        alert('파일을 선택해 주세요.');
+      }
+    });
+  };
+
   // 폼을 DOM에 삽입, textarea에 이벤트리스너 추가
   const renderForm = container => {
     container.innerHTML = form;
     const textarea = container.querySelector('.input-box #vacation-content');
     textarea.addEventListener('input', () => handleResizeHeight(textarea));
+    attachProofFileEvents(container);
   };
 
-  return { renderForm }; //객체로 반환
+  return { renderForm };
 };
