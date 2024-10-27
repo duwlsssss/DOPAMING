@@ -1,9 +1,26 @@
 import { ApiClient } from '../../../apis/ApiClient';
 import { RenderNotFound } from '../../../pages';
+import { ADMIN_PATH } from '../../../utils/constants';
+import { Button } from '../../ui/button/Button';
+import navigate from '../../../utils/navigation';
 import './NoticeDetailItem.css';
 
 export const RenderAdminNoticeDetailItem = async (container, postId) => {
   const NOTICE_DATA = '../../../../server/data/company_posts.json';
+
+  const modifyButton = new Button({
+    text: '수정',
+    color: 'green',
+    shape: 'block',
+    borderRadius: '14',
+  });
+
+  const deleteButton = new Button({
+    text: '삭제',
+    color: 'coral',
+    shape: 'block',
+    borderRadius: '14',
+  });
 
   try {
     const response = await ApiClient.get(NOTICE_DATA);
@@ -16,7 +33,10 @@ export const RenderAdminNoticeDetailItem = async (container, postId) => {
     }
 
     container.innerHTML = `
-        <span class="material-symbols-rounded back-to-noticeList">arrow_left_alt</span> 
+        <div class="admin-notice-detail-header">
+          <span class="material-symbols-rounded back-to-noticeList">arrow_left_alt</span>
+          <div class="admin-notice-detail-button-group"></div>
+        </div>
         <div class="admin-notice-detail">
             <h1 class="admin-notice-detail-title">${post.post_title}</h1>
             <h3 class="admin-notice-detail-description">${post.post_description}</h3>
@@ -26,6 +46,25 @@ export const RenderAdminNoticeDetailItem = async (container, postId) => {
             <p class="admin-notice-detail-content">${post.post_content}</p>
         </div>
         `;
+
+    const buttonGroup = document.querySelector(
+      '.admin-notice-detail-button-group',
+    );
+    buttonGroup.appendChild(modifyButton);
+    buttonGroup.appendChild(deleteButton);
+    buttonGroup.addEventListener('click', e => {
+      if (e.target.textContent === '수정') {
+        navigate(`${ADMIN_PATH.NOTICE}/${postId}/edit`);
+      } else if (e.target.textContent === '삭제') {
+        // 추후 모달로 변경
+        const isDelete = confirm('정말 삭제하시겠습니까?');
+
+        if (isDelete) {
+          alert('삭제되었습니다.');
+          navigate(ADMIN_PATH.NOTICE);
+        }
+      }
+    });
 
     //뒤로가기
     document
