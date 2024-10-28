@@ -12,7 +12,6 @@ const updatePunchInfo = (container, selectedDate) => {
 
   const selectedUserData = filteredUsers.find(user => {
     const punchDate = user.punch_date;
-
     return punchDate === selectedDate; // 직접 비교
   });
 
@@ -47,7 +46,6 @@ const fetchFilteredUsers = async userId => {
   try {
     const response = await axios.get(jsonFilePath);
     const users = Array.isArray(response.data) ? response.data : []; // 배열인지 확인
-
     return users.filter(user => user.user_id === userId);
   } catch (error) {
     console.error('사용자 데이터를 가져오는 중 오류 발생! :', error);

@@ -131,6 +131,9 @@
   }
   .work-desc {
     width: 300px;
+    white-space: nowrap; /* 줄 바꿈을 방지합니다 */
+    overflow: hidden; /* 넘치는 텍스트를 숨깁니다 */
+    text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시합니다 */
   }
 
   .title-content {

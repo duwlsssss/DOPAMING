@@ -45,7 +45,6 @@
 .punch-info-title {
   width: calc(var(--space-large) * 16);
   height: calc(var(--space-large) * 3);
-  background-color: #f9f9f9;
   margin-top: var(--space-xsmall);
   display: flex;
   flex-direction: row;
@@ -55,7 +54,7 @@
 }
 
 .punch-info-time {
-  width: calc(var(--space-large) * 16);
+  width: calc(var(--space-large) * 16); /* width 값을 punch-info-title과 맞춤 */
   height: calc(var(--space-large) * 3);
   margin-top: var(--space-xsmall);
   display: flex;
@@ -80,9 +79,86 @@
   margin: 0;
   padding: 0 var(--space-small);
 }
+
 .punch-info-time p {
   font-size: var(--font-medium);
   margin-left: var(--space-medium);
   margin-right: var(--space-xsmall);
   padding-right: var(--space-medium);
+}
+
+/* punch-in-time과 달력 사이의 공백 추가 */
+.punch-info-time {
+  margin-top: var(--space-medium); /* 기본 마진 */
+}
+
+.work-desc-container {
+  display: flex;
+  justify-content: space-between; /* 두 요소 사이에 공간을 균등하게 배분 */
+  align-items: center; /* 수직 중앙 정렬 */
+  width: 100%; /* 전체 폭 사용 */
+}
+
+/* 600px 이하의 화면에서 요소를 한 줄로 출력 */
+@media (max-width: 600px) {
+  .work-content {
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 배열 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+  }
+
+  .work-desc-container {
+    flex-direction: column; /* 세로 방향으로 배열 */
+    width: 100%; /* 전체 폭 사용 */
+  }
+
+  .work-desc {
+    white-space: nowrap; /* 줄 바꿈 방지 */
+    overflow: hidden; /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 생략 부호 표시 */
+    width: auto; /* 자동 너비 사용 */
+    margin: 0; /* 마진을 없애줍니다 */
+    flex: 1; /* 가능한 공간을 차지하도록 설정 */
+  }
+
+  .punch-info {
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 배열 */
+    width: 100%; /* 전체 폭 사용 */
+    margin-top: var(--space-small); /* 위쪽 마진 추가 */
+  }
+
+  .punch-info-title,
+  .punch-info-time {
+    width: 100%; /* 전체 폭 사용 */
+    margin: 0; /* 마진을 없애줍니다 */
+  }
+
+  .punch-info-title p,
+  .punch-info-time p {
+    text-align: left; /* 왼쪽 정렬 */
+    font-size: var(--font-medium); /* 기본 폰트 크기 */
+  }
+
+  /* punch-in-time과 달력 사이의 공백 추가 */
+  .punch-info-time p.punch-in-time {
+    margin-top: var(--space-medium); /* punch-in-time과 달력 사이의 공백 */
+  }
+
+  /* 배경색 적용 */
+  .punch-info-title .punch-in {
+    background-color: var(--color-blue);
+  }
+
+  .punch-info-title .punch-out {
+    background-color: var(--color-coral);
+  }
+
+  .punch-info-title .break-out {
+    background-color: var(--color-green-muted);
+  }
+
+  .punch-info-title .break-in {
+    background-color: var(--color-caramel);
+  }
 }
