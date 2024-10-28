@@ -1,0 +1,111 @@
+.admin-notice-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--space-large);
+  margin-bottom: var(--space-medium);
+}
+
+.admin-notice-detail-button-group {
+  display: flex;
+  gap: var(--space-small);
+}
+
+.back-to-noticeList {
+  cursor: pointer;
+}
+
+.admin-notice-detail {
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--space-large);
+  text-align: center;
+}
+
+.admin-notice-detail-title {
+  font-size: 35px;
+  font-weight: 700;
+  margin-bottom: var(--space-medium);
+}
+
+.admin-notice-detail-description {
+  font-size: var(--font-large);
+  margin-bottom: var(--space-medium);
+}
+
+.admin-notice-detail img {
+  width: 100%;
+  margin: var(--space-medium) auto;
+  border-radius: var(--base-border-radius);
+}
+
+.admin-notice-detail-content {
+  line-height: 1.5;
+  white-space: pre-line;
+  margin-bottom: var(--space-large);
+}
+
+.admin-notice-detail-upload-date,
+.admin-notice-detail-edit-date {
+  text-align: right;
+  font-size: var(--font-small);
+  line-height: 1.2;
+  color: var(--color-dark-gray);
+}
+
+.admin-notice-detail .edit-date {
+  margin-bottom: var(--space-medium);
+}
+
+@media (width <= 767px) {
+  .admin-notice-detail-header {
+    padding: 0 var(--space-medium);
+  }
+
+  .admin-notice-detail {
+    padding: 0 var(--space-medium);
+  }
+
+  .admin-notice-detail-title {
+    font-size: var(--font-large);
+    margin-bottom: var(--space-small);
+  }
+
+  .admin-notice-detail-description {
+    font-size: var(--font-medium);
+    margin-bottom: var(--space-small);
+  }
+
+  .admin-notice-detail img {
+    margin: var(--space-small) auto;
+  }
+
+  .admin-notice-detail-content {
+    font-size: var(--font-medium);
+    margin-bottom: var(--space-medium);
+  }
+}
+
+@media (width <= 480px) {
+  .admin-notice-detail-title {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .admin-notice-detail-header {
+    padding: 0 var(--space-small);
+  }
+
+  .admin-notice-detail {
+    padding: 0 var(--space-small);
+    text-align: left;
+  }
+
+  .admin-notice-detail-content {
+    font-size: var(--font-medium);
+  }
+
+  .admin-notice-detail-description {
+    text-align: center;
+  }
+}
