@@ -1,4 +1,4 @@
-.question {
+.course-question {
   width: 300px;
   height: 200px;
   background-color: orange;
@@ -7,7 +7,7 @@
   margin-bottom: 50px;
 }
 
-.success {
+.course-success {
   width: 300px;
   height: 250px;
   background-color: antiquewhite;
@@ -16,7 +16,7 @@
   margin-bottom: 50px;
 }
 
-.fail {
+.course-fail {
   width: 300px;
   height: 200px;
   background-color: cadetblue;
@@ -25,7 +25,10 @@
 }
 
 /* 버튼 스타일 */
-button {
+
+.course-question button,
+.course-success button,
+.course-fail button {
   width: 100%;
   padding: 10px;
   margin: 5px 0;
@@ -37,31 +40,31 @@ button {
 }
 
 /* 질문 섹션 버튼 스타일 */
-.question button {
+.course-question button {
   background-color: #ff9800;
   color: white;
 }
 
-.question button:hover {
+.course-question button:hover {
   background-color: #e68a00;
 }
 
 /* 성공 섹션 버튼 스타일 */
-.success button {
+.course-success button {
   background-color: #ffeb3b;
   color: black;
 }
 
-.success button:hover {
+.course-success button:hover {
   background-color: #fdd835;
 }
 
 /* 실패 섹션 버튼 스타일 */
-.fail button {
+.course-fail button {
   background-color: #2196f3;
   color: white;
 }
 
-.fail button:hover {
+.course-fail button:hover {
   background-color: #1976d2;
 }
