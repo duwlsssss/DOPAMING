@@ -25,7 +25,7 @@
 }
 
 /* 버튼 스타일 */
-.course-question Button,
+.course-question button,
 .course-success button,
 .course-fail button {
   width: 100%;

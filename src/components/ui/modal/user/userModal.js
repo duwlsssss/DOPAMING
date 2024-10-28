@@ -99,7 +99,7 @@ export function userModalContent(type, modalInstance) {
   switch (type) {
     // QUESTION
     case 'punch-in':
-      content = `
+      content = ` 
           <p class="modal-title">출근 하시겠습니까?</p>
           <p class="modal-date">날짜: ${date}</p>
           <p class="modal-time">현재 시간: ${time}</p>
