@@ -23,3 +23,15 @@
   box-shadow: var(--box-shadow-large);
   transition: box-shadow 0.3s;
 }
+
+@media (max-width: 576px) {
+  .admin-notice-list {
+    gap: 0.5rem;
+    padding: var(--space-small);
+  }
+
+  .admin-notice-container {
+    width: 130px;
+    height: 180px;
+  }
+}

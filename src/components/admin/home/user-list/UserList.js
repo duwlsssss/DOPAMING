@@ -1,11 +1,13 @@
 import axios from 'axios';
 
+import navigate from '../../../../utils/navigation';
 import { sortByName } from '../../../../utils/sortByName';
 import { Button } from '../../../ui/button/Button';
+import { ADMIN_PATH } from '../../../../utils/constants';
 import './UserList.css';
 
 export const RenderUserList = async (container, filter = 'all') => {
-  container.innerHTML = `<div class="loading">직원 정보를 가져오는 중입니다.</div>`;
+  container.innerHTML = `<div class="admin-loading">직원 정보를 가져오는 중입니다.</div>`;
 
   try {
     const response = await axios.get('../../../../server/data/users.json');
@@ -30,20 +32,20 @@ export const RenderUserList = async (container, filter = 'all') => {
     const sortedDisplayUsers = sortByName(displayUsers);
 
     container.innerHTML = `
-      <section class="member-section">
-        <div class="member-list">
-          <ul class="member-grid">
+      <section class="admin-member-section">
+        <div class="admin-member-list">
+          <ul class="admin-member-grid">
             ${sortedDisplayUsers
               .map(
                 (user, index) => `
-                <li class="member-item">
-                  <div class="member-info">
-                    <div class="status-dot active"></div>
-                    <img src="${user.user_image}" alt="${user.user_name}" class="member-avatar">
-                    <span class="role">${user.user_position}</span>
-                    <span class="name">${user.user_name}</span>
-                    <span class="email">${user.user_email}</span>
-                    <span class="phone">${user.user_phone}</span>
+                <li class="admin-member-item">
+                  <div class="admin-member-info">
+                    <div class="admin-status-dot active"></div>
+                    <img src="${user.user_image}" alt="${user.user_name}" class="admin-member-avatar">
+                    <span class="admin-role">${user.user_position}</span>
+                    <span class="admin-name">${user.user_name}</span>
+                    <span class="admin-email">${user.user_email}</span>
+                    <span class="admin-phone">${user.user_phone}</span>
                   </div>
                   <div class="admin-main-user-list-detail-button-container" data-index="${index}"></div>
                 </li>
@@ -57,7 +59,7 @@ export const RenderUserList = async (container, filter = 'all') => {
 
     // 상세 보기 버튼 처리
     const handleDetailClick = user => {
-      console.log('선택된 직원 정보: ', user);
+      navigate(`${ADMIN_PATH.MEMBER}/${user.user_id}`);
     };
 
     // 각 detail-button-container에 버튼 추가
@@ -87,7 +89,7 @@ export const RenderUserList = async (container, filter = 'all') => {
     }
 
     container.innerHTML = `
-      <div class="member-section error">
+      <div class="admin-member-section error">
         ${errorMessage}
       </div>
     `;

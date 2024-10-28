@@ -10,3 +10,9 @@
   gap: var(--space-small);
   align-items: center;
 }
+
+@media (max-width: 576px) {
+  .notice-header {
+    margin-bottom: var(--space-small);
+  }
+}
