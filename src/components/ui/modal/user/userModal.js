@@ -1,5 +1,91 @@
 import './userModal.css';
 
+function getSuccessMessage(type) {
+  const messages = {
+    'punch-in-success': '출근이 정상적으로 처리되었습니다.<br>오늘도 힘내봐요!',
+    'punch-out-success':
+      '퇴근이 정상적으로 처리되었습니다.<br>오늘 하루도 고생했어요!',
+    'break-out-success':
+      '외출이 정상적으로 처리되었습니다.<br>잠시 쉬어볼까요!',
+    'break-in-success': '복귀가 정상적으로 처리되었습니다.<br>다시 힘내봐요!',
+    'edit-profile-success': '프로필 수정이 정상적으로 처리되었습니다!',
+    'vacation-success': '휴가 신청이 정상적으로 처리되었습니다!',
+  };
+  return messages[type] || '저장되었습니다!';
+}
+
+function getErrorMessage(type) {
+  const messages = {
+    'punch-in-fail': '출근 절차에서 오류가 발생했어요!',
+    'punch-out-fail': '퇴근 절차에서 오류가 발생했어요!',
+    'break-out-fail': '외출 절차에서 오류가 발생했어요!',
+    'break-in-fail': '복귀 절차에서 오류가 발생했어요!',
+    'vacation-fail': '휴가 신청 절차에서 오류가 발생했어요!',
+    'edit-profile-fail': '프로필 수정 절차에서 오류가 발생했어요!',
+  };
+  return messages[type] || '오류가 발생했습니다!';
+}
+
+// 확인 버튼 이벤트 리스너 추가
+function addEventListeners(fragment, modalInstance) {
+  const confirmButton = fragment.querySelector('.confirm-button');
+  if (confirmButton) {
+    confirmButton.addEventListener('click', () => {
+      const actionType = confirmButton.getAttribute('data-type');
+      // ex) punch-in
+      modalInstance.handleConfirm(actionType);
+    });
+  }
+
+  // 취소 버튼 이벤트 리스너 추가
+  const cancelButton = fragment.querySelector('.cancel-button');
+  if (cancelButton) {
+    cancelButton.addEventListener('click', () => {
+      modalInstance.handleCancel(); // Modal 인스턴스의 handleCancel 호출
+    });
+  }
+
+  // 닫기 버튼 이벤트 리스너 추가
+  const closeButton = fragment.querySelector('.close-button');
+  if (closeButton) {
+    closeButton.addEventListener('click', () => {
+      modalInstance.close(); // Modal 인스턴스의 close 메서드 호출
+    });
+  }
+
+  // 출근 실패 버튼 이벤트 리스너 추가
+  const punchInFailButton = fragment.querySelector('.punch-in-fail');
+  if (punchInFailButton) {
+    punchInFailButton.addEventListener('click', () => {
+      modalInstance.handleConfirm('punch-in-fail'); // 출근 실패 처리
+    });
+  }
+
+  // 퇴근 실패 버튼 이벤트 리스너 추가
+  const punchOutFailButton = fragment.querySelector('.punch-out-fail');
+  if (punchOutFailButton) {
+    punchOutFailButton.addEventListener('click', () => {
+      modalInstance.handleConfirm('punch-out-fail'); // 퇴근 실패 처리
+    });
+  }
+
+  // 외출 실패 버튼 이벤트 리스너 추가
+  const breakOutFailButton = fragment.querySelector('.break-out-fail');
+  if (breakOutFailButton) {
+    breakOutFailButton.addEventListener('click', () => {
+      modalInstance.handleConfirm('break-out-fail'); // 외출 실패 처리
+    });
+  }
+
+  // 복귀 실패 버튼 이벤트 리스너 추가
+  const breakInFailButton = fragment.querySelector('.break-in-fail');
+  if (breakInFailButton) {
+    breakInFailButton.addEventListener('click', () => {
+      modalInstance.handleConfirm('break-in-fail'); // 복귀 실패 처리
+    });
+  }
+}
+
 export function userModalContent(type, modalInstance) {
   const now = new Date();
   const date = now.toISOString().split('T')[0]; // YYYY-MM-DD 형식
@@ -11,6 +97,7 @@ export function userModalContent(type, modalInstance) {
 
   let content;
   switch (type) {
+    // QUESTION
     case 'punch-in':
       content = `
           <p class="modal-title">출근 하시겠습니까?</p>
@@ -74,7 +161,7 @@ export function userModalContent(type, modalInstance) {
     `;
       break;
 
-    // 성공한 경우
+    // SUCCESS
     case 'punch-in-success':
     case 'punch-out-success':
     case 'break-out-success':
@@ -89,7 +176,7 @@ export function userModalContent(type, modalInstance) {
         </div>`;
       break;
 
-    // 실패한 경우
+    // FAIL
     case 'punch-in-fail':
     case 'punch-out-fail':
     case 'break-out-fail':
@@ -122,91 +209,4 @@ export function userModalContent(type, modalInstance) {
   addEventListeners(fragment, modalInstance);
 
   return fragment;
-}
-
-function getSuccessMessage(type) {
-  const messages = {
-    'punch-in-success': '출근이 정상적으로 처리되었습니다.<br>오늘도 힘내봐요!',
-    'punch-out-success':
-      '퇴근이 정상적으로 처리되었습니다.<br>오늘 하루도 고생했어요!',
-    'break-out-success':
-      '외출이 정상적으로 처리되었습니다.<br>잠시 쉬어볼까요!',
-    'break-in-success': '복귀가 정상적으로 처리되었습니다.<br>다시 힘내봐요!',
-    'edit-profile-success':
-      '프로필 수정이 정상적으로 처리되었습니다.<br>저장되었습니다!',
-    'vacation-success':
-      '휴가 신청이 정상적으로 처리되었습니다.<br>다시 힘내봐요!',
-  };
-  return messages[type] || '저장되었습니다!';
-}
-
-function getErrorMessage(type) {
-  const messages = {
-    'punch-in-fail': '출근 절차에서 오류가 발생했어요!',
-    'punch-out-fail': '퇴근 절차에서 오류가 발생했어요!',
-    'break-out-fail': '외출 절차에서 오류가 발생했어요!',
-    'break-in-fail': '복귀 절차에서 오류가 발생했어요!',
-    'vacation-fail': '휴가 신청 절차에서 오류가 발생했어요!',
-    'edit-profile-fail': '프로필 수정 절차에서 오류가 발생했어요!',
-  };
-  return messages[type] || '오류가 발생했습니다!';
-}
-
-function addEventListeners(fragment, modalInstance) {
-  // 확인 버튼 이벤트 리스너 추가
-  const confirmButton = fragment.querySelector('.confirm-button');
-  if (confirmButton) {
-    confirmButton.addEventListener('click', () => {
-      const actionType = confirmButton.getAttribute('data-type');
-      modalInstance.handleConfirm(actionType); // Modal 인스턴스의 handleConfirm 호출
-    });
-  }
-
-  // 취소 버튼 이벤트 리스너 추가
-  const cancelButton = fragment.querySelector('.cancel-button');
-  if (cancelButton) {
-    cancelButton.addEventListener('click', () => {
-      modalInstance.handleCancel(); // Modal 인스턴스의 handleCancel 호출
-    });
-  }
-
-  // 닫기 버튼 이벤트 리스너 추가
-  const closeButton = fragment.querySelector('.close-button');
-  if (closeButton) {
-    closeButton.addEventListener('click', () => {
-      modalInstance.close(); // Modal 인스턴스의 close 메서드 호출
-    });
-  }
-
-  // 출근 실패 버튼 이벤트 리스너 추가
-  const punchInFailButton = fragment.querySelector('.punch-in-fail');
-  if (punchInFailButton) {
-    punchInFailButton.addEventListener('click', () => {
-      modalInstance.handleConfirm('punch-in-fail'); // 출근 실패 처리
-    });
-  }
-
-  // 퇴근 실패 버튼 이벤트 리스너 추가
-  const punchOutFailButton = fragment.querySelector('.punch-out-fail');
-  if (punchOutFailButton) {
-    punchOutFailButton.addEventListener('click', () => {
-      modalInstance.handleConfirm('punch-out-fail'); // 퇴근 실패 처리
-    });
-  }
-
-  // 외출 실패 버튼 이벤트 리스너 추가
-  const breakOutFailButton = fragment.querySelector('.break-out-fail');
-  if (breakOutFailButton) {
-    breakOutFailButton.addEventListener('click', () => {
-      modalInstance.handleConfirm('break-out-fail'); // 외출 실패 처리
-    });
-  }
-
-  // 복귀 실패 버튼 이벤트 리스너 추가
-  const breakInFailButton = fragment.querySelector('.break-in-fail');
-  if (breakInFailButton) {
-    breakInFailButton.addEventListener('click', () => {
-      modalInstance.handleConfirm('break-in-fail'); // 복귀 실패 처리
-    });
-  }
 }
