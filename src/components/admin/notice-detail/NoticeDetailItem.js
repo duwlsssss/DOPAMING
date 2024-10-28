@@ -33,10 +33,35 @@ export const RenderAdminNoticeDetailItem = async (container, postId) => {
       RenderNotFound(container);
     }
 
+    container.addEventListener('click', e => {
+      // 뒤로 가기
+      if (e.target.closest('.back-to-noticeList')) {
+        history.back();
+      }
+
+      // 수정 버튼
+      if (e.target.textContent === '수정') {
+        navigate(`${ADMIN_PATH.NOTICE_EDIT}/${postId}`);
+      }
+
+      // 삭제 버튼
+      if (e.target.textContent === '삭제') {
+        const isDelete = Modal('notice-delete');
+
+        if (isDelete) {
+          alert('삭제되었습니다.');
+          navigate(ADMIN_PATH.NOTICE);
+        }
+      }
+    });
+
     container.innerHTML = `
         <div class="admin-notice-detail-header">
           <span class="material-symbols-rounded back-to-noticeList">arrow_left_alt</span>
-          <div class="admin-notice-detail-button-group"></div>
+          <div class="admin-notice-detail-button-group">
+            ${modifyButton.outerHTML}
+            ${deleteButton.outerHTML}
+          </div>
         </div>
         <div class="admin-notice-detail">
             <h1 class="admin-notice-detail-title">${post.post_title}</h1>
@@ -47,33 +72,6 @@ export const RenderAdminNoticeDetailItem = async (container, postId) => {
             <p class="admin-notice-detail-content">${post.post_content}</p>
         </div>
         `;
-
-    const buttonGroup = document.querySelector(
-      '.admin-notice-detail-button-group',
-    );
-    buttonGroup.appendChild(modifyButton);
-    buttonGroup.appendChild(deleteButton);
-    buttonGroup.addEventListener('click', e => {
-      if (e.target.textContent === '수정') {
-        navigate(`${ADMIN_PATH.NOTICE_EDIT}/${postId}`);
-      } else if (e.target.textContent === '삭제') {
-        // 추후 모달로 변경
-        // const isDelete = confirm('정말 삭제하시겠습니까?');
-        const isDelete = Modal('notice-delete');
-
-        if (isDelete) {
-          alert('삭제되었습니다.');
-          navigate(ADMIN_PATH.NOTICE);
-        }
-      }
-    });
-
-    //뒤로가기
-    document
-      .querySelector('.back-to-noticeList')
-      .addEventListener('click', () => {
-        history.back();
-      });
   } catch (e) {
     console.error('공지를 가져오는 과정에서 에러가 발생했습니다:', e);
   }
