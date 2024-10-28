@@ -4,6 +4,7 @@ import { ADMIN_PATH } from '../../../utils/constants';
 import { Button } from '../../ui/button/Button';
 import navigate from '../../../utils/navigation';
 import './NoticeDetailItem.css';
+import Modal from '../../ui/modal/Modal';
 
 export const RenderAdminNoticeDetailItem = async (container, postId) => {
   const NOTICE_DATA = '../../../../server/data/company_posts.json';
@@ -57,7 +58,8 @@ export const RenderAdminNoticeDetailItem = async (container, postId) => {
         navigate(`${ADMIN_PATH.NOTICE_EDIT}/${postId}`);
       } else if (e.target.textContent === '삭제') {
         // 추후 모달로 변경
-        const isDelete = confirm('정말 삭제하시겠습니까?');
+        // const isDelete = confirm('정말 삭제하시겠습니까?');
+        const isDelete = Modal('notice-delete');
 
         if (isDelete) {
           alert('삭제되었습니다.');
