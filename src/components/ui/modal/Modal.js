@@ -62,13 +62,17 @@ function Modal(type) {
       modalContent.appendChild(userModalContent(type, modalInstance));
       break;
     case 'edit-profile':
-      // edit-profile의 경우 성공 처리를 수행
       modalInstance.handleConfirm('edit-profile-success'); // 성공 처리
       break;
 
     // ADMIN
     case 'employee-delete':
     case 'notice-delete':
+    case 'vacation-permit':
+    case 'vacation-permit-cancle':
+    case 'vacation-reject':
+    case 'vacation-reject-cancle':
+      // adminModalContent를 사용하여 모달 내용 추가
       modalContent.appendChild(adminModalContent(type, modalInstance));
       break;
 

@@ -4,7 +4,6 @@ export function adminModalContent(type, modalInstance) {
   let content;
 
   switch (type) {
-    // QUESTION
     case 'employee-delete':
       content = `
             <div class="question-message">
@@ -12,8 +11,7 @@ export function adminModalContent(type, modalInstance) {
                 <p>선택한 직원을 삭제하시겠습니까?</p>
                 <button class="confirm-button" data-type="employee-delete">예</button>
                 <button class="cancel-button">아니요</button>
-            </div>
-            `;
+            </div>`;
       break;
 
     case 'notice-delete':
@@ -21,10 +19,9 @@ export function adminModalContent(type, modalInstance) {
             <div class="question-message">
                 <span class="material-symbols-rounded">Help</span>
                 <p>선택한 공지를 삭제하시겠습니까?</p>
-                <button class="confirm-button" data-type="employee-delete">예</button>
+                <button class="confirm-button" data-type="notice-delete">예</button>
                 <button class="cancel-button">아니요</button>
-            </div>
-            `;
+            </div>`;
       break;
 
     case 'vacation-permit':
@@ -32,10 +29,9 @@ export function adminModalContent(type, modalInstance) {
             <div class="question-message">
                 <span class="material-symbols-rounded">Help</span>
                 <p>선택한 부재 요청을 승인하시겠습니까?</p>
-                <button class="confirm-button" data-type="employee-delete">예</button>
+                <button class="confirm-button" data-type="vacation-permit">예</button>
                 <button class="cancel-button">아니요</button>
-            </div>
-            `;
+            </div>`;
       break;
 
     case 'vacation-permit-cancle':
@@ -43,10 +39,9 @@ export function adminModalContent(type, modalInstance) {
             <div class="question-message">
                 <span class="material-symbols-rounded">Help</span>
                 <p>선택한 부재 요청의 승인을 취소하시겠습니까?</p>
-                <button class="confirm-button" data-type="employee-delete">예</button>
+                <button class="confirm-button" data-type="vacation-permit-cancle">예</button>
                 <button class="cancel-button">아니요</button>
-            </div>
-            `;
+            </div>`;
       break;
 
     case 'vacation-reject':
@@ -54,10 +49,9 @@ export function adminModalContent(type, modalInstance) {
             <div class="question-message">
                 <span class="material-symbols-rounded">Help</span>
                 <p>선택한 부재 요청을 거부하시겠습니까?</p>
-                <button class="confirm-button" data-type="employee-delete">예</button>
+                <button class="confirm-button" data-type="vacation-reject">예</button>
                 <button class="cancel-button">아니요</button>
-            </div>
-            `;
+            </div>`;
       break;
 
     case 'vacation-reject-cancle':
@@ -65,10 +59,9 @@ export function adminModalContent(type, modalInstance) {
             <div class="question-message">
                 <span class="material-symbols-rounded">Help</span>
                 <p>선택한 부재 요청의 거부를 취소하시겠습니까?</p>
-                <button class="confirm-button" data-type="employee-delete">예</button>
+                <button class="confirm-button" data-type="vacation-reject-cancle">예</button>
                 <button class="cancel-button">아니요</button>
-            </div>
-            `;
+            </div>`;
       break;
 
     // SUCCESS
@@ -121,7 +114,7 @@ export function adminModalContent(type, modalInstance) {
       content = `
             <div class="success-message">
                 <span class="material-symbols-rounded">check_circle</span>
-                <p>부재 요청 거부가 취소되었습니다!.</p>
+                <p>부재 요청 거부가 취소되었습니다!</p>
                 <button class="close-button">닫기</button>
             </div>`;
       break;
@@ -139,7 +132,7 @@ export function adminModalContent(type, modalInstance) {
       content = `
             <div class="success-message">
                 <span class="material-symbols-rounded">check_circle</span>
-                <p>직원이 성공적으로 업로드되었습니다!</p>
+                <p>직원이 성공적으로 등록되었습니다!</p>
                 <button class="close-button">닫기</button>
             </div>`;
       break;
