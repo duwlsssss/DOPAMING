@@ -6,6 +6,7 @@ export { RenderAdminNoticeManagement } from './admin/notice/notice-management/No
 export { RenderAdminMemberDetail } from '../pages/admin/member/member-detail/MemberDetail.js';
 export { RenderAdminUploadMember } from '../pages/admin/member/upload-member/UploadMember';
 export { RenderAdminUploadNotice } from '../pages/admin/notice/upload-notice/UploadNotice';
+export { RenderAdminEditNotice } from '../pages/admin/notice/edit-notice/EditNotice';
 
 // 사용자
 export { RenderUserHome } from './user/home/Home';

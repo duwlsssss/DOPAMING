@@ -6,12 +6,11 @@ import {
   attachProfileImageEvents,
 } from '../../../../components';
 
-const paragraphOne = 'Upload';
-const paragraphTwo = 'Notification';
-const paragraphThree = 'Thumbnail';
-const description = '공지 썸네일';
-
 export const RenderAdminUploadNotice = container => {
+  const paragraphOne = 'Upload';
+  const paragraphTwo = 'Notification';
+  const paragraphThree = 'Thumbnail';
+  const description = '공지 썸네일';
   const submitButton = Button({
     className: 'admin-notice-submit-button',
     text: '업로드하기',
