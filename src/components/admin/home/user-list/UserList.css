@@ -1,23 +1,23 @@
-.member-section {
+.admin-member-section {
   background: var(--color-pale-gray);
   border-radius: 10px;
   padding: 20px;
 }
 
-.member-list {
+.admin-member-list {
   background: var(--color-white);
   border-radius: 10px;
   overflow-y: scroll;
   max-height: 400px;
 }
 
-.member-grid {
+.admin-member-grid {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.member-item {
+.admin-member-item {
   display: flex;
   align-items: center;
   padding: 14px;
@@ -25,7 +25,7 @@
   gap: var(--space-medium);
 }
 
-.status-dot {
+.admin-status-dot {
   margin-left: var(--space-medium);
   width: 8px;
   height: 8px;
@@ -33,7 +33,7 @@
   background-color: #ccc;
 }
 
-.status-dot.active {
+.admin-status-dot.active {
   background-color: var(--color-green);
   box-shadow:
     0 0 4px 2px rgba(76, 175, 80, 0.4),
@@ -42,7 +42,7 @@
   animation: glow 2s ease-in-out infinite;
 }
 
-.member-avatar {
+.admin-member-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -50,22 +50,22 @@
   object-fit: cover;
 }
 
-.member-info {
+.admin-member-info {
   flex: 1;
   flex-basis: 0;
   align-items: center;
   display: grid;
-  grid-template-columns: 60px 60px 80px 100px 220px 150px;
+  grid-template-columns: 60px 60px 80px 80px 220px 150px;
   gap: var(--space-small);
 }
 
-.member-info span {
+.admin-member-info span {
   white-space: nowrap;
   text-overflow: ellipsis;
   padding: 0 var(--space-small);
 }
 
-.loading {
+.admin-loading {
   text-align: center;
   padding: 20px;
   color: #6c6c6c;
@@ -75,4 +75,59 @@
   text-align: center;
   padding: 20px;
   color: #f44336;
+}
+
+@media (max-width: 1200px) {
+  .admin-member-info {
+    grid-template-columns: 60px 60px 80px 80px 150px;
+  }
+  .admin-email {
+    display: none;
+  }
+}
+
+@media (max-width: 950px) {
+  .admin-member-info {
+    grid-template-columns: 60px 60px 80px 80px;
+  }
+  .admin-phone {
+    display: none;
+  }
+}
+
+@media (max-width: 765px) {
+  .admin-member-info {
+    grid-template-columns: 60px 60px 80px 80px 150px;
+  }
+  .admin-phone {
+    display: block;
+  }
+  .admin-member-section {
+    padding: 10px;
+  }
+  .admin-member-item {
+    padding: var(--space-small);
+  }
+}
+
+@media (max-width: 650px) {
+  .admin-member-info {
+    grid-template-columns: 60px 60px 80px 80px;
+  }
+  .admin-phone {
+    display: none;
+  }
+}
+
+@media (max-width: 490px) {
+  .admin-member-section {
+    font-size: var(--font-medium);
+  }
+  .admin-member-info {
+    grid-template-columns: 30px 30px 50px 50px;
+  }
+  .admin-member-avatar {
+    width: 30px;
+    height: 30px;
+  }
 }
