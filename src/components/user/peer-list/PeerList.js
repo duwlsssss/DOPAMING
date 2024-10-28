@@ -37,8 +37,8 @@ export const setupSearch = (
   initialItems,
   setFilteredUsers,
 ) => {
-  const searchInput = container.querySelector('#searchInput');
-  const searchIcon = container.querySelector('#searchIcon');
+  const searchInput = container.querySelector('#peerSearchInput');
+  const searchIcon = container.querySelector('#peerSearchIcon');
 
   // 아이콘 클릭시..
   searchIcon.addEventListener('click', () => {

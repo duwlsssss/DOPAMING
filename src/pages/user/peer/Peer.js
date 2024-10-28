@@ -6,9 +6,9 @@ export const RenderUserPeer = async container => {
   container.innerHTML = `
     <div class="peer-header">
       <p class="peer-title">여러분들의 동료 수강생 목록입니다.</p>
-      <div class="search-bar">
-        <input type="text" placeholder="Search" id="searchInput">
-        <span class="material-symbols-rounded" id="searchIcon">search</span>
+      <div class="peer-search-bar">
+        <input type="text" placeholder="Search" id="peerSearchInput">
+        <span class="material-symbols-rounded" id="peerSearchIcon">search</span>
       </div>
     </div>
     <div class="peer-box"></div>
@@ -40,12 +40,12 @@ export const RenderUserPeer = async container => {
   };
 
   const peerBox = container.querySelector('.peer-box');
-  //const jsonFilePath = '../../server/data/users.json';
+  const jsonFilePath = '../../server/data/users.json';
 
   // 사용자 데이터 가져오기
   const fetchUserData = async () => {
     try {
-      const response = await axios.get('../../server/data/users.json');
+      const response = await axios.get(jsonFilePath);
       users = response.data;
       filteredUsers = users;
 
