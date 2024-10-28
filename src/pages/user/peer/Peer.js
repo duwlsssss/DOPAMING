@@ -14,6 +14,8 @@ export const RenderUserPeer = async container => {
     <div class="peer-box"></div>
   `;
 
+  const peerTitle = container.querySelector('.peer-title'); // .peer-title 요소 선택
+
   let users = []; // 사용자 데이터를 담을 배열
   let currentIndex = 0;
   const initialItems = 15; // 처음 보여줄 항목 수
@@ -82,4 +84,15 @@ export const RenderUserPeer = async container => {
       filteredUsers = newFilteredUsers;
     },
   );
+  // MEDIA
+  const updatePeerTitleText = () => {
+    if (window.innerWidth <= 767) {
+      peerTitle.textContent = '수강생 목록';
+    } else {
+      peerTitle.textContent = '여러분들의 동료 수강생 목록입니다.';
+    }
+  };
+
+  updatePeerTitleText();
+  window.addEventListener('resize', updatePeerTitleText);
 };

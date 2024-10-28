@@ -1,55 +1,42 @@
 .peer-header {
-  display: flex; /* Flexbox 활성화 */
-  align-items: center; /* 수직 중앙 정렬 */
-  width: 100%; /* 부모 요소의 너비를 100%로 설정 */
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .peer-title {
   font-size: var(--font-large);
-  flex-basis: auto; /* 기본 너비 설정 */
-  max-width: 400px; /* 최대 너비 설정 */
-  margin-right: 580px; /* 오른쪽 여백 설정 */
-  white-space: nowrap; /* 줄바꿈 방지 */
+  flex: 1; /* 남은 공간을 차지하도록 설정 */
+  max-width: 400px;
+  margin-right: 500px;
+  white-space: nowrap;
 }
 
 .peer-search-bar {
-  display: flex; /* 내부 요소를 flexbox로 설정 */
-  align-items: center; /* 수직 중앙 정렬 */
-  min-width: 500px; /* 최소 가로값 설정 */
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 800px;
 }
 
 #peerSearchInput {
   border-radius: 10px;
   height: var(--space-large);
-  border: 1px solid #ccc; /* 연한 회색 테두리 추가 */
-  outline: none; /* 포커스 시 나타나는 외곽선 제거 */
+  border: 1px solid #ccc;
+  outline: none;
   padding: var(--space-small);
   margin-left: 10px;
   flex-grow: 1; /* 입력창도 가능한 공간을 차지하도록 설정 */
 }
 
 .peer-box {
-  display: flex; /* Flexbox 활성화 */
-  flex-wrap: wrap; /* 자식 요소가 줄 바꿈 되도록 설정 */
-  justify-content: flex-start; /* 수평 정렬을 왼쪽으로 설정 */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   margin-top: 0;
-  width: 100%; /* 가로폭 100%로 설정 */
-  max-height: 70vh; /* 최대 높이 설정 */
-  overflow-y: scroll; /* 항상 세로 스크롤바 표시 */
-}
-
-.peer-frame {
-  width: calc(20% - 100px); /* 기본적으로 5개가 들어갈 수 있도록 설정 */
-  height: calc(var(--space-large) * 9.5);
-  background-color: var(--color-skyblue);
-  margin: var(--space-medium); /* 여백 추가 */
-  margin-top: 0;
-  padding: var(--space-xsmall);
-  display: flex; /* Flexbox 활성화 */
-  flex-direction: column; /* 수직 정렬 */
-  align-items: center; /* 내부 요소 수평 중앙 정렬 */
-  transition: box-shadow 0.3s ease; /* 부드러운 전환 효과 추가 */
-  border-radius: 10px;
+  width: 100%;
+  max-height: 75vh;
+  overflow-y: scroll;
 }
 
 .peer-frame:hover {
@@ -57,21 +44,21 @@
 }
 
 .image-circle {
-  width: calc(var(--space-large) * 5); /* 원의 너비 */
-  height: calc(var(--space-large) * 5); /* 원의 높이 */
-  background-color: var(--color-caramel-dark); /* 배경색 */
-  border-radius: 50%; /* 원형으로 만들기 */
-  display: flex; /* 내부 요소 중앙 정렬 */
-  justify-content: center; /* 수평 중앙 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
+  width: calc(var(--space-large) * 5);
+  height: calc(var(--space-large) * 5);
+  background-color: var(--color-caramel-dark);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: var(--space-medium);
-  overflow: hidden; /* 원을 넘어가는 부분 숨기기 추가 */
+  overflow: hidden;
 }
 
 .image-circle img {
-  width: 50%; /* 이미지 너비를 100%로 설정 */
-  height: 50%; /* 이미지 높이를 100%로 설정 */
-  object-fit: cover; /* 이미지 비율 유지하면서 잘라내기 */
+  width: 50%;
+  height: 50%;
+  object-fit: cover;
 }
 
 .peer-name,
@@ -85,15 +72,6 @@
   font-size: var(--font-small);
 }
 
-#peerSearchInput {
-  border-radius: 10px;
-  height: var(--space-large);
-  border: 1px solid #ccc; /* 연한 회색 테두리 추가 */
-  outline: none; /* 포커스 시 나타나는 외곽선 제거 */
-  padding: var(--space-small);
-  margin-left: 10px;
-}
-
 #peerSearchIcon {
   margin-right: calc(var(--space-large) * 2.5);
   margin-left: var(--space-xsmall);
@@ -103,64 +81,159 @@
   width: calc(20% - 30px); /* 5개가 들어갈 수 있도록 설정 */
   height: calc(var(--space-large) * 9.5);
   background-color: var(--color-skyblue);
-  margin: 15px; /* 여백을 추가하여 요소 간의 간격을 늘림 */
+  margin: 15px;
   padding: var(--space-xsmall);
-  display: flex; /* Flexbox 활성화 */
+  display: flex;
   flex-direction: column; /* 수직 정렬 */
-  align-items: center; /* 내부 요소 수평 중앙 정렬 */
-  transition: box-shadow 0.3s ease; /* 부드러운 전환 효과 추가 */
+  align-items: center;
+  transition: box-shadow 0.3s ease;
   border-radius: 10px;
 }
 
 /* 반응형 디자인을 위한 미디어 쿼리 */
 
+@media (max-width: 1900px) {
+  #peerSearchInput {
+    width: 200px;
+  }
+}
+
 @media (max-width: 1500px) {
   .peer-frame {
     width: calc(25% - 40px); /* 4개가 들어갈 수 있도록 설정 */
-    margin: 20px; /* 여백을 추가하여 요소 간의 간격을 늘림 */
+    height: 320px;
+    margin: 10px;
+  }
+  .peer-title {
+    margin-right: 150px;
   }
 }
 
 @media (max-width: 1200px) {
   .peer-frame {
     width: calc(33.33% - 40px); /* 3개가 들어갈 수 있도록 설정 */
-    margin: 20px; /* 여백을 추가하여 요소 간의 간격을 늘림 */
+    margin: 20px;
+  }
+  .peer-title {
+    margin-right: 200px;
+  }
+  #peerSearchInput {
+    width: 100px;
   }
 }
 
 @media (max-width: 900px) {
   .peer-frame {
-    width: calc(50% - 10px); /* 2개가 들어갈 수 있도록 설정 */
-    margin: 15px; /* 여백을 추가하여 요소 간의 간격을 늘림 */
+    width: calc(50% - 20px); /* 4개가 들어갈 수 있도록 설정 */
+    margin: 10px;
+  }
+  .peer-title {
+    margin-right: 100px;
+  }
+  .peer-email {
+    font-size: var(--size-xlarge);
+  }
+  .peer-search-bar {
+    max-width: 200px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 899px) {
+  .peer-email {
+    font-size: var(--size-xlarge);
+  }
+  .peer-search-bar {
+    max-width: 400px;
+  }
+  .peer-title {
+    margin-right: 40px;
+  }
+  #peerSearchInput {
+    width: 200px;
   }
 }
 
 @media (max-width: 600px) {
   .peer-frame {
-    width: 100%; /* 1개가 전체 폭을 사용 */
-    margin: 15px; /* 여백을 추가하여 요소 간의 간격을 늘림 */
+    width: calc(50% - 20px); /* 4개가 들어갈 수 있도록 설정 */
+    margin: 10px;
+  }
+  .peer-name {
+    font-size: var(--size-xlarge);
+  }
+  .peer-search-bar {
+    max-width: 300px;
+  }
+  .peer-title {
+    margin-right: 10px;
+  }
+  #peerSearchInput {
+    width: 200px;
   }
 }
 
-/* 최소 너비 201px에서 최대 너비 300px */
-@media (min-width: 201px) and (max-width: 300px) {
-  .peer-frame {
-    height: 150px;
-    margin: 10px; /* 여백을 추가하여 요소 간의 간격을 늘림 */
-  }
-}
-
-/* 최소 너비 301px에서 최대 너비 400px */
-@media (min-width: 301px) and (max-width: 400px) {
-  .peer-frame {
-    height: 100px;
-    margin: 10px; /* 여백을 추가하여 요소 간의 간격을 늘림 */
-  }
-}
-
-@media (max-width: 500px) {
+@media (min-width: 401px) and (max-width: 500px) {
   .peer-frame {
     height: 200px;
-    margin: 10px; /* 여백을 추가하여 요소 간의 간격을 늘림 */
+    margin: 10px;
+  }
+  .image-circle {
+    width: calc(var(--space-large) * 3);
+    height: calc(var(--space-large) * 3);
+  }
+  .peer-email {
+    font-size: 7px;
+  }
+  .peer-search-bar {
+    max-width: 300px;
+  }
+  .peer-title {
+    margin-right: 150px;
+  }
+  #peerSearchInput {
+    width: 200px;
+  }
+}
+
+@media (min-width: 301px) and (max-width: 400px) {
+  .peer-frame {
+    height: 210px;
+    margin: 10px;
+  }
+  .image-circle {
+    width: calc(var(--space-large) * 3);
+    height: calc(var(--space-large) * 3);
+  }
+  .peer-email {
+    font-size: 7px;
+  }
+  .peer-title {
+    margin-right: 40px;
+  }
+  #peerSearchInput {
+    width: 100px;
+  }
+}
+
+@media (min-width: 201px) and (max-width: 300px) {
+  .peer-frame {
+    height: 190px;
+    margin: 10px;
+  }
+  .image-circle {
+    width: calc(var(--space-large) * 2);
+    height: calc(var(--space-large) * 2);
+  }
+  .peer-email {
+    font-size: 7px;
+  }
+  .peer-search-bar {
+    max-width: 30px;
+  }
+  .peer-title {
+    margin-right: 0px;
+  }
+  #peerSearchInput {
+    width: 100px;
   }
 }

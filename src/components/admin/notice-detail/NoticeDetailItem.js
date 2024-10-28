@@ -54,7 +54,7 @@ export const RenderAdminNoticeDetailItem = async (container, postId) => {
     buttonGroup.appendChild(deleteButton);
     buttonGroup.addEventListener('click', e => {
       if (e.target.textContent === '수정') {
-        navigate(`${ADMIN_PATH.NOTICE}/${postId}/edit`);
+        navigate(`${ADMIN_PATH.NOTICE_EDIT}/${postId}`);
       } else if (e.target.textContent === '삭제') {
         // 추후 모달로 변경
         const isDelete = confirm('정말 삭제하시겠습니까?');
