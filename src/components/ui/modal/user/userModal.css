@@ -99,7 +99,6 @@ button[data-type='punch-out']:hover {
   margin: var(--space-large);
   text-align: center;
   font-size: 1.2em;
-  margin-top: calc(var(--space-xsmall) * 5);
 }
 
 .error-message p {
