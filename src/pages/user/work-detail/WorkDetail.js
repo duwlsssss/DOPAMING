@@ -1,83 +1,113 @@
 import './WorkDetail.css';
+import axios from 'axios';
+import { WorkInfo } from '../../../../src/components/user/work-info/WorkInfo';
+import { generateCalendar } from '../../../utils/generateCalendar';
 
-const generateCalendar = (container, year, month) => {
-  const calendarContainer = container.querySelector('.work-calendar');
-  calendarContainer.innerHTML = ''; // 기존 내용 초기화
+let currentYear;
+let currentMonth;
+let filteredUsers = [];
 
-  // 요일 추가
-  const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
-  daysOfWeek.forEach(day => {
-    const dayElement = document.createElement('div');
-    dayElement.className = 'calendar-day';
-    dayElement.textContent = day;
-    calendarContainer.appendChild(dayElement);
+const updatePunchInfo = (container, selectedDate) => {
+  const punchInfoTime = container.querySelector('.punch-info-time');
+
+  const selectedUserData = filteredUsers.find(user => {
+    const punchDate = user.punch_date;
+
+    return punchDate === selectedDate; // 직접 비교
   });
 
-  // 날짜 계산
-  const date = new Date(year, month, 1);
-  const firstDay = date.getDay();
-  const totalDays = new Date(year, month + 1, 0).getDate();
+  if (selectedUserData) {
+    const punchInTime = new Date(selectedUserData.punch_in);
+    const punchOutTime = new Date(selectedUserData.punch_out);
+    const breakOutTime = selectedUserData.break_out
+      ? new Date(selectedUserData.break_out)
+      : null;
+    const breakInTime = selectedUserData.break_in
+      ? new Date(selectedUserData.break_in)
+      : null;
 
-  // 빈 칸 추가
-  for (let i = 0; i < firstDay; i++) {
-    const emptyElement = document.createElement('div');
-    emptyElement.className = 'calendar-day';
-    calendarContainer.appendChild(emptyElement);
-  }
-
-  // 날짜 추가
-  for (let i = 1; i <= totalDays; i++) {
-    const dayElement = document.createElement('div');
-    dayElement.className = 'calendar-day';
-    dayElement.textContent = i;
-    calendarContainer.appendChild(dayElement);
+    punchInfoTime.innerHTML = `
+      <p class="punch-in-time">${punchInTime.getHours()}시 ${punchInTime.getMinutes()}분</p>
+      <p class="punch-out-time">${punchOutTime.getHours()}시 ${punchOutTime.getMinutes()}분</p>
+      ${breakOutTime ? `<p class="break-outtime">${breakOutTime.getHours()}시 ${breakOutTime.getMinutes()}분</p>` : `<p class="break-outtime">--시 --분</p>`}
+      ${breakInTime ? `<p class="break-in-time">${breakInTime.getHours()}시 ${breakInTime.getMinutes()}분</p>` : `<p class="break-in-time">--시 --분</p>`}
+    `;
+  } else {
+    punchInfoTime.innerHTML = `
+      <p class="punch-in-time">--시 --분</p>
+      <p class="punch-out-time">--시 --분</p>
+      <p class="break-outtime">--시 --분</p>
+      <p class="break-in-time">--시 --분</p>
+    `;
   }
 };
 
-export const RenderUserWorkDetail = container => {
+const fetchFilteredUsers = async userId => {
+  const jsonFilePath = '../../../../server/data/time_punch.json';
+  try {
+    const response = await axios.get(jsonFilePath);
+    const users = Array.isArray(response.data) ? response.data : []; // 배열인지 확인
+
+    return users.filter(user => user.user_id === userId);
+  } catch (error) {
+    console.error('사용자 데이터를 가져오는 중 오류 발생! :', error);
+    return [];
+  }
+};
+
+export const RenderUserWorkDetail = async container => {
   const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth(); // 현재 월 (0부터 시작)
+  currentYear = today.getFullYear();
+  currentMonth = today.getMonth();
+
+  const specificUserId = '231231232'; // 특정 테스트 ID
+
+  // WorkInfo 컴포넌트 호출 및 HTML 및 사용자 데이터 삽입
+  const { html: workInfoHTML } = await WorkInfo(specificUserId, today);
+  filteredUsers = await fetchFilteredUsers(specificUserId);
 
   container.innerHTML = `
-    <div class="work-header">
-      <p class="work-title">출/퇴근 상세정보</p>
-      <input type="date" class="punch-date" value="${today.toISOString().split('T')[0]}" />
-    </div>
-
-    <div class="work-content">
-      <p class="work-desc">오늘 하루도 파이팅하세요!<br>~님의 매일을 응원합니다</p>
-      <div class="punch-info">
-        <div class="punch-info-title">
-          <p class="punch-in">출근</p>
-          <p class="punch-out">퇴근</p>
-          <p class="break-out">외출</p>
-          <p class="break-in">복귀</p>
-        </div>
-        <div class="punch-info-time">
-          <p class="punch-in-time">09시 02분</p>
-          <p class="punch-out-time">17시 30분</p>
-          <p class="break-outtime">12시 00분</p>
-          <p class="break-in-time">12시 30분</p>
-        </div>
-      </div>
-    </div>
-
+    ${workInfoHTML}
     <div class="work-calendar-box">
       <div class="title-content"> 
-      <span class="material-symbols-outlined">arrow_circle_right</span>
-        <p class="calendar-date"></p>
-        <span class="material-symbols-outlined">arrow_circle_right</span>
-        </div>
-      <div class="work-calendar">
+        <span class="material-symbols-rounded" id="calendar-before">arrow_circle_left</span>
+        <p class="calendar-title">${currentYear}년 ${currentMonth + 1}월</p>
+        <span class="material-symbols-rounded" id="calendar-after">arrow_circle_right</span>
       </div>
+      <div class="work-calendar"></div>
+      <div class="punch-info-time"></div>
     </div>
   `;
 
-  // 동적 달력 생성
-  generateCalendar(container, year, month);
+  generateCalendar(container, currentYear, currentMonth, filteredUsers);
+  updatePunchInfo(container, today.toISOString().split('T')[0]);
 
-  // calendar-title의 값을 변경
-  const calendarTitle = container.querySelector('.calendar-date');
-  calendarTitle.textContent = `${year}년 ${month + 1}월`;
+  // 아이콘 클릭
+  container.querySelector('#calendar-before').addEventListener('click', () => {
+    if (currentMonth === 0) {
+      currentYear -= 1;
+      currentMonth = 11;
+    } else {
+      currentMonth -= 1;
+    }
+    generateCalendar(container, currentYear, currentMonth, filteredUsers);
+    updatePunchInfo(container, container.querySelector('.punch-date').value);
+  });
+
+  container.querySelector('#calendar-after').addEventListener('click', () => {
+    if (currentMonth === 11) {
+      currentYear += 1;
+      currentMonth = 0;
+    } else {
+      currentMonth += 1;
+    }
+    generateCalendar(container, currentYear, currentMonth, filteredUsers);
+    updatePunchInfo(container, container.querySelector('.punch-date').value);
+  });
+
+  // 날짜 선택
+  container.querySelector('.punch-date').addEventListener('change', event => {
+    const selectedDate = event.target.value;
+    updatePunchInfo(container, selectedDate);
+  });
 };

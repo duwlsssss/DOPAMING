@@ -1,18 +1,37 @@
-import { RenderUserListHeader } from '../../../components/admin/user-list/UserListHeader';
-import { RenderUserList } from '../../../components/admin/user-list/UserList';
+import {
+  RenderUserListHeader,
+  RenderUserList,
+  RenderAdminHomeNoticeHeader,
+  RenderAdminHomeNotice,
+} from '../../../components';
 import './Home.css';
 
 export const RenderAdminHome = container => {
   container.innerHTML = `
     <main class="admin-container">
-      <div id="headerSection"></div>
-      <div id="userListSection"></div>
+      <section>
+        <div id="adminMainUserHeaderSection"></div>
+        <div id="adminMainUserListSection"></div>
+      </section>
+
+      <section>
+        <div id="adminMainNoticeHeaderSection"></div>
+        <div id="adminMainNoticeListSection"></div>
+      </section>
     </main>
   `;
 
-  const headerSection = document.querySelector('#headerSection');
-  const userListSection = document.querySelector('#userListSection');
+  const headerSection = document.querySelector('#adminMainUserHeaderSection');
+  const userListSection = document.querySelector('#adminMainUserListSection');
+  const noticeHeaderSection = document.querySelector(
+    '#adminMainNoticeHeaderSection',
+  );
+  const noticeListSection = document.querySelector(
+    '#adminMainNoticeListSection',
+  );
 
   RenderUserListHeader(headerSection);
   RenderUserList(userListSection);
+  RenderAdminHomeNoticeHeader(noticeHeaderSection);
+  RenderAdminHomeNotice(noticeListSection);
 };

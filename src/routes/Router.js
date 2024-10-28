@@ -1,19 +1,25 @@
 import { RenderHeader, RenderNavbar } from '../components';
 import RenderLayout from '../layout/Layout';
-// import { RenderAdminHome, RenderAdminMemberManagement, RenderAdminVacationManagement, RenderAdminNoticeManagement
-//   ,RenderUserHome,RenderUserEditProfile,RenderUserWorkDetail,RenderUserVacationManagement,RenderUserNotice,RenderUserPeer,RenderUserCourse
-//   ,RenderNotFound,RenderSignIn
-// } from '../pages';
+import extractParams from '../utils/extractParams';
 import {
   RenderAdminHome,
   RenderAdminMemberManagement,
   RenderUserHome,
-  RenderUserNotice,
+  RenderUserNoticeList,
+  RenderUserNoticeDetail,
   RenderUserEditProfile,
+  RenderUserVacationRequest,
   RenderUserPeer,
+  RenderUserCourse, // 추가
   RenderNotFound,
   RenderLogIn,
+  RenderAdminVacationManagement,
   RenderUserWorkDetail,
+  RenderAdminMemberDetail,
+  RenderUserVacationManagement,
+  RenderAdminNoticeManagement,
+  RenderAdminUploadMember,
+  RenderAdminUploadNotice,
 } from '../pages';
 import {
   ADMIN_PATH,
@@ -27,6 +33,7 @@ import {
 
 import { getIsMobile } from '../utils/responsive';
 import { getItem } from '../utils/storage';
+import { RenderAdminNoticeDetail } from '../pages/admin/notice/notice-detail/NoticeDetail';
 
 export default function Router() {
   const path = window.location.pathname;
@@ -64,7 +71,7 @@ export default function Router() {
   const contentEl = document.querySelector('.content');
 
   if (role === 'admin') {
-    RenderHeader(headerEl, false);
+    RenderHeader(headerEl);
     RenderNavbar(navbarEl, false, [
       { path: ADMIN_PATH.HOME, title: ADMIN_TITLE.HOME, icon: ADMIN_ICON.HOME },
       {
@@ -84,7 +91,7 @@ export default function Router() {
       },
     ]);
   } else {
-    RenderHeader(headerEl, true, USER_PATH.EDIT_PROFILE);
+    RenderHeader(headerEl, USER_PATH.EDIT_PROFILE);
     if (isMobile) {
       RenderNavbar(navbarEl, true, [
         { path: USER_PATH.NOTICE, title: '공지목록', icon: USER_ICON.NOTICE },
@@ -133,31 +140,61 @@ export default function Router() {
       ]);
     }
   }
+  // 경로에서 동적 매개변수 추출
 
-  switch (path) {
-    case ADMIN_PATH.HOME:
-      RenderAdminHome(contentEl);
-      break;
-    case ADMIN_PATH.MEMBER:
-      RenderAdminMemberManagement(contentEl);
-      break;
-    case USER_PATH.HOME:
-      RenderUserHome(contentEl);
-      break;
-    case USER_PATH.NOTICE:
-      RenderUserNotice(contentEl, '../../server/data/company_posts.json');
-      break;
-    case USER_PATH.EDIT_PROFILE:
-      RenderUserEditProfile(contentEl);
-      break;
-    case USER_PATH.PEER:
-      RenderUserPeer(contentEl);
-      break;
-    case USER_PATH.WORK_DETAIL:
-      RenderUserWorkDetail(contentEl);
-      break;
-    default:
-      RenderNotFound(root);
-      break;
+  //postId 추출
+  const paramsFormNotice = extractParams(`${USER_PATH.NOTICE}/:postId`, path);
+  const paramsFormAdminNotice = extractParams(
+    `${ADMIN_PATH.NOTICE}/:noticeId`,
+    path,
+  );
+  //memberId 추출
+  const paramsFormMember = extractParams(
+    `${ADMIN_PATH.MEMBER}/:memberId`,
+    path,
+  );
+  const postId = paramsFormNotice ? paramsFormNotice.postId : null;
+  const noticeId = paramsFormAdminNotice
+    ? paramsFormAdminNotice.noticeId
+    : null;
+  const memberId = paramsFormMember ? paramsFormMember.memberId : null;
+
+  if (path === ADMIN_PATH.HOME) {
+    RenderAdminHome(contentEl);
+  } else if (path === ADMIN_PATH.MEMBER) {
+    RenderAdminMemberManagement(contentEl);
+  } else if (path === ADMIN_PATH.MEMBER_UPLOAD) {
+    RenderAdminUploadMember(contentEl);
+  } else if (path === ADMIN_PATH.NOTICE_UPLOAD) {
+    RenderAdminUploadNotice(contentEl);
+  } else if (memberId && ADMIN_PATH.MEMBER) {
+    RenderAdminMemberDetail(contentEl, memberId);
+  } else if (noticeId) {
+    RenderAdminNoticeDetail(contentEl, noticeId);
+  } else if (path === ADMIN_PATH.VACATION) {
+    RenderAdminVacationManagement(contentEl);
+  } else if (path === ADMIN_PATH.NOTICE) {
+    RenderAdminNoticeManagement(contentEl);
+  } else if (path === USER_PATH.HOME) {
+    RenderUserHome(contentEl);
+  } else if (path === USER_PATH.NOTICE) {
+    RenderUserNoticeList(contentEl);
+  } else if (postId) {
+    // postId가 있는 경우(동적 경로가 매칭된 경우)
+    RenderUserNoticeDetail(contentEl, postId);
+  } else if (path === USER_PATH.EDIT_PROFILE) {
+    RenderUserEditProfile(contentEl);
+  } else if (path === USER_PATH.VACATION) {
+    RenderUserVacationManagement(contentEl);
+  } else if (path === USER_PATH.VACATIONREQUSET) {
+    RenderUserVacationRequest(contentEl);
+  } else if (path === USER_PATH.PEER) {
+    RenderUserPeer(contentEl);
+  } else if (path === USER_PATH.WORK_DETAIL) {
+    RenderUserWorkDetail(contentEl);
+  } else if (path === USER_PATH.COURSE) {
+    RenderUserCourse(contentEl);
+  } else {
+    RenderNotFound(root);
   }
 }

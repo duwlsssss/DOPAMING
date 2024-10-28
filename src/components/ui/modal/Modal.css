@@ -1,0 +1,42 @@
+@keyframes fadein {
+  /* 효과를 동작시간 동안 0 ~ 1까지 */
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadein 0.3s;
+}
+
+.modal-content {
+  background-color: white;
+  /*20px */
+  padding: var(--space-medium);
+  border-radius: var(--space-xsmall);
+  position: relative;
+  width: calc(var(--space-xxlarge) * 3.9);
+  height: calc(var(--space-xxlarge) * 2.6);
+  margin: auto;
+  box-shadow: 0 var(--space-xsmall) var(--space-small) rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}

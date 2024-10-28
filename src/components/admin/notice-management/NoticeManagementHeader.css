@@ -1,0 +1,26 @@
+.admin-notice-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-medium);
+}
+
+.admin-notice-management-header-controls {
+  display: flex;
+  gap: var(--space-small);
+  align-items: center;
+}
+
+.admin-notice-search-input {
+  max-height: 30px;
+}
+
+@media screen and (max-width: 600px) {
+  .admin-notice-management-header {
+    margin-bottom: var(--space-small);
+  }
+
+  .admin-notice-search-input {
+    max-width: 150px;
+  }
+}

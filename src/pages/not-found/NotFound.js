@@ -1,7 +1,7 @@
-import Router from '/src/routes/Router';
 import { ADMIN_PATH, USER_PATH } from '../../utils/constants';
 import { getItem } from '../../utils/storage';
 import './NotFound.css';
+import navigate from '../../utils/navigation';
 
 export const RenderNotFound = container => {
   container.innerHTML = `
@@ -20,9 +20,7 @@ export const RenderNotFound = container => {
   document.querySelector('button').addEventListener('click', () => {
     // SPA 방식으로 새로고침하지 않고 페이지 전환
     getItem('userRole') === 'admin'
-      ? Router(ADMIN_PATH.HOME)
-      : Router(USER_PATH.HOME);
-    history.pushState(null, null, ADMIN_PATH.HOME);
-    Router();
+      ? navigate(ADMIN_PATH.HOME)
+      : navigate(USER_PATH.HOME);
   });
 };

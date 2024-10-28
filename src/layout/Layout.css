@@ -6,6 +6,7 @@
   height: 100px;
   padding: var(--space-large);
   border-bottom: 1px solid var(--color-dark-gray);
+  z-index: 1;
 }
 
 .content-container {
@@ -15,21 +16,24 @@
 
 .navbar {
   flex: 2;
+  flex-basis: 0;
   margin-top: -100px;
   padding: var(--space-large);
   border-right: 1px solid var(--color-dark-gray);
   background-color: var(--color-white);
+  z-index: 1;
 }
 
 .content {
   flex: 8;
+  flex-basis: 0;
   overflow: auto;
   padding: var(--space-large);
 }
 
 @media (width<=767px) {
   .header {
-    justify-content: flex-start;
+    justify-content: space-between;
     width: 100%;
     max-height: 50px;
     padding: var(--space-small);

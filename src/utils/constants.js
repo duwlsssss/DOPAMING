@@ -3,6 +3,8 @@ export const ADMIN_PATH = {
   MEMBER: '/admin/member',
   VACATION: '/admin/vacation',
   NOTICE: '/admin/notice',
+  NOTICE_UPLOAD: '/admin/notice/upload',
+  MEMBER_UPLOAD: '/admin/member/upload',
 };
 
 export const ADMIN_TITLE = {
@@ -27,6 +29,8 @@ export const USER_PATH = {
   NOTICE: '/notice',
   PEER: '/peer',
   COURSE: '/course',
+  //부재 신청 페이지 추가
+  VACATIONREQUSET: '/vacation/request',
 };
 
 export const USER_TITLE = {
@@ -64,5 +68,6 @@ export const ICONS = {
   SURFING: 'surfing',
   ARROW_DOWN: 'keyboard_arrow_down',
   ARROW_UP: 'keyboard_arrow_up',
+  ARROW_LEFT: 'arrow_left_alt',
   CALENDAR: 'calendar_month',
 };
