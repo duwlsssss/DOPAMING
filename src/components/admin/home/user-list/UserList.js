@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+import navigate from '../../../../utils/navigation';
 import { sortByName } from '../../../../utils/sortByName';
 import { Button } from '../../../ui/button/Button';
+import { ADMIN_PATH } from '../../../../utils/constants';
 import './UserList.css';
 
 export const RenderUserList = async (container, filter = 'all') => {
@@ -57,7 +59,7 @@ export const RenderUserList = async (container, filter = 'all') => {
 
     // 상세 보기 버튼 처리
     const handleDetailClick = user => {
-      console.log('선택된 직원 정보: ', user);
+      navigate(`${ADMIN_PATH.MEMBER}/${user.user_id}`);
     };
 
     // 각 detail-button-container에 버튼 추가
