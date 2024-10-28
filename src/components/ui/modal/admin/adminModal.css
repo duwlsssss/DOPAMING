@@ -71,12 +71,14 @@ button[data-type='vacation-permit-cancle'] {
 /* 성공한 경우 */
 
 /* 성공 메시지 스타일 */
+.error-message,
 .success-message {
   text-align: center; /* 성공 메시지 가운데 정렬 */
   font-size: 1.2em;
   margin-top: var(--space-medium);
 }
 
+.error-message p,
 .success-message p {
   line-height: 1.5;
   margin-top: var(--font-small);
@@ -86,7 +88,6 @@ button[data-type='vacation-permit-cancle'] {
 .modal-content .material-symbols-rounded {
   font-size: calc(var(--font-xxlarge) * 1.8);
   display: block;
-  margin: 0 auto;
 }
 .success-message .close-button {
   width: calc(var(--space-large) * 3);
@@ -96,17 +97,6 @@ button[data-type='vacation-permit-cancle'] {
 }
 
 /* 실패한 경우 */
-.error-message {
-  text-align: center; /* 실패 메시지 가운데 정렬 */
-  font-size: 1.2em;
-  margin-top: calc(var(--space-xsmall) * 5);
-}
-
-.error-message p {
-  line-height: 1.5;
-  margin-top: var(--font-small);
-  margin-bottom: var(--font-small);
-}
 
 .error-message .retry-button,
 .error-message .close-button {
@@ -116,6 +106,9 @@ button[data-type='vacation-permit-cancle'] {
 }
 
 .error-message .close-button {
+  width: calc(var(--space-large) * 3);
+  height: calc(var(--space-small) * 5);
+  margin-top: var(--space-small);
   background-color: var(--color-light-gray);
 }
 

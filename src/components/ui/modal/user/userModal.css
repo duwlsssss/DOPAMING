@@ -69,10 +69,9 @@ button[data-type='punch-out'] {
 }
 
 .success-message .close-button {
-  width: calc(var(--space-large) * 3);
+  width: calc(var(--space-large) * 3.3);
   height: calc(var(--space-small) * 5);
-  margin-top: var(--space-small);
-  background-color: var(--color-light-gray);
+  margin: calc(var(--space-xsmall) * 5) var(--space-small); /* 버튼 간 간격을 조정 */
 }
 
 /* 실패한 경우 */
