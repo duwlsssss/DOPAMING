@@ -123,13 +123,13 @@
 
 .punch-time .curr-time-board {
   width: 100%;
-  min-height: 50px;
   background-color: var(--color-pale-gray);
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
   border-radius: var(--base-border-radius);
+  padding: var(--space-small);
 }
 
 .punch-time .curr-time-board .curr-date {
@@ -137,19 +137,11 @@
 }
 
 .punch-time .punch-time-header {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: var(--space-medium);
-}
-
-.punch-time .punch-time-header .punch-detail-button {
-  width: 100px;
-  font-size: var(--font-medium);
-  border-radius: var(--base-border-radius);
-  background-color: var(--color-light-gray);
-  padding: 5px;
-  margin-bottom: 10px;
 }
 
 .punch-time .punch-time-board {
@@ -160,14 +152,11 @@
 
 .punch-time .punch-time-board .punch-time-board-box {
   width: 20%;
-  min-width: 30px;
-  height: 100%;
+  background-color: var(--color-pale-gray);
+  border-radius: var(--base-border-radius);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: var(--space-small);
-  background-color: var(--color-pale-gray);
-  border-radius: var(--base-border-radius);
 }
 
 .punch-time
@@ -220,6 +209,7 @@
   background-color: var(--color-pale-gray);
   overflow-x: scroll;
   white-space: nowrap;
+  padding-top: var(--space-small);
 }
 
 .notice-gallery .notice-list .notice-item-container {

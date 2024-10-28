@@ -13,9 +13,16 @@
 
 .admin-notice-search-input {
   max-height: 30px;
+  padding: var(--space-small);
+  outline: none;
+  border-radius: var(--base-border-radius);
 }
 
 @media screen and (max-width: 600px) {
+  .admin-notice-management-header {
+    margin-bottom: var(--space-small);
+  }
+
   .admin-notice-search-input {
     max-width: 150px;
   }

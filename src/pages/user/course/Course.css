@@ -1,6 +1,6 @@
 .course-question {
   width: 300px;
-  height: 200px;
+  height: 300px;
   background-color: orange;
   padding: 10px;
   border-radius: 8px;
@@ -9,7 +9,7 @@
 
 .course-success {
   width: 300px;
-  height: 250px;
+  height: 400px;
   background-color: antiquewhite;
   padding: 10px;
   border-radius: 8px;
@@ -18,14 +18,13 @@
 
 .course-fail {
   width: 300px;
-  height: 200px;
+  height: 300px;
   background-color: cadetblue;
   padding: 10px;
   border-radius: 8px;
 }
 
 /* 버튼 스타일 */
-
 .course-question button,
 .course-success button,
 .course-fail button {
@@ -40,6 +39,7 @@
 }
 
 /* 질문 섹션 버튼 스타일 */
+
 .course-question button {
   background-color: #ff9800;
   color: white;
@@ -50,6 +50,7 @@
 }
 
 /* 성공 섹션 버튼 스타일 */
+
 .course-success button {
   background-color: #ffeb3b;
   color: black;
@@ -60,6 +61,7 @@
 }
 
 /* 실패 섹션 버튼 스타일 */
+
 .course-fail button {
   background-color: #2196f3;
   color: white;

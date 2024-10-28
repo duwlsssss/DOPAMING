@@ -36,29 +36,28 @@ export const RenderUserEditProfile = async container => {
   // 사용자 데이터 가져오기
   await fetchUserData(container);
 
-  // 모달 인스턴스 생성
-  const modal = new Modal();
-
   // 버튼 추가
   const buttonPosition = container.querySelector('.user-edit-form-container');
-  const submitBtn = Button({
-    className: 'edit-submit-btn',
-    text: '수정하기',
-    color: 'skyblue',
-    shape: 'block',
-    padding: 'var(--space-medium)',
-    fontWeight: 700,
-    onClick: e => {
-      e.preventDefault();
-      if (validInput(userPassword)) {
-        // 모달 열기
-        modal.open('edit-profile-success');
-      } else {
-        alert('입력이 유효하지 않습니다.');
-      }
-    },
-  });
-  buttonPosition.append(submitBtn);
+  if (buttonPosition) {
+    const submitBtn = Button({
+      className: 'edit-submit-btn',
+      text: '수정하기',
+      color: 'skyblue',
+      shape: 'block',
+      padding: 'var(--space-medium)',
+      fontWeight: 700,
+      onClick: e => {
+        e.preventDefault();
+        if (validInput(userPassword)) {
+          // 모달 열기
+          Modal('edit-profile'); // edit-profile 타입으로 변경
+        } else {
+          alert('입력이 유효하지 않습니다.');
+        }
+      },
+    });
+    buttonPosition.append(submitBtn);
+  }
 
   // ProfileImage 이벤트 리스너 추가
   attachProfileImageEvents(container);

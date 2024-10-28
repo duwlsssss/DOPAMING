@@ -6,6 +6,7 @@
     "punch_date": "2024-10-02",
     "punch_in": "2024-10-02 10:00",
     "punch_out": "2024-10-02 19:00",
+<<<<<<< HEAD
     "user_id": "231231231"
   },
   {
@@ -16,6 +17,9 @@
     "punch_in": "2024-10-02 10:00",
     "punch_out": "2024-10-02 19:00",
     "user_name" : "차재식",
+=======
+    "user_name": "차재식",
+>>>>>>> c638bb5b1bd91072f52459e8a2bb59cc28578bec
     "user_id": "231231232"
   },
   {
@@ -25,7 +29,7 @@
     "punch_date": "2024-10-25",
     "punch_in": "2024-10-25 10:20",
     "punch_out": "2024-10-25 19:10",
-    "user_name" : "차재식",
+    "user_name": "차재식",
     "user_id": "231231232"
   },
   {
@@ -35,13 +39,14 @@
     "punch_date": "2024-10-25",
     "punch_in": "2024-10-04 9:55",
     "punch_out": "2024-10-04 19:00",
-    "user_name" : "차재식",
+    "user_name": "차재식",
     "user_id": "231231232"
   },
   {
     "punch_id": "34rtert24r",
     "break_in": "",
     "break_out": "",
+<<<<<<< HEAD
     "punch_date": "2024-09-04",
     "punch_in": "2024-09-04 9:55",
     "punch_out": "2024-09-04 19:00",
@@ -194,45 +199,12 @@
     "punch_id": "45df3rgqwer",
     "break_in": "",
     "break_out": "",
+=======
+>>>>>>> c638bb5b1bd91072f52459e8a2bb59cc28578bec
     "punch_date": "2024-10-28",
-    "punch_in": "2024-10-28 08:10",
-    "punch_out": "2024-10-28 16:10",
-    "user_id": "231231231"
-  },
-  {
-    "punch_id": "654gfdwerg5",
-    "break_in": "",
-    "break_out": "",
-    "punch_date": "2024-10-29",
-    "punch_in": "2024-10-29 09:55",
-    "punch_out": "2024-10-29 17:55",
-    "user_id": "231231231"
-  },
-  {
-    "punch_id": "vfb23ger3gf",
-    "break_in": "",
-    "break_out": "",
-    "punch_date": "2024-10-30",
-    "punch_in": "2024-10-30 08:05",
-    "punch_out": "2024-10-30 16:05",
-    "user_id": "231231231"
-  },
-  {
-    "punch_id": "vfb23ger3gf",
-    "break_in": "",
-    "break_out": "",
-    "punch_date": "2024-10-31",
-    "punch_in": "2024-10-31 08:05",
-    "punch_out": "2024-10-31 16:05",
-    "user_id": "231231231"
-  },
-  {
-    "punch_id": "vfb23ger3gf",
-    "break_in": "",
-    "break_out": "",
-    "punch_date": "2024-11-1",
-    "punch_in": "2024-11-1 08:05",
-    "punch_out": "2024-11-1 16:05",
-    "user_id": "231231231"
+    "punch_in": "2024-10-28 9:55",
+    "punch_out": "2024-10-28 19:00",
+    "user_name": "차재식",
+    "user_id": "231231232"
   }
 ]
