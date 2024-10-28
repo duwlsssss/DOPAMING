@@ -3,7 +3,7 @@ import './Course.css';
 
 export const RenderUserCourse = container => {
   container.innerHTML = `
-    <div class="question">
+    <div class="course-question">
       <button id="employee-delete-button">직원 삭제</button>
       <button id="notice-delete-button">공지 삭제</button>
       <button id="vacation-permit-button">부재 요청 승인</button>
@@ -11,7 +11,7 @@ export const RenderUserCourse = container => {
       <button id="vacation-reject-button">부재 요청 거부</button>
       <button id="vacation-reject-cancle-button">부재 요청 거부 취소</button>
     </div>
-    <div class="success">
+    <div class="course-success">
       <button id="employee-delete-success">직원 삭제 성공</button>
       <button id="notice-delete-success">공지 삭제 성공</button>
       <button id="vacation-permit-success">부재 요청 승인 성공</button>
@@ -21,7 +21,7 @@ export const RenderUserCourse = container => {
       <button id="notice-upload-success">공지 업로드</button>
       <button id="employee-registration-success">직원 등록</button>
     </div>
-    <div class="fail">
+    <div class="course-fail">
       <button id="vacation-permit-fail">부재 요청 실패</button>
       <button id="vacation-permit-cancle-fail">부재 요청 승인 취소 실패</button>
       <button id="vacation-reject-fail">부재 요청 거부 실패</button>

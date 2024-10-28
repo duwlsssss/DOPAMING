@@ -67,7 +67,7 @@
   border-radius: var(--base-border-radius);
 }
 
-.material-symbols-rounded {
+.current-time-board .material-symbols-rounded {
   font-size: calc(var(--font-medium) * 2);
   margin: 0 10px;
 }
