@@ -29,7 +29,7 @@
   border-radius: var(--space-xsmall);
   position: relative;
   width: calc(var(--space-xxlarge) * 3.9);
-  height: calc(var(--space-xxlarge) * 2.4);
+  height: calc(var(--space-xxlarge) * 2.6);
   margin: auto;
   box-shadow: 0 var(--space-xsmall) var(--space-small) rgba(0, 0, 0, 0.2);
   display: flex;
