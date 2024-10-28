@@ -19,6 +19,7 @@ import {
   RenderUserVacationManagement,
   RenderAdminNoticeManagement,
   RenderAdminUploadMember,
+  RenderAdminEditNotice,
   RenderAdminUploadNotice,
 } from '../pages';
 import {
@@ -148,6 +149,11 @@ export default function Router() {
     `${ADMIN_PATH.NOTICE}/:noticeId`,
     path,
   );
+
+  const paramsFormAdminNoticeEdit = extractParams(
+    `${ADMIN_PATH.NOTICE_EDIT}/:noticeId`,
+    path,
+  );
   //memberId 추출
   const paramsFormMember = extractParams(
     `${ADMIN_PATH.MEMBER}/:memberId`,
@@ -157,6 +163,10 @@ export default function Router() {
   const noticeId = paramsFormAdminNotice
     ? paramsFormAdminNotice.noticeId
     : null;
+
+  const editNoticeId = paramsFormAdminNoticeEdit
+    ? paramsFormAdminNoticeEdit.noticeId
+    : null;
   const memberId = paramsFormMember ? paramsFormMember.memberId : null;
 
   if (path === ADMIN_PATH.HOME) {
@@ -165,16 +175,18 @@ export default function Router() {
     RenderAdminMemberManagement(contentEl);
   } else if (path === ADMIN_PATH.MEMBER_UPLOAD) {
     RenderAdminUploadMember(contentEl);
-  } else if (path === ADMIN_PATH.NOTICE_UPLOAD) {
-    RenderAdminUploadNotice(contentEl);
   } else if (memberId && ADMIN_PATH.MEMBER) {
     RenderAdminMemberDetail(contentEl, memberId);
-  } else if (noticeId) {
+  } else if (noticeId !== 'upload' && noticeId && ADMIN_PATH.NOTICE) {
     RenderAdminNoticeDetail(contentEl, noticeId);
-  }else if (path === ADMIN_PATH.VACATION) {
+  } else if (editNoticeId && ADMIN_PATH.NOTICE_EDIT) {
+    RenderAdminEditNotice(contentEl, editNoticeId);
+  } else if (path === ADMIN_PATH.VACATION) {
     RenderAdminVacationManagement(contentEl);
   } else if (path === ADMIN_PATH.NOTICE) {
     RenderAdminNoticeManagement(contentEl);
+  } else if (path === ADMIN_PATH.NOTICE_UPLOAD) {
+    RenderAdminUploadNotice(contentEl);
   } else if (path === USER_PATH.HOME) {
     RenderUserHome(contentEl);
   } else if (path === USER_PATH.NOTICE) {

@@ -4,6 +4,7 @@ export const ADMIN_PATH = {
   VACATION: '/admin/vacation',
   NOTICE: '/admin/notice',
   NOTICE_UPLOAD: '/admin/notice/upload',
+  NOTICE_EDIT: '/admin/notice/edit',
   MEMBER_UPLOAD: '/admin/member/upload',
 };
 
