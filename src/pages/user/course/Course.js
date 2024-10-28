@@ -1,4 +1,4 @@
-import Modal from '../../../components/ui/modal/Modal'; // Modal 클래스 임포트
+import { Modal } from '../../../components';
 import './Course.css';
 
 export const RenderUserCourse = container => {

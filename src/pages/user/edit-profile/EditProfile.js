@@ -6,13 +6,13 @@ import {
   EditProfileForm,
   ProfileImage,
   attachProfileImageEvents,
+  Modal,
 } from '../../../components';
 import {
   applyProfileImage,
   listenForProfileImageUpdate,
 } from '../../../utils/handleProfileImg';
 import axios from 'axios';
-import Modal from '../../../components/ui/modal/Modal';
 
 // validInput에 넘길 비번
 let userPassword = '';

@@ -1,4 +1,4 @@
-import { ApiClient } from '../../../../apis/ApiClient';
+import { ApiClient } from '../../../../apis/apiClient';
 import { Button } from '../../../../components';
 import { Accordion } from '../../../../components/ui/accordion/Accordion';
 import './MemberDetail.css';

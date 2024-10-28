@@ -24,12 +24,10 @@ export const formatUserTime = time => {
   return time ? formatTimeWithoutSeconds(new Date(time)) : '--시 --분';
 };
 
-export const updateCurrentTime = () => {
-  const now = new Date();
-  const formattedDate = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일`;
-  const currentTime = `${formattedDate} ${formatTimeWithSeconds(now)}`;
-  const punchTimeElement = document.querySelector('.punch-time');
-  if (punchTimeElement) {
-    punchTimeElement.innerText = currentTime; // 현재 시각 업데이트
-  }
+export const calculateDday = endDate => {
+  const today = new Date();
+  const end = new Date(endDate);
+  const diffInTime = end - today; // 밀리초 단위 차이
+  const diffInDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24)); // 일 단위로 변환
+  return diffInDays >= 0 ? `D-${diffInDays}` : `D+${Math.abs(diffInDays)}`;
 };

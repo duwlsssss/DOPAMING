@@ -42,7 +42,7 @@ export const RenderUserNoticeList = async container => {
     //notice-item-container클릭시 notice-detail 페이지로 이동하게 함
     //모든 notice-item-container에 클릭 이벤트 핸들러 연결함
     const attachClickHandlersToNotices = () => {
-      const noticeItems = document.querySelectorAll(
+      const noticeItems = container.querySelectorAll(
         '.user-notice-item-container',
       );
       noticeItems.forEach(item => {

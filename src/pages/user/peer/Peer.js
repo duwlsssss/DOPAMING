@@ -40,7 +40,6 @@ export const RenderUserPeer = async container => {
   };
 
   const peerBox = container.querySelector('.peer-box');
-  const jsonFilePath = '../../server/data/users.json';
 
   // 사용자 데이터 가져오기
   const fetchUserData = async () => {

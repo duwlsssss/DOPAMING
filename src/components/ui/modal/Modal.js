@@ -27,7 +27,7 @@ function createModalElement() {
   return { modal, modalContent };
 }
 
-function Modal(type) {
+export function Modal(type) {
   const { modal, modalContent } = createModalElement();
   document.body.appendChild(modal);
 
@@ -99,6 +99,3 @@ function closeModal(modal) {
   modal.style.display = 'none'; // 모달을 숨김
   document.body.removeChild(modal); // 모달 요소 제거
 }
-
-// 기본 내보내기 추가
-export default Modal;
