@@ -10,6 +10,7 @@ import {
   RenderUserEditProfile,
   RenderUserVacationRequest,
   RenderUserPeer,
+  RenderUserCourse, // 추가
   RenderNotFound,
   RenderLogIn,
   RenderAdminVacationManagement,
@@ -191,6 +192,8 @@ export default function Router() {
     RenderUserPeer(contentEl);
   } else if (path === USER_PATH.WORK_DETAIL) {
     RenderUserWorkDetail(contentEl);
+  } else if (path === USER_PATH.COURSE) {
+    RenderUserCourse(contentEl);
   } else {
     RenderNotFound(root);
   }
