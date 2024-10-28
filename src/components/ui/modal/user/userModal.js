@@ -68,7 +68,7 @@ export function userModalContent(type, modalInstance) {
       <p class="modal-time">정말로 부재를 신청하시겠습니까?</p>
       <div class="button-container">
       <span class="material-symbols-rounded">Help</span>
-        <button class="confirm-button" data-type="break-in">예</button>
+        <button class="confirm-button" data-type="vacation">예</button>
         <button class="cancel-button">아니요</button>
       </div>
     `;
@@ -76,115 +76,30 @@ export function userModalContent(type, modalInstance) {
 
     // 성공한 경우
     case 'punch-in-success':
-      content = `
-        <div class="success-message">
-          <span class="material-symbols-rounded">check_circle</span>
-          <p>출근이 정상적으로 처리 되었습니다.<br>오늘도 힘내봐요!</p>
-          <button class="close-button">닫기</button>
-        </div>`;
-      break;
-
     case 'punch-out-success':
-      content = `
-        <div class="success-message">
-          <span class="material-symbols-rounded">check_circle</span>
-          <p>퇴근이 정상적으로 처리 되었습니다.<br>오늘 하루도 고생했어요!</p>
-          <button class="close-button">닫기</button>
-        </div>`;
-      break;
-
     case 'break-out-success':
-      content = `
-        <div class="success-message">
-          <span class="material-symbols-rounded">check_circle</span>
-          <p>외출이 정상적으로 처리 되었습니다.<br>잠시 쉬어볼까요?</p>
-          <button class="close-button">닫기</button>
-        </div>`;
-      break;
-
     case 'break-in-success':
-      content = `
-        <div class="success-message">
-          <span class="material-symbols-rounded">check_circle</span>
-          <p>복귀가 정상적으로 처리 되었습니다.<br>다시 힘내봐요!</p>
-          <button class="close-button">닫기</button>
-        </div>`;
-      break;
-
     case 'edit-profile-success':
-      content = `
-        <div class="success-message">
-          <span class="material-symbols-rounded">check_circle</span>
-          <p>프로필 수정이 정상적으로 처리 되었습니다.<br>저장되었습니다!</p>
-          <button class="close-button">닫기</button>
-        </div>`;
-      break;
-
     case 'vacation-success':
       content = `
-      <div class="success-message">
-        <span class="material-symbols-rounded">check_circle</span>
-        <p>휴가 신청이 정상적으로 처리 되었습니다.<br>다시 힘내봐요!</p>
-        <button class="close-button">닫기</button>
-      </div>`;
+        <div class="success-message">
+          <span class="material-symbols-rounded">check_circle</span>
+          <p>${getSuccessMessage(type)}</p>
+          <button class="close-button">닫기</button>
+        </div>`;
       break;
 
     // 실패한 경우
     case 'punch-in-fail':
-      content = `
-          <div class="error-message">
-            <span class="material-symbols-rounded">warning</span>
-            <p>출근 절차에서 오류가 발생했어요!</p>
-              <button class="retry-button">다시 시도</button>
-              <button class="close-button">닫기</button>
-          </div>`;
-      break;
-
     case 'punch-out-fail':
-      content = `
-        <div class="error-message">
-          <span class="material-symbols-rounded">warning</span>
-          <p>퇴근 절차에서 오류가 발생했어요!</p>
-          <button class="retry-button">다시 시도</button>
-          <button class="close-button">닫기</button>
-        </div>`;
-      break;
-
     case 'break-out-fail':
-      content = `
-        <div class="error-message">
-          <span class="material-symbols-rounded">warning</span>
-          <p>외출 절차에서 오류가 발생했어요!</p>
-          <button class="retry-button">다시 시도</button>
-          <button class="close-button">닫기</button>
-        </div>`;
-      break;
-
     case 'break-in-fail':
-      content = `
-        <div class="error-message">
-          <span class="material-symbols-rounded">warning</span>
-          <p>복귀 절차에서 오류가 발생했어요!</p>
-          <button class="retry-button">다시 시도</button>
-          <button class="close-button">닫기</button>
-        </div>`;
-      break;
-
     case 'vacation-fail':
-      content = `
-        <div class="error-message">
-          <span class="material-symbols-rounded">warning</span>
-          <p>휴가 신청 절차에서 오류가 발생했어요!</p>
-          <button class="retry-button">다시 시도</button>
-          <button class="close-button">닫기</button>
-        </div>`;
-      break;
-
     case 'edit-profile-fail':
       content = `
         <div class="error-message">
           <span class="material-symbols-rounded">warning</span>
-          <p>프로필 수정 절차에서 오류가 발생했어요!</p>
+          <p>${getErrorMessage(type)}</p>
           <button class="retry-button">다시 시도</button>
           <button class="close-button">닫기</button>
         </div>`;
@@ -203,7 +118,42 @@ export function userModalContent(type, modalInstance) {
   const fragment = document.createElement('div');
   fragment.innerHTML = content;
 
-  // 확인 이벤트 리스너 추가
+  // 이벤트 리스너 추가
+  addEventListeners(fragment, modalInstance);
+
+  return fragment;
+}
+
+function getSuccessMessage(type) {
+  const messages = {
+    'punch-in-success': '출근이 정상적으로 처리되었습니다.<br>오늘도 힘내봐요!',
+    'punch-out-success':
+      '퇴근이 정상적으로 처리되었습니다.<br>오늘 하루도 고생했어요!',
+    'break-out-success':
+      '외출이 정상적으로 처리되었습니다.<br>잠시 쉬어볼까요!',
+    'break-in-success': '복귀가 정상적으로 처리되었습니다.<br>다시 힘내봐요!',
+    'edit-profile-success':
+      '프로필 수정이 정상적으로 처리되었습니다.<br>저장되었습니다!',
+    'vacation-success':
+      '휴가 신청이 정상적으로 처리되었습니다.<br>다시 힘내봐요!',
+  };
+  return messages[type] || '저장되었습니다!';
+}
+
+function getErrorMessage(type) {
+  const messages = {
+    'punch-in-fail': '출근 절차에서 오류가 발생했어요!',
+    'punch-out-fail': '퇴근 절차에서 오류가 발생했어요!',
+    'break-out-fail': '외출 절차에서 오류가 발생했어요!',
+    'break-in-fail': '복귀 절차에서 오류가 발생했어요!',
+    'vacation-fail': '휴가 신청 절차에서 오류가 발생했어요!',
+    'edit-profile-fail': '프로필 수정 절차에서 오류가 발생했어요!',
+  };
+  return messages[type] || '오류가 발생했습니다!';
+}
+
+function addEventListeners(fragment, modalInstance) {
+  // 확인 버튼 이벤트 리스너 추가
   const confirmButton = fragment.querySelector('.confirm-button');
   if (confirmButton) {
     confirmButton.addEventListener('click', () => {
@@ -228,9 +178,7 @@ export function userModalContent(type, modalInstance) {
     });
   }
 
-  // 임시 테스트를 위한 클릭 리스너 코드
-
-  // 출근실패 버튼 이벤트 리스너 추가
+  // 출근 실패 버튼 이벤트 리스너 추가
   const punchInFailButton = fragment.querySelector('.punch-in-fail');
   if (punchInFailButton) {
     punchInFailButton.addEventListener('click', () => {
@@ -238,7 +186,7 @@ export function userModalContent(type, modalInstance) {
     });
   }
 
-  // 퇴근실패 버튼 이벤트 리스너 추가
+  // 퇴근 실패 버튼 이벤트 리스너 추가
   const punchOutFailButton = fragment.querySelector('.punch-out-fail');
   if (punchOutFailButton) {
     punchOutFailButton.addEventListener('click', () => {
@@ -246,7 +194,7 @@ export function userModalContent(type, modalInstance) {
     });
   }
 
-  // 외출실패 버튼 이벤트 리스너 추가
+  // 외출 실패 버튼 이벤트 리스너 추가
   const breakOutFailButton = fragment.querySelector('.break-out-fail');
   if (breakOutFailButton) {
     breakOutFailButton.addEventListener('click', () => {
@@ -254,13 +202,11 @@ export function userModalContent(type, modalInstance) {
     });
   }
 
-  // 복귀실패 버튼 이벤트 리스너 추가
+  // 복귀 실패 버튼 이벤트 리스너 추가
   const breakInFailButton = fragment.querySelector('.break-in-fail');
   if (breakInFailButton) {
     breakInFailButton.addEventListener('click', () => {
       modalInstance.handleConfirm('break-in-fail'); // 복귀 실패 처리
     });
   }
-
-  return fragment;
 }

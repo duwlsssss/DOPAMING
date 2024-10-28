@@ -1,6 +1,6 @@
 import './Home.css';
 import { WorkInfo } from '../../../components/user/work-info/WorkInfo';
-import Modal from '../../../components/ui/modal/Modal'; // Modal 클래스 임포트
+import Modal from '../../../components/ui/modal/Modal'; // Modal 함수 임포트
 import {
   formatDate,
   formatUserTime,
@@ -71,8 +71,6 @@ export const RenderUserHome = async container => {
     </div>
   `;
 
-  const modal = new Modal(); // Modal 인스턴스 생성
-
   // "상세보기" 버튼 클릭 이벤트 추가
   const punchDetailButton = container.querySelector('.punch-detail-button');
   if (punchDetailButton) {
@@ -94,7 +92,7 @@ export const RenderUserHome = async container => {
     if (button) {
       button.addEventListener('click', () => {
         console.log(`${type} 버튼 클릭됨`);
-        modal.open(type); // 모달 열기
+        Modal(type); // 모달 열기
       });
     }
   }

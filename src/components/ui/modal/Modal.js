@@ -33,58 +33,43 @@ function Modal(type) {
 
   modalContent.innerHTML = ''; // 이전 내용 초기화
 
+  const modalInstance = {
+    close: () => closeModal(modal),
+    handleConfirm: actionType => {
+      if (actionType.endsWith('-fail')) {
+        // 실패 타입
+        modalContent.innerHTML = ''; // 내용 초기화
+        modalContent.appendChild(userModalContent(actionType, modalInstance)); // 실패 메시지 추가
+      } else {
+        // 성공 타입
+        const successType = `${actionType}-success`; // 예: 'punch-in-success'
+        modalContent.innerHTML = ''; // 내용 초기화
+        modalContent.appendChild(userModalContent(successType, modalInstance)); // 성공 메시지 추가
+      }
+    },
+    handleCancel: () => {
+      console.log('Action canceled');
+      closeModal(modal); // 모달을 닫습니다.
+    },
+  };
+
   switch (type) {
     // USER
     case 'punch-in':
     case 'punch-out':
     case 'break-out':
     case 'break-in':
+      modalContent.appendChild(userModalContent(type, modalInstance));
+      break;
     case 'edit-profile':
-    case 'punch-in-success':
-    case 'punch-in-fail':
-    case 'punch-out-success':
-    case 'punch-out-fail':
-    case 'break-out-success':
-    case 'break-out-fail':
-    case 'break-in-success':
-    case 'break-in-fail':
-    case 'vacation-success':
-    case 'vacation-fail':
-    case 'profile-edit-success':
-    case 'profile-edit-fail':
-      modalContent.appendChild(
-        userModalContent(type, { close: () => closeModal(modal) }),
-      );
+      // edit-profile의 경우 성공 처리를 수행
+      modalInstance.handleConfirm('edit-profile-success'); // 성공 처리
       break;
 
     // ADMIN
     case 'employee-delete':
     case 'notice-delete':
-    case 'vacation-permit':
-    case 'vacation-permit-cancle':
-    case 'vacation-reject':
-    case 'vacation-reject-cancle':
-    case 'notice-upload':
-    case 'employee-registration':
-    case 'employee-delete-success':
-    case 'notice-delete-success':
-    case 'vacation-permit-success':
-    case 'vacation-permit-cancle-success':
-    case 'vacation-reject-success':
-    case 'vacation-reject-cancle-success':
-    case 'notice-upload-success':
-    case 'employee-registration-success':
-    case 'employee-delete-fail':
-    case 'notice-delete-fail':
-    case 'vacation-permit-fail':
-    case 'vacation-permit-cancle-fail':
-    case 'vacation-reject-fail':
-    case 'vacation-reject-cancle-fail':
-    case 'notice-upload-fail':
-    case 'employee-registration-fail':
-      modalContent.appendChild(
-        adminModalContent(type, { close: () => closeModal(modal) }),
-      );
+      modalContent.appendChild(adminModalContent(type, modalInstance));
       break;
 
     default:
