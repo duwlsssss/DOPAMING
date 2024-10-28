@@ -1,5 +1,4 @@
 @keyframes fadein {
-  /* 효과를 동작시간 동안 0 ~ 1까지 */
   from {
     opacity: 0;
   }
@@ -19,17 +18,16 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  animation: fadein 0.3s;
+  animation: fadein 0.3s ease-in-out;
 }
 
 .modal-content {
   background-color: white;
   /*20px */
-  padding: var(--space-medium);
   border-radius: var(--space-xsmall);
   position: relative;
-  width: calc(var(--space-xxlarge) * 3.9);
-  height: calc(var(--space-xxlarge) * 2.6);
+  width: 500px;
+  height: auto;
   margin: auto;
   box-shadow: 0 var(--space-xsmall) var(--space-small) rgba(0, 0, 0, 0.2);
   display: flex;

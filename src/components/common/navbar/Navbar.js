@@ -6,7 +6,22 @@ export function RenderNavbar(navbar, isUser, menu) {
     return;
   }
 
-  const isActiveMenu = path => window.location.pathname === path;
+  const isActiveMenu = path => {
+    const currentPath = window.location.pathname;
+
+    if (path === '/admin') {
+      return currentPath === '/admin';
+    }
+
+    if (path !== '/admin') {
+      return (
+        currentPath.startsWith(path) &&
+        (currentPath === path || currentPath.charAt(path.length) === '/')
+      );
+    }
+
+    return false;
+  };
 
   navbar.innerHTML = `
     <div class="navbar-top">
