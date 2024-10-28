@@ -4,18 +4,23 @@ import {
   deleteProfileImage,
   uploadProfileImg,
 } from '../../../utils/handleProfileImg';
-export const ProfileImage = () => {
+export const ProfileImage = (
+  paragraphOne = 'Upload',
+  paragraphTwo = 'Your',
+  paragraphThree = 'Profle',
+  description = '프로필',
+) => {
   return `
     <section class="user-profileImg-container">
        <div class="profileImg-box">
         <div class="real-profileImg"></div>
         <div class="inside-circle" id="profileImage">
-          <span class="circle-text">Upload</span>
-          <span class="circle-text">Your</span>
-          <span class="circle-text">Profile</span>
+          <span class="circle-text">${paragraphOne}</span>
+          <span class="circle-text">${paragraphTwo}</span>
+          <span class="circle-text">${paragraphThree}</span>
         </div>
         <p class="profile-description">
-          프로필 이미지를 업로드 해주세요!
+          ${description} 이미지를 업로드 해주세요!
         </p>
         <p class="profile-description-constraint">
           (단, jpg/png/jpeg 확장자 파일만 적용됩니다.)

@@ -18,6 +18,7 @@ export { RenderUserListHeader } from './admin/home/user-list/UserListHeader';
 export { RenderUserList } from './admin/home/user-list/UserList';
 export { RenderAdminHomeNoticeHeader } from './admin/home/notice/NoticeHeader';
 export { RenderAdminHomeNotice } from './admin/home/notice/Notice';
+export { NoticeForm } from './admin/notice-form/NoticeForm';
 
 //user
 //프로필 폼 관련

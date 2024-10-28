@@ -18,6 +18,7 @@ import {
   RenderUserVacationManagement,
   RenderAdminNoticeManagement,
   RenderAdminUploadMember,
+  RenderAdminUploadNotice,
 } from '../pages';
 import {
   ADMIN_PATH,
@@ -163,12 +164,13 @@ export default function Router() {
     RenderAdminMemberManagement(contentEl);
   } else if (path === ADMIN_PATH.MEMBER_UPLOAD) {
     RenderAdminUploadMember(contentEl);
+  } else if (path === ADMIN_PATH.NOTICE_UPLOAD) {
+    RenderAdminUploadNotice(contentEl);
+  } else if (memberId && ADMIN_PATH.MEMBER) {
+    RenderAdminMemberDetail(contentEl, memberId);
   } else if (noticeId) {
     RenderAdminNoticeDetail(contentEl, noticeId);
-  } else if (memberId && memberId !== 'upload') {
-    // postId가 있는 경우(동적 경로가 매칭된 경우)
-    RenderAdminMemberDetail(contentEl, memberId);
-  } else if (path === ADMIN_PATH.VACATION) {
+  }else if (path === ADMIN_PATH.VACATION) {
     RenderAdminVacationManagement(contentEl);
   } else if (path === ADMIN_PATH.NOTICE) {
     RenderAdminNoticeManagement(contentEl);
