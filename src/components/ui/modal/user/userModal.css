@@ -2,47 +2,47 @@ button[data-type='break-in'],
 button[data-type='break-out'],
 button[data-type='punch-in'],
 button[data-type='punch-out'] {
-  width: 100px;
-  height: 50px;
+  width: calc(var(--space-large) * 3);
+  height: calc(var(--space-medium) * 3);
   background-color: var(--color-skyblue-light);
-  margin-bottom: 30px;
 }
 
 .cancel-button {
   background-color: var(--color-coral);
-  width: 100px;
-  height: 50px;
+  width: calc(var(--space-large) * 3);
+  height: calc(var(--space-medium) * 3);
 }
 
 .modal-title {
-  font-size: 32px;
+  font-size: var(--font-large);
   font-weight: 700;
-  margin: 35px 0;
+  margin: var(--space-large) 0;
   text-align: center; /* 제목 가운데 정렬 */
+  margin-bottom: calc(var(--space-medium) * 3);
 }
 
 .modal-date,
 .modal-time {
-  font-size: 24px;
-  margin: 10px 20px;
+  font-size: calc(var(--font-small) * 2);
+  margin: var(--space-small) var(--space-medium);
   text-align: center; /* 날짜 및 시간 가운데 정렬 */
 }
 
 .modal-time {
-  margin-left: 20px;
+  margin-left: var(--space-medium);
 }
 
 .button-container {
   display: flex;
   justify-content: center; /* 버튼을 가운데 정렬 */
-  margin-top: 20px;
+  margin-top: var(--space-medium);
   width: 100%;
 }
 
 /* modal의 버튼에만 해당 */
 .modal button {
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: var(--space-small) var(--space-medium);
+  font-size: var(-font-medium);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -55,7 +55,7 @@ button[data-type='punch-out'] {
 .success-message {
   text-align: center; /* 성공 메시지 가운데 정렬 */
   font-size: 1.2em;
-  margin-top: 20px;
+  margin-top: var(--space-medium);
 }
 
 .success-message p {
@@ -63,15 +63,15 @@ button[data-type='punch-out'] {
 }
 
 .modal-content .material-symbols-rounded {
-  font-size: 150px;
+  font-size: calc(var(--font-xxlarge) * 1.8);
   display: block;
   margin: 0 auto;
 }
 
 .success-message .close-button {
-  width: 100px;
-  height: 40px;
-  margin-top: 10px;
+  width: calc(var(--space-large) * 3);
+  height: calc(var(--space-small) * 5);
+  margin-top: var(--space-small);
   background-color: var(--color-light-gray);
 }
 
@@ -79,7 +79,7 @@ button[data-type='punch-out'] {
 .error-message {
   text-align: center; /* 실패 메시지 가운데 정렬 */
   font-size: 1.2em;
-  margin-top: 20px;
+  margin-top: calc(var(--space-xsmall) * 5);
 }
 
 .error-message p {
@@ -88,9 +88,9 @@ button[data-type='punch-out'] {
 
 .error-message .retry-button,
 .error-message .close-button {
-  width: 100px;
-  height: 40px;
-  margin: 20px 10px; /* 버튼 간 간격을 조정 */
+  width: calc(var(--space-large) * 3.3);
+  height: calc(var(--space-small) * 5);
+  margin: calc(var(--space-xsmall) * 5) var(--space-small); /* 버튼 간 간격을 조정 */
 }
 
 .error-message .close-button {

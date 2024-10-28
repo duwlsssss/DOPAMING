@@ -24,13 +24,14 @@
 
 .modal-content {
   background-color: white;
-  padding: 20px;
-  border-radius: 5px;
+  /*20px */
+  padding: var(--space-medium);
+  border-radius: var(--space-xsmall);
   position: relative;
-  width: 500px;
-  height: 320px;
+  width: calc(var(--space-xxlarge) * 3.9);
+  height: calc(var(--space-xxlarge) * 2.4);
   margin: auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 var(--space-xsmall) var(--space-small) rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
