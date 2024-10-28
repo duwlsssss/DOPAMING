@@ -6,7 +6,7 @@ export const WorkInfo = async (userId, date) => {
 
   try {
     const response = await axios.get(jsonFilePath);
-    const users = response.data;
+    const users = Array.isArray(response.data) ? response.data : []; // 배열인지 확인 후 기본값 설정
 
     console.log('전체 사용자 데이터:', users);
 
@@ -36,6 +36,10 @@ export const WorkInfo = async (userId, date) => {
     if (filteredUsers.length > 0) {
       const selectedUserData = filteredUsers[0];
       userName = selectedUserData.user_name || userName;
+
+      // 추가 디버깅 로그
+      console.log('선택된 사용자 데이터:', selectedUserData);
+      console.log('사용자 이름:', userName);
 
       punchInTime = selectedUserData.punch_in
         ? new Date(selectedUserData.punch_in).toLocaleTimeString([], {

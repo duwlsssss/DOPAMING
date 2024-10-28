@@ -1,5 +1,5 @@
-import Modal from '../../../components/ui/modal/Modal'; // Modal 클래스 임포트
 import './Course.css';
+import Modal from '../../../components/ui/modal/Modal'; // Modal 클래스 임포트
 
 export const RenderUserCourse = container => {
   container.innerHTML = `
@@ -31,127 +31,61 @@ export const RenderUserCourse = container => {
     </div>
   `;
 
-  const modal = new Modal(); // Modal 인스턴스 생성
+  const setupButtonListener = (buttonId, modalType) => {
+    const button = document.getElementById(buttonId);
+    if (button) {
+      button.addEventListener('click', () => {
+        Modal(modalType); // 모달 인스턴스 생성
+      });
+    } else {
+      console.error(`Button with ID ${buttonId} not found.`);
+    }
+  };
 
-  // 각 버튼에 대해 이벤트 리스너 추가
-  document
-    .getElementById('employee-delete-button')
-    .addEventListener('click', () => {
-      modal.open('employee-delete');
-    });
+  // 질문 버튼들에 대한 이벤트 리스너
+  setupButtonListener('employee-delete-button', 'employee-delete');
+  setupButtonListener('notice-delete-button', 'notice-delete');
+  setupButtonListener('vacation-permit-button', 'vacation-permit');
+  setupButtonListener('vacation-permit-cancle', 'vacation-permit-cancle');
+  setupButtonListener('vacation-reject-button', 'vacation-reject');
+  setupButtonListener(
+    'vacation-reject-cancle-button',
+    'vacation-reject-cancle',
+  );
 
-  document
-    .getElementById('notice-delete-button')
-    .addEventListener('click', () => {
-      modal.open('notice-delete');
-    });
+  // 성공 버튼들에 대한 이벤트 리스너
+  setupButtonListener('employee-delete-success', 'employee-delete-success');
+  setupButtonListener('notice-delete-success', 'notice-delete-success');
+  setupButtonListener('vacation-permit-success', 'vacation-permit-success');
+  setupButtonListener(
+    'vacation-permit-cancle-success',
+    'vacation-permit-cancle-success',
+  );
+  setupButtonListener('vacation-reject-success', 'vacation-reject-success');
+  setupButtonListener(
+    'vacation-reject-cancle-success',
+    'vacation-reject-cancle-success',
+  );
+  setupButtonListener('notice-upload-success', 'notice-upload-success');
+  setupButtonListener(
+    'employee-registration-success',
+    'employee-registration-success',
+  );
 
-  document
-    .getElementById('vacation-permit-button')
-    .addEventListener('click', () => {
-      modal.open('vacation-permit');
-    });
-
-  document
-    .getElementById('vacation-permit-cancle')
-    .addEventListener('click', () => {
-      modal.open('vacation-permit-cancle');
-    });
-
-  document
-    .getElementById('vacation-reject-button')
-    .addEventListener('click', () => {
-      modal.open('vacation-reject');
-    });
-
-  document
-    .getElementById('vacation-reject-cancle-button')
-    .addEventListener('click', () => {
-      modal.open('vacation-reject-cancle');
-    });
-
-  // 성공 및 실패 버튼에 대한 이벤트 리스너 추가
-  document
-    .getElementById('employee-delete-success')
-    .addEventListener('click', () => {
-      modal.open('employee-delete-success');
-    });
-
-  document
-    .getElementById('notice-delete-success')
-    .addEventListener('click', () => {
-      modal.open('notice-delete-success');
-    });
-
-  document
-    .getElementById('vacation-permit-success')
-    .addEventListener('click', () => {
-      modal.open('vacation-permit-success');
-    });
-
-  document
-    .getElementById('vacation-permit-cancle-success')
-    .addEventListener('click', () => {
-      modal.open('vacation-permit-cancle-success');
-    });
-
-  document
-    .getElementById('vacation-reject-success')
-    .addEventListener('click', () => {
-      modal.open('vacation-reject-success');
-    });
-
-  document
-    .getElementById('vacation-reject-cancle-success')
-    .addEventListener('click', () => {
-      modal.open('vacation-reject-cancle-success');
-    });
-
-  document
-    .getElementById('notice-upload-success')
-    .addEventListener('click', () => {
-      modal.open('notice-upload-success');
-    });
-
-  document
-    .getElementById('employee-registration-success')
-    .addEventListener('click', () => {
-      modal.open('employee-registration-success');
-    });
-
-  document
-    .getElementById('vacation-permit-fail')
-    .addEventListener('click', () => {
-      modal.open('vacation-permit-fail');
-    });
-
-  document
-    .getElementById('vacation-permit-cancle-fail')
-    .addEventListener('click', () => {
-      modal.open('vacation-permit-cancle-fail');
-    });
-
-  document
-    .getElementById('vacation-reject-fail')
-    .addEventListener('click', () => {
-      modal.open('vacation-reject-fail');
-    });
-
-  document
-    .getElementById('vacation-reject-cancle-fail')
-    .addEventListener('click', () => {
-      modal.open('vacation-reject-cancle-fail');
-    });
-
-  document
-    .getElementById('notice-upload-fail')
-    .addEventListener('click', () => {
-      modal.open('notice-upload-fail');
-    });
-
-  document
-    .getElementById('employee-registration-fail')
-    .addEventListener('click', () => {
-      modal.open('employee-registration-fail');
-    });
+  // 실패 버튼들에 대한 이벤트 리스너
+  setupButtonListener('vacation-permit-fail', 'vacation-permit-fail');
+  setupButtonListener(
+    'vacation-permit-cancle-fail',
+    'vacation-permit-cancle-fail',
+  );
+  setupButtonListener('vacation-reject-fail', 'vacation-reject-fail');
+  setupButtonListener(
+    'vacation-reject-cancle-fail',
+    'vacation-reject-cancle-fail',
+  );
+  setupButtonListener('notice-upload-fail', 'notice-upload-fail');
+  setupButtonListener(
+    'employee-registration-fail',
+    'employee-registration-fail',
+  );
 };
