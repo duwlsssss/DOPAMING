@@ -8,7 +8,7 @@ export const WorkInfo = async (userId, date) => {
     const response = await axios.get(jsonFilePath);
     const users = Array.isArray(response.data) ? response.data : []; // 배열인지 확인 후 기본값 설정
 
-    console.log('전체 사용자 데이터:', users);
+    // console.log('전체 사용자 데이터:', users);
 
     // date가 Date 객체가 아니라면 형식 변환
     if (!(date instanceof Date)) {
@@ -24,7 +24,7 @@ export const WorkInfo = async (userId, date) => {
     console.log(
       `Filtering with userId: ${userId} and punchDate: ${dateString}`,
     );
-    console.log('필터링된 사용자 데이터:', filteredUsers);
+    // console.log('필터링된 사용자 데이터:', filteredUsers);
 
     // 기본 사용자 정보 초기화
     let userName = '사용자';

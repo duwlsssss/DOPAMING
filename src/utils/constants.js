@@ -72,3 +72,8 @@ export const ICONS = {
   ARROW_LEFT: 'arrow_left_alt',
   CALENDAR: 'calendar_month',
 };
+
+export const INFO = {
+  BC_START_DATE: '2024-09-23',
+  BC_END_DATE: '2025-04-18',
+};
