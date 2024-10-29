@@ -12,7 +12,7 @@
 
 .member-detail-items {
   display: flex;
-  width: 90%;
+
   align-items: center;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .profile-img-item {
-  width: 250px;
+  width: 300px;
   height: 300px;
 }
 
@@ -183,6 +183,7 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  justify-self: center;
 }
 
 .member-download-file {

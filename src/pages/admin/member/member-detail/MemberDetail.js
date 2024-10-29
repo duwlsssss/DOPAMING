@@ -18,10 +18,7 @@ export async function RenderAdminMemberDetail(container, memberId) {
   const handleMemberDetailVacation = async () => {
     try {
       const data = await ApiClient.get(MEMBER_VACATION_URL);
-      const filterData = data.data.filter(member => {
-        member.user_id === memberId;
-      });
-      console.log(filterData);
+      const filterData = data.data.find(member => member.user_id === memberId);
       return [
         {
           ...filterData,
@@ -36,7 +33,7 @@ export async function RenderAdminMemberDetail(container, memberId) {
   };
 
   const memberDetail = await handleMemberInformation();
-  const memberVationDetail = await handleMemberDetailVacation();
+  const memberVacationDetail = await handleMemberDetailVacation();
 
   const buttonElement = Button({
     width: 40,
@@ -68,15 +65,15 @@ export async function RenderAdminMemberDetail(container, memberId) {
     <span >${memberDetail.user_email}</span>
   </header>
 `;
-  const vactionDetailRender = memberDetail => {
-    if (memberDetail) {
+  const vactionDetailRender = memberVacationDetail => {
+    if (memberVacationDetail.length > 0) {
       return `
       <div class="member-detail-list">               
-               ${Accordion({
-                 items: memberVationDetail,
-                 renderHeader,
-                 renderContent,
-               })}
+        ${Accordion({
+          items: memberVacationDetail,
+          renderHeader,
+          renderContent,
+        })}
       `;
     } else {
       return `
@@ -154,7 +151,7 @@ export async function RenderAdminMemberDetail(container, memberId) {
           <h1>부재 신청 내역</h1>
           <div class="member-detail-footer-item">
           <div class="member-detail-item-wrapper"> 
-          ${vactionDetailRender(memberDetail)}                           
+          ${vactionDetailRender(memberVacationDetail)}                           
           </div>
         </div>
         </div>     
