@@ -7,8 +7,8 @@ export const RenderUserPeer = async container => {
     <div class="peer-header">
       <p class="peer-title">여러분들의 동료 수강생 목록입니다.</p>
       <div class="peer-search-bar">
-        <input type="text" placeholder="Search" id="peerSearchInput">
-        <span class="material-symbols-rounded" id="peerSearchIcon">search</span>
+        <input type="text" placeholder="Search" class="peer-search-input">
+        <span class="material-symbols-rounded peer-search-icon">search</span>
       </div>
     </div>
     <div class="peer-box"></div>
