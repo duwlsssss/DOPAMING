@@ -5,6 +5,7 @@
   margin-bottom: var(--space-large);
   font-size: var(--font-large);
   font-weight: 700;
+  cursor: pointer;
 }
 
 .logo-circle {
