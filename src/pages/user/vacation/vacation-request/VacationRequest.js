@@ -1,9 +1,6 @@
 import './VacationRequest.css';
-import {
-  Button,
-  validInput,
-  VacationRequestForm,
-} from '../../../../components';
+import { Button, VacationRequestForm } from '../../../../components';
+import { validInput } from '../../../../utils/validate';
 
 export const RenderUserVacationRequest = async container => {
   // 기본 HTML 구조 설정

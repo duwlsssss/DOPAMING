@@ -9,6 +9,7 @@ export { RenderAdminUploadNotice } from '../pages/admin/notice/upload-notice/Upl
 export { RenderAdminEditNotice } from '../pages/admin/notice/edit-notice/EditNotice';
 
 // 사용자
+export { RenderSignUp } from './user/sign-up/SignUp';
 export { RenderUserHome } from './user/home/Home';
 export { RenderUserEditProfile } from './user/edit-profile/EditProfile';
 export { RenderUserWorkDetail } from './user/work-detail/WorkDetail';

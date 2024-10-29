@@ -3,12 +3,12 @@ export { RenderHeader } from './common/header/Header';
 export { RenderNavbar } from './common/navbar/Navbar';
 export { RenderNoticeItem } from './common/notice/NoticeItem';
 export { RenderTitle } from './common/title/Title';
+export { RenderLogInForm } from './common/log-in-form/LogInForm';
 export { Pagenation } from './common/pagenation/Pagenation';
 
 //ui
 export { Button } from './ui/button/Button';
 export { Accordion } from './ui/accordion/Accordion';
-export { validInput } from './ui/form/FormValidation';
 export { Modal } from './ui/modal/Modal';
 
 //admin
@@ -22,6 +22,7 @@ export { RenderAdminHomeNotice } from './admin/home/notice/Notice';
 export { NoticeForm } from './admin/notice-form/NoticeForm';
 
 //user
+export { RenderSignUpForm } from './user/sign-up-form/SignUpForm';
 export { WorkInfo } from './user/work-info/WorkInfo';
 //홈 관련
 export { RenderCourseExplain } from './user/home/course-explain/CourseExplain';

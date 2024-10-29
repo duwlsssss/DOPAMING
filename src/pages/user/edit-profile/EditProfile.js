@@ -2,12 +2,12 @@ import './EditProfile.css';
 import { getItem } from '../../../utils/storage';
 import {
   Button,
-  validInput,
   EditProfileForm,
   ProfileImage,
   attachProfileImageEvents,
   Modal,
 } from '../../../components';
+import { validInput } from '../../../utils/validate';
 import {
   applyProfileImage,
   listenForProfileImageUpdate,

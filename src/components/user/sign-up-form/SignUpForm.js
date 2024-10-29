@@ -1,8 +1,8 @@
 import { ADMIN_PATH, USER_PATH } from '../../../utils/constants';
 import { setItem } from '../../../utils/storage';
-import './LogInForm.css';
+import './SignUpForm.css';
 
-export const RenderLogInForm = (container, users) => {
+export const RenderSignUpForm = (container, users) => {
   container.innerHTML = `
     <main class="login-container">
       <h2>도파밍 부트캠프에 오신 것을 환영합니다!</h2>
@@ -27,30 +27,11 @@ export const RenderLogInForm = (container, users) => {
         </fieldset>
         <button type="submit" class="login-btn">로그인</button>
         <nav class="forgot-password">
-          <a href=${USER_PATH.SIGNUP}>회원가입이 되어 있지 않으신가요?</a>
+          <a href=${USER_PATH.SIGN_UP}>회원가입이 되어 있지 않으신가요?</a>
         </nav>
       </form>
     </main>
   `;
-
-  // 비밀번호 눈 아이콘 토글
-  // function togglePasswordVisibility(passwordField, visibilityIcon) {
-  //   visibilityIcon.addEventListener('click', function () {
-  //     const isPassword = this.textContent === 'visibility_off';
-  //     passwordField.setAttribute('type', isPassword ? 'text' : 'password');
-  //     this.textContent = isPassword ? 'visibility' : 'visibility_off';
-  //   });
-  // }
-  // const passwordField = container.querySelector('#password');
-  // const passwordConfirmField = container.querySelector('#confirm-password');
-
-  // const visibilityIconPassword = container.querySelector('#toggle-password');
-  // const visibilityIconPasswordConfirm = container.querySelector(
-  //   '#toggle-confirm-password',
-  // );
-
-  // togglePasswordVisibility(passwordField, visibilityIconPassword);
-  // togglePasswordVisibility(passwordConfirmField, visibilityIconPasswordConfirm);
 
   // 로그인 폼 이벤트 리스너
   const loginForm = container.querySelector('#loginForm');

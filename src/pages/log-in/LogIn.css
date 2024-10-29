@@ -27,7 +27,6 @@
 .login-right {
   flex: 1;
   flex-basis: 0;
-  padding: 40px;
   display: flex;
   align-items: center;
 }
