@@ -81,7 +81,7 @@ export const RenderUserWorkDetail = async container => {
   updatePunchInfo(container, today.toISOString().split('T')[0]);
 
   // 아이콘 클릭
-  container.querySelector('#calendar-before').addEventListener('click', () => {
+  container.querySelector('.calendar-before').addEventListener('click', () => {
     if (currentMonth === 0) {
       currentYear -= 1;
       currentMonth = 11;
@@ -92,7 +92,7 @@ export const RenderUserWorkDetail = async container => {
     updatePunchInfo(container, container.querySelector('.punch-date').value);
   });
 
-  container.querySelector('#calendar-after').addEventListener('click', () => {
+  container.querySelector('.calendar-after').addEventListener('click', () => {
     if (currentMonth === 11) {
       currentYear += 1;
       currentMonth = 0;
