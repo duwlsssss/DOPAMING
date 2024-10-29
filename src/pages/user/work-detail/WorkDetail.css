@@ -151,7 +151,17 @@
   }
   .punch-info-time {
     margin: 0;
-    width: 100px;
+    width: 100%; /* 전체 폭 사용 */
+    display: flex; /* 요소들을 수평으로 배치 */
+    justify-content: space-between; /* 요소들 사이의 간격을 균등하게 분배 */
+    align-items: center; /* 세로 중앙 정렬 */
+  }
+
+  .punch-info-time p {
+    width: 100px; /* 각 p 태그에 고정 너비 설정 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    margin: 0; /* 기본 마진 제거 */
+    padding: calc(var(--space-small) * 0.5); /* 패딩 추가 */
   }
   .punch-in-time {
     margin: 0;

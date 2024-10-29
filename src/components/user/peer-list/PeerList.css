@@ -19,7 +19,7 @@
   max-width: 800px;
 }
 
-#peerSearchInput {
+.peer-search-input {
   border-radius: 10px;
   height: var(--space-large);
   border: 1px solid #ccc;
@@ -72,7 +72,7 @@
   font-size: var(--font-small);
 }
 
-#peerSearchIcon {
+.peer-search-icon {
   margin-right: calc(var(--space-large) * 2.5);
   margin-left: var(--space-xsmall);
 }
@@ -93,7 +93,7 @@
 /* 반응형 디자인을 위한 미디어 쿼리 */
 
 @media (max-width: 1900px) {
-  #peerSearchInput {
+  .peer-search-input {
     width: 200px;
   }
 }
@@ -117,7 +117,7 @@
   .peer-title {
     margin-right: 200px;
   }
-  #peerSearchInput {
+  .peer-search-input {
     width: 100px;
   }
 }
@@ -148,7 +148,7 @@
   .peer-title {
     margin-right: 40px;
   }
-  #peerSearchInput {
+  .peer-search-input {
     width: 200px;
   }
 }
@@ -167,7 +167,7 @@
   .peer-title {
     margin-right: 10px;
   }
-  #peerSearchInput {
+  .peer-search-input {
     width: 200px;
   }
 }
@@ -190,7 +190,7 @@
   .peer-title {
     margin-right: 150px;
   }
-  #peerSearchInput {
+  .peer-search-input {
     width: 200px;
   }
 }
@@ -210,7 +210,7 @@
   .peer-title {
     margin-right: 40px;
   }
-  #peerSearchInput {
+  .peer-search-input {
     width: 100px;
   }
 }
@@ -233,7 +233,7 @@
   .peer-title {
     margin-right: 0px;
   }
-  #peerSearchInput {
+  .peer-search-input {
     width: 100px;
   }
 }
