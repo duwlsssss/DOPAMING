@@ -1,0 +1,94 @@
+.vacation-table {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vacation-table .vacation-table-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vacation-table-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-pale-gray);
+  border-radius: var(--base-border-radius);
+  overflow: hidden;
+}
+
+.vacation-table-box .vacation-table-box-header {
+  display: flex;
+  font-weight: 700;
+  background-color: var(--color-regular-gray);
+  padding: var(--space-medium);
+}
+
+.vacation-table-box .vacation-table-box-header .vc-header-etc {
+  flex: 1;
+  flex-basis: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.vacation-table-box .vacation-table-box-content {
+  width: 100%;
+  padding: var(--space-small);
+  overflow-y: scroll;
+}
+
+.vacation-table-box .vacation-table-box-content .vacation-item {
+  display: flex;
+  border-radius: var(--base-border-radius);
+  background-color: var(--color-white);
+  margin-bottom: 1rem;
+  padding: var(--space-medium);
+}
+.vacation-table-box .vacation-table-box-content .vacation-item:last-child {
+  margin-bottom: 0;
+}
+
+.vacation-table-box .vacation-table-box-content .vacation-item .vc-item-etc {
+  flex: 1;
+  flex-basis: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.vacation-table-box .vacation-table-box-content .vacation-item .vc-item-date {
+  color: var(--color-dark-gray);
+}
+
+.vacation-table-box
+  .vacation-table-box-content
+  .vacation-item
+  .vc-item-status-N {
+  color: var(--color-coral);
+}
+.vacation-table-box
+  .vacation-table-box-content
+  .vacation-item
+  .vc-item-status-Y {
+  color: var(--color-green-light);
+}
+
+@media (max-width: 1400px) {
+  .vacation-table-box {
+    font-size: var(--font-small);
+  }
+  .vacation-table-box .vacation-table-box-content {
+    width: 100%;
+    padding: var(--space-small);
+    overflow: hidden;
+  }
+  .vacation-table-box .vacation-table-box-content .vacation-item {
+    margin-bottom: 0.5rem;
+  }
+}

@@ -23,6 +23,12 @@ export { NoticeForm } from './admin/notice-form/NoticeForm';
 
 //user
 export { WorkInfo } from './user/work-info/WorkInfo';
+//홈 관련
+export { RenderCourseExplain } from './user/home/course-explain/CourseExplain';
+export { RenderPunchTime } from './user/home/punch-time/PunchTime';
+export { RenderNoticeGallery } from './user/home/notice-gallery/NoticeGallery';
+export { RenderVacationTable } from './user/home/vacation-table/VacationTable';
+
 //프로필 폼 관련
 export { EditProfileForm } from './user/form/edit-profile-form/EditProfileForm';
 export { ProfileImage } from './user/profile/ProfileImage';

@@ -4,7 +4,7 @@ import { ADMIN_PATH } from '../../../utils/constants';
 import { Button } from '../../ui/button/Button';
 import navigate from '../../../utils/navigation';
 import './NoticeDetailItem.css';
-import Modal from '../../ui/modal/Modal';
+import { Modal } from '../../ui/modal/Modal';
 
 export const RenderAdminNoticeDetailItem = async (container, postId) => {
   const NOTICE_DATA = '../../../../server/data/company_posts.json';
