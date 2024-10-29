@@ -5,7 +5,6 @@ import './MemberDetail.css';
 
 const MEMBER_INFORMATION_URL = '../../../../../server/data/users.json';
 const MEMBER_VACATION_URL = '../../../../../server/data/absences.json';
-
 export async function RenderAdminMemberDetail(container, memberId) {
   const handleMemberInformation = async () => {
     try {
@@ -19,7 +18,10 @@ export async function RenderAdminMemberDetail(container, memberId) {
   const handleMemberDetailVacation = async () => {
     try {
       const data = await ApiClient.get(MEMBER_VACATION_URL);
-      const filterData = data.data.find(member => member.user_id === memberId);
+      const filterData = data.data.filter(member => {
+        member.user_id === memberId;
+      });
+      console.log(filterData);
       return [
         {
           ...filterData,
@@ -66,7 +68,24 @@ export async function RenderAdminMemberDetail(container, memberId) {
     <span >${memberDetail.user_email}</span>
   </header>
 `;
-
+  const vactionDetailRender = memberDetail => {
+    if (memberDetail) {
+      return `
+      <div class="member-detail-list">               
+               ${Accordion({
+                 items: memberVationDetail,
+                 renderHeader,
+                 renderContent,
+               })}
+      `;
+    } else {
+      return `
+        <div>
+          데이터가 존재하지 않습니다.
+        </div>
+      `;
+    }
+  };
   const renderContent = (value, index) => {
     return `
           <article class="member-detail-content">
@@ -102,7 +121,7 @@ export async function RenderAdminMemberDetail(container, memberId) {
   container.innerHTML = /*html*/ `
     <div class="member-detail-container">    
       <div class="member-detail-header">
-        <h1>직원 상세</h1>
+      <h1>직원 상세</h1>
         ${buttonElement.outerHTML}
       </div>
       <div class="member-detail-wapper">
@@ -113,15 +132,19 @@ export async function RenderAdminMemberDetail(container, memberId) {
             }" alt="프로필 이미지" class="profile-img-item"/>          
           </div>       
           <div class="profile-information">         
-            <span>직책:${memberDetail.user_position}</span>
-            <span>생년월일:${memberDetail.user_birthday.replace(
-              '-',
-              '.',
-            )}</span>                
-            <span>이름:${memberDetail.user_name}</span>
-            <span>전화번호:${memberDetail.user_phone}</span>                 
-            <span>성별:${memberDetail.user_sex}</span>
-            <span>이메일:${memberDetail.user_email}</span>        
+            <div class="profle-information-left">
+              <span>직책:${memberDetail.user_position}</span>
+              <span>전화번호:${memberDetail.user_phone}</span>                 
+              <span>이름:${memberDetail.user_name}</span>
+            </div>
+            <div class="profle-information-right">
+              <span>생년월일:${memberDetail.user_birthday.replace(
+                '-',
+                '.',
+              )}</span>                
+              <span>성별:${memberDetail.user_sex}</span>
+              <span>이메일:${memberDetail.user_email}</span>        
+            </div>
           </div>
         </div>      
         <div class="member-bottom">
@@ -130,16 +153,10 @@ export async function RenderAdminMemberDetail(container, memberId) {
         <div class="member-detail-footer">
           <h1>부재 신청 내역</h1>
           <div class="member-detail-footer-item">
-          <div class="member-detail-item-wrapper">            
-             <div class="member-detail-list">               
-               ${Accordion({
-                 items: memberVationDetail,
-                 renderHeader,
-                 renderContent,
-               })}
-              
-             </div>
-           </div>
+          <div class="member-detail-item-wrapper"> 
+          ${vactionDetailRender(memberDetail)}                           
+          </div>
+        </div>
         </div>     
         </div>            
           
