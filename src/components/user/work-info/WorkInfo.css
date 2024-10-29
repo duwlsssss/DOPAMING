@@ -114,7 +114,7 @@
   }
 
   .punch-info-time p {
-    font-size: var(--font-large);
+    font-size: var(--font-medium);
     margin-left: 0;
     flex: 1;
     min-width: 50px;
@@ -127,12 +127,12 @@
 
   .work-title-text {
     margin-right: 0;
-    font-size: var(--font-medium);
+    font-size: var(--font-large);
   }
 
   .work-desc {
     width: 100%;
-    font-size: 10px;
+    font-size: var(--font-medium);
     margin: 0;
     flex: 1;
   }
