@@ -1,6 +1,7 @@
 /* WorkDetail HEADER */
 .work-header {
-  width: calc(var(--space-large) * 42);
+  width: 100%;
+  max-width: calc(var(--space-large) * 42);
   height: calc(var(--space-large) * 3);
   margin-bottom: calc(var(--space-large) * 2.5);
 }
@@ -16,10 +17,12 @@
 .work-title-text {
   font-size: var(--font-large);
   font-weight: 700;
+  width: 100%;
+  max-width: 350px;
 }
 
 .punch-date {
-  width: calc(var(--space-large) * 16);
+  width: calc(var(--space-large) * 16); /* punch-info와 동일한 너비 */
   padding: calc(var(--space-medium) * 1.5);
   font-size: var(--font-medium);
   height: var(--space-medium);
@@ -31,10 +34,12 @@
   font-size: var(--font-large);
   margin: 0;
   line-height: 1.5;
+  width: 100%;
+  max-width: 350px; /* work-title-text와 동일하게 최대 폭 설정 */
 }
 
 .punch-info {
-  width: calc(var(--space-large) * 16);
+  width: calc(var(--space-large) * 16); /* input date와 동일한 너비  */
   height: calc(var(--space-large) * 3);
   background-color: #f9f9f9;
   margin-top: var(--space-small);
@@ -42,28 +47,32 @@
   flex-direction: column;
 }
 
-.punch-info-title {
-  width: calc(var(--space-large) * 16);
-  height: calc(var(--space-large) * 3);
-  margin-top: var(--space-xsmall);
+.work-desc-container {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 var(--space-small);
+  width: 100%;
 }
 
+.punch-info-title,
 .punch-info-time {
-  width: calc(var(--space-large) * 16); /* width 값을 punch-info-title과 맞춤 */
+  width: 100%;
+  max-width: calc(var(--space-large) * 16);
   height: calc(var(--space-large) * 3);
   margin-top: var(--space-xsmall);
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 0 var(--space-small);
 }
 
+.punch-info-time p {
+  flex: 1;
+  min-width: 80px;
+  text-align: center;
+}
+
+/* 출근, 퇴근, 외출, 복귀 정보 스타일 */
 .punch-info .punch-in,
 .punch-info .punch-out,
 .punch-info .break-out,
@@ -74,91 +83,62 @@
   text-align: center;
 }
 
-.punch-info-title p,
-.punch-info-time p {
-  margin: 0;
-  padding: 0 var(--space-small);
-}
-
-.punch-info-time p {
-  font-size: var(--font-medium);
-  margin-left: var(--space-medium);
-  margin-right: var(--space-xsmall);
-  padding-right: var(--space-medium);
-}
-
-/* punch-in-time과 달력 사이의 공백 추가 */
-.punch-info-time {
-  margin-top: var(--space-medium); /* 기본 마진 */
-}
-
-.work-desc-container {
-  display: flex;
-  justify-content: space-between; /* 두 요소 사이에 공간을 균등하게 배분 */
-  align-items: center; /* 수직 중앙 정렬 */
-  width: 100%; /* 전체 폭 사용 */
-}
-
-/* 600px 이하의 화면에서 요소를 한 줄로 출력 */
+/* MEDIA */
 @media (max-width: 600px) {
+  .work-title,
   .work-content {
-    display: flex;
-    flex-direction: column; /* 세로 방향으로 배열 */
-    align-items: flex-start; /* 왼쪽 정렬 */
+    justify-content: initial; /* 기본값으로 초기화 */
   }
 
-  .work-desc-container {
-    flex-direction: column; /* 세로 방향으로 배열 */
-    width: 100%; /* 전체 폭 사용 */
+  .punch-date {
+    width: 100%;
+    max-width: 200px;
+    font-size: 8px;
+  }
+
+  .punch-info,
+  .work-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1; /* 가능한 공간을 차지하도록 설정 */
+    max-width: 100%;
+  }
+
+  .punch-info-time {
+    flex-grow: 1;
+    max-width: 100%;
+  }
+
+  .punch-info-time p {
+    font-size: var(--font-small);
+    margin-left: 0;
+    flex: 1;
+    min-width: 50px;
+    max-width: 100px;
+  }
+
+  .work-title {
+    margin: 0;
+  }
+
+  .work-title-text {
+    margin-right: 0;
+    font-size: var(--font-medium);
   }
 
   .work-desc {
-    white-space: nowrap; /* 줄 바꿈 방지 */
-    overflow: hidden; /* 넘치는 텍스트 숨김 */
-    text-overflow: ellipsis; /* 생략 부호 표시 */
-    width: auto; /* 자동 너비 사용 */
-    margin: 0; /* 마진을 없애줍니다 */
-    flex: 1; /* 가능한 공간을 차지하도록 설정 */
+    width: 100%;
+    font-size: 10px;
+    margin: 0;
+    flex: 1;
   }
 
-  .punch-info {
-    display: flex;
-    flex-direction: column; /* 세로 방향으로 배열 */
-    width: 100%; /* 전체 폭 사용 */
-    margin-top: var(--space-small); /* 위쪽 마진 추가 */
-  }
-
-  .punch-info-title,
-  .punch-info-time {
-    width: 100%; /* 전체 폭 사용 */
-    margin: 0; /* 마진을 없애줍니다 */
-  }
-
-  .punch-info-title p,
-  .punch-info-time p {
-    text-align: left; /* 왼쪽 정렬 */
-    font-size: var(--font-medium); /* 기본 폰트 크기 */
-  }
-
-  /* punch-in-time과 달력 사이의 공백 추가 */
-  .punch-info-time p.punch-in-time {
-    margin-top: var(--space-medium); /* punch-in-time과 달력 사이의 공백 */
-  }
-
-  /* 배경색 적용 */
-  .punch-info-title .punch-in {
-    background-color: var(--color-blue);
-  }
-
-  .punch-info-title .punch-out {
-    background-color: var(--color-coral);
-  }
-
-  .punch-info-title .break-out {
-    background-color: var(--color-green-muted);
-  }
-
-  .punch-info-title .break-in {
-    background-color: var(--color-caramel);
+  /* 동일 설정 */
+  .punch-info-time,
+  .punch-info-title {
+    width: 100%;
+    min-width: 100px;
+    max-width: 450px;
   }
 }

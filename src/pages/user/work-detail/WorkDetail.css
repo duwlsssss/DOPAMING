@@ -1,7 +1,6 @@
 @import url('../../../styles/global.css');
 
-/* CALENDAR*/
-/* .punch-info-time p:not(:last-child), */
+/* CALENDAR */
 .punch-info-title p:not(:last-child) {
   border-right: 1px solid var(--color-light-gray);
 }
@@ -13,9 +12,10 @@
 }
 
 .work-calendar-box {
-  margin-left: var(--space-large);
-  margin-right: calc(var(--space-large) * 3.8);
-  width: calc(var(--space-large) * 40);
+  margin: 0 auto; /* 중앙 정렬 */
+  width: 90%;
+  height: 75%;
+  max-width: calc(var(--space-large) * 40); /* 최대 폭 설정 */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,16 +35,12 @@
   font-size: var(--font-medium);
   font-weight: 700;
 }
-#calendar-after,
-#calendar-before {
+
+.calendar-after,
+.calendar-before {
   font-size: var(--font-large);
   cursor: pointer;
   transition: color 0.3s;
-}
-
-#calendar-after:hover,
-#calendar-before:hover {
-  color: #007bff;
 }
 
 /* 캘린더 구성 */
@@ -53,31 +49,36 @@
   grid-template-columns: repeat(7, 1fr);
   padding: var(--space-small);
   margin-top: var(--space-small);
+  width: 100%;
 }
 
 .calendar-day {
   border: 1px solid black;
-  width: calc(var(--space-large) * 5);
+  width: 100%;
   height: calc(var(--space-large) * 3);
   padding: var(--space-small);
   border-bottom: 0;
   font-weight: 700;
+  box-sizing: border-box; /* 패딩과 보더를 포함하여 크기 계산 */
 }
+
 .calendar-day:nth-child(-n + 7) {
   text-align: center;
   height: 35px;
 }
+
 .calendar-day:nth-child(7n + 1) {
-  border-left: 0px;
+  border-left: 0;
 }
 
 /* 오른쪽 테두리 제거 */
 .calendar-day:nth-child(7n) {
-  border-right: 0px;
+  border-right: 0;
 }
+
 /* 맨 아래 테두리 제거 */
 .calendar-day:nth-last-child(-n + 7) {
-  border-bottom: 0px;
+  border-bottom: 0;
 }
 
 .cal-punch-info {
@@ -95,10 +96,10 @@
 .cal-punch-out-time,
 .cal-break-in,
 .cal-break-out {
-  width: calc(var(--space-large) * 5);
+  width: 100%;
   height: var(--space-medium);
   border-radius: var(--base-border-radius);
-  padding-left: var(--space-medium);
+  padding-left: var(--space-medium); /*달력 안에 색 표시 범위*/
 }
 
 .cal-punch-in-time {
@@ -118,113 +119,64 @@
 }
 
 /* MEDIA */
-@media (max-width: 600px) {
+/* 달력은 더 세밀한 작업이 필요해서 세분화했습니다. */
+@media (max-width: 1200px) {
   .work-calendar-box {
-    width: 100%; /* 전체 폭 사용 */
-    margin-left: var(--space-small); /* 여백 조정 */
-    margin-right: var(--space-small); /* 여백 조정 */
-    display: flex;
-    flex-direction: column; /* 세로 방향으로 정렬 */
+    width: 90%; /* 전체 폭의 90% 사용 */
   }
-  .work-title-text {
-    margin: 0;
-  }
-  .work-desc {
-    width: 300px;
-    white-space: nowrap; /* 줄 바꿈을 방지합니다 */
-    overflow: hidden; /* 넘치는 텍스트를 숨깁니다 */
-    text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시합니다 */
+}
+
+@media (max-width: 900px) {
+  .work-calendar-box {
+    width: 95%; /* 전체 폭의 95% 사용 */
   }
 
   .title-content {
-    display: flex;
+    margin-top: 30px;
+    font-size: var(--font-small);
+  }
+
+  .calendar-day {
+    height: calc(var(--space-large) * 2); /* 높이 줄임 */
+    font-size: var(--font-small);
+  }
+}
+
+@media (max-width: 600px) {
+  .work-calendar-box {
+    width: 100%;
+    margin-left: var(--space-small);
+    margin-right: var(--space-small);
+  }
+
+  .title-content {
     justify-content: space-between;
     align-items: center;
-  }
-
-  .punch-info-title {
-    width: 300px;
-  }
-  .punch-info {
-    margin: 0;
-    width: 80px;
-  }
-  .punch-info-time {
-    margin: 0;
-    width: 100%; /* 전체 폭 사용 */
-    display: flex; /* 요소들을 수평으로 배치 */
-    justify-content: space-between; /* 요소들 사이의 간격을 균등하게 분배 */
-    align-items: center; /* 세로 중앙 정렬 */
-  }
-
-  .punch-info-time p {
-    width: 100px; /* 각 p 태그에 고정 너비 설정 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    margin: 0; /* 기본 마진 제거 */
-    padding: calc(var(--space-small) * 0.5); /* 패딩 추가 */
-  }
-  .punch-in-time {
-    margin: 0;
-    width: 100px;
-  }
-  .punch-out.time {
-    width: 60px;
+    font-size: var(--font-small);
   }
 
   .punch-date {
-    margin: 10px 0; /* 위아래 여백 추가 */
+    margin: 10px 0;
     padding: 5px; /* 내부 여백 추가 */
-    font-size: var(--font-medium); /* 폰트 크기 조정 */
-  }
-
-  /* work-content의 여백 제거 */
-  .work-content {
-    margin: 0; /* 여백 제거 */
-    padding: 0; /* 패딩 제거 */
-    width: 100px;
+    font-size: var(--font-small);
   }
 
   .work-calendar {
-    display: grid; /* 그리드 레이아웃 사용 */
     grid-template-columns: repeat(7, 1fr); /* 7열로 구성 */
     padding: var(--space-small);
     margin-top: var(--space-small);
   }
 
-  .calendar-day {
-    width: calc(var(--space-large) * 2); /* 너비 줄임 */
-    height: calc(var(--space-large) * 2.5); /* 높이 줄임 */
-    border: 1px solid black; /* 테두리 설정 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    position: relative; /* 자식 요소의 절대 위치 지정 */
-  }
-
-  /* 출근/퇴근/외출/복귀 텍스트 숨기기 */
+  /* 달력 안 꾸미기 */
   .cal-punch-in-time,
   .cal-punch-out-time,
   .cal-break-in,
   .cal-break-out {
-    position: relative; /* 상대 위치 지정 */
-    width: 20%; /* 너비 조정 */
-    height: 20%; /* 높이 조정 */
+    position: relative;
+    /* 색 크기 및 위치 */
+    width: 100%;
+    height: 15%;
     border-radius: var(--base-border-radius);
-    margin: 5%; /* 중앙 정렬을 위한 마진 */
-    color: transparent; /* 텍스트 숨기기 */
-  }
-
-  .cal-punch-in-time {
-    background-color: var(--color-blue);
-  }
-
-  .cal-punch-out-time {
-    background-color: var(--color-coral);
-  }
-
-  .cal-break-in {
-    background-color: var(--color-caramel);
-  }
-
-  .cal-break-out {
-    background-color: var(--color-green-muted);
+    margin: 2px;
   }
 }

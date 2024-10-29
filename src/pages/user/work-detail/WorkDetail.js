@@ -68,9 +68,9 @@ export const RenderUserWorkDetail = async container => {
     ${workInfoHTML}
     <div class="work-calendar-box">
       <div class="title-content"> 
-        <span class="material-symbols-rounded" id="calendar-before">arrow_circle_left</span>
+        <span class="material-symbols-rounded calendar-before">arrow_circle_left</span>
         <p class="calendar-title">${currentYear}년 ${currentMonth + 1}월</p>
-        <span class="material-symbols-rounded" id="calendar-after">arrow_circle_right</span>
+        <span class="material-symbols-rounded calendar-after">arrow_circle_right</span>
       </div>
       <div class="work-calendar"></div>
       <div class="punch-info-time"></div>

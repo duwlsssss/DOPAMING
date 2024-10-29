@@ -81,30 +81,30 @@ export const WorkInfo = async (userId, date) => {
     });
 
     const htmlOutput = `
-      <div class="work-header">
-        <div class="work-title">
-          <p class="work-title-text">출/퇴근 상세정보</p>
-          <input type="date" class="punch-date" value="${dateString}" />
-        </div>
-        <div class="work-content">
-          <p class="work-desc">오늘 하루도 파이팅 하세요!<br>${userName}님의 매일을 응원합니다</p>
-          <div class="punch-info">
-            <div class="punch-info-title">
-              <p class="punch-in">출근</p>
-              <p class="punch-out">퇴근</p>
-              <p class="break-out">외출</p>
-              <p class="break-in">복귀</p>
-            </div>
-            <div class="punch-info-time">
-              <p class="punch-in-time">${punchInTime}</p>
-              <p class="punch-out-time">${punchOutTime}</p>
-              <p class="break-outtime">${breakOutTime}</p>
-              <p class="break-in-time">${breakInTime}</p>
+        <div class="work-header">
+          <div class="work-title">
+            <p class="work-title-text">출/퇴근 상세정보</p>
+            <input type="date" class="punch-date" value="${dateString}" />
+          </div>
+          <div class="work-content">
+            <p class="work-desc">오늘 하루도 파이팅 하세요!<br>${userName}님의 매일을 응원합니다</p>
+            <div class="punch-info">
+              <div class="punch-info-title">
+                <p class="punch-in">출근</p>
+                <p class="punch-out">퇴근</p>
+                <p class="break-out">외출</p>
+                <p class="break-in">복귀</p>
+              </div>
+              <div class="punch-info-time">
+                <p class="punch-in-time">${punchInTime}</p>
+                <p class="punch-out-time">${punchOutTime}</p>
+                <p class="break-outtime">${breakOutTime}</p>
+                <p class="break-in-time">${breakInTime}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    `;
+      `;
 
     return {
       userInfo: filteredUsers.length > 0 ? filteredUsers[0] : null,
