@@ -1,4 +1,4 @@
-import { ApiClient } from '../../../../apis/apiClient';
+import { ApiClient } from '../../../../apis/ApiClient';
 import { Button } from '../../../../components';
 import { Pagenation } from '../../../../components/index';
 import { ADMIN_PATH } from '../../../../utils/constants';

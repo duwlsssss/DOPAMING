@@ -1,4 +1,4 @@
-import { ApiClient } from '../../../apis/apiClient';
+import { ApiClient } from '../../../apis/ApiClient';
 import { RenderNotFound } from '../../../pages';
 import { ADMIN_PATH } from '../../../utils/constants';
 import { Button } from '../../ui/button/Button';
