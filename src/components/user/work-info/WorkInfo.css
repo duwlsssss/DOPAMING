@@ -140,9 +140,9 @@
   /* 동일 설정 */
   .punch-info-time,
   .punch-info-title {
-    width: 100%; /* 부모 요소의 너비를 100% 사용 */
-    max-width: 400px; /* 최대 너비를 400px로 제한 */
-    box-sizing: border-box; /* 패딩과 보더를 포함하여 너비 계산 */
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
   }
   .punch-info {
     width: calc(var(--space-large) * 13); /* input date와 동일한 너비  */
