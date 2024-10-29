@@ -6,6 +6,7 @@ export const RenderAdminNoticeManagementList = async (
   container,
   onDataLoad,
   searchInput = '',
+  currentPage = 1,
 ) => {
   await RenderAdminNoticeList({
     container,
@@ -16,5 +17,8 @@ export const RenderAdminNoticeManagementList = async (
     emptyClassName: 'admin-notice-manage-empty',
     onDataLoad,
     searchInput,
+    usePagination: true,
+    itemsPerPage: 8,
+    currentPage,
   });
 };

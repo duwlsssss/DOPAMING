@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Pagenation } from '../pagenation/Pagenation';
 
 export const RenderAdminNoticeList = async ({
   container,
@@ -9,6 +10,9 @@ export const RenderAdminNoticeList = async ({
   emptyClassName,
   onDataLoad,
   searchInput = '',
+  usePagination = false,
+  itemsPerPage = 8,
+  currentPage = 1,
 }) => {
   try {
     const response = await axios.get(
@@ -33,11 +37,19 @@ export const RenderAdminNoticeList = async ({
       onDataLoad(posts.length);
     }
 
+    // 페이지네이션
+    let dispalyedPosts = posts;
+    if (usePagination) {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      dispalyedPosts = posts.slice(startIndex, endIndex);
+    }
+
     container.innerHTML = `
       <ul class="${containerClassName}">
         ${
-          posts.length
-            ? posts
+          dispalyedPosts.length
+            ? dispalyedPosts
                 .map(
                   post => `
             <li class="${itemClassName}" id="${itemIdPrefix}-${post.post_id}">
@@ -50,6 +62,39 @@ export const RenderAdminNoticeList = async ({
         }
       </ul>
     `;
+
+    // 페이지네이션 버튼 컨테이너 생성
+    if (usePagination) {
+      const paginationContainer = document.createElement('div');
+      paginationContainer.className = 'pagination';
+      container.appendChild(paginationContainer);
+
+      // 페이지 변경 시 새로운 페이지의 데이터를 렌더링
+      const handlePageChange = newPage => {
+        RenderAdminNoticeList({
+          container,
+          renderItemComponent,
+          containerClassName,
+          itemClassName,
+          itemIdPrefix,
+          emptyClassName,
+          onDataLoad,
+          searchInput,
+          usePagination,
+          itemsPerPage,
+          currentPage: newPage,
+        });
+      };
+
+      // 페이지네이션 컴포넌트 렌더링
+      const paginationElement = Pagenation(
+        posts.length,
+        itemsPerPage,
+        currentPage,
+        handlePageChange,
+      );
+      paginationContainer.appendChild(paginationElement);
+    }
   } catch (e) {
     console.error('공지를 가져오는 과정에서 에러가 발생했습니다: ', e);
   }
