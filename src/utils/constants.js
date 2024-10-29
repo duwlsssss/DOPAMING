@@ -32,8 +32,6 @@ export const USER_PATH = {
   COURSE: '/course',
   //부재 신청 페이지 추가
   VACATIONREQUSET: '/vacation/request',
-  //회원 가입 페이지 추가
-  SIGNUP: '/sign-up',
 };
 
 export const USER_TITLE = {

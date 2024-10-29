@@ -22,7 +22,6 @@ export { RenderAdminHomeNotice } from './admin/home/notice/Notice';
 export { NoticeForm } from './admin/notice-form/NoticeForm';
 
 //user
-export { RenderSignUpForm } from './user/sign-up-form/SignUpForm';
 export { WorkInfo } from './user/work-info/WorkInfo';
 //홈 관련
 export { RenderCourseExplain } from './user/home/course-explain/CourseExplain';

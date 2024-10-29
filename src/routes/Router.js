@@ -13,7 +13,6 @@ import {
   RenderUserCourse, // 추가
   RenderNotFound,
   RenderLogIn,
-  RenderSignUp,
   RenderAdminVacationManagement,
   RenderUserWorkDetail,
   RenderAdminMemberDetail,
@@ -47,8 +46,8 @@ export default function Router() {
 
   // 로그인하지 않은 사용자
   if (!role) {
-    // 로그인 페이지가 아닌 다른 페이지에 접근하려고 할 때, 사용자면서 /sign-up에 접근할 때 제외
-    if (path !== '/login' && role === 'user' && path !== USER_PATH.SIGNUP) {
+    // 로그인 페이지가 아닌 다른 페이지에 접근하려고 할 때
+    if (path !== '/login' && role === 'user') {
       window.location.replace('/login');
       return;
     }
@@ -188,8 +187,6 @@ export default function Router() {
     RenderAdminNoticeManagement(contentEl);
   } else if (path === ADMIN_PATH.NOTICE_UPLOAD) {
     RenderAdminUploadNotice(contentEl);
-  } else if (path === USER_PATH.SIGNUP) {
-    RenderSignUp(contentEl);
   } else if (path === USER_PATH.HOME) {
     RenderUserHome(contentEl);
   } else if (path === USER_PATH.NOTICE) {

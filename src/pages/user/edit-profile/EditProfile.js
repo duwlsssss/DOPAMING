@@ -7,7 +7,7 @@ import {
   attachProfileImageEvents,
   Modal,
 } from '../../../components';
-import { validInput } from '../../../utils/validate';
+import { validateProfileInput } from '../../../utils/validation';
 import {
   applyProfileImage,
   listenForProfileImageUpdate,
@@ -15,7 +15,7 @@ import {
 import axios from 'axios';
 
 // validInput에 넘길 비번
-let userPassword = '';
+// let userPassword = '';
 
 export const RenderUserEditProfile = async container => {
   // 기본 HTML 구조 설정
@@ -38,26 +38,25 @@ export const RenderUserEditProfile = async container => {
 
   // 버튼 추가
   const buttonPosition = container.querySelector('.user-edit-form-container');
-  if (buttonPosition) {
-    const submitBtn = Button({
-      className: 'edit-submit-btn',
-      text: '수정하기',
-      color: 'skyblue',
-      shape: 'block',
-      padding: 'var(--space-medium)',
-      fontWeight: 700,
-      onClick: e => {
-        e.preventDefault();
-        if (validInput(userPassword)) {
-          // 모달 열기
-          Modal('edit-profile'); // edit-profile 타입으로 변경
-        } else {
-          alert('입력이 유효하지 않습니다.');
-        }
-      },
-    });
-    buttonPosition.append(submitBtn);
-  }
+  const submitBtn = Button({
+    className: 'edit-submit-btn',
+    text: '수정하기',
+    color: 'skyblue',
+    shape: 'block',
+    padding: 'var(--space-medium)',
+    fontWeight: 700,
+    onClick: e => {
+      e.preventDefault();
+      if (validateProfileInput(container)) {
+        // 모달 열기
+        Modal('edit-profile'); // edit-profile 타입으로 변경
+      } else {
+        // 모달 대체 필요
+        alert('입력이 유효하지 않습니다.');
+      }
+    },
+  });
+  buttonPosition.append(submitBtn);
 
   // ProfileImage 이벤트 리스너 추가
   attachProfileImageEvents(container);
@@ -106,7 +105,7 @@ const fetchUserData = async container => {
       container.querySelector('#phone').value = currUser.user_phone ?? '';
       container.querySelector('#email').value = currUser.user_email ?? '';
 
-      userPassword = currUser.user_password;
+      // userPassword = currUser.user_password;
     }
   } catch (error) {
     console.error('사용자 데이터를 가져오는 중 오류 발생 ! :', error);

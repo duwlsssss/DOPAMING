@@ -1,8 +1,8 @@
-notice-search.user-notice-list-header {
+.user-notice-list-header {
   width: 100%;
   display: flex;
   align-items: center;
-  margin-bottom: var(--space-small);
+  margin-bottom: var(--space-medium);
 }
 .user-notice-list-header .strong {
   font-size: var(--font-large);
@@ -21,6 +21,9 @@ notice-search.user-notice-list-header {
 .user-notice-list-header .user-notice-search input[type='text'] {
   padding: var(--space-small);
   max-height: 30px;
+  border-radius: var(--base-border-radius);
+  outline: none;
+  border: 1.5px solid var(--color-dark-gray);
 }
 
 .user-notice-list {
