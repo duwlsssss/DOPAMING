@@ -7,7 +7,7 @@
 .admin-vacation-list {
   border-radius: 10px;
   overflow-y: auto;
-  max-height: 700px;
+  height: auto;
 }
 
 .admin-vacation-status-dot {
