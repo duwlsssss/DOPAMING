@@ -14,6 +14,6 @@
 }
 
 .pagination-btn.active {
-  color: var(--color-blue);
-  border: none;
+  background-color: var(--color-blue);
+  color: black;
 }
