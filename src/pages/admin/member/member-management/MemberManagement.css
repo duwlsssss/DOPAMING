@@ -1,20 +1,12 @@
-.user-container {
-  position: relative;
-  height: 50px;
-  left: 50px;
-  width: 90%;
-}
-
 .user-top {
   display: flex;
   align-items: center;
-  position: relative;
   height: 50px;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .user-update {
-  position: absolute;
-  right: 0;
   display: flex;
   gap: 10px;
   align-items: center;
@@ -23,23 +15,23 @@
 .search {
   height: 42px;
   width: 300px;
-  border-radius: 10px;
+  border-radius: var(--base-border-radius);
   background-color: #eeeeee;
   outline: none;
   padding-left: 10px;
 }
 
 select {
-  border-radius: 10px;
+  border-radius: var(--base-border-radius);
   padding: 10px;
 }
 
 .user-section {
-  background-color: #f4f4f4;
+  background-color: var(--color-pale-gray);
   width: 100%;
   height: 600px;
   margin-top: 17px;
-  border-radius: 10px;
+  border-radius: var(--base-border-radius);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -54,7 +46,7 @@ select {
 
 .user-item {
   border: 1px solid #000000;
-  border-radius: 10px;
+  border-radius: var(--base-border-radius);
   height: 60px;
   width: 90%;
   display: flex;
@@ -69,7 +61,14 @@ select {
   border-left: 1px solid black;
   height: 40px;
   justify-content: center;
-  width: 220px;
+  width: 210px;
+}
+
+.user .circle {
+  width: 10px;
+}
+.user-item .circle {
+  width: 10px;
 }
 
 .user-item .user-list {
@@ -78,18 +77,11 @@ select {
   align-items: center;
 }
 
-.circle {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  margin-left: 20px;
-}
-
 .circle1 {
   width: 17px;
   height: 17px;
   border-radius: 50%;
-  background-color: #3bbf0a;
+  background-color: var(--color-green);
   margin-left: 20px;
 }
 
@@ -145,4 +137,60 @@ input[type='checkbox']:checked + .custom-checkbox::after {
   width: 52px;
   height: 52px;
   border-radius: 50%;
+}
+
+/* 반응형 스타일 */
+
+@media (max-width: 1500px) {
+  .user-item .user-list p:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .user-item .user-list p:nth-child(3),
+  .user-item .user-list p:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .user-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .user-section {
+    padding: var(--space-small);
+  }
+
+  .user-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 10px;
+    height: 100px;
+    margin-top: 20px;
+  }
+  .user-update {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .user-top h1 {
+    margin-bottom: 10px;
+  }
+  .user-item {
+    display: flex;
+  }
+  .user-item .circle {
+    display: none;
+  }
+
+  .user-item .user-list p {
+    width: 100px;
+  }
+  .search {
+    width: 200px;
+  }
 }

@@ -6,13 +6,15 @@ export const RenderUserPeer = async container => {
   container.innerHTML = `
     <div class="peer-header">
       <p class="peer-title">여러분들의 동료 수강생 목록입니다.</p>
-      <div class="search-bar">
-        <input type="text" placeholder="Search" id="searchInput">
-        <span class="material-symbols-rounded" id="searchIcon">search</span>
+      <div class="peer-search-bar">
+        <input type="text" placeholder="Search" class="peer-search-input">
+        <span class="material-symbols-rounded peer-search-icon">search</span>
       </div>
     </div>
     <div class="peer-box"></div>
   `;
+
+  const peerTitle = container.querySelector('.peer-title'); // .peer-title 요소 선택
 
   let users = []; // 사용자 데이터를 담을 배열
   let currentIndex = 0;
@@ -44,7 +46,7 @@ export const RenderUserPeer = async container => {
   // 사용자 데이터 가져오기
   const fetchUserData = async () => {
     try {
-      const response = await axios.get('../../server/data/users.json');
+      const response = await axios.get(jsonFilePath);
       users = response.data;
       filteredUsers = users;
 
@@ -81,4 +83,15 @@ export const RenderUserPeer = async container => {
       filteredUsers = newFilteredUsers;
     },
   );
+  // MEDIA
+  const updatePeerTitleText = () => {
+    if (window.innerWidth <= 767) {
+      peerTitle.textContent = '수강생 목록';
+    } else {
+      peerTitle.textContent = '여러분들의 동료 수강생 목록입니다.';
+    }
+  };
+
+  updatePeerTitleText();
+  window.addEventListener('resize', updatePeerTitleText);
 };

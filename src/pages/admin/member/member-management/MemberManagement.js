@@ -17,6 +17,7 @@ export const RenderAdminMemberManagement = async container => {
     text: '삭제',
     color: 'coral',
     shape: 'block',
+    className: 'deleteButton',
   });
   const uploadButton = Button({
     width: 80,
@@ -24,6 +25,7 @@ export const RenderAdminMemberManagement = async container => {
     color: 'skyblue-light',
     shape: 'block',
     onClick: () => navigate(ADMIN_PATH.MEMBER_UPLOAD),
+    className: 'uploadButton',
   });
 
   const USER_URL = '../../../../../server/data/users.json';
