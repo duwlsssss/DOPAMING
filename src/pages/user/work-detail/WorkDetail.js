@@ -12,7 +12,6 @@ const updatePunchInfo = (container, selectedDate) => {
 
   const selectedUserData = filteredUsers.find(user => {
     const punchDate = user.punch_date;
-
     return punchDate === selectedDate; // 직접 비교
   });
 
@@ -47,7 +46,6 @@ const fetchFilteredUsers = async userId => {
   try {
     const response = await axios.get(jsonFilePath);
     const users = Array.isArray(response.data) ? response.data : []; // 배열인지 확인
-
     return users.filter(user => user.user_id === userId);
   } catch (error) {
     console.error('사용자 데이터를 가져오는 중 오류 발생! :', error);
@@ -70,9 +68,9 @@ export const RenderUserWorkDetail = async container => {
     ${workInfoHTML}
     <div class="work-calendar-box">
       <div class="title-content"> 
-        <span class="material-symbols-rounded" id="calendar-before">arrow_circle_left</span>
+        <span class="material-symbols-rounded calendar-before">arrow_circle_left</span>
         <p class="calendar-title">${currentYear}년 ${currentMonth + 1}월</p>
-        <span class="material-symbols-rounded" id="calendar-after">arrow_circle_right</span>
+        <span class="material-symbols-rounded calendar-after">arrow_circle_right</span>
       </div>
       <div class="work-calendar"></div>
       <div class="punch-info-time"></div>
@@ -83,7 +81,7 @@ export const RenderUserWorkDetail = async container => {
   updatePunchInfo(container, today.toISOString().split('T')[0]);
 
   // 아이콘 클릭
-  container.querySelector('#calendar-before').addEventListener('click', () => {
+  container.querySelector('.calendar-before').addEventListener('click', () => {
     if (currentMonth === 0) {
       currentYear -= 1;
       currentMonth = 11;
@@ -94,7 +92,7 @@ export const RenderUserWorkDetail = async container => {
     updatePunchInfo(container, container.querySelector('.punch-date').value);
   });
 
-  container.querySelector('#calendar-after').addEventListener('click', () => {
+  container.querySelector('.calendar-after').addEventListener('click', () => {
     if (currentMonth === 11) {
       currentYear += 1;
       currentMonth = 0;

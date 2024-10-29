@@ -6,7 +6,7 @@ import {
   formatUserTime,
 } from '../../../../utils/currentTime';
 import { USER_PATH } from '../../../../utils/constants';
-
+import { Modal } from '../../../ui/modal/Modal';
 export const RenderPunchTime = (container, userInfo, today) => {
   container.classList.add('punch-time');
   container.innerHTML = `
@@ -54,6 +54,9 @@ export const RenderPunchTime = (container, userInfo, today) => {
     color: 'green',
     shape: 'block',
     fontSize: 'var(--font-small)',
+    onClick: () => {
+      Modal('punch-in'); // 'punch-in' 모달 열기
+    },
   });
   const punchOutBtn = new Button({
     className: 'punch-out-button',
@@ -61,6 +64,9 @@ export const RenderPunchTime = (container, userInfo, today) => {
     color: 'gray',
     shape: 'block',
     fontSize: 'var(--font-small)',
+    onClick: () => {
+      Modal('punch-out'); // 'punch-in' 모달 열기
+    },
   });
   const breakOutBtn = new Button({
     className: 'break-out-btn',
@@ -68,6 +74,9 @@ export const RenderPunchTime = (container, userInfo, today) => {
     color: 'gray',
     shape: 'block',
     fontSize: 'var(--font-small)',
+    onClick: () => {
+      Modal('break-out'); // 'punch-in' 모달 열기
+    },
   });
 
   const breakInBtn = new Button({
@@ -76,6 +85,9 @@ export const RenderPunchTime = (container, userInfo, today) => {
     color: 'green',
     shape: 'block',
     fontSize: 'var(--font-small)',
+    onClick: () => {
+      Modal('break-in'); // 'punch-in' 모달 열기
+    },
   });
 
   const moreBtnContainer = container.querySelector('.punch-time-header');
