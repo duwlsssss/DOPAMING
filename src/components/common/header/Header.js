@@ -27,13 +27,15 @@ export async function RenderHeader(header, editProfilePath) {
       const userId = user.uid; // 사용자 고유 ID
       const userData = await fetchUserData(userId);
 
-      if (!userData) {
-        console.error('사용자 데이터를 가져오는 데 실패했습니다.');
-        return;
-      }
+      let userName = '관리자'; // 기본 사용자 이름
+      let isAdmin = false; // 관리자 여부 기본값
 
-      const userName = userData.user_name || '이름 없음'; // user_name 필드 사용
-      const isAdmin = userData.user_type || false; // user_type 필드 사용
+      if (userData) {
+        userName = userData.user_name || '관리자'; // user_name 필드 사용
+        isAdmin = userData.user_type || false; // user_type 필드 사용
+      } else {
+        console.error('사용자 데이터가 존재하지 않습니다.');
+      }
 
       header.innerHTML = `
         <div class="header-items">
@@ -55,6 +57,7 @@ export async function RenderHeader(header, editProfilePath) {
           Router();
         },
       });
+
       const headerItem = header.querySelector('.header-items');
       headerItem.append(logoutBtn);
 
