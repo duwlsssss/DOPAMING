@@ -3,11 +3,13 @@ import axios from 'axios';
 import { Accordion } from '../../ui/accordion/Accordion';
 import { Button } from '../../ui/button/Button';
 import { sortByName } from '../../../utils/sortByName';
+import { Pagenation } from '../../common/pagenation/Pagenation';
 import './VacationList.css';
 
 export const RenderAdminVacationManagementList = async (
   container,
   filter = { type: 'vacation-all', status: 'approved-all' },
+  currentPage = 1,
 ) => {
   container.innerHTML = `<div class="loading">휴가 정보를 가져오는 중입니다.</div>`;
 
@@ -171,18 +173,43 @@ export const RenderAdminVacationManagementList = async (
       </article>
     `;
 
+    const itemsPerPage = 6;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const diplayedAbsencesList = sortedAbsenceUsersData.slice(
+      startIndex,
+      endIndex,
+    );
+
     // 아코디언 렌더링
     container.innerHTML = `
       <section class="admin-vacation-list-section">
         <div class="admin-vacation-list">
             ${Accordion({
-              items: sortedAbsenceUsersData,
+              items: diplayedAbsencesList,
               renderHeader,
               renderContent,
             })}
         </div>
       </section>
     `;
+
+    const paginationContainer = document.createElement('div');
+    paginationContainer.className = 'pagination';
+
+    const handlePageChange = newPage => {
+      RenderAdminVacationManagementList(container, filter, newPage);
+    };
+
+    const paginationElement = Pagenation(
+      sortedAbsenceUsersData.length,
+      itemsPerPage,
+      currentPage,
+      handlePageChange,
+    );
+
+    paginationContainer.appendChild(paginationElement);
+    container.appendChild(paginationContainer);
   } catch (error) {
     let errorMessage = '데이터를 불러오는 중 오류가 발생했습니다.';
 

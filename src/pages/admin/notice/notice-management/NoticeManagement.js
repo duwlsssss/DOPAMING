@@ -31,9 +31,10 @@ export const RenderAdminNoticeManagement = container => {
       noticeListSection,
       updateTotalCount,
       searchInput,
+      1,
     );
   };
 
   RenderAdminNoticeManagementHeader(headerSection, handleSearch);
-  RenderAdminNoticeManagementList(noticeListSection, updateTotalCount);
+  RenderAdminNoticeManagementList(noticeListSection, updateTotalCount, '', 1);
 };
