@@ -4,6 +4,7 @@ import {
   deleteProfileImage,
   uploadProfileImg,
 } from '../../../utils/handleProfileImg';
+
 export const ProfileImage = (
   paragraphOne = 'Upload',
   paragraphTwo = 'Your',

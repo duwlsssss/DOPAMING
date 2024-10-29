@@ -7,8 +7,22 @@ import {
 } from '../../../../utils/currentTime';
 import { USER_PATH } from '../../../../utils/constants';
 import { Modal } from '../../../ui/modal/Modal';
-export const RenderPunchTime = (container, userInfo, today) => {
+import { formatDate } from '../../../../utils/currentTime';
+
+export const RenderPunchTime = (container, todayData) => {
   container.classList.add('punch-time');
+  const today = formatDate(new Date());
+
+  // 오늘 날짜에 해당하는 출퇴근 데이터를 가져옵니다.
+  const punchInTime =
+    todayData.length > 0 ? formatUserTime(todayData[0].punch_in) : '--시 --분';
+  const punchOutTime =
+    todayData.length > 0 ? formatUserTime(todayData[0].punch_out) : '--시 --분';
+  const breakOutTime =
+    todayData.length > 0 ? formatUserTime(todayData[0].break_out) : '--시 --분';
+  const breakInTime =
+    todayData.length > 0 ? formatUserTime(todayData[0].break_in) : '--시 --분';
+
   container.innerHTML = `
     <div class="curr-time-title">현재 시각</div>
     <div class="curr-time-board">
@@ -22,19 +36,19 @@ export const RenderPunchTime = (container, userInfo, today) => {
     <div class="punch-time-board">
       <div class="punch-time-board-box" id="punch-in">
         <p class="punch-time-board-box-title">출근 시간</p>
-        <span class="punch-time-board-box-content">${formatUserTime(userInfo?.punch_in)}</span>
+        <span class="punch-time-board-box-content">${punchInTime}</span>
       </div>
       <div class="punch-time-board-box" id="punch-out">
         <p class="punch-time-board-box-title">퇴근 시간</p>
-        <span class="punch-time-board-box-content">${formatUserTime(userInfo?.punch_out)}</span>
+        <span class="punch-time-board-box-content">${punchOutTime}</span>
       </div>
       <div class="punch-time-board-box" id="break-out">
         <p class="punch-time-board-box-title">외출 시간</p>
-        <span class="punch-time-board-box-content">${formatUserTime(userInfo?.break_out)}</span>
+        <span class="punch-time-board-box-content">${breakOutTime}</span>
       </div>
       <div class="punch-time-board-box" id="break-in">
         <p class="punch-time-board-box-title">복귀 시간</p>
-        <span class="punch-time-board-box-content">${formatUserTime(userInfo?.break_in)}</span>
+        <span class="punch-time-board-box-content">${breakInTime}</span>
       </div>
     </div>
   `;
@@ -65,7 +79,7 @@ export const RenderPunchTime = (container, userInfo, today) => {
     shape: 'block',
     fontSize: 'var(--font-small)',
     onClick: () => {
-      Modal('punch-out'); // 'punch-in' 모달 열기
+      Modal('punch-out'); // 'punch-out' 모달 열기
     },
   });
   const breakOutBtn = new Button({
@@ -75,10 +89,9 @@ export const RenderPunchTime = (container, userInfo, today) => {
     shape: 'block',
     fontSize: 'var(--font-small)',
     onClick: () => {
-      Modal('break-out'); // 'punch-in' 모달 열기
+      Modal('break-out'); // 'break-out' 모달 열기
     },
   });
-
   const breakInBtn = new Button({
     className: 'break-in-btn',
     text: '복귀하기',
@@ -86,7 +99,7 @@ export const RenderPunchTime = (container, userInfo, today) => {
     shape: 'block',
     fontSize: 'var(--font-small)',
     onClick: () => {
-      Modal('break-in'); // 'punch-in' 모달 열기
+      Modal('break-in'); // 'break-in' 모달 열기
     },
   });
 

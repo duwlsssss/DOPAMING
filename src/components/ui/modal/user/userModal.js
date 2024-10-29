@@ -193,6 +193,7 @@ export function userModalContent(type, modalInstance) {
     case 'break-in-fail':
     case 'vacation-fail':
     case 'edit-profile-fail':
+    case 'login-fail':
       content = `
         <div class="error-message">
           <span class="material-symbols-rounded">warning</span>

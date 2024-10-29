@@ -1,8 +1,6 @@
-import { ADMIN_PATH, USER_PATH } from '../../../utils/constants';
-import { setItem } from '../../../utils/storage';
 import './LogInForm.css';
-
-export const RenderLogInForm = (container, users) => {
+import { userLogin } from '../../../../server/api/user';
+export const RenderLogInForm = container => {
   container.innerHTML = `
     <main class="login-container">
       <h2>도파밍 부트캠프에 오신 것을 환영합니다!</h2>
@@ -30,23 +28,7 @@ export const RenderLogInForm = (container, users) => {
 
     const email = document.querySelector('#email').value;
     const password = document.querySelector('#password').value;
-
-    // 이메일과 비밀번호가 일치하는 사용자를 찾음
-    const user = users.find(
-      user => user.user_email === email && user.user_password === password,
-    );
-
-    // 일치하는 사용자가 있을 경우
-    if (user) {
-      const userRole = user.user_type ? 'admin' : 'user';
-      setItem('userRole', userRole);
-      setItem('userID', user.user_id); // 유저 아이디 저장
-
-      const redirectPath =
-        user.role === 'admin' ? ADMIN_PATH.HOME : USER_PATH.HOME;
-      window.location.replace(redirectPath); // 브라우저 히스토리에 저장하지 않음
-    } else {
-      alert('이메일 또는 비밀번호가 올바르지 않습니다.');
-    }
+    // API호출
+    userLogin(email, password);
   });
 };
