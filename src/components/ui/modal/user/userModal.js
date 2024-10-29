@@ -100,6 +100,7 @@ export function userModalContent(type, modalInstance) {
     // QUESTION
     case 'punch-in':
       content = ` 
+        <div class="modal-question-container">
           <p class="modal-title">출근 하시겠습니까?</p>
           <p class="modal-date">날짜: ${date}</p>
           <p class="modal-time">현재 시간: ${time}</p>
@@ -108,11 +109,13 @@ export function userModalContent(type, modalInstance) {
             <button class="cancel-button">아니요</button>
           </div>
           <button class="punch-in-fail">출근 실패</button>
+        </div>
         `;
       break;
 
     case 'punch-out':
       content = `
+      <div class="modal-question-container">
           <p class="modal-title">퇴근 하시겠습니까?</p>
           <p class="modal-date">날짜: ${date}</p>
           <p class="modal-time">현재 시간: ${time}</p>
@@ -121,11 +124,13 @@ export function userModalContent(type, modalInstance) {
             <button class="cancel-button">아니요</button>
           </div>
           <button class="punch-out-fail">퇴근 실패</button>
+          </div>
         `;
       break;
 
     case 'break-out':
       content = `
+      <div class="modal-question-container">
           <p class="modal-title">외출 하시겠습니까?</p>
           <p class="modal-date">날짜: ${date}</p>
           <p class="modal-time">현재 시간: ${time}</p>
@@ -134,11 +139,13 @@ export function userModalContent(type, modalInstance) {
             <button class="cancel-button">아니요</button>
           </div>
           <button class="break-out-fail">외출 실패</button>
+          </div>
         `;
       break;
 
     case 'break-in':
       content = `
+      <div class="modal-question-container">
           <p class="modal-title">복귀 하시겠습니까?</p>
           <p class="modal-date">날짜: ${date}</p>
           <p class="modal-time">현재 시간: ${time}</p>
@@ -147,16 +154,19 @@ export function userModalContent(type, modalInstance) {
             <button class="cancel-button">아니요</button>
           </div>
           <button class="break-in-fail">복귀 실패</button>
+          </div>
         `;
       break;
 
     case 'vacation':
       content = `
+      <div class="modal-question-container">
       <p class="modal-time">정말로 부재를 신청하시겠습니까?</p>
       <div class="button-container">
       <span class="material-symbols-rounded">Help</span>
         <button class="confirm-button" data-type="vacation">예</button>
         <button class="cancel-button">아니요</button>
+      </div>
       </div>
     `;
       break;
@@ -187,8 +197,10 @@ export function userModalContent(type, modalInstance) {
         <div class="error-message">
           <span class="material-symbols-rounded">warning</span>
           <p>${getErrorMessage(type)}</p>
-          <button class="retry-button">다시 시도</button>
-          <button class="close-button">닫기</button>
+          <div class="user-modal-button-group">
+            <button class="retry-button">다시 시도</button>
+            <button class="close-button">닫기</button>
+          </div>
         </div>`;
       break;
 

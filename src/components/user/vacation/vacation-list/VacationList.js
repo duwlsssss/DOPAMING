@@ -43,6 +43,29 @@ const toggleEditMode = vcId => {
     const formComponent = VacationRequestForm();
     formComponent.renderForm(contentElement);
 
+    // 수정 취소 버튼 추가
+    const cancelEditBtn = new Button({
+      className: 'user-vcCancelEdit-button',
+      text: '수정 취소',
+      color: 'coral',
+      shape: 'block',
+      padding: 'var(--space-small) var(--space-large)',
+      onClick: () => {
+        // 수정 취소 시, 원래 내용 복구 및 수정 모드 종료
+        contentElement.innerHTML = contentElement.dataset.originalContent;
+        contentElement.classList.remove('edit-mode'); // 수정 모드 클래스 제거
+
+        // 버튼 그룹에서 수정 완료, 수정 취소 버튼 제거
+        buttonGroup.removeChild(cancelEditBtn);
+        buttonGroup.removeChild(submitButton);
+        detail.style.maxHeight = 'none'; // 높이 초기화
+        buttonGroup
+          .querySelectorAll('.user-vcEdit-button, .user-vcDelete-button')
+          .forEach(btn => (btn.style.display = 'block'));
+      },
+    });
+    buttonGroup.appendChild(cancelEditBtn);
+
     // 수정 완료 버튼 추가
     const submitButton = new Button({
       className: 'user-vcSubmit-button',
@@ -51,11 +74,12 @@ const toggleEditMode = vcId => {
       shape: 'block',
       padding: 'var(--space-small) var(--space-large)',
       onClick: () => {
-        // 수정 완료 시, 원래 내용 복구 및 수정 모드 종료
+        // 수정 완료 시, 일단 원래 내용 복구 및 수정 모드 종료
         contentElement.innerHTML = contentElement.dataset.originalContent;
         contentElement.classList.remove('edit-mode'); // 수정 모드 클래스 제거
 
-        // 버튼 그룹에서 수정 완료 버튼 제거
+        // 버튼 그룹에서 수정 취소, 수정 완효 버튼 제거
+        buttonGroup.removeChild(cancelEditBtn);
         buttonGroup.removeChild(submitButton);
         detail.style.maxHeight = 'none'; // 높이 초기화
         buttonGroup

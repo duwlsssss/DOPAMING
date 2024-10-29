@@ -84,7 +84,7 @@ function closeModal(modal) {
   }
 }
 
-export default function Modal(type) {
+export function Modal(type) {
   const { modal, modalContent } = createModalElement();
   document.body.appendChild(modal);
 

@@ -9,8 +9,10 @@ export function adminModalContent(type, modalInstance) {
             <div class="question-message">
                 <span class="material-symbols-rounded">Help</span>
                 <p>선택한 직원을 삭제하시겠습니까?</p>
-                <button class="confirm-button" data-type="employee-delete">예</button>
-                <button class="cancel-button">아니요</button>
+                <div class="admin-modal-button-group">
+                  <button class="confirm-button" data-type="employee-delete">예</button>
+                  <button class="cancel-button">아니요</button>
+                </div>
             </div>`;
       break;
 
@@ -19,8 +21,10 @@ export function adminModalContent(type, modalInstance) {
             <div class="question-message">
                 <span class="material-symbols-rounded">Help</span>
                 <p>선택한 공지를 삭제하시겠습니까?</p>
-                <button class="confirm-button" data-type="notice-delete">예</button>
-                <button class="cancel-button">아니요</button>
+                <div class="admin-modal-button-group">
+                  <button class="confirm-button" data-type="notice-delete">예</button>
+                  <button class="cancel-button">아니요</button>
+                </div>
             </div>`;
       break;
 
@@ -29,18 +33,22 @@ export function adminModalContent(type, modalInstance) {
             <div class="question-message">
                 <span class="material-symbols-rounded">Help</span>
                 <p>선택한 부재 요청을 승인하시겠습니까?</p>
-                <button class="confirm-button" data-type="vacation-permit">예</button>
-                <button class="cancel-button">아니요</button>
+                <div class="admin-modal-button-group">
+                  <button class="confirm-button" data-type="vacation-permit">예</button>
+                  <button class="cancel-button">아니요</button>
+                </div>
             </div>`;
       break;
 
-    case 'vacation-permit-cancle':
+    case 'vacation-permit-cancel':
       content = `
             <div class="question-message">
                 <span class="material-symbols-rounded">Help</span>
                 <p>선택한 부재 요청의 승인을 취소하시겠습니까?</p>
-                <button class="confirm-button" data-type="vacation-permit-cancle">예</button>
-                <button class="cancel-button">아니요</button>
+                <div class="admin-modal-button-group">
+                  <button class="confirm-button" data-type="vacation-permit-cancel">예</button>
+                  <button class="cancel-button">아니요</button>
+                </div>
             </div>`;
       break;
 
@@ -49,18 +57,22 @@ export function adminModalContent(type, modalInstance) {
             <div class="question-message">
                 <span class="material-symbols-rounded">Help</span>
                 <p>선택한 부재 요청을 거부하시겠습니까?</p>
-                <button class="confirm-button" data-type="vacation-reject">예</button>
-                <button class="cancel-button">아니요</button>
+                <div class="admin-modal-button-group">
+                  <button class="confirm-button" data-type="vacation-reject">예</button>
+                  <button class="cancel-button">아니요</button>
+                </div>
             </div>`;
       break;
 
-    case 'vacation-reject-cancle':
+    case 'vacation-reject-cancel':
       content = `
             <div class="question-message">
                 <span class="material-symbols-rounded">Help</span>
                 <p>선택한 부재 요청의 거부를 취소하시겠습니까?</p>
-                <button class="confirm-button" data-type="vacation-reject-cancle">예</button>
-                <button class="cancel-button">아니요</button>
+                <div class="admin-modal-button-group">
+                  <button class="confirm-button" data-type="vacation-reject-cancel">예</button>
+                  <button class="cancel-button">아니요</button>
+                </div>
             </div>`;
       break;
 
@@ -70,7 +82,7 @@ export function adminModalContent(type, modalInstance) {
             <div class="success-message">
                 <span class="material-symbols-rounded">check_circle</span>
                 <p>직원이 성공적으로 삭제되었습니다!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
@@ -79,7 +91,7 @@ export function adminModalContent(type, modalInstance) {
             <div class="success-message">
                 <span class="material-symbols-rounded">check_circle</span>
                 <p>공지가 성공적으로 삭제되었습니다!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
@@ -88,16 +100,18 @@ export function adminModalContent(type, modalInstance) {
             <div class="success-message">
                 <span class="material-symbols-rounded">check_circle</span>
                 <p>부재 요청이 승인되었습니다!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
-    case 'vacation-permit-cancle-success':
+    case 'vacation-permit-cancel-success':
       content = `
             <div class="success-message">
                 <span class="material-symbols-rounded">check_circle</span>
                 <p>부재 요청 승인이 취소되었습니다!</p>
-                <button class="close-button">닫기</button>
+                <div class="admin-modal-button-group">
+                <button class="admin-close-button">닫기</button>
+                </div>
             </div>`;
       break;
 
@@ -106,16 +120,16 @@ export function adminModalContent(type, modalInstance) {
             <div class="success-message">
                 <span class="material-symbols-rounded">check_circle</span>
                 <p>부재 요청이 거절되었습니다!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
-    case 'vacation-reject-cancle-success':
+    case 'vacation-reject-cancel-success':
       content = `
             <div class="success-message">
                 <span class="material-symbols-rounded">check_circle</span>
                 <p>부재 요청 거부가 취소되었습니다!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
@@ -124,7 +138,7 @@ export function adminModalContent(type, modalInstance) {
             <div class="success-message">
                 <span class="material-symbols-rounded">check_circle</span>
                 <p>공지가 성공적으로 업로드되었습니다!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
@@ -133,7 +147,7 @@ export function adminModalContent(type, modalInstance) {
             <div class="success-message">
                 <span class="material-symbols-rounded">check_circle</span>
                 <p>직원이 성공적으로 등록되었습니다!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
@@ -143,16 +157,16 @@ export function adminModalContent(type, modalInstance) {
             <div class="error-message">
                 <span class="material-symbols-rounded">error</span>
                 <p>부재 요청 절차에서 오류가 발생했어요!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
-    case 'vacation-permit-cancle-fail':
+    case 'vacation-permit-cancel-fail':
       content = `
             <div class="error-message">
                 <span class="material-symbols-rounded">error</span>
                 <p>부재 요청 승인 취소 절차에서 오류가 발생했어요!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
@@ -161,16 +175,16 @@ export function adminModalContent(type, modalInstance) {
             <div class="error-message">
                 <span class="material-symbols-rounded">error</span>
                 <p>부재 요청 거부 절차에서 오류가 발생했어요!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
-    case 'vacation-reject-cancle-fail':
+    case 'vacation-reject-cancel-fail':
       content = `
             <div class="error-message">
                 <span class="material-symbols-rounded">error</span>
                 <p>부재 요청 거부 취소 절차에서 오류가 발생했어요!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
@@ -179,7 +193,7 @@ export function adminModalContent(type, modalInstance) {
             <div class="error-message">
                 <span class="material-symbols-rounded">error</span>
                 <p>공지 업로드 중 오류가 발생했어요!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
@@ -188,7 +202,7 @@ export function adminModalContent(type, modalInstance) {
             <div class="error-message">
                 <span class="material-symbols-rounded">error</span>
                 <p>직원 등록 중 오류가 발생했어요!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
 
@@ -197,7 +211,7 @@ export function adminModalContent(type, modalInstance) {
             <div class="error-message">
                 <span class="material-symbols-rounded">error</span>
                 <p>모달 절차에서 오류가 발생했어요!</p>
-                <button class="close-button">닫기</button>
+                <button class="admin-close-button">닫기</button>
             </div>`;
       break;
   }
@@ -223,7 +237,7 @@ export function adminModalContent(type, modalInstance) {
   }
 
   // 닫기 버튼 이벤트 리스너 추가
-  const closeButton = fragment.querySelector('.close-button');
+  const closeButton = fragment.querySelector('.admin-close-button');
   if (closeButton) {
     closeButton.addEventListener('click', () => {
       modalInstance.close(); // Modal 인스턴스의 close 메서드 호출

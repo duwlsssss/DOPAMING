@@ -1,3 +1,5 @@
+import { ADMIN_PATH, USER_PATH } from '../../../utils/constants';
+import navigate from '../../../utils/navigation';
 import './Navbar.css';
 
 export function RenderNavbar(navbar, isUser, menu) {
@@ -6,7 +8,32 @@ export function RenderNavbar(navbar, isUser, menu) {
     return;
   }
 
-  const isActiveMenu = path => window.location.pathname === path;
+  const isActiveMenu = path => {
+    const currentPath = window.location.pathname;
+
+    if (path === '/admin') {
+      return currentPath === '/admin';
+    }
+
+    if (path !== '/admin') {
+      return (
+        currentPath.startsWith(path) &&
+        (currentPath === path || currentPath.charAt(path.length) === '/')
+      );
+    }
+
+    return false;
+  };
+
+  navbar.addEventListener('click', e => {
+    if (e.target.closest('.navbar-top')) {
+      if (isUser) {
+        navigate(USER_PATH.HOME);
+      } else {
+        navigate(ADMIN_PATH.HOME);
+      }
+    }
+  });
 
   navbar.innerHTML = `
     <div class="navbar-top">

@@ -1,0 +1,107 @@
+.course-explain {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.course-explain .left-course,
+.course-explain .right-course {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-explain .right-course {
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+.course-explain .left-course {
+  gap: 0.5rem;
+}
+
+.course-explain .left-course .main-title {
+  font-size: var(--font-xlarge);
+  font-weight: 700;
+}
+.course-explain .left-course .sub-title {
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.course-explain .right-course .d-day {
+  font-size: var(--font-large);
+  font-weight: 700;
+  color: var(--color-dark-gray);
+}
+.course-explain .right-course .message {
+  line-height: 1.5;
+  text-align: end;
+  font-size: var(--font-small);
+}
+
+.course-explain .right-course .chart {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  transition: 0.3s;
+  display: inline-block;
+}
+.course-explain .right-course .chart:after {
+  /* 가상선택자는 도넛 모양을 만들기 위함*/
+  content: '';
+  background: #fff; /* 백그라운드 컬러로 중앙가리기 */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px; /* 도넛의 너비 설정 */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.course-explain .right-course .chart-bar {
+  width: inherit;
+  height: inherit;
+  border-radius: 50%;
+}
+.course-explain .right-course .chart .chart-percentage {
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 700;
+  color: var(--color-dark-gray);
+}
+
+@media (max-width: 1400px) {
+  .course-explain .left-course .main-title {
+    font-size: var(--font-large);
+  }
+  .course-explain .left-course .sub-title {
+    font-size: var(--font-medium);
+  }
+  .course-explain .right-course .d-day {
+    font-size: var(--font-large);
+  }
+  .course-explain .right-course {
+    gap: 0.5rem;
+  }
+  .course-explain .right-course .message {
+    font-size: var(--font-small);
+  }
+  .course-explain .right-course .chart {
+    width: 50px;
+    height: 50px;
+  }
+  .course-explain .right-course .chart:after {
+    /* 가상선택자는 도넛 모양을 만들기 위함*/
+    width: 20px;
+    height: 20px; /* 도넛의 너비 설정 */
+  }
+  .course-explain .right-course .chart .chart-percentage {
+    font-size: var(--font-small);
+  }
+}

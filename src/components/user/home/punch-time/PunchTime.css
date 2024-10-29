@@ -1,0 +1,95 @@
+.punch-time {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  gap: 0.5rem;
+}
+
+.punch-time .curr-time-board {
+  width: 100%;
+  background-color: var(--color-pale-gray);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: var(--base-border-radius);
+  padding: var(--space-small);
+}
+
+.punch-time .curr-time-board .curr-date {
+  font-weight: 700;
+}
+
+.punch-time .punch-time-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-medium);
+}
+
+.punch-time .punch-time-board {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.punch-time .punch-time-board .punch-time-board-box {
+  width: 20%;
+  background-color: var(--color-pale-gray);
+  border-radius: var(--base-border-radius);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.punch-time
+  .punch-time-board
+  .punch-time-board-box
+  .punch-time-board-box-title {
+  margin-left: 0.3rem;
+  font-weight: 700;
+}
+
+.punch-time
+  .punch-time-board
+  .punch-time-board-box
+  .punch-time-board-box-content {
+  align-self: center;
+}
+
+/* opacity 줘야해서 따로 뺌 */
+.punch-time .punch-time-board .punch-time-board-box .break-out-btn {
+  background-color: rgba(205, 205, 205, 0.3) !important;
+}
+.punch-time .punch-time-board .punch-time-board-box .break-out-btn:hover {
+  background-color: rgba(150, 150, 150, 0.3) !important;
+}
+.punch-time .punch-time-board .punch-time-board-box .break-in-btn {
+  background-color: rgba(59, 191, 10, 0.3) !important;
+}
+.punch-time .punch-time-board .punch-time-board-box .break-in-btn:hover {
+  background-color: rgba(41, 128, 12, 0.3) !important;
+}
+
+@media (width <= 1400px) {
+  .punch-time .punch-time-board .punch-time-board-box {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .punch-time
+    .punch-time-board
+    .punch-time-board-box
+    .punch-time-board-box-title {
+    font-size: var(--font-small);
+  }
+  .punch-time
+    .punch-time-board
+    .punch-time-board-box
+    .punch-time-board-box-content {
+    font-size: var(--font-small);
+  }
+}

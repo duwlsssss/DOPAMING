@@ -1,0 +1,106 @@
+.notice-gallery {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.notice-gallery .notice-gallery-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.notice-gallery .notice-list {
+  flex: 1;
+  display: flex;
+  gap: 1rem;
+  padding: var(--space-medium);
+  border-radius: var(--base-border-radius);
+  background-color: var(--color-pale-gray);
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding: var(--space-small);
+}
+
+.notice-gallery .notice-list .notice-item-container {
+  max-width: 200px;
+  border-radius: var(--base-border-radius);
+  background-color: var(--color-white);
+  cursor: pointer;
+}
+
+.notice-gallery .notice-list .notice-item-container:hover {
+  box-shadow: var(--box-shadow-large);
+}
+
+/* 각 공지 */
+.notice-gallery .notice-list .notice-item-container .notice-item {
+  line-height: 2;
+}
+
+.notice-gallery .notice-list .notice-item-container .notice-item .notice-image {
+  width: 100%;
+  height: 200px;
+}
+
+.notice-gallery
+  .notice-list
+  .notice-item-container
+  .notice-item
+  .notice-image
+  img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: var(--base-border-radius);
+  border-top-right-radius: var(--base-border-radius);
+}
+
+.notice-gallery
+  .notice-list
+  .notice-item-container
+  .notice-item
+  .notice-content {
+  padding: var(--space-small);
+  flex: 1;
+  flex-basis: 0;
+}
+
+.notice-gallery .notice-list .notice-item-container .notice-item .notice-title {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notice-gallery .notice-list .notice-item .notice-content .notice-description {
+  font-size: var(--font-small);
+  color: var(--color-dark-gray);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notice-gallery .notice-list .notice-item .notice-content .notice-date {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: var(--font-small);
+  color: var(--color-dark-gray);
+}
+
+.notice-item .notice-content .notice-date > .material-symbols-rounded {
+  font-size: var(--font-small);
+}
+
+@media (max-width: 1400px) {
+  .notice-gallery
+    .notice-list
+    .notice-item-container
+    .notice-item
+    .notice-image {
+    width: 100%;
+    height: 100px;
+  }
+}
