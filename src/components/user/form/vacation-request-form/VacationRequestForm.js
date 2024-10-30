@@ -1,3 +1,4 @@
+// VacationRequestForm.js
 import './VacationRequestForm.css';
 import { Button } from '../../../ui/button/Button';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Firebase Storage 가져오기
@@ -105,6 +106,27 @@ export const VacationRequestForm = () => {
     });
   };
 
+  const setFormData = absData => {
+    if (absData) {
+      document.querySelector('#vacation-type').value = absData.abs_type || '';
+      document.querySelector('#vacation-title').value = absData.abs_title || '';
+      document.querySelector('#vacation-start-date').value =
+        absData.abs_start_date || '';
+      document.querySelector('#vacation-end-date').value =
+        absData.abs_end_date || '';
+      document.querySelector('#vacation-content-textarea').value =
+        absData.abs_content || '';
+    } else {
+      console.error('부재 데이터가 유효하지 않습니다.', absData);
+      // Optional: 기본값 설정
+      document.querySelector('#vacation-type').value = '';
+      document.querySelector('#vacation-title').value = '';
+      document.querySelector('#vacation-start-date').value = '';
+      document.querySelector('#vacation-end-date').value = '';
+      document.querySelector('#vacation-content-textarea').value = '';
+    }
+  };
+
   const getFormData = async () => {
     const formData = {
       abs_title: document.querySelector('#vacation-title').value,
@@ -115,7 +137,6 @@ export const VacationRequestForm = () => {
       user_file: '', // 기본값으로 빈 문자열 설정
     };
 
-    // 파일 URL을 가져오는 로직 추가
     const fileInput = document.querySelector('#fileInput');
     if (fileInput.files.length > 0) {
       const file = fileInput.files[0];
@@ -130,20 +151,13 @@ export const VacationRequestForm = () => {
 
     return formData;
   };
+
   const renderForm = (container, absData) => {
     container.innerHTML = form;
 
     // 기존 값을 설정
     if (absData) {
-      container.querySelector('#vacation-type').value = absData.abs_type || '';
-      container.querySelector('#vacation-title').value =
-        absData.abs_title || '';
-      container.querySelector('#vacation-start-date').value =
-        absData.abs_start_date || '';
-      container.querySelector('#vacation-end-date').value =
-        absData.abs_end_date || '';
-      container.querySelector('#vacation-content-textarea').value =
-        absData.abs_content || '';
+      setFormData(absData); // setFormData 호출
     }
 
     const textarea = container.querySelector('#vacation-content-textarea');
@@ -153,6 +167,7 @@ export const VacationRequestForm = () => {
 
   return {
     renderForm,
-    getFormData, // getFormData 메서드 반환
+    getFormData,
+    setFormData, // setFormData 메서드 반환
   };
 };
