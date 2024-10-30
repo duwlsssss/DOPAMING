@@ -1,47 +1,65 @@
 import './VacationRequestForm.css';
 import { Button } from '../../../ui/button/Button';
-export const VacationRequestForm = () => {
+
+export const VacationRequestForm = (isEditMode = false, initialData = {}) => {
   const form = `
-      <fieldset class="vacation-request-form-inputs">
-
+    <fieldset class="vacation-request-form-inputs">
+      <div class="input-container">
+        <label class="vacation-input" for="vacation-type">부재 종류</label>
         <div class="input-box">
-            <label class="vacation-input" for="vacation-type">부재 종류</label>
-            <select class="input-select" id="vacation-type">
-              <option value="">선택하세요</option>
-              <option value="officialLeave">공가</option>
-              <option value="sickLeave">병가</option>
-              <option value="annualLeave">휴가</option>
-            </select>
-          </div>
-        
+          <select class="input-select" id="vacation-type">
+            <option value="">선택하세요</option>
+            <option value="officialLeave">공가</option>
+            <option value="sickLeave">병가</option>
+            <option value="annualLeave">휴가</option>
+          </select>
+          <p class="error-message" id="vcTypeError"></p>
+        </div>
+      </div>
+      
+      <div class="input-container">
+        <label class="vacation-input" for="vacation-title">부재 제목</label>
         <div class="input-box">
-          <label class="vacation-input" for="vacation-title">부재 제목</label>
           <input class="input-field" type="text" id="vacation-title" placeholder="부재 제목을 입력해주세요.">
+          <p class="error-message" id="vcTitleError"></p>
         </div>
-        
+      </div>
+      
+      <div class="input-container">
+        <label class="vacation-input" for="vacation-start-date">시작일</label>
         <div class="input-box">
-          <label class="vacation-input" for="vacation-start-date">시작일</label>
           <input class="input-field" type="date" id="vacation-start-date">
+          <p class="error-message" id="vcStartError"></p>
         </div>
+      </div>
 
+      <div class="input-container">
+        <label class="vacation-input" for="vacation-end-date">종료일</label>
         <div class="input-box">
-          <label class="vacation-input" for="vacation-end-date">종료일</label>
           <input class="input-field" type="date" id="vacation-end-date">
+          <p class="error-message" id="vcEndError"></p>
         </div>
+      </div>
 
-        <div class="input-box" id="vacation-content">
-          <label class="vacation-input" for="vacation-content">부재 사유</label>
+      <div class="input-container">
+        <label class="vacation-input" for="vacation-content">부재 사유</label>
+        <div class="input-box">
           <textarea class="input-field" id="vacation-content" placeholder="부재 사유를 입력해주세요."></textarea> 
+          <p class="error-message" id="vcContentError"></p>
         </div>
-        
-        <div class="input-box proof-file">
-          <label class="vacation-input" for="vacation-proof-document">첨부 파일</label>
+      </div>
+      
+      <div class="input-container proof-file">
+        <label class="vacation-input" for="vacation-proof-document">첨부 파일</label>
+        <div class="input-box">
           <div class="proof-file-preview"></div>
           <input type="file" id="fileInput" accept=".pdf, .zip, .jpg, .png"/> 
+          <p class="error-message file-error" id="vcFileError"></p>
         </div>
+      </div>
 
-      </fieldset>
-      `;
+    </fieldset>
+  `;
 
   // vacation-content 줄바꿈 발생하면 자동 높이 조정
   const handleResizeHeight = textarea => {
@@ -52,7 +70,7 @@ export const VacationRequestForm = () => {
   // 파일 업로드 이벤트를 처리하는 함수
   const attachProofFileEvents = container => {
     const fileInput = container.querySelector('#fileInput');
-    const buttonPosition = container.querySelector('.input-box.proof-file'); // 업로드 버튼 위치
+    const buttonPosition = container.querySelector('.proof-file'); // 업로드 버튼 위치
 
     // 업로드 버튼 추가
     const proofFileUploadBtn = new Button({
@@ -97,8 +115,6 @@ export const VacationRequestForm = () => {
         };
 
         reader.readAsDataURL(file); // 파일을 base64로 읽기
-      } else {
-        alert('파일을 선택해 주세요.');
       }
     });
   };
@@ -109,6 +125,46 @@ export const VacationRequestForm = () => {
     const textarea = container.querySelector('.input-box #vacation-content');
     textarea.addEventListener('input', () => handleResizeHeight(textarea));
     attachProofFileEvents(container);
+
+    // 수정 모드일 땐 내용 채워둠
+    if (isEditMode) {
+      container.querySelector('#vacation-type').value =
+        initialData.type === '공가'
+          ? 'officialLeave'
+          : initialData.type === '병가'
+            ? 'sickLeave'
+            : initialData.type === '휴가'
+              ? 'annualLeave'
+              : '';
+      container.querySelector('#vacation-title').value =
+        initialData.title || '';
+      container.querySelector('#vacation-start-date').value =
+        initialData.startDate || '';
+      container.querySelector('#vacation-end-date').value =
+        initialData.endDate || '';
+      container.querySelector('#vacation-content').value =
+        initialData.content || '';
+      // 파일 이름이 있을 경우 .file-title 안에 내용을 넣음
+      if (initialData.proof_document) {
+        const filePreviewContainer = container.querySelector(
+          '.proof-file-preview',
+        );
+        const filePreview = document.createElement('div');
+        filePreview.classList.add('file-title');
+
+        filePreview.textContent = initialData.proof_document;
+
+        // 클릭 시 원래 파일 이름 다운로드 링크 활성화
+        filePreview.addEventListener('click', () => {
+          const link = document.createElement('a');
+          link.href = initialData.proof_documentUrl; // assume URL or base64 data exists in proof_documentUrl
+          link.download = initialData.proof_document;
+          link.click();
+        });
+
+        filePreviewContainer.appendChild(filePreview);
+      }
+    }
   };
 
   return { renderForm };

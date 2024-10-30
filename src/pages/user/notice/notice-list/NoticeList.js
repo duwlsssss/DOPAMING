@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { RenderNoticeItem } from '../../../../components';
-import { getItem } from '../../../../utils/storage';
+// import { getItem } from '../../../../utils/storage';
 import navigate from '../../../../utils/navigation';
 import './NoticeList.css';
 
@@ -13,7 +13,8 @@ export const RenderUserNoticeList = async container => {
 
     const usersResponse = await axios.get('../../server/data/users.json');
     let users = usersResponse.data;
-    const userId = getItem('userID');
+    // const userId = getItem('userID');
+    const userId = '231231232'; // 임의로 설정
     const bcName = users.find(user => user.user_id === userId).user_bootcamp;
 
     const renderNoticeItems = filteredPosts => {

@@ -1,21 +1,20 @@
-import './EditProfile.css';
+import { fetchUserData } from '../../../../server/api/user'; // fetchUserData 가져오기
 import { getItem } from '../../../utils/storage';
 import {
   Button,
-  validInput,
   EditProfileForm,
   ProfileImage,
   attachProfileImageEvents,
   Modal,
 } from '../../../components';
+import { validateProfileInput } from '../../../utils/validation';
 import {
   applyProfileImage,
   listenForProfileImageUpdate,
 } from '../../../utils/handleProfileImg';
-import axios from 'axios';
 
 // validInput에 넘길 비번
-let userPassword = '';
+// let userPassword = '';
 
 export const RenderUserEditProfile = async container => {
   // 기본 HTML 구조 설정
@@ -34,10 +33,64 @@ export const RenderUserEditProfile = async container => {
   `;
 
   // 사용자 데이터 가져오기
-  await fetchUserData(container);
+  const userId = getItem('userID'); // 저장된 사용자 ID 가져오기
+  const currUser = await fetchUserData(userId); // Firebase에서 사용자 데이터 가져오기
+
+  if (currUser) {
+    const profileImgPosition = container.querySelector('.real-profileImg');
+    applyProfileImage(profileImgPosition);
+    listenForProfileImageUpdate(profileImgPosition);
+
+    container.querySelector('#role').value =
+      currUser.user_position === '매니저' ? 'manager' : 'student';
+    container.querySelector('#name').value = currUser.user_name ?? '';
+    container.querySelector('#gender').value =
+      currUser.user_sex === '남' ? 'male' : 'female';
+    container.querySelector('#birthDate').value = currUser.user_birthday ?? '';
+    container.querySelector('#phone').value = currUser.user_phone ?? '';
+    container.querySelector('#email').value = currUser.user_email ?? '';
+
+    // userPassword = currUser.user_password;
+  }
+
+  if (currUser) {
+    const profileImgPosition = container.querySelector('.real-profileImg');
+
+    if (currUser.user_image) {
+      const img = new Image();
+      img.src = currUser.user_image;
+
+      // 이미지가 성공적으로 로드되었을 때
+      img.onload = () => {
+        profileImgPosition.style.backgroundImage = `url(${currUser.user_image})`; // 배경 이미지 설정
+      };
+
+      // 이미지 로드 실패 시
+      img.onerror = () => {
+        console.error('이미지를 로드할 수 없습니다: ', currUser.user_image);
+        profileImgPosition.style.backgroundImage = `url('/path/to/default-image.png')`; // 기본 이미지 경로
+      };
+    }
+
+    applyProfileImage(profileImgPosition);
+    listenForProfileImageUpdate(profileImgPosition);
+
+    // 사용자 정보 입력 필드에 값 설정
+    container.querySelector('#role').value =
+      currUser.user_position === '매니저' ? 'manager' : 'student';
+    container.querySelector('#name').value = currUser.user_name ?? '';
+    container.querySelector('#gender').value =
+      currUser.user_sex === '남' ? 'male' : 'female';
+    container.querySelector('#birthDate').value = currUser.user_birthday ?? '';
+    container.querySelector('#phone').value = currUser.user_phone ?? '';
+    container.querySelector('#email').value = currUser.user_email ?? '';
+
+    //userPassword = currUser.user_password; // 비밀번호 저장
+  }
 
   // 버튼 추가
   const buttonPosition = container.querySelector('.user-edit-form-container');
+
   if (buttonPosition) {
     const submitBtn = Button({
       className: 'edit-submit-btn',
@@ -46,14 +99,16 @@ export const RenderUserEditProfile = async container => {
       shape: 'block',
       padding: 'var(--space-medium)',
       fontWeight: 700,
-      onClick: e => {
+      onClick: async e => {
         e.preventDefault();
-        if (validInput(userPassword)) {
+        if (validateProfileInput(container)) {
           // 모달 열기
-          Modal('edit-profile'); // edit-profile 타입으로 변경
+          Modal('edit-profile-success');
         } else {
-          alert('입력이 유효하지 않습니다.');
+          // 모달 대체 필요
+          Modal('edit-profile-fail');
         }
+        //await updateUserData(container, userId); // 컨테이너와 사용자 ID 전달
       },
     });
     buttonPosition.append(submitBtn);
@@ -81,34 +136,4 @@ export const RenderUserEditProfile = async container => {
 
   togglePasswordVisibility(passwordField, visibilityIconPassword);
   togglePasswordVisibility(passwordConfirmField, visibilityIconPasswordConfirm);
-};
-
-const fetchUserData = async container => {
-  try {
-    const response = await axios.get('../../server/data/users.json');
-    const users = response.data;
-
-    const userId = getItem('userID');
-    const currUser = users.find(user => user.user_id === userId);
-
-    if (currUser) {
-      const profileImgPosition = container.querySelector('.real-profileImg');
-      applyProfileImage(profileImgPosition);
-      listenForProfileImageUpdate(profileImgPosition);
-
-      container.querySelector('#role').value =
-        currUser.user_position === '매니저' ? 'manager' : 'student';
-      container.querySelector('#name').value = currUser.user_name ?? '';
-      container.querySelector('#gender').value =
-        currUser.user_sex === '남' ? 'male' : 'female';
-      container.querySelector('#birthDate').value =
-        currUser.user_birthday ?? '';
-      container.querySelector('#phone').value = currUser.user_phone ?? '';
-      container.querySelector('#email').value = currUser.user_email ?? '';
-
-      userPassword = currUser.user_password;
-    }
-  } catch (error) {
-    console.error('사용자 데이터를 가져오는 중 오류 발생 ! :', error);
-  }
 };

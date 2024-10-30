@@ -1,6 +1,8 @@
 import { Accordion } from '../../../ui/accordion/Accordion';
 import { Button } from '../../../ui/button/Button';
+// import { Modal } from '../../../ui/modal/Modal';
 import './VacationList.css';
+import { validateVacationRequestInput } from '../../../../utils/validation';
 import { VacationRequestForm } from '../../../user/form/vacation-request-form/VacationRequestForm';
 
 // 다운로드 버튼
@@ -13,8 +15,8 @@ const downloadButton = new Button({
 });
 
 // 수정 모드 토글 함수
-const toggleEditMode = vcId => {
-  console.log('선택된 부재 id: ', vcId);
+const toggleEditMode = (vcId, itemData) => {
+  // console.log('선택된 부재 id: ', vcId);
   const contentContainer = document.getElementById(vcId);
   const contentElement = contentContainer.querySelector('.user-detail-content');
   const buttonGroup = contentContainer.querySelector(
@@ -25,6 +27,25 @@ const toggleEditMode = vcId => {
     .querySelector('.accordion-detail'); // 아코디언 detail 요소
 
   const isEditMode = contentElement.classList.contains('edit-mode');
+
+  let cancelEditBtn, submitButton;
+
+  // 수정 모드 종료
+  const exitEditMode = () => {
+    contentElement.classList.remove('edit-mode');
+
+    // 수정 취소 및 수정 완료 버튼 제거
+    if (cancelEditBtn) buttonGroup.removeChild(cancelEditBtn);
+    if (submitButton) buttonGroup.removeChild(submitButton);
+
+    // 원래 버튼 복원
+    buttonGroup
+      .querySelectorAll('.user-vcEdit-button, .user-vcDelete-button')
+      .forEach(btn => (btn.style.display = 'block'));
+
+    // 아코디언 높이 초기화
+    detail.style.maxHeight = 'none';
+  };
 
   if (!isEditMode) {
     // 수정 모드로 전환
@@ -40,11 +61,18 @@ const toggleEditMode = vcId => {
     contentElement.dataset.originalContent = originalContent;
 
     // VacationRequestForm을 HTML 문자열로 가져와 DOM 요소로 변환해 삽입
-    const formComponent = VacationRequestForm();
+    const formComponent = VacationRequestForm(true, {
+      type: itemData.abs_type,
+      title: itemData.abs_title,
+      startDate: itemData.abs_start_date,
+      endDate: itemData.abs_end_date,
+      content: itemData.abs_content,
+      proof_document: itemData.abs_proof_document,
+    });
     formComponent.renderForm(contentElement);
 
     // 수정 취소 버튼 추가
-    const cancelEditBtn = new Button({
+    cancelEditBtn = new Button({
       className: 'user-vcCancelEdit-button',
       text: '수정 취소',
       color: 'coral',
@@ -53,60 +81,37 @@ const toggleEditMode = vcId => {
       onClick: () => {
         // 수정 취소 시, 원래 내용 복구 및 수정 모드 종료
         contentElement.innerHTML = contentElement.dataset.originalContent;
-        contentElement.classList.remove('edit-mode'); // 수정 모드 클래스 제거
-
-        // 버튼 그룹에서 수정 완료, 수정 취소 버튼 제거
-        buttonGroup.removeChild(cancelEditBtn);
-        buttonGroup.removeChild(submitButton);
-        detail.style.maxHeight = 'none'; // 높이 초기화
-        buttonGroup
-          .querySelectorAll('.user-vcEdit-button, .user-vcDelete-button')
-          .forEach(btn => (btn.style.display = 'block'));
+        exitEditMode();
       },
     });
     buttonGroup.appendChild(cancelEditBtn);
 
     // 수정 완료 버튼 추가
-    const submitButton = new Button({
+    submitButton = new Button({
       className: 'user-vcSubmit-button',
       text: '수정 완료',
       color: 'skyblue-light',
       shape: 'block',
       padding: 'var(--space-small) var(--space-large)',
       onClick: () => {
-        // 수정 완료 시, 일단 원래 내용 복구 및 수정 모드 종료
-        contentElement.innerHTML = contentElement.dataset.originalContent;
-        contentElement.classList.remove('edit-mode'); // 수정 모드 클래스 제거
-
-        // 버튼 그룹에서 수정 취소, 수정 완효 버튼 제거
-        buttonGroup.removeChild(cancelEditBtn);
-        buttonGroup.removeChild(submitButton);
-        detail.style.maxHeight = 'none'; // 높이 초기화
-        buttonGroup
-          .querySelectorAll('.user-vcEdit-button, .user-vcDelete-button')
-          .forEach(btn => (btn.style.display = 'block'));
+        // 수정 완료 시 유효성 검사 통과 후 수정 모드 종료
+        if (validateVacationRequestInput(true)) {
+          // 일단 원래 내용 복구 및 수정 모드 종료
+          contentElement.innerHTML = contentElement.dataset.originalContent;
+          exitEditMode();
+        }
       },
     });
     buttonGroup.appendChild(submitButton);
 
     detail.style.maxHeight = `${detail.scrollHeight}px`; // 높이 업데이트
   } else {
-    // 수정 모드를 비활성화하고 원래 내용 복구
-    contentElement.innerHTML = contentElement.dataset.originalContent;
-    contentElement.classList.remove('edit-mode'); // 수정 모드 클래스 제거
-
-    // 수정 완료 버튼 제거하고 원래 버튼 복원
-    buttonGroup.querySelector('.skyblue-light')?.remove();
-    buttonGroup
-      .querySelectorAll('.user-vcEdit-button, .user-vcDelete-button')
-      .forEach(btn => (btn.style.display = 'block'));
-
-    detail.style.maxHeight = 'none'; // 높이 초기화
+    exitEditMode(); // 이미 수정 모드인 경우 수정 모드 종료
   }
 };
 
 // 수정하기, 삭제 버튼
-const renderButtons = (status, vcId) => {
+const renderButtons = (status, vcId, itemData) => {
   const buttonGroup = document.createElement('div');
   buttonGroup.className = 'user-approval-button-group';
 
@@ -117,7 +122,7 @@ const renderButtons = (status, vcId) => {
       color: 'green-light',
       shape: 'block',
       padding: 'var(--space-small) var(--space-large)',
-      onClick: () => toggleEditMode(vcId), // 수정 모드 토글
+      onClick: () => toggleEditMode(vcId, itemData), // 수정 모드 토글
     });
 
     const deleteBtn = new Button({
@@ -126,6 +131,7 @@ const renderButtons = (status, vcId) => {
       color: 'coral',
       shape: 'block',
       padding: 'var(--space-small) var(--space-large)',
+      onClick: () => {},
     });
 
     buttonGroup.append(editBtn, deleteBtn);
@@ -211,7 +217,7 @@ export const RenderUserVacationList = async (container, userAbsData) => {
     const buttonGroupPlaceholder = contentContainer.querySelector(
       '.user-approval-button-group-placeholder',
     );
-    const buttonGroup = renderButtons(item.abs_status, vcId);
+    const buttonGroup = renderButtons(item.abs_status, vcId, item);
     buttonGroupPlaceholder.replaceWith(buttonGroup);
   });
 

@@ -3,12 +3,12 @@ export { RenderHeader } from './common/header/Header';
 export { RenderNavbar } from './common/navbar/Navbar';
 export { RenderNoticeItem } from './common/notice/NoticeItem';
 export { RenderTitle } from './common/title/Title';
+export { RenderLogInForm } from './common/log-in-form/LogInForm';
 export { Pagenation } from './common/pagenation/Pagenation';
 
 //ui
 export { Button } from './ui/button/Button';
 export { Accordion } from './ui/accordion/Accordion';
-export { validInput } from './ui/form/FormValidation';
 export { Modal } from './ui/modal/Modal';
 
 //admin

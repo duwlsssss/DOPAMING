@@ -1,3 +1,6 @@
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -8,4 +11,10 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-export default firebaseConfig;
+// Firebase 앱 초기화
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app); // Auth 객체 생성
+
+// 객체를 default로 내보내기
+const firebaseServices = { app, auth }; // 객체로 묶기
+export default firebaseServices; // default로 내보내기

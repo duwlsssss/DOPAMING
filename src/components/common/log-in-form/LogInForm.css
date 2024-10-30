@@ -1,42 +1,38 @@
 .login-container {
-  max-width: 450px;
-  margin: 60px auto;
-  padding: 20px;
+  width: 100%;
+  padding: var(--space-xlarge);
   text-align: center;
 }
 
 .login-container h2 {
+  line-height: 1.5;
   font-size: var(--font-large);
-  font-weight: bold;
-  color: black;
-  margin-bottom: 30px;
+  font-weight: 700;
+  margin-bottom: var(--space-large);
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
   gap: var(--space-medium);
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  padding: var(--space-large);
+  border: 1px solid var(--color-light-gray);
+  border-radius: var(--base-border-radius);
 }
 
-.input-group {
-  position: relative;
+.login-form .input-group {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-small);
 }
 
-.input-group label {
+.login-form .input-group label {
   font-size: var(--font-medium);
-  font-weight: 500;
-  color: #333;
   margin-left: 4px;
 }
 
-.input-group input {
+.login-form .input-group input {
   width: 100%;
   padding: 10px;
   border: 1px solid var(--color-light-gray);
@@ -46,33 +42,43 @@
   transition: border-color 0.3s ease;
 }
 
-.input-group input:hover {
+.login-form .input-group input:hover {
   transition: border-color 0.3s ease;
   border-color: var(--color-blue);
 }
 
-.input-group input:focus {
+.login-form .input-group input:focus {
   border-color: var(--color-blue);
 }
 
-.login-btn {
-  background-color: var(--color-skyblue);
-  color: black;
-  padding: 8px;
-  border: none;
-  border-radius: 8px;
+.login-form .input-group .error-message {
+  margin: 0 0 0 var(--space-small); /* form 안의 p 태그 조작 - 우선 순위 높여서 */
+  font-size: var(--font-small);
+  color: var(--color-coral);
+}
+
+.login-form .input-group .input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.login-form .input-group #password {
+  width: 100%;
+  padding-right: 2.5rem; /* 아이콘 공간 확보 */
+}
+
+.login-form .input-group #toggle-password {
+  position: absolute;
+  font-size: var(--font-large);
+  right: 0.5rem; /* input 오른쪽에 여백 설정 */
+  top: 50%;
+  transform: translateY(-50%);
   cursor: pointer;
-  font-size: var(--font-medium);
-  font-weight: 500;
-  transition: background-color 0.3s ease;
+  color: var(--color-regular-gray);
 }
 
-.login-btn:hover {
-  background-color: var(--color-blue);
-}
-
-.forgot-password {
-  margin-top: var(--space-small);
+.login-form .login-btn-container .login-btn {
+  width: 100%;
 }
 
 .forgot-password a {
@@ -84,5 +90,26 @@
 .forgot-password a:hover {
   text-decoration: underline;
   color: #4a90e2;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
+}
+
+@media (width <= 1200px) {
+  .login-form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+@media (width <= 767px) {
+  .login-container {
+    padding: var(--space-large);
+  }
+
+  .login-form {
+    padding: var(--space-medium);
+  }
+
+  .login-form .login-btn-container .login-btn {
+    padding: var(--space-small) 0 !important;
+  }
 }

@@ -4,9 +4,10 @@ import {
   RenderUserVacationList,
   RenderTitle,
   Button,
+  // Modal,
 } from '../../../../components';
 import axios from 'axios';
-import { getItem } from '../../../../utils/storage';
+// import { getItem } from '../../../../utils/storage';
 import { USER_PATH } from '../../../../utils/constants';
 import navigate from '../../../../utils/navigation';
 
@@ -22,9 +23,14 @@ export const RenderUserVacationManagement = async container => {
     const userAbsDatas = await fetchAbsData();
 
     // 현재 사용자 ID
-    const userID = getItem('userID');
+    // const userID = getItem('userID');
+
+    // 일단 임의로 설정
+    const userID = '231231232';
 
     const userAbsData = userAbsDatas.filter(data => data.user_id === userID);
+
+    console.log(userAbsData);
 
     const userAbsDatafirst = userAbsData[0];
 
@@ -124,9 +130,6 @@ const fetchAbsData = async () => {
       axios.get('../../server/data/absences.json'),
       axios.get('../../server/data/users.json'),
     ]);
-
-    console.log('absencesResponse:', absencesResponse.data);
-    console.log('usersResponse:', usersResponse.data);
 
     const absences = absencesResponse.data;
     const users = usersResponse.data;
