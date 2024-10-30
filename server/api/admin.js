@@ -1,5 +1,13 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, get, remove, update } from 'firebase/database';
+import {
+  getDatabase,
+  ref,
+  get,
+  set,
+  push,
+  remove,
+  update,
+} from 'firebase/database';
 import firebaseConfig from '../firebaseConfig';
 
 const app = initializeApp(firebaseConfig);
@@ -102,7 +110,7 @@ export const noticeAPI = {
     try {
       const snapshot = await get(noticesRef);
       if (!snapshot.exists()) {
-        throw new Error('공지사항이 존재하지 않습니다.');
+        return [];
       }
 
       const notices = [];
@@ -179,6 +187,26 @@ export const noticeAPI = {
       return { success: true, message: '공지사항이 삭제되었습니다.' };
     } catch (error) {
       console.error('공지사항 삭제 중 오류 발생:', error);
+      throw error;
+    }
+  },
+
+  // 공지사항 추가하기
+  addNotice: async newNotice => {
+    const noticesRef = ref(database, 'Notices');
+
+    try {
+      const newNoticeRef = push(noticesRef);
+      await set(newNoticeRef, {
+        ...newNotice,
+        post_id: newNoticeRef.key,
+        created_at: new Date().toLocaleDateString(),
+        updated_at: new Date().toLocaleDateString(),
+      });
+
+      return { success: true, message: '공지사항이 추가되었습니다.' };
+    } catch (error) {
+      console.error('공지사항 추가 중 오류 발생:', error);
       throw error;
     }
   },
