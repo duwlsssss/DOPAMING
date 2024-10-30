@@ -1,12 +1,10 @@
-import { fetchUserData } from '../../../../server/api/user'; // fetchUserData 가져오기
+import { fetchUserData, updateUserData } from '../../../../server/api/user'; // fetchUserData와 updateUserData 가져오기
 import { getItem } from '../../../utils/storage';
 import {
   Button,
-  //validInput,
   EditProfileForm,
   ProfileImage,
   attachProfileImageEvents,
-  //Modal,
 } from '../../../components';
 import {
   applyProfileImage,
@@ -64,8 +62,6 @@ export const RenderUserEditProfile = async container => {
     container.querySelector('#birthDate').value = currUser.user_birthday ?? '';
     container.querySelector('#phone').value = currUser.user_phone ?? '';
     container.querySelector('#email').value = currUser.user_email ?? '';
-
-    //userPassword = currUser.user_password; // 비밀번호 저장
   }
 
   // 버튼 추가
@@ -80,7 +76,8 @@ export const RenderUserEditProfile = async container => {
       fontWeight: 700,
       onClick: async e => {
         e.preventDefault();
-        //await updateUserData(container, userId); // 컨테이너와 사용자 ID 전달
+        // 프로필 이미지 업데이트 및 사용자 정보 저장
+        await updateUserData(container, userId); // 컨테이너와 사용자 ID 전달
       },
     });
     buttonPosition.append(submitBtn);
