@@ -4,8 +4,10 @@ import { ADMIN_PATH, USER_PATH } from '../../src/utils/constants';
 import {
   signInWithEmailAndPassword,
   getAuth,
+  signOut,
   onAuthStateChanged,
 } from 'firebase/auth'; // 로그인 함수
+import { clearStorage } from '../../src/utils/storage';
 import { Modal } from '../../src/components/ui/modal/Modal';
 import { getDatabase, ref, get, set } from 'firebase/database';
 import { formatDate } from '../../src/utils/currentTime';
@@ -54,6 +56,22 @@ export const getUserIdName = () => {
       }
     });
   });
+};
+
+// 3. 로그아웃
+export const userLogout = () => {
+  const auth = getAuth();
+
+  signOut(auth)
+    .then(() => {
+      // 로그아웃 성공 시 로컬 스토리지 초기화
+      clearStorage();
+      // 로그아웃 후 로그인 페이지로 리다이렉트
+      window.location.replace('/login');
+    })
+    .catch(error => {
+      console.error('로그아웃 중 오류 발생:', error);
+    });
 };
 
 // 2. 사용자 데이터 가져오기

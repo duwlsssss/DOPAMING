@@ -1,8 +1,7 @@
-import Router from '../../../routes/Router';
 import './Header.css';
 import { Button } from '../../ui/button/Button';
-import { clearStorage } from '../../../utils/storage';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { userLogout } from '../../../../server/api/user';
 import { fetchUserData } from '../../../../server/api/user';
 
 export async function RenderHeader(header, editProfilePath) {
@@ -52,10 +51,7 @@ export async function RenderHeader(header, editProfilePath) {
         text: '로그아웃',
         color: 'white',
         shape: 'line',
-        onClick: () => {
-          clearStorage(); // 로그아웃 누르면 로컬 스토리지 정리
-          Router();
-        },
+        onClick: userLogout,
       });
 
       const headerItem = header.querySelector('.header-items');
