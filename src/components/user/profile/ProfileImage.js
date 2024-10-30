@@ -35,7 +35,12 @@ export const ProfileImage = (
 };
 
 export const attachProfileImageEvents = container => {
-  const fileInput = container.querySelector('#profileImageInput'); // ID 수정
+  const fileInput = container.querySelector('#profileImageInput'); // 파일 입력 요소 선택
+  if (!fileInput) {
+    console.error('profileImageInput 요소를 찾을 수 없습니다.');
+    return; // 파일 입력 요소가 없으면 함수 종료
+  }
+
   const profileImgPosition = container.querySelector('.real-profileImg');
   const buttonPosition = container.querySelector(
     '.user-profileImg-button-container',

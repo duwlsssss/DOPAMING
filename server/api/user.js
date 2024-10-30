@@ -9,6 +9,12 @@ import {
 import { Modal } from '../../src/components/ui/modal/Modal';
 import { getDatabase, ref, get, set } from 'firebase/database';
 import { formatDate } from '../../src/utils/currentTime';
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from 'firebase/storage'; // storageRef를 ref로 가져옵니다.
 
 // 0. 로그인 id 및 상태 변경 감지
 export const getCurrentUserId = callback => {
@@ -73,6 +79,7 @@ export const getUserIdName = () => {
             const currentUserInfo = {
               id: userId,
               name: userData.user_name || '사용자 이름이 없습니다', // Realtime Database에서 user_name 가져오기
+              user_image: userData.user_image || '', // 사용자 이미지 URL 가져오기
             };
             console.log('로그인한 사용자 ID:', currentUserInfo.id);
             console.log('로그인한 사용자 이름:', currentUserInfo.name);
@@ -232,7 +239,18 @@ export const saveTimePunchData = async (userId, actionType, userName) => {
 // 6. 내 정보 수정하기.
 export const updateUserData = async (container, userId) => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
+  const storage = getStorage(); // 스토리지 인스턴스 가져오기
   const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
+
+  // 현재 사용자 정보 가져오기
+  let currUser;
+  try {
+    currUser = await getUserIdName(); // 현재 로그인한 사용자 정보 가져오기
+  } catch (error) {
+    console.error('사용자 정보 가져오기 실패:', error.message);
+    Modal('update-fail'); // 오류 발생 시 모달 표시
+    return; // 함수 종료
+  }
 
   // 입력값 가져오기
   const updatedData = {
@@ -243,15 +261,62 @@ export const updateUserData = async (container, userId) => {
     user_sex: container.querySelector('#gender').value === 'male' ? '남' : '여',
     user_position:
       container.querySelector('#role').value === 'manager' ? '매니저' : '학생',
-    //user_image: currUser.user_image, // 사용자 이미지 URL
+    user_image: currUser.user_image || '', // 사용자 이미지 URL
   };
 
+  // 파일 입력 처리
+  const fileInput = container.querySelector('#profileImageInput'); // 파일 입력 요소 선택
+  if (fileInput) {
+    // null 체크 추가
+    if (fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const storagePath = `user_images/${userId}/${file.name}`; // 저장할 경로
+      const imageRef = storageRef(storage, storagePath);
+
+      try {
+        // 파일 업로드
+        await uploadBytes(imageRef, file);
+        // 업로드 후 다운로드 URL 가져오기
+        const downloadURL = await getDownloadURL(imageRef);
+        updatedData.user_image = downloadURL; // 사용자 이미지 URL 업데이트
+      } catch (error) {
+        console.error('이미지 업로드 실패:', error.message);
+        Modal('update-fail'); // 오류 발생 시 모달 표시
+        return; // 함수 종료
+      }
+    }
+  } else {
+    console.error('파일 입력 요소를 찾을 수 없습니다.');
+  }
+
+  // 사용자 데이터 업데이트
   try {
-    await set(userRef, updatedData); // 사용자 데이터 업데이트
+    await set(userRef, updatedData);
     console.log('사용자 데이터가 성공적으로 수정되었습니다.');
     Modal('edit-profile-success');
   } catch (error) {
     console.error('사용자 데이터 수정 실패:', error.message);
     Modal('update-fail'); // 오류 발생 시 모달 표시
+  }
+};
+
+// 사용자 이미지 저장하기
+export const saveUserImage = async (userId, imageUrl) => {
+  const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
+  const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
+
+  try {
+    // 사용자 데이터 업데이트
+    await set(
+      userRef,
+      {
+        user_image: imageUrl, // 이미지 URL 저장
+        // 다른 사용자 데이터도 포함할 수 있습니다.
+      },
+      { merge: true },
+    ); // 기존 데이터 유지하면서 병합
+    console.log('사용자 이미지가 성공적으로 저장되었습니다.');
+  } catch (error) {
+    console.error('사용자 이미지 저장 실패:', error.message);
   }
 };
