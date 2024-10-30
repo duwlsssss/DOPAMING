@@ -3,6 +3,9 @@ import './Modal.css';
 import { userModalContent } from './user/userModal';
 import { getUserIdName } from '../../../../server/api/user';
 import { saveTimePunchData } from '../../../../server/api/user';
+import { noticeAPI } from '../../../../server/api/admin';
+import navigate from '../../../utils/navigation';
+import { ADMIN_PATH } from '../../../utils/constants';
 
 function createModalElement() {
   const modal = document.createElement('div');
@@ -72,6 +75,7 @@ function isAdminAction(actionType) {
     'vacation-permit-fail',
     'vacation-permit-cancle-fail',
     'vacation-reject-fail',
+    'notice-edit-success',
     'vacation-reject-cancle-fail',
     'notice-upload-fail',
     'employee-registration-fail',
@@ -86,7 +90,7 @@ function closeModal(modal) {
   }
 }
 
-export async function Modal(type) {
+export async function Modal(type, options = {}) {
   const { modal, modalContent } = createModalElement();
   document.body.appendChild(modal);
 
@@ -95,6 +99,7 @@ export async function Modal(type) {
   let modalInstance = {
     userId: null,
     userName: null,
+    ...options,
     close: () => closeModal(modal),
     handleConfirm: async actionType => {
       modalContent.innerHTML = ''; // 내용 초기화
@@ -144,6 +149,24 @@ export async function Modal(type) {
             modalContent.appendChild(
               userModalContent('break-in-success', modalInstance),
             );
+            break;
+
+          case 'notice-delete':
+            try {
+              const postId = modalInstance.postId;
+              const result = await noticeAPI.deleteNotice(postId);
+              if (result.success) {
+                modalContent.appendChild(
+                  adminModalContent('notice-delete-success', modalInstance),
+                );
+                navigate(ADMIN_PATH.NOTICE);
+              }
+            } catch (error) {
+              console.error('공지사항 삭제 중 오류 발생:', error);
+              modalContent.appendChild(
+                adminModalContent('notice-upload-fail', modalInstance),
+              );
+            }
             break;
 
           default:
@@ -215,6 +238,7 @@ export async function Modal(type) {
     case 'vacation-permit-cancle-success':
     case 'vacation-reject-success':
     case 'vacation-reject-cancle-success':
+    case 'notice-edit-success':
     case 'notice-upload-success':
     case 'employee-registration-success':
       modalContent.appendChild(adminModalContent(type, modalInstance));

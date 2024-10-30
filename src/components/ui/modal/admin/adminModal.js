@@ -95,6 +95,15 @@ export function adminModalContent(type, modalInstance) {
             </div>`;
       break;
 
+    case 'notice-edit-success':
+      content = `
+            <div class="success-message">
+                <span class="material-symbols-rounded">check_circle</span>
+                <p>공지가 성공적으로 수정되었습니다!</p>
+                <button class="admin-close-button">닫기</button>
+            </div>`;
+      break;
+
     case 'vacation-permit-success':
       content = `
             <div class="success-message">

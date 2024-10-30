@@ -1,19 +1,17 @@
-import { ApiClient } from '../../../../apis/ApiClient';
 import {
   Button,
+  Modal,
   NoticeForm,
   ProfileImage,
-  attachProfileImageEvents,
 } from '../../../../components';
-import {
-  applyProfileImage,
-  listenForProfileImageUpdate,
-} from '../../../../utils/handleProfileImg';
+import { handleNoticeImage } from '../../../../utils/handleProfileImg';
+import navigate from '../../../../utils/navigation';
+import { noticeAPI } from '../../../../../server/api/admin';
+import { attachProfileImageEvents } from '../../../../components/admin/notice-profile/AttachProfileImageEvents';
 import './EditNotice.css';
+import { ADMIN_PATH } from '../../../../utils/constants';
 
 export const RenderAdminEditNotice = async (container, noticeId) => {
-  const NOTICE_DATA = '../../../../server/data/company_posts.json';
-
   const paragraphOne = 'Upload';
   const paragraphTwo = 'Notification';
   const paragraphThree = 'Thumbnail';
@@ -24,10 +22,38 @@ export const RenderAdminEditNotice = async (container, noticeId) => {
     text: '수정하기',
     color: 'skyblue-light',
     shape: 'block',
-    onClick: () => console.log('업로드 기능 수행'),
+    onClick: async () => {
+      try {
+        const titleInput = container.querySelector('.notice-from-title-input');
+        const descriptionInput = container.querySelector(
+          '.notice-from-description-input',
+        );
+        const contentInput = container.querySelector(
+          '.notice-from-content-input',
+        );
+        const imageElement = container.querySelector('.real-profileImg');
+
+        const updateData = {
+          post_title: titleInput.value,
+          post_description: descriptionInput.value,
+          post_content: contentInput.value,
+          post_image: imageElement.getAttribute('data-image'), // data-image 속성에서 이미지 URL 가져오기
+        };
+
+        const result = await noticeAPI.updateNotice(noticeId, updateData);
+        if (result.success) {
+          await Modal('notice-edit-success');
+        }
+        navigate(ADMIN_PATH.NOTICE);
+      } catch (error) {
+        alert('수정 중 오류가 발생했습니다.');
+        console.error('수정 오류:', error);
+      }
+    },
   });
-  container.innerHTML = /*html */ `
-    <h1>공지 업로드</h1>
+
+  container.innerHTML = `
+    <h1>공지 수정</h1>
     <div class="admin-notice-edit-container">
         <div class="admin-edit-form">
           <div class="admin-notice-edit-image">
@@ -38,38 +64,43 @@ export const RenderAdminEditNotice = async (container, noticeId) => {
           </div>                 
         </div>
         <div class="admin-notice-edit-button-container">
-
         </div>      
     </div>
-    
   `;
+
   attachProfileImageEvents(container);
   const buttonEl = document.querySelector(
     '.admin-notice-edit-button-container',
   );
   buttonEl.append(editButton);
 
-  const handlePostData = async () => {
+  const loadPostData = async () => {
     try {
-      const postData = await ApiClient.get(NOTICE_DATA);
-      const filterData = postData.data.find(
-        value => value.post_id === noticeId,
-      );
+      const post = await noticeAPI.getNoticeById(noticeId);
 
-      if (filterData) {
+      if (post) {
         const profileImgPosition = container.querySelector('.real-profileImg');
-        applyProfileImage(profileImgPosition);
-        listenForProfileImageUpdate(profileImgPosition);
+        if (post.post_image) {
+          handleNoticeImage.applyNoticeImage(
+            profileImgPosition,
+            post.post_image,
+          );
+        } else {
+          handleNoticeImage.setDefaultNoticeImage(profileImgPosition);
+        }
+
         container.querySelector('.notice-from-title-input').value =
-          filterData.post_title;
+          post.post_title;
         container.querySelector('.notice-from-description-input').value =
-          filterData.post_description;
+          post.post_description;
         container.querySelector('.notice-from-content-input').value =
-          filterData.post_content;
+          post.post_content;
       }
     } catch (error) {
-      console.log(error);
+      console.error('공지사항을 불러오는 중 오류가 발생했습니다:', error);
+      navigate(ADMIN_PATH.NOTICE);
     }
   };
-  await handlePostData();
+
+  await loadPostData();
 };
