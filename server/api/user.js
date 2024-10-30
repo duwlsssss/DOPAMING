@@ -27,6 +27,7 @@ export const userLogin = async (email, password) => {
       email === 'admin@naver.com' ? ADMIN_PATH.HOME : USER_PATH.HOME;
     setItem('userRole', email === 'admin@naver.com' ? 'admin' : 'user');
     setItem('userID', user.uid); // 로컬 스토리지에 사용자 ID 저장
+    setItem('userName', user.displayName || '이름이 설정되지 않음'); // 로컬 스토리지에 사용자 이름 저장
 
     // 해당 경로로 리다이렉트
     window.location.replace(redirectPath);
@@ -39,24 +40,38 @@ export const userLogin = async (email, password) => {
 export const getUserIdName = () => {
   return new Promise((resolve, reject) => {
     const auth = getAuth();
-    onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, async user => {
       if (user) {
-        const currentUserInfo = {
-          id: user.uid, // 로그인한 사용자의 ID 저장
-          name: user.displayName || '이름이 설정되지 않음', // 사용자 이름 저장 (없으면 기본값)
-        };
-        console.log('로그인한 사용자 ID:', currentUserInfo.id);
-        console.log('로그인한 사용자 이름:', currentUserInfo.name);
-        resolve(currentUserInfo); // 사용자 정보를 resolve로 반환
+        const userId = user.uid; // 로그인한 사용자의 ID
+        const db = getDatabase();
+        const userRef = ref(db, `Users/${userId}`); // Realtime Database의 사용자 경로 참조
+
+        try {
+          const snapshot = await get(userRef); // 데이터 가져오기
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            const currentUserInfo = {
+              id: userId,
+              name: userData.user_name || '사용자 이름이 없습니다', // Realtime Database에서 user_name 가져오기
+            };
+            console.log('로그인한 사용자 ID:', currentUserInfo.id);
+            console.log('로그인한 사용자 이름:', currentUserInfo.name);
+            resolve(currentUserInfo); // 사용자 정보를 resolve로 반환
+          } else {
+            reject(new Error('사용자 데이터가 존재하지 않습니다.'));
+          }
+        } catch (error) {
+          reject(new Error('사용자 데이터 가져오기 실패: ' + error.message));
+        }
       } else {
         console.log('사용자가 로그아웃했습니다.');
-        reject(new Error('사용자가 로그아웃했습니다.')); // 로그아웃 시 reject
+        reject(new Error('사용자가 로그아웃했습니다.'));
       }
     });
   });
 };
 
-// 2. 사용자 데이터 가져오기
+// 3. 사용자 데이터 가져오기
 export const fetchUserData = async userId => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   console.log('userId : ', userId);
@@ -77,7 +92,7 @@ export const fetchUserData = async userId => {
   }
 };
 
-// 3. 출/퇴근 데이터 가져오기
+// 4. 출/퇴근 데이터 가져오기
 export const fetchTimePunchData = async userId => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   const timePunchRef = ref(db, 'Time-punch'); // 출/퇴근, 외출/복귀 데이터테이블
@@ -91,12 +106,13 @@ export const fetchTimePunchData = async userId => {
       const userTimePunch = [];
 
       // 각 사용자 ID와 날짜를 순회하여 해당 사용자 데이터를 필터링
-      Object.entries(timePunchData).forEach(([userPunchData]) => {
-        Object.entries(userPunchData).forEach(([punchDetails]) => {
-          if (punchDetails.user_id === userId) {
+      Object.entries(timePunchData).forEach(([userIdKey, userPunchData]) => {
+        if (userIdKey === userId) {
+          // 현재 사용자 ID와 비교
+          Object.entries(userPunchData).forEach(([punchDetails]) => {
             userTimePunch.push(punchDetails); // 해당 사용자 데이터 추가
-          }
-        });
+          });
+        }
       });
 
       return userTimePunch.length > 0 ? userTimePunch : []; // 사용자 데이터 반환
@@ -110,8 +126,7 @@ export const fetchTimePunchData = async userId => {
   }
 };
 
-// 4. 출 퇴근 외출 복귀 데이터 저장하기
-
+// 5. 출 퇴근 외출 복귀 데이터 저장하기
 export const saveTimePunchData = async (userId, actionType, userName) => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   const now = new Date(); // 현재 Date 객체 생성
@@ -171,8 +186,7 @@ export const saveTimePunchData = async (userId, actionType, userName) => {
   }
 };
 
-// 5. 내 정보 수정하기.
-
+// 6. 내 정보 수정하기.
 export const updateUserData = async (container, userId) => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조

@@ -1,14 +1,13 @@
 import './WorkInfo.css';
-import axios from 'axios';
+import { getDatabase, ref, get } from 'firebase/database'; // Firebase Database 가져오기
 
 export const WorkInfo = async (userId, date) => {
-  const jsonFilePath = '../../../../server/data/time_punch.json';
+  const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
+  const timePunchRef = ref(db, 'Time-punch'); // 출퇴근 데이터 경로
 
   try {
-    const response = await axios.get(jsonFilePath);
-    const users = Array.isArray(response.data) ? response.data : []; // 배열인지 확인 후 기본값 설정
-
-    // console.log('전체 사용자 데이터:', users);
+    const snapshot = await get(timePunchRef); // 데이터 가져오기
+    const users = snapshot.exists() ? snapshot.val() : {}; // 데이터가 존재하는 경우 가져오기
 
     // date가 Date 객체가 아니라면 형식 변환
     if (!(date instanceof Date)) {
@@ -17,14 +16,16 @@ export const WorkInfo = async (userId, date) => {
     const dateString = date.toISOString().split('T')[0]; // "YYYY-MM-DD" 형식
 
     // 특정 사용자 필터링 (punch_date 사용)
-    const filteredUsers = users.filter(
-      user => user.user_id === userId && user.punch_date === dateString,
-    );
-
-    console.log(
-      `Filtering with userId: ${userId} and punchDate: ${dateString}`,
-    );
-    // console.log('필터링된 사용자 데이터:', filteredUsers);
+    const filteredUsers = [];
+    for (const userKey in users) {
+      const userPunches = users[userKey];
+      if (
+        userPunches[dateString] &&
+        userPunches[dateString].user_id === userId
+      ) {
+        filteredUsers.push(userPunches[dateString]); // 해당 날짜의 데이터 추가
+      }
+    }
 
     // 기본 사용자 정보 초기화
     let userName = '사용자';
@@ -36,10 +37,6 @@ export const WorkInfo = async (userId, date) => {
     if (filteredUsers.length > 0) {
       const selectedUserData = filteredUsers[0];
       userName = selectedUserData.user_name || userName;
-
-      // 추가 디버깅 로그
-      console.log('선택된 사용자 데이터:', selectedUserData);
-      console.log('사용자 이름:', userName);
 
       punchInTime = selectedUserData.punch_in
         ? new Date(selectedUserData.punch_in).toLocaleTimeString([], {
@@ -72,6 +69,8 @@ export const WorkInfo = async (userId, date) => {
             hour12: false,
           })
         : breakInTime;
+    } else {
+      console.log('해당 날짜와 사용자에 대한 출퇴근 데이터가 없습니다.'); // 데이터가 없을 경우 로그
     }
 
     const currentTime = new Date().toLocaleTimeString([], {

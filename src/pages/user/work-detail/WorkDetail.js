@@ -1,19 +1,50 @@
 import './WorkDetail.css';
-import axios from 'axios';
 import { WorkInfo } from '../../../../src/components/user/work-info/WorkInfo';
 import { generateCalendar } from '../../../utils/generateCalendar';
+import { getDatabase, ref, get } from 'firebase/database';
+import { getAuth } from 'firebase/auth'; // Firebase Authentication 가져오기
 
 let currentYear;
 let currentMonth;
 let filteredUsers = [];
 
+// Firebase에서 사용자 출퇴근 데이터를 가져오는 함수
+const fetchFilteredUsers = async userId => {
+  const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
+  const userRef = ref(db, 'Time-punch'); // 출퇴근 데이터 경로
+
+  try {
+    const snapshot = await get(userRef); // 데이터 가져오기
+    if (snapshot.exists()) {
+      const timePunchData = snapshot.val(); // 데이터 값 가져오기
+      const userPunchData = [];
+
+      // 현재 사용자 ID에 해당하는 데이터 필터링
+      Object.entries(timePunchData).forEach(([key, userPunch]) => {
+        if (key === userId) {
+          Object.entries(userPunch).forEach(([dateKey, punchDetails]) => {
+            userPunchData.push({ punch_date: dateKey, ...punchDetails });
+          });
+        }
+      });
+
+      return userPunchData; // 필터링된 사용자 데이터 반환
+    } else {
+      console.log('Time-punch 데이터가 존재하지 않습니다.');
+      return []; // 데이터가 없을 경우 빈 배열 반환
+    }
+  } catch (error) {
+    console.error('사용자 데이터를 가져오는 중 오류 발생! :', error);
+    return []; // 오류 발생 시 빈 배열 반환
+  }
+};
+
 const updatePunchInfo = (container, selectedDate) => {
   const punchInfoTime = container.querySelector('.punch-info-time');
 
-  const selectedUserData = filteredUsers.find(user => {
-    const punchDate = user.punch_date;
-    return punchDate === selectedDate; // 직접 비교
-  });
+  const selectedUserData = filteredUsers.find(
+    user => user.punch_date === selectedDate,
+  );
 
   if (selectedUserData) {
     const punchInTime = new Date(selectedUserData.punch_in);
@@ -41,28 +72,24 @@ const updatePunchInfo = (container, selectedDate) => {
   }
 };
 
-const fetchFilteredUsers = async userId => {
-  const jsonFilePath = '../../../../server/data/time_punch.json';
-  try {
-    const response = await axios.get(jsonFilePath);
-    const users = Array.isArray(response.data) ? response.data : []; // 배열인지 확인
-    return users.filter(user => user.user_id === userId);
-  } catch (error) {
-    console.error('사용자 데이터를 가져오는 중 오류 발생! :', error);
-    return [];
-  }
-};
-
 export const RenderUserWorkDetail = async container => {
   const today = new Date();
   currentYear = today.getFullYear();
   currentMonth = today.getMonth();
 
-  const specificUserId = '231231232'; // 특정 테스트 ID
+  const auth = getAuth(); // Firebase Authentication
+  const user = auth.currentUser; // 현재 로그인한 사용자
 
-  // WorkInfo 컴포넌트 호출 및 HTML 및 사용자 데이터 삽입
+  if (!user) {
+    console.error('사용자가 로그인하지 않았습니다.');
+    return;
+  }
+
+  const specificUserId = user.uid; // 현재 로그인한 사용자 ID
+
+  // WorkInfo 컴포넌트 호출 및 사용자 데이터 삽입
   const { html: workInfoHTML } = await WorkInfo(specificUserId, today);
-  filteredUsers = await fetchFilteredUsers(specificUserId);
+  filteredUsers = await fetchFilteredUsers(specificUserId); // Firebase에서 사용자 데이터 가져오기
 
   container.innerHTML = `
     ${workInfoHTML}
