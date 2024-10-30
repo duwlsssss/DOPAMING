@@ -4,10 +4,9 @@ import {
   RenderUserVacationList,
   RenderTitle,
   Button,
-  // Modal,
 } from '../../../../components';
-import axios from 'axios';
-// import { getItem } from '../../../../utils/storage';
+import { getUserAbs, fetchUserData } from '../../../../../server/api/user';
+import { getItem } from '../../../../utils/storage';
 import { USER_PATH } from '../../../../utils/constants';
 import navigate from '../../../../utils/navigation';
 
@@ -19,34 +18,22 @@ export const RenderUserVacationManagement = async container => {
   container.innerHTML = `<div class="loading">휴가 정보를 가져오는 중입니다.</div>`;
 
   try {
-    // 사용자 정보, 부재 정보 가져오기
-    const userAbsDatas = await fetchAbsData();
-
     // 현재 사용자 ID
-    // const userID = getItem('userID');
+    const userID = getItem('userID');
 
-    // 일단 임의로 설정
-    const userID = '231231232';
-
-    const userAbsData = userAbsDatas.filter(data => data.user_id === userID);
-
-    console.log(userAbsData);
-
-    const userAbsDatafirst = userAbsData[0];
+    // 사용자 정보+부재 정보 가져오기
+    const userAbsDatas = await getUserAbs(userID);
+    const userData = await fetchUserData(userID);
 
     // 사용자 이름 추출
-    const userName = userAbsDatafirst.user_name;
+    const userName = userData?.user_name;
     // 총 휴가 개수
-    const userTotalVc = userAbsDatafirst.user_totalHoliday;
+    const userTotalVc = userData?.user_totalHoliday;
     // 남은 휴가 개수
-    const userLeftVc = userAbsDatafirst.user_leftHoliday;
+    const userLeftVc = userData?.user_leftHoliday;
     // 사용 휴가 개수
-    let userUsedVc = 0;
-    if (userTotalVc - userLeftVc >= 0) {
-      userUsedVc = userTotalVc - userLeftVc;
-    } else {
-      console.log('휴가 계산 잘못됨');
-    }
+    const userUsedVc =
+      userTotalVc - userLeftVc >= 0 ? userTotalVc - userLeftVc : 0;
 
     container.innerHTML = `
       <div class="user-vaction-management-title-container"></div>
@@ -100,53 +87,17 @@ export const RenderUserVacationManagement = async container => {
     const vacationListSection = container.querySelector(
       '#userVacationListSection',
     );
-    RenderUserVacationHeader(headerSection, userAbsData);
-    RenderUserVacationList(vacationListSection, userAbsData);
+    RenderUserVacationHeader(headerSection, userAbsDatas);
+    RenderUserVacationList(vacationListSection, userAbsDatas);
   } catch (error) {
     let errorMessage = '데이터를 불러오는 중 오류가 발생했습니다.';
 
     console.error('오류 내용:', error);
-
-    if (axios.isAxiosError(error)) {
-      if (error.response) {
-        errorMessage = `Error ${error.response.status}: ${error.response.data.message || errorMessage}`;
-      } else if (error.request) {
-        errorMessage = '서버로부터 응답을 받지 못했습니다.';
-      }
-    }
 
     container.innerHTML = `
       <div class="admin-vacation-section error">
         ${errorMessage}
       </div>
     `;
-  }
-};
-
-const fetchAbsData = async () => {
-  console.log('fetchAbsData 함수 호출됨'); // 호출 확인
-  try {
-    const [absencesResponse, usersResponse] = await Promise.all([
-      axios.get('../../server/data/absences.json'),
-      axios.get('../../server/data/users.json'),
-    ]);
-
-    const absences = absencesResponse.data;
-    const users = usersResponse.data;
-
-    return absences.map(absence => {
-      const user = users.find(user => user.user_id === absence.user_id);
-      return {
-        ...absence,
-        user_name: user.user_name,
-        user_phone: user.user_phone,
-        user_position: user.user_position,
-        user_leftHoliday: user.user_leftHoliday,
-        user_totalHoliday: user.user_totalHoliday,
-      };
-    });
-  } catch (error) {
-    console.error('데이터 가져오기 실패:', error);
-    return null; // 실패 시 null 반환
   }
 };

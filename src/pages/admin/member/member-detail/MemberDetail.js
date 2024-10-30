@@ -103,7 +103,7 @@ export async function RenderAdminMemberDetail(container, memberId) {
             <section class="member-detail-item">
               <h3 class="member-detail-label">첨부 파일</h3>
               <div class="member-download-file">
-                <p class="member-detail-value">FE_${value.abs_type}_${value.abs_type}.pdf</p>
+                <p class="member-detail-value">${value.abs_proof_document}</p>
                 ${downloadButton.outerHTML}
               </div>
             </section>

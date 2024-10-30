@@ -4,15 +4,10 @@ import { Button } from '../../../ui/button/Button';
 import './VacationList.css';
 import { validateVacationRequestInput } from '../../../../utils/validation';
 import { VacationRequestForm } from '../../../user/form/vacation-request-form/VacationRequestForm';
-
-// 다운로드 버튼
-const downloadButton = new Button({
-  className: 'user-vcDownload-btn',
-  text: '다운로드',
-  color: 'skyblue',
-  shape: 'block',
-  padding: 'var(--space-xsmall) var(--space-small)',
-});
+import {
+  updateUserAbsence,
+  deleteUserAbsence,
+} from '../../../../../server/api/user';
 
 // 수정 모드 토글 함수
 const toggleEditMode = (vcId, itemData) => {
@@ -93,12 +88,60 @@ const toggleEditMode = (vcId, itemData) => {
       color: 'skyblue-light',
       shape: 'block',
       padding: 'var(--space-small) var(--space-large)',
-      onClick: () => {
+      onClick: async () => {
         // 수정 완료 시 유효성 검사 통과 후 수정 모드 종료
         if (validateVacationRequestInput(true)) {
-          // 일단 원래 내용 복구 및 수정 모드 종료
-          contentElement.innerHTML = contentElement.dataset.originalContent;
-          exitEditMode();
+          const vacationTypeValue =
+            contentElement.querySelector('#vacation-type').value;
+          let vacationType;
+
+          if (vacationTypeValue === 'officialLeave') {
+            vacationType = '공가';
+          } else if (vacationTypeValue === 'sickLeave') {
+            vacationType = '병가';
+          } else if (vacationTypeValue === 'annualLeave') {
+            vacationType = '휴가';
+          } else {
+            vacationType = '';
+          }
+
+          const fileInput = contentElement.querySelector('#fileInput');
+          const proofDocument = fileInput.files[0] || null;
+
+          // 파일을 base64로 변환_다운로드 되게
+          let proofDocumentBase64 = null;
+          if (proofDocument) {
+            const reader = new FileReader();
+            proofDocumentBase64 = await new Promise((resolve, reject) => {
+              reader.onloadend = () => resolve(reader.result);
+              reader.onerror = reject;
+              reader.readAsDataURL(proofDocument);
+            });
+          }
+
+          const updatedData = {
+            abs_type: vacationType,
+            abs_title: contentElement.querySelector('#vacation-title').value,
+            abs_start_date: contentElement.querySelector('#vacation-start-date')
+              .value,
+            abs_end_date:
+              contentElement.querySelector('#vacation-end-date').value,
+            abs_content:
+              contentElement.querySelector('#vacation-content').value,
+            abs_proof_document: proofDocument ? proofDocument.name : null,
+            abs_proof_document_base64: proofDocumentBase64,
+          };
+
+          try {
+            await updateUserAbsence(
+              itemData.user_id,
+              itemData.abs_id,
+              updatedData,
+            );
+            exitEditMode();
+          } catch (error) {
+            console.error('수정 중 오류 발생:', error);
+          }
         }
       },
     });
@@ -131,7 +174,17 @@ const renderButtons = (status, vcId, itemData) => {
       color: 'coral',
       shape: 'block',
       padding: 'var(--space-small) var(--space-large)',
-      onClick: () => {},
+      onClick: async () => {
+        try {
+          await deleteUserAbsence(itemData.user_id, itemData.abs_id);
+          const itemElement = document
+            .getElementById(vcId)
+            .closest('.accordion-item');
+          itemElement.remove();
+        } catch (error) {
+          console.error('삭제 중 오류 발생:', error);
+        }
+      },
     });
 
     buttonGroup.append(editBtn, deleteBtn);
@@ -154,6 +207,7 @@ const renderHeader = item => `
 // 아코디언 콘텐츠
 const renderContent = item => {
   const vcId = `content-${item.abs_id}`;
+
   return `
     <article class="user-detail-content-container" id="${vcId}">
       <div class="user-detail-content">
@@ -174,8 +228,8 @@ const renderContent = item => {
         <section class="user-detail-item">
           <h3 class="user-detail-label">첨부 파일</h3>
           <div class="user-download-file">
-            <p class="user-detail-value">FE_${item.user_name}_${item.abs_type}.pdf</p>
-            ${downloadButton.outerHTML}
+            <p class="user-detail-value">${item.abs_proof_document}</p>
+            <div class="download-button-container"></div> 
           </div>
         </section>
 
@@ -185,10 +239,35 @@ const renderContent = item => {
         </section>
       </div>
 
-      <div class="user-approval-button-group-placeholder"></div>
+      <div class="user-approval-button-group-container"></div>
       
     </article>
   `;
+};
+
+// 다운로드 버튼 추가
+const appendDownloadButton = (item, container) => {
+  const downloadButton = new Button({
+    className: 'user-vcDownload-btn',
+    text: '다운로드',
+    color: 'skyblue',
+    shape: 'block',
+    padding: 'var(--space-xsmall) var(--space-small)',
+    onClick: () => {
+      if (item.abs_proof_document_base64) {
+        const link = document.createElement('a');
+        link.href = item.abs_proof_document_base64;
+        link.download = item.abs_proof_document || 'downloaded-file';
+        link.click();
+      } else {
+        console.log('다운로드할 파일이 없습니다.');
+      }
+    },
+  });
+  const buttonPosition = container.querySelector(
+    `#content-${item.abs_id} .download-button-container`,
+  );
+  buttonPosition.appendChild(downloadButton);
 };
 
 // 사용자 휴가 리스트 렌더링
@@ -214,11 +293,14 @@ export const RenderUserVacationList = async (container, userAbsData) => {
   userAbsData.forEach(item => {
     const vcId = `content-${item.abs_id}`;
     const contentContainer = container.querySelector(`#${vcId}`);
-    const buttonGroupPlaceholder = contentContainer.querySelector(
-      '.user-approval-button-group-placeholder',
+    const buttonGroupContainer = contentContainer.querySelector(
+      '.user-approval-button-group-container',
     );
     const buttonGroup = renderButtons(item.abs_status, vcId, item);
-    buttonGroupPlaceholder.replaceWith(buttonGroup);
+
+    appendDownloadButton(item, contentContainer);
+
+    buttonGroupContainer.replaceWith(buttonGroup);
   });
 
   if (userAbsData.length === 0) {

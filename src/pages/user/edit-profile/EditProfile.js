@@ -68,9 +68,9 @@ export const RenderUserEditProfile = async container => {
           );
           // updateUserData에 사용자 정보와 이미지 URL 전달
           await updateUserData(container, userId, userImage);
+          Modal('edit-profile-success');
           // 프로필 이미지 업데이트 이벤트 발생시킴-다른 컴포넌트에 반영하기 위해
           window.dispatchEvent(new Event('profileImageUpdated'));
-          Modal('edit-profile-success');
         } else {
           Modal('edit-profile-fail');
         }

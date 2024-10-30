@@ -9,7 +9,15 @@ import {
 } from 'firebase/auth'; // 로그인 함수
 import { clearStorage } from '../../src/utils/storage';
 import { Modal } from '../../src/components/ui/modal/Modal';
-import { getDatabase, ref, get, set } from 'firebase/database';
+import {
+  getDatabase,
+  ref,
+  get,
+  set,
+  push,
+  update,
+  remove,
+} from 'firebase/database';
 import { formatDate } from '../../src/utils/currentTime';
 
 // 1. 로그인
@@ -77,7 +85,6 @@ export const userLogout = () => {
 // 2. 사용자 데이터 가져오기
 export const fetchUserData = async userId => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
-  console.log('userId : ', userId);
   const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
 
   try {
@@ -188,7 +195,7 @@ export const saveTimePunchData = async (userId, actionType, userName) => {
   }
 };
 
-// 5. 내 정보 수정하기.
+// 5. 내 정보 수정하기
 export const updateUserData = async (container, userId, userImage = null) => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
@@ -206,10 +213,96 @@ export const updateUserData = async (container, userId, userImage = null) => {
   };
 
   try {
-    await set(userRef, updatedData); // 사용자 데이터 업데이트
+    await set(userRef, updatedData);
     console.log('사용자 데이터가 성공적으로 수정되었습니다.');
   } catch (error) {
     console.error('사용자 데이터 수정 실패:', error.message);
-    Modal('update-fail'); // 오류 발생 시 모달 표시
+    Modal('edit-profile-fail');
+  }
+};
+
+// 부재 관련 API
+// 부재 가져오기
+export const getUserAbs = async userId => {
+  const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
+  const absRef = ref(db, `absences/${userId}`); // userId 별로 부재 데이터 접근
+
+  try {
+    // userId로 부재 데이터 가져오기
+    const absSnapshot = await get(absRef);
+    if (!absSnapshot.exists()) {
+      return [];
+    }
+
+    // userId로 유저 데이터 가져오기
+    const userData = await fetchUserData(userId);
+    if (!userData) {
+      console.log('해당 사용자 데이터가 없습니다.');
+      return [];
+    }
+
+    // 합쳐서 반환
+    const absences = [];
+    absSnapshot.forEach(childSnapshot => {
+      absences.push({
+        abs_id: childSnapshot.key,
+        ...childSnapshot.val(),
+        user_name: userData.user_name,
+        user_phone: userData.user_phone,
+        user_position: userData.user_position,
+        user_leftHoliday: userData.user_leftHoliday,
+        user_totalHoliday: userData.user_totalHoliday,
+      });
+    });
+
+    return absences;
+  } catch (error) {
+    console.error('사용자별 부재 불러오기 중 오류 발생:', error);
+    throw error;
+  }
+};
+
+// 부재 추가
+export const addUserAbsence = async (userId, newAbsenceData) => {
+  const db = getDatabase();
+  const absRef = ref(db, `absences/${userId}`);
+
+  try {
+    const newAbsRef = await push(absRef, newAbsenceData); // 새 부재 데이터 추가
+    console.log('부재 데이터가 성공적으로 추가되었습니다.');
+    return { abs_id: newAbsRef.key, ...newAbsenceData }; // 추가된 데이터 반환
+  } catch (error) {
+    console.error('부재 데이터 추가 중 오류 발생:', error);
+    throw error;
+  }
+};
+
+// 부재 업데이트
+export const updateUserAbsence = async (userId, absenceId, updatedData) => {
+  const db = getDatabase();
+  const absenceRef = ref(db, `absences/${userId}/${absenceId}`);
+
+  try {
+    await update(absenceRef, updatedData); // absence 데이터 업데이트
+    console.log('부재 데이터가 성공적으로 업데이트되었습니다.');
+    return true;
+  } catch (error) {
+    console.error('부재 데이터 업데이트 중 오류 발생:', error);
+    throw error;
+  }
+};
+
+// 부재 삭제
+export const deleteUserAbsence = async (userId, absenceId) => {
+  const db = getDatabase();
+  const absenceRef = ref(db, `absences/${userId}/${absenceId}`);
+
+  try {
+    await remove(absenceRef); // absence 데이터 삭제
+    console.log('부재 데이터가 성공적으로 삭제되었습니다.');
+    return true;
+  } catch (error) {
+    console.error('부재 데이터 삭제 중 오류 발생:', error);
+    throw error;
   }
 };

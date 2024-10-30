@@ -158,7 +158,7 @@ export const RenderAdminVacationManagementList = async (
           <section class="detail-item">
             <h3 class="detail-label">첨부 파일</h3>
             <div class="download-file">
-              <p class="detail-value">FE_${item.user_name}_${item.abs_type}.pdf</p>
+              <p class="detail-value">${item.abs_proof_document}</p>
               ${downloadButton.outerHTML}
             </div>
           </section>
