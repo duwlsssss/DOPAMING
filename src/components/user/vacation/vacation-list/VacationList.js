@@ -11,7 +11,7 @@ import {
 } from 'firebase/storage'; // Firebase Storage 함수들 임포트
 
 // 다운로드 버튼 생성 함수
-const createDownloadButton = (userFileUrl, userName, absType) => {
+const createDownloadButton = (userName, absType) => {
   return new Button({
     className: 'user-vcDownload-btn',
     text: '다운로드',
@@ -26,8 +26,10 @@ const createDownloadButton = (userFileUrl, userName, absType) => {
   });
 };
 
-// 수정 모드 토글 함수
 const toggleEditMode = (vcId, absData) => {
+  // absData가 올바르게 전달되었는지 로그 확인
+  console.log('toggleEditMode에서 전달된 absData:', absData);
+
   const contentContainer = document.getElementById(vcId);
   const contentElement = contentContainer.querySelector('.user-detail-content');
   const buttonGroup = contentContainer.querySelector(
@@ -48,7 +50,10 @@ const toggleEditMode = (vcId, absData) => {
     contentElement.dataset.originalContent = originalContent;
 
     const formComponent = VacationRequestForm();
-    formComponent.renderForm(contentElement, absData); // 기존 데이터 전달
+
+    // 기존 데이터 전달하여 폼 초기화
+    formComponent.renderForm(contentElement, absData);
+    formComponent.setFormData(absData); // 이 함수는 absData의 내용을 폼 필드에 설정하는 함수입니다.
 
     const cancelEditBtn = new Button({
       className: 'user-vcCancelEdit-button',
@@ -80,8 +85,27 @@ const toggleEditMode = (vcId, absData) => {
         const auth = getAuth();
         const currentUser = auth.currentUser;
 
-        // 수정된 내용을 가져오기
-        const updatedContent = formComponent.getFormData(); // 수정된 데이터 가져오기
+        // absData가 유효한지 확인
+        if (!absData) {
+          alert('부재 데이터가 없습니다. 다시 시도해 주세요.');
+          return;
+        }
+
+        // 수정된 내용을 가져오기 (await 추가)
+        const updatedContent = await formComponent.getFormData(); // 수정된 데이터 가져오기
+        console.log('수정된 데이터:', updatedContent); // 추가된 로그
+
+        // 부재 종류를 한국어로 변환
+        const typeMapping = {
+          officialLeave: '공가',
+          sickLeave: '병가',
+          annualLeave: '연차',
+        };
+
+        if (updatedContent.abs_type) {
+          updatedContent.abs_type =
+            typeMapping[updatedContent.abs_type] || updatedContent.abs_type; // 한국어로 변환
+        }
 
         if (updatedContent) {
           const absencesRef = ref(
@@ -106,6 +130,7 @@ const toggleEditMode = (vcId, absData) => {
         }
       },
     });
+
     buttonGroup.appendChild(submitButton);
     detail.style.maxHeight = `${detail.scrollHeight}px`; // 높이 업데이트
   } else {
@@ -120,7 +145,7 @@ const toggleEditMode = (vcId, absData) => {
 };
 
 // 수정 및 삭제 버튼 렌더링
-const renderButtons = (status, vcId, absId, absData, container) => {
+const renderButtons = (status, vcId, absId, absData) => {
   const buttonGroup = document.createElement('div');
   buttonGroup.className = 'user-approval-button-group';
 
@@ -144,14 +169,30 @@ const renderButtons = (status, vcId, absId, absData, container) => {
         const db = getDatabase();
         const auth = getAuth();
         const currentUser = auth.currentUser;
-        const absencesRef = ref(db, `absences/${currentUser.uid}/${absId}`); // 부재 ID 경로 설정
 
-        // 부재 삭제 확인
-        const confirmDelete = confirm('부재 신청을 삭제하시겠습니까?');
+        if (!currentUser) {
+          alert('로그인된 사용자가 없습니다.');
+          return;
+        }
+
+        const absencesRef = ref(db, `absences/${currentUser.uid}/${absId}`); // 삭제할 부재 ID 경로 설정
+
+        const confirmDelete = confirm(
+          '정말로 이 부재 신청을 삭제하시겠습니까?',
+        ); // 사용자 확인
+
         if (confirmDelete) {
           try {
-            await remove(absencesRef); // 부재 신청 삭제
-            RenderUserVacationList(container);
+            await remove(absencesRef); // Firebase에서 데이터 삭제
+            alert('부재 신청이 삭제되었습니다.');
+
+            // UI에서 해당 항목 제거 (필요 시)
+            const contentContainer = document.getElementById(
+              `content-${absId}`,
+            );
+            if (contentContainer) {
+              contentContainer.remove(); // UI에서 삭제
+            }
           } catch (error) {
             console.error('부재 신청 삭제 중 오류 발생:', error);
             alert('부재 신청 삭제 중 오류가 발생했습니다.');
@@ -222,7 +263,6 @@ const renderContent = item => {
   `;
 };
 
-// 사용자 휴가 리스트 렌더링
 export const RenderUserVacationList = async container => {
   if (!container) {
     console.error('Container가 준비되지 않음');
@@ -299,7 +339,15 @@ export const RenderUserVacationList = async container => {
         const buttonGroupPlaceholder = contentContainer.querySelector(
           '.user-approval-button-group-placeholder',
         );
-        const buttonGroup = renderButtons(item.abs_status, vcId, item.abs_id); // 부재 ID 추가
+
+        // absData를 전달하여 renderButtons 호출
+        const buttonGroup = renderButtons(
+          item.abs_status,
+          vcId,
+          item.abs_id,
+          item,
+          container,
+        ); // absData 추가
         buttonGroupPlaceholder.replaceWith(buttonGroup);
       });
     } else {

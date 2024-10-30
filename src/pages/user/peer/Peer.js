@@ -17,14 +17,10 @@ export const RenderUserPeer = async container => {
   const peerTitle = container.querySelector('.peer-title'); // .peer-title 요소 선택
 
   let users = []; // 사용자 데이터를 담을 배열
-  let currentIndex = 0;
-  const initialItems = 15; // 처음 보여줄 항목 수
-  const itemsPerPage = 5; // 스크롤 시 추가로 불러올 항목 수
   let filteredUsers = []; // 필터링된 사용자 목록
 
-  const renderUsers = (container, startIndex, endIndex) => {
+  const renderUsers = container => {
     const userMarkup = filteredUsers
-      .slice(startIndex, endIndex)
       .map(
         user => `
     <div class="peer-frame">
@@ -38,7 +34,7 @@ export const RenderUserPeer = async container => {
       )
       .join('');
 
-    container.innerHTML += userMarkup;
+    container.innerHTML = userMarkup; // 모든 사용자 렌더링
   };
 
   const peerBox = container.querySelector('.peer-box');
@@ -48,20 +44,8 @@ export const RenderUserPeer = async container => {
     users = await fetchAllUsersData(); // 모든 사용자 데이터 가져오기
     filteredUsers = users;
 
-    // 초기 사용자 렌더링
-    renderUsers(peerBox, currentIndex, initialItems);
-    currentIndex += initialItems;
-
-    // 스크롤 이벤트
-    peerBox.addEventListener('scroll', () => {
-      if (peerBox.scrollTop + peerBox.clientHeight >= peerBox.scrollHeight) {
-        // 5개씩 추가로 불러오기
-        if (currentIndex < filteredUsers.length) {
-          renderUsers(peerBox, currentIndex, currentIndex + itemsPerPage);
-          currentIndex += itemsPerPage;
-        }
-      }
-    });
+    // 모든 사용자 렌더링
+    renderUsers(peerBox);
   };
 
   // 사용자 데이터 가져오기 후 검색 기능 설정
@@ -73,9 +57,10 @@ export const RenderUserPeer = async container => {
     peerBox,
     users,
     renderUsers,
-    initialItems,
+    null, // 초기 항목 수 필요 없음
     newFilteredUsers => {
       filteredUsers = newFilteredUsers;
+      renderUsers(peerBox); // 필터링된 사용자 렌더링
     },
   );
 

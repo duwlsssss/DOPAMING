@@ -28,7 +28,7 @@ export const RenderLogInForm = container => {
 
     const email = document.querySelector('#email').value;
     const password = document.querySelector('#password').value;
-    // API호출
+    // user.js에서 로그인 관련 API호출
     userLogin(email, password);
   });
 };

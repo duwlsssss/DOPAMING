@@ -10,6 +10,26 @@ import { Modal } from '../../src/components/ui/modal/Modal';
 import { getDatabase, ref, get, set } from 'firebase/database';
 import { formatDate } from '../../src/utils/currentTime';
 
+// 0. 로그인 id 및 상태 변경 감지
+export const getCurrentUserId = callback => {
+  if (typeof callback !== 'function') {
+    throw new Error('callback must be a function');
+  }
+
+  const auth = getAuth();
+
+  // 로그인 상태 변경 감지
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      // 사용자가 로그인했을 때
+      callback(user.uid);
+    } else {
+      // 사용자가 로그아웃했을 때
+      callback(null);
+    }
+  });
+};
+
 // 1. 로그인
 export const userLogin = async (email, password) => {
   try {
@@ -229,6 +249,7 @@ export const updateUserData = async (container, userId) => {
   try {
     await set(userRef, updatedData); // 사용자 데이터 업데이트
     console.log('사용자 데이터가 성공적으로 수정되었습니다.');
+    Modal('edit-profile-success');
   } catch (error) {
     console.error('사용자 데이터 수정 실패:', error.message);
     Modal('update-fail'); // 오류 발생 시 모달 표시

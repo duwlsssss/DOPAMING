@@ -3,8 +3,7 @@ import './Header.css';
 import { Button } from '../../ui/button/Button';
 import { clearStorage } from '../../../utils/storage';
 import { listenForProfileImageUpdate } from '../../../utils/handleProfileImg';
-import { getAuth, onAuthStateChanged } from 'firebase/auth'; // getAuth와 onAuthStateChanged 가져오기
-import { fetchUserData } from '../../../../server/api/user'; // 사용자 데이터 가져오기 함수
+import { getCurrentUserId, fetchUserData } from '../../../../server/api/user';
 
 export async function RenderHeader(header, editProfilePath) {
   try {
@@ -13,29 +12,32 @@ export async function RenderHeader(header, editProfilePath) {
       return;
     }
 
-    const auth = getAuth(); // 현재 로그인한 ID
-
-    onAuthStateChanged(auth, async user => {
-      if (!user) {
+    // 현재 로그인한 ID를 가져오기
+    getCurrentUserId(async userId => {
+      if (!userId) {
         console.error('사용자가 로그인하지 않았습니다.');
         return;
       }
 
-      const userId = user.uid; // 사용자 고유 ID
-      console.log('로그인한 사용자 ID:', userId); // 로그인한 사용자 ID 로그
+      console.log('로그인한 사용자 ID:', userId);
 
       // Realtime Database에서 사용자 데이터 가져오기
       const userData = await fetchUserData(userId);
       console.log('사용자 데이터:', userData); // 사용자 데이터 로그
 
-      let userName = '사용자 이름 없음'; // 기본 사용자 이름
+      let userName = '사용자 이름 없음';
       let userImage = '/assets/imgs/profile/profile_null.jpg'; // 기본 프로필 이미지
-      let isAdmin = false; // 관리자 여부 기본값
+      let isAdmin = false;
 
       if (userData) {
-        userName = userData.user_name || '사용자 이름 없음'; // user_name 필드 사용
+        userName = userData.user_name || '사용자 이름 없음';
         userImage = userData.user_image || userImage; // user_image 필드 사용
-        isAdmin = userData.user_role === 'admin'; // user_role 필드 사용하여 관리자 여부 결정
+        isAdmin = userData.user_role === 'admin';
+
+        // 값 확인을 위한 로그 추가
+        console.log('사용자 이름:', userName);
+        console.log('사용자 이미지:', userImage); // 업데이트된 프로필 이미지 로그
+        console.log('관리자 여부:', isAdmin);
       } else {
         console.error('사용자 데이터가 존재하지 않습니다.');
       }
@@ -58,7 +60,7 @@ export async function RenderHeader(header, editProfilePath) {
         color: 'white',
         shape: 'line',
         onClick: () => {
-          clearStorage(); // 로그아웃 누르면 로컬 스토리지 정리
+          clearStorage();
           Router();
         },
       });
@@ -68,10 +70,8 @@ export async function RenderHeader(header, editProfilePath) {
 
       const profileImgPosition = header.querySelector('.profile-circle');
       if (isAdmin) {
-        // 관리자는 프로필 고정 (이미지 설정 필요 시 추가)
         profileImgPosition.style.backgroundImage = `url(/assets/imgs/profile/profile_null.jpg)`; // 관리자는 프로필 고정
       } else {
-        // 업데이트 반영
         listenForProfileImageUpdate(profileImgPosition);
       }
     });
