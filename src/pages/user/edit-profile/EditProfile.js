@@ -8,9 +8,7 @@ import {
   Modal,
 } from '../../../components';
 import { validateProfileInput } from '../../../utils/validation';
-
-// validInput에 넘길 비번
-// let userPassword = '';
+import './EditProfile.css';
 
 export const RenderUserEditProfile = async container => {
   // 기본 HTML 구조 설정
@@ -48,8 +46,6 @@ export const RenderUserEditProfile = async container => {
     container.querySelector('#birthDate').value = currUser.user_birthday ?? '';
     container.querySelector('#phone').value = currUser.user_phone ?? '';
     container.querySelector('#email').value = currUser.user_email ?? '';
-
-    //userPassword = currUser.user_password; // 비밀번호 저장
   }
 
   // 버튼 추가
