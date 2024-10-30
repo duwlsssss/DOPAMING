@@ -8,6 +8,8 @@ import {
 import { USER_PATH } from '../../../../utils/constants';
 import { Modal } from '../../../ui/modal/Modal';
 import { formatDate } from '../../../../utils/currentTime';
+import { getAuth } from 'firebase/auth'; // Firebase Authentication 가져오기
+import { fetchUserData } from '../../../../../server/api/user'; // 사용자 데이터 가져오는 API
 
 export const RenderPunchTime = (container, todayData) => {
   container.classList.add('punch-time');
@@ -62,46 +64,37 @@ export const RenderPunchTime = (container, todayData) => {
     fontSize: 'var(--font-small)',
     onClick: () => navigate(USER_PATH.WORK_DETAIL),
   });
-  const punchInBtn = new Button({
-    className: 'punch-in-button',
-    text: '출근하기',
-    color: 'green',
-    shape: 'block',
-    fontSize: 'var(--font-small)',
-    onClick: () => {
-      Modal('punch-in'); // 'punch-in' 모달 열기
-    },
-  });
-  const punchOutBtn = new Button({
-    className: 'punch-out-button',
-    text: '퇴근하기',
-    color: 'gray',
-    shape: 'block',
-    fontSize: 'var(--font-small)',
-    onClick: () => {
-      Modal('punch-out'); // 'punch-out' 모달 열기
-    },
-  });
-  const breakOutBtn = new Button({
-    className: 'break-out-btn',
-    text: '외출하기',
-    color: 'gray',
-    shape: 'block',
-    fontSize: 'var(--font-small)',
-    onClick: () => {
-      Modal('break-out'); // 'break-out' 모달 열기
-    },
-  });
-  const breakInBtn = new Button({
-    className: 'break-in-btn',
-    text: '복귀하기',
-    color: 'green',
-    shape: 'block',
-    fontSize: 'var(--font-small)',
-    onClick: () => {
-      Modal('break-in'); // 'break-in' 모달 열기
-    },
-  });
+
+  const createButton = (text, color, actionType) => {
+    return new Button({
+      className: `${actionType}-button`,
+      text: text,
+      color: color,
+      shape: 'block',
+      fontSize: 'var(--font-small)',
+      onClick: async () => {
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (user) {
+          const userData = await fetchUserData(user.uid);
+          if (userData) {
+            console.log('로그인된 사용자 ID:', userData.user_id); // 올바른 ID 로그
+            Modal(actionType); // 해당 모달 열기
+          } else {
+            console.error('사용자 데이터를 가져오지 못했습니다.');
+          }
+        } else {
+          console.log('사용자가 로그인하지 않았습니다.');
+        }
+      },
+    });
+  };
+
+  const punchInBtn = createButton('출근하기', 'green', 'punch-in');
+  const punchOutBtn = createButton('퇴근하기', 'gray', 'punch-out');
+  const breakOutBtn = createButton('외출하기', 'gray', 'break-out');
+  const breakInBtn = createButton('복귀하기', 'green', 'break-in');
 
   const moreBtnContainer = container.querySelector('.punch-time-header');
   moreBtnContainer.appendChild(moreButton);

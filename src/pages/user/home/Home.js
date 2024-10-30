@@ -52,25 +52,18 @@ export const RenderUserHome = async container => {
     const userId = user.uid; // 현재 로그인한 사용자의 고유 ID
 
     try {
-      //const userData = await fetchUserData(userId); // 사용자 데이터 가져오기
       const noticeData = await fetchNoticeData(); // 공지 데이터 가져오기
       const absData = await fetchAbsData(userId); // 결석 데이터 가져오기
       const timePunchData = await fetchTimePunchData(userId); // 출근/퇴근 데이터 가져오기
-
-      // 모든 출퇴근 기록 출력
-      console.log('출근/퇴근 데이터:', timePunchData);
 
       // 오늘 날짜에 해당하는 데이터 필터링
       const todayData = timePunchData.filter(
         punch => punch.punch_date === today,
       );
 
-      // 데이터가 올바르게 반환되었는지 확인
-      if (!Array.isArray(todayData) || todayData.length === 0) {
-        console.error(
-          '오늘 날짜에 해당하는 출근/퇴근 데이터가 없습니다.',
-          todayData,
-        );
+      // container가 null인지 확인
+      if (!container) {
+        console.error('container 요소가 존재하지 않습니다.');
         return;
       }
 
@@ -95,35 +88,60 @@ export const RenderUserHome = async container => {
         </div>
       `;
 
-      // 오늘 날짜의 출퇴근 정보를 WorkInfo에 전달하여 렌더링
+      // 오늘 날짜의 출퇴근 정보를 WorkInfo에 전달하여 렌더링 및 분류
       const workInfo = await WorkInfo(todayData, new Date());
       const punchTimeContainer = container.querySelector(
         '.punch-time-container article',
       );
 
       // Ensure punchTimeContainer is defined
-      if (punchTimeContainer) {
-        punchTimeContainer.innerHTML = workInfo.html;
-        // Render the punch time using the todayData
-        RenderPunchTime(punchTimeContainer, todayData);
-      } else {
-        console.error('punchTimeContainer가 정의되지 않았습니다.');
+      if (!punchTimeContainer) {
+        console.error(
+          '.punch-time-container article 요소가 존재하지 않습니다.',
+        );
+        return;
       }
 
+      punchTimeContainer.innerHTML = workInfo.html;
+      RenderPunchTime(punchTimeContainer, todayData);
+
       // 각 컴포넌트 렌더링
-      RenderCourseExplain(
-        container.querySelector('.course-explain-container article'),
-        INFO.BC_START_DATE,
-        INFO.BC_END_DATE,
+      const courseExplainContainer = container.querySelector(
+        '.course-explain-container article',
       );
-      RenderNoticeGallery(
-        container.querySelector('.notice-gallery-container article'),
-        noticeData,
+      if (courseExplainContainer) {
+        RenderCourseExplain(
+          courseExplainContainer,
+          INFO.BC_START_DATE,
+          INFO.BC_END_DATE,
+        );
+      } else {
+        console.error(
+          '.course-explain-container article 요소가 존재하지 않습니다.',
+        );
+      }
+
+      const noticeGalleryContainer = container.querySelector(
+        '.notice-gallery-container article',
       );
-      RenderVacationTable(
-        container.querySelector('.vacation-table-container article'),
-        absData,
+      if (noticeGalleryContainer) {
+        RenderNoticeGallery(noticeGalleryContainer, noticeData);
+      } else {
+        console.error(
+          '.notice-gallery-container article 요소가 존재하지 않습니다.',
+        );
+      }
+
+      const vacationTableContainer = container.querySelector(
+        '.vacation-table-container article',
       );
+      if (vacationTableContainer) {
+        RenderVacationTable(vacationTableContainer, absData);
+      } else {
+        console.error(
+          '.vacation-table-container article 요소가 존재하지 않습니다.',
+        );
+      }
     } catch (e) {
       console.error('홈 페이지에서 데이터를 가져오는 중 오류 발생 ! :', e);
     }

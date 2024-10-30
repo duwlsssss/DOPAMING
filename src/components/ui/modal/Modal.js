@@ -1,7 +1,9 @@
 import { adminModalContent } from './admin/adminModal';
 import './Modal.css';
 import { userModalContent } from './user/userModal';
+import { getUserIdName } from '../../../../server/api/user';
 import { saveTimePunchData } from '../../../../server/api/user';
+
 function createModalElement() {
   const modal = document.createElement('div');
   modal.className = 'modal';
@@ -79,82 +81,73 @@ function isAdminAction(actionType) {
 function closeModal(modal) {
   if (modal.parentNode) {
     // modal이 DOM에 존재하는지 확인
-    modal.style.display = 'none'; // 모달을 숨김
-    document.body.removeChild(modal); // 모달 요소 제거
+    modal.style.display = 'none';
+    document.body.removeChild(modal);
   }
 }
 
-export function Modal(type) {
+export async function Modal(type) {
   const { modal, modalContent } = createModalElement();
   document.body.appendChild(modal);
 
   modalContent.innerHTML = ''; // 이전 내용 초기화
 
-  const modalInstance = {
+  let modalInstance = {
+    userId: null,
+    userName: null,
     close: () => closeModal(modal),
     handleConfirm: async actionType => {
-      // 비동기 함수로 변경
       modalContent.innerHTML = ''; // 내용 초기화
-
-      console.log('모달 확인 처리 시작:', actionType); // 현재 actionType 로그 출력
-      console.log('현재 modalInstance 값:', {
-        userId: modalInstance.userId,
-        userName: modalInstance.userName,
-      }); // modalInstance의 현재 값 로그 출력
 
       try {
         // actionType에 따라 적절한 모달 콘텐츠 호출
         switch (actionType) {
           case 'punch-in':
-            console.log('출근 데이터 저장 중...'); // 출근 데이터 저장 시작 로그
             await saveTimePunchData(
               modalInstance.userId,
               'punch-in',
               modalInstance.userName,
-            ); // 출근 데이터 저장
+            );
             modalContent.appendChild(
               userModalContent('punch-in-success', modalInstance),
             );
             break;
 
           case 'punch-out':
-            console.log('퇴근 데이터 저장 중...'); // 퇴근 데이터 저장 시작 로그
             await saveTimePunchData(
               modalInstance.userId,
               'punch-out',
               modalInstance.userName,
-            ); // 퇴근 데이터 저장
+            );
             modalContent.appendChild(
               userModalContent('punch-out-success', modalInstance),
             );
             break;
 
           case 'break-out':
-            console.log('외출 데이터 저장 중...'); // 외출 데이터 저장 시작 로그
             await saveTimePunchData(
               modalInstance.userId,
               'break-out',
               modalInstance.userName,
-            ); // 외출 데이터 저장
+            );
             modalContent.appendChild(
               userModalContent('break-out-success', modalInstance),
             );
             break;
 
           case 'break-in':
-            console.log('복귀 데이터 저장 중...'); // 복귀 데이터 저장 시작 로그
             await saveTimePunchData(
               modalInstance.userId,
               'break-in',
               modalInstance.userName,
-            ); // 복귀 데이터 저장
+            );
             modalContent.appendChild(
               userModalContent('break-in-success', modalInstance),
             );
             break;
 
           default:
-            console.log('잘못된 요청 처리:', actionType); // 잘못된 요청 로그 출력
+            console.log('잘못된 요청 처리:', actionType);
             if (isUserAction(actionType)) {
               modalContent.appendChild(
                 userModalContent(actionType, modalInstance),
@@ -173,17 +166,25 @@ export function Modal(type) {
         modalContent.innerHTML =
           '<p>데이터 저장에 실패했습니다. 다시 시도해 주세요.</p>';
       }
-
-      // 모달을 다시 열어줍니다.
-      modal.style.display = 'flex';
     },
     handleCancel: () => {
       closeModal(modal); // 모달을 닫습니다.
     },
   };
 
+  // 현재 로그인한 사용자 정보 가져오기
+  try {
+    const userData = await getUserIdName(); // 사용자 정보 가져오기
+    modalInstance.userId = userData.id; // 사용자 ID 설정
+    modalInstance.userName = userData.name; // 사용자 이름 설정
+  } catch (error) {
+    console.error('사용자 정보 오류:', error); // 에러 로그 출력
+    modalContent.innerHTML = '<p>사용자 정보를 가져오지 못했습니다.</p>';
+    modal.style.display = 'flex'; // 에러 발생 시 모달 열기
+    return; // 더 이상 진행하지 않음
+  }
+
   // 모달 타입에 따라 내용 추가
-  //userModal.js, adminModal.js에서 사용
   switch (type) {
     case 'punch-in':
     case 'punch-out':
@@ -224,7 +225,6 @@ export function Modal(type) {
     case 'break-in-fail':
     case 'vacation-fail':
     case 'edit-profile-fail':
-    case 'login-fail':
       modalContent.appendChild(userModalContent(type, modalInstance));
       break;
     case 'vacation-permit-fail':
@@ -241,5 +241,3 @@ export function Modal(type) {
   }
   modal.style.display = 'flex'; // 모달 열기
 }
-
-export default Modal;
