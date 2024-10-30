@@ -92,6 +92,26 @@ export const fetchUserData = async userId => {
   }
 };
 
+// 모든 사용자 데이터 가져오기
+export const fetchAllUsersData = async () => {
+  const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
+  const usersRef = ref(db, 'Users'); // Users 경로 참조
+
+  try {
+    const snapshot = await get(usersRef); // 데이터 가져오기
+    if (snapshot.exists()) {
+      const usersData = snapshot.val(); // 데이터 값 가져오기
+      return Object.values(usersData); // 사용자 객체 배열 반환
+    } else {
+      console.log('사용자 데이터가 존재하지 않습니다.');
+      return []; // 데이터가 없을 경우 빈 배열 반환
+    }
+  } catch (error) {
+    console.error('사용자 데이터 가져오기 실패:', error.message); // 오류 메시지 출력
+    return []; // 오류 발생 시 빈 배열 반환
+  }
+};
+
 // 4. 출/퇴근 데이터 가져오기
 export const fetchTimePunchData = async userId => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
@@ -101,6 +121,7 @@ export const fetchTimePunchData = async userId => {
     const snapshot = await get(timePunchRef); // 데이터 가져오기
     if (snapshot.exists()) {
       const timePunchData = snapshot.val(); // 데이터 값 가져오기
+      console.log('전체 출퇴근 데이터:', timePunchData); // 전체 데이터 로그
 
       // 현재 로그인한 사용자의 출근/퇴근 데이터 필터링
       const userTimePunch = [];
@@ -108,13 +129,15 @@ export const fetchTimePunchData = async userId => {
       // 각 사용자 ID와 날짜를 순회하여 해당 사용자 데이터를 필터링
       Object.entries(timePunchData).forEach(([userIdKey, userPunchData]) => {
         if (userIdKey === userId) {
-          // 현재 사용자 ID와 비교
-          Object.entries(userPunchData).forEach(([punchDetails]) => {
-            userTimePunch.push(punchDetails); // 해당 사용자 데이터 추가
+          console.log('사용자 ID:', userIdKey); // 사용자 ID 로그
+          Object.entries(userPunchData).forEach(([dateKey, punchDetails]) => {
+            console.log(`날짜: ${dateKey}, 출퇴근 세부정보:`, punchDetails); // 날짜 및 세부정보 로그
+            userTimePunch.push({ punch_date: dateKey, ...punchDetails }); // 해당 사용자 데이터 추가
           });
         }
       });
 
+      console.log('사용자 출퇴근 데이터:', userTimePunch); // 필터링된 사용자 데이터 로그
       return userTimePunch.length > 0 ? userTimePunch : []; // 사용자 데이터 반환
     } else {
       console.log('Time-punch 데이터가 존재하지 않습니다.');

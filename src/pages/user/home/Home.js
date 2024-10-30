@@ -98,7 +98,7 @@ export const RenderUserHome = async container => {
       `;
 
       // 오늘 날짜의 출퇴근 정보를 WorkInfo에 전달하여 렌더링 및 분류
-      const workInfo = await WorkInfo(userId, new Date()); // userId와 현재 날짜 전달
+      const workInfo = await WorkInfo(userId, today); // userId와 현재 날짜 전달
 
       const punchTimeContainer = container.querySelector(
         '.punch-time-container article',
@@ -112,11 +112,17 @@ export const RenderUserHome = async container => {
         return;
       }
 
-      punchTimeContainer.innerHTML = workInfo.html;
-
-      // RenderPunchTime에 올바른 데이터 전달
+      // 출퇴근 정보 업데이트
       const userPunchData =
         todayData.length > 0 ? todayData : [workInfo.userInfo];
+      punchTimeContainer.innerHTML = `
+        <p class="punch-in-time">${userPunchData[0]?.punch_in ? new Date(userPunchData[0].punch_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) : '--시 --분'}</p>
+        <p class="punch-out-time">${userPunchData[0]?.punch_out ? new Date(userPunchData[0].punch_out).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) : '--시 --분'}</p>
+        <p class="break-outtime">${userPunchData[0]?.break_out ? new Date(userPunchData[0].break_out).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) : '--시 --분'}</p>
+        <p class="break-in-time">${userPunchData[0]?.break_in ? new Date(userPunchData[0].break_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) : '--시 --분'}</p>
+      `;
+
+      // RenderPunchTime에 올바른 데이터 전달
       RenderPunchTime(punchTimeContainer, userPunchData); // userPunchData로 전달
 
       // 각 컴포넌트 렌더링

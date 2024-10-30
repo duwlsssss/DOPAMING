@@ -1,6 +1,6 @@
 import './Peer.css';
 import { setupSearch } from '../../../components/user/peer-list/PeerList';
-import axios from 'axios';
+import { fetchAllUsersData } from '../../../../server/api/user'; // 모든 사용자 데이터 가져오는 함수
 
 export const RenderUserPeer = async container => {
   container.innerHTML = `
@@ -29,7 +29,7 @@ export const RenderUserPeer = async container => {
         user => `
     <div class="peer-frame">
       <div class="image-circle">
-        <img src='/assets/imgs/profile/profile_null.jpg'/>
+        <img src='${user.user_image || '/assets/imgs/profile/profile_null.jpg'}'/>
       </div>
       <p class="peer-name">${user.user_name}</p>
       <p class="peer-email">${user.user_email}</p>
@@ -42,31 +42,26 @@ export const RenderUserPeer = async container => {
   };
 
   const peerBox = container.querySelector('.peer-box');
-  const jsonFilePath = '../../server/data/users.json';
+
   // 사용자 데이터 가져오기
   const fetchUserData = async () => {
-    try {
-      const response = await axios.get(jsonFilePath);
-      users = response.data;
-      filteredUsers = users;
+    users = await fetchAllUsersData(); // 모든 사용자 데이터 가져오기
+    filteredUsers = users;
 
-      // 초기 사용자 렌더링
-      renderUsers(peerBox, currentIndex, initialItems);
-      currentIndex += initialItems;
+    // 초기 사용자 렌더링
+    renderUsers(peerBox, currentIndex, initialItems);
+    currentIndex += initialItems;
 
-      // 스크롤 이벤트
-      peerBox.addEventListener('scroll', () => {
-        if (peerBox.scrollTop + peerBox.clientHeight >= peerBox.scrollHeight) {
-          // 5개씩 추가로 불러오기
-          if (currentIndex < filteredUsers.length) {
-            renderUsers(peerBox, currentIndex, currentIndex + itemsPerPage);
-            currentIndex += itemsPerPage;
-          }
+    // 스크롤 이벤트
+    peerBox.addEventListener('scroll', () => {
+      if (peerBox.scrollTop + peerBox.clientHeight >= peerBox.scrollHeight) {
+        // 5개씩 추가로 불러오기
+        if (currentIndex < filteredUsers.length) {
+          renderUsers(peerBox, currentIndex, currentIndex + itemsPerPage);
+          currentIndex += itemsPerPage;
         }
-      });
-    } catch (error) {
-      console.error('사용자 데이터를 가져오는 중 오류 발생 ! :', error);
-    }
+      }
+    });
   };
 
   // 사용자 데이터 가져오기 후 검색 기능 설정
@@ -83,6 +78,7 @@ export const RenderUserPeer = async container => {
       filteredUsers = newFilteredUsers;
     },
   );
+
   // MEDIA
   const updatePeerTitleText = () => {
     if (window.innerWidth <= 767) {
