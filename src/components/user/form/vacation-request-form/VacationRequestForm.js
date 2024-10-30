@@ -1,7 +1,10 @@
 import './VacationRequestForm.css';
 import { Button } from '../../../ui/button/Button';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Firebase Storage 가져오기
 
 export const VacationRequestForm = () => {
+  const storage = getStorage(); // Firebase Storage 초기화
+
   const form = `
       <fieldset class="vacation-request-form-inputs">
         <div class="input-box">
@@ -42,18 +45,15 @@ export const VacationRequestForm = () => {
       </fieldset>
   `;
 
-  // vacation-content 줄바꿈 발생하면 자동 높이 조정
   const handleResizeHeight = textarea => {
     textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px'; // 스크롤 높이에 맞춰 조정
+    textarea.style.height = textarea.scrollHeight + 'px';
   };
 
-  // 파일 업로드 이벤트를 처리하는 함수
   const attachProofFileEvents = container => {
     const fileInput = container.querySelector('#fileInput');
-    const buttonPosition = container.querySelector('.input-box.proof-file'); // 업로드 버튼 위치
+    const buttonPosition = container.querySelector('.input-box.proof-file');
 
-    // 업로드 버튼 추가
     const proofFileUploadBtn = new Button({
       className: 'proof-file-upload-btn',
       text: '첨부파일 업로드',
@@ -67,57 +67,92 @@ export const VacationRequestForm = () => {
     });
     buttonPosition.appendChild(proofFileUploadBtn);
 
-    // 파일 선택 시 미리보기와 다운로드 기능 설정
     fileInput.addEventListener('change', () => {
       const files = fileInput.files;
       const filePreviewContainer = container.querySelector(
         '.proof-file-preview',
       );
-      filePreviewContainer.innerHTML = ''; // 기존 파일 목록 초기화
+      filePreviewContainer.innerHTML = '';
 
       if (files.length > 0) {
         const file = files[0];
+        const storageRef = ref(storage, `vacation/${file.name}`);
 
-        const reader = new FileReader();
-        reader.onload = event => {
-          const filePreview = document.createElement('div');
-          filePreview.classList.add('file-title');
-          filePreview.textContent = file.name;
+        uploadBytes(storageRef, file)
+          .then(() => {
+            getDownloadURL(storageRef).then(downloadURL => {
+              const filePreview = document.createElement('div');
+              filePreview.classList.add('file-title');
+              filePreview.textContent = file.name;
 
-          // 파일 클릭 시 다운로드 기능 추가
-          filePreview.addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.href = event.target.result;
-            link.download = file.name;
-            link.click();
+              filePreview.addEventListener('click', () => {
+                const link = document.createElement('a');
+                link.href = downloadURL;
+                link.download = file.name;
+                link.click();
+              });
+
+              filePreviewContainer.appendChild(filePreview);
+            });
+          })
+          .catch(error => {
+            console.error('Upload failed:', error);
+            alert('파일 업로드에 실패했습니다.');
           });
-
-          filePreviewContainer.appendChild(filePreview);
-        };
-
-        reader.readAsDataURL(file); // 파일을 base64로 읽기
       } else {
         alert('파일을 선택해 주세요.');
       }
     });
   };
 
-  // 폼을 DOM에 삽입, textarea에 이벤트리스너 추가
-  const renderForm = container => {
+  const getFormData = async () => {
+    const formData = {
+      abs_title: document.querySelector('#vacation-title').value,
+      abs_content: document.querySelector('#vacation-content-textarea').value,
+      abs_start_date: document.querySelector('#vacation-start-date').value,
+      abs_end_date: document.querySelector('#vacation-end-date').value,
+      abs_type: document.querySelector('#vacation-type').value,
+      user_file: '', // 기본값으로 빈 문자열 설정
+    };
+
+    // 파일 URL을 가져오는 로직 추가
+    const fileInput = document.querySelector('#fileInput');
+    if (fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const storageRef = ref(storage, `vacation/${file.name}`);
+      try {
+        const downloadURL = await getDownloadURL(storageRef);
+        formData.user_file = downloadURL; // URL을 formData에 저장
+      } catch (err) {
+        console.error('Error getting file URL:', err);
+      }
+    }
+
+    return formData;
+  };
+  const renderForm = (container, absData) => {
     container.innerHTML = form;
-    const textarea = container.querySelector('#vacation-content-textarea'); // 수정된 id 사용
+
+    // 기존 값을 설정
+    if (absData) {
+      container.querySelector('#vacation-type').value = absData.abs_type || '';
+      container.querySelector('#vacation-title').value =
+        absData.abs_title || '';
+      container.querySelector('#vacation-start-date').value =
+        absData.abs_start_date || '';
+      container.querySelector('#vacation-end-date').value =
+        absData.abs_end_date || '';
+      container.querySelector('#vacation-content-textarea').value =
+        absData.abs_content || '';
+    }
+
+    const textarea = container.querySelector('#vacation-content-textarea');
     textarea.addEventListener('input', () => handleResizeHeight(textarea));
     attachProofFileEvents(container);
   };
 
-  // 추가
   return {
     renderForm,
-    getContent: () =>
-      document.querySelector('#vacation-content-textarea').value, // 수정된 id 사용
-    getStartDate: () => document.querySelector('#vacation-start-date').value,
-    getEndDate: () => document.querySelector('#vacation-end-date').value,
-    getTitle: () => document.querySelector('#vacation-title').value,
-    getType: () => document.querySelector('#vacation-type').value,
+    getFormData, // getFormData 메서드 반환
   };
 };

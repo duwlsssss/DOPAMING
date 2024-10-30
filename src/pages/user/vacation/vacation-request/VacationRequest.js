@@ -26,12 +26,16 @@ export const RenderUserVacationRequest = async container => {
     onClick: async e => {
       e.preventDefault();
 
-      // 입력값을 가져옴
-      const type = formComponent.getType() || '';
-      const title = formComponent.getTitle() || '';
-      const startDate = formComponent.getStartDate() || '';
-      const endDate = formComponent.getEndDate() || '';
-      const content = formComponent.getContent() || '';
+      // 입력값을 비동기적으로 가져옴
+      const formData = await formComponent.getFormData();
+      const {
+        abs_type: type,
+        abs_title: title,
+        abs_start_date: startDate,
+        abs_end_date: endDate,
+        abs_content: content,
+        user_file,
+      } = formData;
 
       // 부재 종류를 한국어로 변환
       const typeMapping = {
@@ -60,7 +64,7 @@ export const RenderUserVacationRequest = async container => {
           const userData = snapshot.val();
           const userPosition = userData.user_position || '';
           const userPhone = userData.user_phone || '';
-          const userName = userData.user_name; // user_name 가져오기
+          const userName = userData.user_name || currentUser.displayName; // user_name 가져오기
 
           // 사용자 입력값 가져오기 (빈 값은 무시)
           const absenceData = {
@@ -72,9 +76,10 @@ export const RenderUserVacationRequest = async container => {
             ...(title && { abs_title: title }),
             ...(koreanType && { abs_type: koreanType }),
             user_id: userId,
-            user_name: userName || currentUser.displayName, // user_name으로 변경
-            user_position: userPosition, // 사용자 포지션 추가
-            user_phone: userPhone, // 사용자 전화번호 추가
+            user_name: userName,
+            user_position: userPosition,
+            user_phone: userPhone,
+            user_file: user_file, // user_file을 absenceData에 추가
           };
 
           // 데이터베이스에 업데이트 (사용자 ID 하위에 부재 신청 추가)
@@ -94,5 +99,6 @@ export const RenderUserVacationRequest = async container => {
     },
   });
 
-  buttonPosition.append(submitBtn);
+  // 버튼을 DOM에 추가
+  buttonPosition.appendChild(submitBtn);
 };
