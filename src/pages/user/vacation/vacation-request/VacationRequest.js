@@ -1,6 +1,7 @@
 import './VacationRequest.css';
-import { Button, VacationRequestForm } from '../../../../components';
+import { Button, VacationRequestForm, Modal } from '../../../../components';
 import { validateVacationRequestInput } from '../../../../utils/validation';
+import { USER_PATH } from '../../../../utils/constants';
 
 export const RenderUserVacationRequest = async container => {
   // 기본 HTML 구조 설정
@@ -28,10 +29,9 @@ export const RenderUserVacationRequest = async container => {
     onClick: e => {
       e.preventDefault();
       if (validateVacationRequestInput(false)) {
-        // Modal('')
+        Modal('vacation-success', USER_PATH.VACATION);
       } else {
-        // 모달 대체 필요
-        alert('입력이 유효하지 않습니다.');
+        Modal('vacation-fail');
       }
     },
   });

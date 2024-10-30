@@ -1,7 +1,7 @@
 import './VacationRequestForm.css';
 import { Button } from '../../../ui/button/Button';
 
-export const VacationRequestForm = () => {
+export const VacationRequestForm = (isEditMode = false, initialData = {}) => {
   const form = `
     <fieldset class="vacation-request-form-inputs">
       <div class="input-container">
@@ -125,6 +125,46 @@ export const VacationRequestForm = () => {
     const textarea = container.querySelector('.input-box #vacation-content');
     textarea.addEventListener('input', () => handleResizeHeight(textarea));
     attachProofFileEvents(container);
+
+    // 수정 모드일 땐 내용 채워둠
+    if (isEditMode) {
+      container.querySelector('#vacation-type').value =
+        initialData.type === '공가'
+          ? 'officialLeave'
+          : initialData.type === '병가'
+            ? 'sickLeave'
+            : initialData.type === '휴가'
+              ? 'annualLeave'
+              : '';
+      container.querySelector('#vacation-title').value =
+        initialData.title || '';
+      container.querySelector('#vacation-start-date').value =
+        initialData.startDate || '';
+      container.querySelector('#vacation-end-date').value =
+        initialData.endDate || '';
+      container.querySelector('#vacation-content').value =
+        initialData.content || '';
+      // 파일 이름이 있을 경우 .file-title 안에 내용을 넣음
+      if (initialData.proof_document) {
+        const filePreviewContainer = container.querySelector(
+          '.proof-file-preview',
+        );
+        const filePreview = document.createElement('div');
+        filePreview.classList.add('file-title');
+
+        filePreview.textContent = initialData.proof_document;
+
+        // 클릭 시 원래 파일 이름 다운로드 링크 활성화
+        filePreview.addEventListener('click', () => {
+          const link = document.createElement('a');
+          link.href = initialData.proof_documentUrl; // assume URL or base64 data exists in proof_documentUrl
+          link.download = initialData.proof_document;
+          link.click();
+        });
+
+        filePreviewContainer.appendChild(filePreview);
+      }
+    }
   };
 
   return { renderForm };

@@ -36,7 +36,6 @@ function isUserAction(actionType) {
     'punch-out',
     'break-out',
     'break-in',
-    'vacation',
     'punch-in-success',
     'punch-out-success',
     'break-out-success',
@@ -78,15 +77,20 @@ function isAdminAction(actionType) {
   ].includes(actionType);
 }
 
-function closeModal(modal) {
+function closeModal(modal, redirectUrl = '') {
   if (modal.parentNode) {
     // modal이 DOM에 존재하는지 확인
     modal.style.display = 'none';
     document.body.removeChild(modal);
+
+    // 설정된 redirectUrl이 있으면 해당 URL로 이동
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    }
   }
 }
 
-export async function Modal(type) {
+export async function Modal(type, redirectPath = '') {
   const { modal, modalContent } = createModalElement();
   document.body.appendChild(modal);
 
@@ -95,7 +99,7 @@ export async function Modal(type) {
   let modalInstance = {
     userId: null,
     userName: null,
-    close: () => closeModal(modal),
+    close: () => closeModal(modal, redirectPath),
     handleConfirm: async actionType => {
       modalContent.innerHTML = ''; // 내용 초기화
 
@@ -168,7 +172,7 @@ export async function Modal(type) {
       }
     },
     handleCancel: () => {
-      closeModal(modal); // 모달을 닫습니다.
+      closeModal(modal, redirectPath); // 모달을 닫습니다.
     },
   };
 
@@ -190,7 +194,6 @@ export async function Modal(type) {
     case 'punch-out':
     case 'break-out':
     case 'break-in':
-    case 'vacation':
       modalContent.appendChild(userModalContent(type, modalInstance));
       break;
     case 'employee-delete':

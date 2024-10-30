@@ -1,5 +1,6 @@
 import { Accordion } from '../../../ui/accordion/Accordion';
 import { Button } from '../../../ui/button/Button';
+// import { Modal } from '../../../ui/modal/Modal';
 import './VacationList.css';
 import { validateVacationRequestInput } from '../../../../utils/validation';
 import { VacationRequestForm } from '../../../user/form/vacation-request-form/VacationRequestForm';
@@ -14,8 +15,8 @@ const downloadButton = new Button({
 });
 
 // 수정 모드 토글 함수
-const toggleEditMode = vcId => {
-  console.log('선택된 부재 id: ', vcId);
+const toggleEditMode = (vcId, itemData) => {
+  // console.log('선택된 부재 id: ', vcId);
   const contentContainer = document.getElementById(vcId);
   const contentElement = contentContainer.querySelector('.user-detail-content');
   const buttonGroup = contentContainer.querySelector(
@@ -60,7 +61,14 @@ const toggleEditMode = vcId => {
     contentElement.dataset.originalContent = originalContent;
 
     // VacationRequestForm을 HTML 문자열로 가져와 DOM 요소로 변환해 삽입
-    const formComponent = VacationRequestForm();
+    const formComponent = VacationRequestForm(true, {
+      type: itemData.abs_type,
+      title: itemData.abs_title,
+      startDate: itemData.abs_start_date,
+      endDate: itemData.abs_end_date,
+      content: itemData.abs_content,
+      proof_document: itemData.abs_proof_document,
+    });
     formComponent.renderForm(contentElement);
 
     // 수정 취소 버튼 추가
@@ -103,7 +111,7 @@ const toggleEditMode = vcId => {
 };
 
 // 수정하기, 삭제 버튼
-const renderButtons = (status, vcId) => {
+const renderButtons = (status, vcId, itemData) => {
   const buttonGroup = document.createElement('div');
   buttonGroup.className = 'user-approval-button-group';
 
@@ -114,7 +122,7 @@ const renderButtons = (status, vcId) => {
       color: 'green-light',
       shape: 'block',
       padding: 'var(--space-small) var(--space-large)',
-      onClick: () => toggleEditMode(vcId), // 수정 모드 토글
+      onClick: () => toggleEditMode(vcId, itemData), // 수정 모드 토글
     });
 
     const deleteBtn = new Button({
@@ -123,6 +131,7 @@ const renderButtons = (status, vcId) => {
       color: 'coral',
       shape: 'block',
       padding: 'var(--space-small) var(--space-large)',
+      onClick: () => {},
     });
 
     buttonGroup.append(editBtn, deleteBtn);
@@ -208,7 +217,7 @@ export const RenderUserVacationList = async (container, userAbsData) => {
     const buttonGroupPlaceholder = contentContainer.querySelector(
       '.user-approval-button-group-placeholder',
     );
-    const buttonGroup = renderButtons(item.abs_status, vcId);
+    const buttonGroup = renderButtons(item.abs_status, vcId, item);
     buttonGroupPlaceholder.replaceWith(buttonGroup);
   });
 

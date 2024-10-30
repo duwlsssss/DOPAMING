@@ -126,18 +126,6 @@ export function userModalContent(type, modalInstance) {
         </div>`;
       break;
 
-    case 'vacation':
-      content = `
-      <div class="modal-question-container">
-        <p class="modal-time">정말로 부재를 신청하시겠습니까?</p>
-        <div class="button-container">
-          <span class="material-symbols-rounded">Help</span>
-          <button class="confirm-button" data-type="vacation">예</button>
-          <button class="cancel-button">아니요</button>
-        </div>
-      </div>`;
-      break;
-
     // SUCCESS
     case 'punch-in-success':
     case 'punch-out-success':
@@ -166,7 +154,6 @@ export function userModalContent(type, modalInstance) {
           <span class="material-symbols-rounded">warning</span>
           <p>${getErrorMessage(type)}</p>
           <div class="user-modal-button-group">
-            <button class="retry-button" data-type="${type}">다시 시도</button>
             <button class="close-button">닫기</button>
           </div>
         </div>`;

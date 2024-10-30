@@ -110,11 +110,9 @@ export const validateVacationRequestInput = isEditMode => {
     document.querySelector(
       '.vacation-request-form-inputs textarea#vacation-content',
     )?.value ?? '';
-  const vcFile =
-    document.querySelector(
-      '.vacation-request-form-inputs input#vacation-proof-document',
-    )?.value ?? '';
-
+  const fileInput = document.querySelector(
+    '.vacation-request-form-inputs input#fileInput',
+  );
   const vcTypeError = document.querySelector('#vcTypeError');
   const vcTitleError = document.querySelector('#vcTitleError');
   const vcStartError = document.querySelector('#vcStartError');
@@ -169,7 +167,7 @@ export const validateVacationRequestInput = isEditMode => {
       isValid = false;
     }
 
-    if (!vcFile) {
+    if (!fileInput.files || fileInput.files.length === 0) {
       vcFileError.textContent = '증명 파일을 첨부해주세요.';
       isValid = false;
     }

@@ -238,6 +238,12 @@
   .user-vacation-phone {
     display: none;
   }
+  .file-title {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 @media (width <= 767px) {
@@ -280,6 +286,10 @@
     max-height: 30px !important;
     padding: var(--space-xsmall) !important;
     font-size: var(--font-small) !important;
+  }
+
+  .file-title {
+    max-width: 100px;
   }
 }
 

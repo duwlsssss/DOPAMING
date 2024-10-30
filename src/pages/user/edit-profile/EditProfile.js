@@ -103,10 +103,10 @@ export const RenderUserEditProfile = async container => {
         e.preventDefault();
         if (validateProfileInput(container)) {
           // 모달 열기
-          Modal('edit-profile'); // edit-profile 타입으로 변경
+          Modal('edit-profile-success');
         } else {
           // 모달 대체 필요
-          alert('입력이 유효하지 않습니다.');
+          Modal('edit-profile-fail');
         }
         //await updateUserData(container, userId); // 컨테이너와 사용자 ID 전달
       },
