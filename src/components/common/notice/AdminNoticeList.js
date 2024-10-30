@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { noticeAPI } from '../../../../server/api/admin';
 import { Pagenation } from '../pagenation/Pagenation';
 
 export const RenderAdminNoticeList = async ({
@@ -15,12 +15,7 @@ export const RenderAdminNoticeList = async ({
   currentPage = 1,
 }) => {
   try {
-    const response = await axios.get(
-      '../../../../server/data/company_posts.json',
-    );
-    let posts = response.data.sort(
-      (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
-    );
+    let posts = await noticeAPI.getAllNotices();
 
     // 검색어가 입력되었을 때 필터링
     if (searchInput.trim() !== '') {
