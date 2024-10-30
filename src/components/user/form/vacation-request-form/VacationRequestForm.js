@@ -1,16 +1,16 @@
 import './VacationRequestForm.css';
 import { Button } from '../../../ui/button/Button';
+
 export const VacationRequestForm = () => {
   const form = `
       <fieldset class="vacation-request-form-inputs">
-
         <div class="input-box">
             <label class="vacation-input" for="vacation-type">부재 종류</label>
             <select class="input-select" id="vacation-type">
               <option value="">선택하세요</option>
               <option value="officialLeave">공가</option>
               <option value="sickLeave">병가</option>
-              <option value="annualLeave">휴가</option>
+              <option value="annualLeave">연차</option>
             </select>
           </div>
         
@@ -29,9 +29,9 @@ export const VacationRequestForm = () => {
           <input class="input-field" type="date" id="vacation-end-date">
         </div>
 
-        <div class="input-box" id="vacation-content">
-          <label class="vacation-input" for="vacation-content">부재 사유</label>
-          <textarea class="input-field" id="vacation-content" placeholder="부재 사유를 입력해주세요."></textarea> 
+        <div class="input-box">
+          <label class="vacation-input" for="vacation-content-textarea">부재 사유</label>
+          <textarea class="input-field" id="vacation-content-textarea" placeholder="부재 사유를 입력해주세요."></textarea> 
         </div>
         
         <div class="input-box proof-file">
@@ -39,9 +39,8 @@ export const VacationRequestForm = () => {
           <div class="proof-file-preview"></div>
           <input type="file" id="fileInput" accept=".pdf, .zip, .jpg, .png"/> 
         </div>
-
       </fieldset>
-      `;
+  `;
 
   // vacation-content 줄바꿈 발생하면 자동 높이 조정
   const handleResizeHeight = textarea => {
@@ -106,10 +105,19 @@ export const VacationRequestForm = () => {
   // 폼을 DOM에 삽입, textarea에 이벤트리스너 추가
   const renderForm = container => {
     container.innerHTML = form;
-    const textarea = container.querySelector('.input-box #vacation-content');
+    const textarea = container.querySelector('#vacation-content-textarea'); // 수정된 id 사용
     textarea.addEventListener('input', () => handleResizeHeight(textarea));
     attachProofFileEvents(container);
   };
 
-  return { renderForm };
+  // 추가
+  return {
+    renderForm,
+    getContent: () =>
+      document.querySelector('#vacation-content-textarea').value, // 수정된 id 사용
+    getStartDate: () => document.querySelector('#vacation-start-date').value,
+    getEndDate: () => document.querySelector('#vacation-end-date').value,
+    getTitle: () => document.querySelector('#vacation-title').value,
+    getType: () => document.querySelector('#vacation-type').value,
+  };
 };
