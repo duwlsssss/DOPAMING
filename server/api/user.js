@@ -37,20 +37,22 @@ export const userLogin = async (email, password) => {
 
 // 2. 현재 로그인한 사용자 id와 name 갖고오기
 export const getUserIdName = () => {
-  let currentUserInfo = { id: null, name: null };
-  const auth = getAuth();
-
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      currentUserInfo.id = user.uid; // 로그인한 사용자의 ID 저장
-      currentUserInfo.name = user.displayName || '이름이 설정되지 않음'; // 사용자 이름 저장 (없으면 기본값)
-      console.log('로그인한 사용자 ID:', currentUserInfo.id);
-      console.log('로그인한 사용자 이름:', currentUserInfo.name);
-    } else {
-      currentUserInfo.id = null; // 로그아웃 시 ID 초기화
-      currentUserInfo.name = null; // 로그아웃 시 이름 초기화
-      console.log('사용자가 로그아웃했습니다.');
-    }
+  return new Promise((resolve, reject) => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        const currentUserInfo = {
+          id: user.uid, // 로그인한 사용자의 ID 저장
+          name: user.displayName || '이름이 설정되지 않음', // 사용자 이름 저장 (없으면 기본값)
+        };
+        console.log('로그인한 사용자 ID:', currentUserInfo.id);
+        console.log('로그인한 사용자 이름:', currentUserInfo.name);
+        resolve(currentUserInfo); // 사용자 정보를 resolve로 반환
+      } else {
+        console.log('사용자가 로그아웃했습니다.');
+        reject(new Error('사용자가 로그아웃했습니다.')); // 로그아웃 시 reject
+      }
+    });
   });
 };
 

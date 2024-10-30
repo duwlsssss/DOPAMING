@@ -178,8 +178,10 @@ export async function Modal(type) {
     modalInstance.userId = userData.id; // 사용자 ID 설정
     modalInstance.userName = userData.name; // 사용자 이름 설정
   } catch (error) {
-    console.error(error); // 에러 로그 출력
+    console.error('사용자 정보 오류:', error); // 에러 로그 출력
     modalContent.innerHTML = '<p>사용자 정보를 가져오지 못했습니다.</p>';
+    modal.style.display = 'flex'; // 에러 발생 시 모달 열기
+    return; // 더 이상 진행하지 않음
   }
 
   // 모달 타입에 따라 내용 추가
@@ -239,4 +241,3 @@ export async function Modal(type) {
   }
   modal.style.display = 'flex'; // 모달 열기
 }
-export default Modal;
