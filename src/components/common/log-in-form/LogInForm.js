@@ -1,10 +1,9 @@
-import { ADMIN_PATH, USER_PATH } from '../../../utils/constants';
-import { setItem } from '../../../utils/storage';
 import './LogInForm.css';
 import { Button } from '../../ui/button/Button';
 import { validateLoginInput } from '../../../utils/validation';
+import { userLogin } from '../../../../server/api/user';
 
-export const RenderLogInForm = (container, users) => {
+export const RenderLogInForm = container => {
   container.innerHTML = `
     <main class="login-container">
       <h2>도파밍 부트캠프에 오신 것을 환영합니다!</h2>
@@ -63,21 +62,21 @@ export const RenderLogInForm = (container, users) => {
       const email = container.querySelector('#email').value;
       const password = container.querySelector('#password').value;
 
-      const user = users.find(
-        user => user.user_email === email && user.user_password === password,
-      );
+      // API호출
+      userLogin(email, password);
 
-      if (user) {
-        const userRole = user.user_type ? 'admin' : 'user';
-        setItem('userRole', userRole);
-        setItem('userID', user.user_id);
+      // const user = users.find(
+      //   user => user.user_email === email && user.user_password === password,
+      // );
 
-        const redirectPath =
-          userRole === 'admin' ? ADMIN_PATH.HOME : USER_PATH.HOME;
-        window.location.replace(redirectPath);
-      } else {
-        alert('이메일 또는 비밀번호가 올바르지 않습니다.');
-      }
+      // if (user) {
+      //   const userRole = user.user_type ? 'admin' : 'user';
+      //   setItem('userRole', userRole);
+      //   setItem('userID', user.user_id);
+
+      //   const redirectPath =
+      //     userRole === 'admin' ? ADMIN_PATH.HOME : USER_PATH.HOME;
+      //   window.location.replace(redirectPath);
     },
   });
 

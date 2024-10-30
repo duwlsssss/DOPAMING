@@ -32,8 +32,7 @@ function addEventListeners(fragment, modalInstance) {
   if (confirmButton) {
     confirmButton.addEventListener('click', () => {
       const actionType = confirmButton.getAttribute('data-type');
-      // ex) punch-in
-      modalInstance.handleConfirm(actionType);
+      modalInstance.handleConfirm(actionType); // 클릭 시 actionType 전달
     });
   }
 
@@ -53,35 +52,12 @@ function addEventListeners(fragment, modalInstance) {
     });
   }
 
-  // 출근 실패 버튼 이벤트 리스너 추가
-  const punchInFailButton = fragment.querySelector('.punch-in-fail');
-  if (punchInFailButton) {
-    punchInFailButton.addEventListener('click', () => {
-      modalInstance.handleConfirm('punch-in-fail'); // 출근 실패 처리
-    });
-  }
-
-  // 퇴근 실패 버튼 이벤트 리스너 추가
-  const punchOutFailButton = fragment.querySelector('.punch-out-fail');
-  if (punchOutFailButton) {
-    punchOutFailButton.addEventListener('click', () => {
-      modalInstance.handleConfirm('punch-out-fail'); // 퇴근 실패 처리
-    });
-  }
-
-  // 외출 실패 버튼 이벤트 리스너 추가
-  const breakOutFailButton = fragment.querySelector('.break-out-fail');
-  if (breakOutFailButton) {
-    breakOutFailButton.addEventListener('click', () => {
-      modalInstance.handleConfirm('break-out-fail'); // 외출 실패 처리
-    });
-  }
-
-  // 복귀 실패 버튼 이벤트 리스너 추가
-  const breakInFailButton = fragment.querySelector('.break-in-fail');
-  if (breakInFailButton) {
-    breakInFailButton.addEventListener('click', () => {
-      modalInstance.handleConfirm('break-in-fail'); // 복귀 실패 처리
+  // 다시 시도 버튼 이벤트 리스너 추가
+  const retryButton = fragment.querySelector('.retry-button');
+  if (retryButton) {
+    retryButton.addEventListener('click', () => {
+      const actionType = retryButton.getAttribute('data-type');
+      modalInstance.handleConfirm(actionType); // 재시도 시 actionType 전달
     });
   }
 }
@@ -108,9 +84,7 @@ export function userModalContent(type, modalInstance) {
             <button class="confirm-button" data-type="punch-in">예</button>
             <button class="cancel-button">아니요</button>
           </div>
-          <button class="punch-in-fail">출근 실패</button>
-        </div>
-        `;
+        </div>`;
       break;
 
     case 'punch-out':
@@ -123,9 +97,7 @@ export function userModalContent(type, modalInstance) {
             <button class="confirm-button" data-type="punch-out">예</button>
             <button class="cancel-button">아니요</button>
           </div>
-          <button class="punch-out-fail">퇴근 실패</button>
-          </div>
-        `;
+        </div>`;
       break;
 
     case 'break-out':
@@ -138,9 +110,7 @@ export function userModalContent(type, modalInstance) {
             <button class="confirm-button" data-type="break-out">예</button>
             <button class="cancel-button">아니요</button>
           </div>
-          <button class="break-out-fail">외출 실패</button>
-          </div>
-        `;
+        </div>`;
       break;
 
     case 'break-in':
@@ -153,22 +123,19 @@ export function userModalContent(type, modalInstance) {
             <button class="confirm-button" data-type="break-in">예</button>
             <button class="cancel-button">아니요</button>
           </div>
-          <button class="break-in-fail">복귀 실패</button>
-          </div>
-        `;
+        </div>`;
       break;
 
     case 'vacation':
       content = `
       <div class="modal-question-container">
-      <p class="modal-time">정말로 부재를 신청하시겠습니까?</p>
-      <div class="button-container">
-      <span class="material-symbols-rounded">Help</span>
-        <button class="confirm-button" data-type="vacation">예</button>
-        <button class="cancel-button">아니요</button>
-      </div>
-      </div>
-    `;
+        <p class="modal-time">정말로 부재를 신청하시겠습니까?</p>
+        <div class="button-container">
+          <span class="material-symbols-rounded">Help</span>
+          <button class="confirm-button" data-type="vacation">예</button>
+          <button class="cancel-button">아니요</button>
+        </div>
+      </div>`;
       break;
 
     // SUCCESS
@@ -193,12 +160,13 @@ export function userModalContent(type, modalInstance) {
     case 'break-in-fail':
     case 'vacation-fail':
     case 'edit-profile-fail':
+    case 'login-fail':
       content = `
         <div class="error-message">
           <span class="material-symbols-rounded">warning</span>
           <p>${getErrorMessage(type)}</p>
           <div class="user-modal-button-group">
-            <button class="retry-button">다시 시도</button>
+            <button class="retry-button" data-type="${type}">다시 시도</button>
             <button class="close-button">닫기</button>
           </div>
         </div>`;
