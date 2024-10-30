@@ -260,7 +260,8 @@ export async function Modal(type, options = {}) {
       modalContent.appendChild(adminModalContent(type, modalInstance));
       break;
     default:
-      modalContent.innerHTML = '<p>잘못된 요청입니다.</p>';
+      modalContent.innerHTML =
+        '<p class="error-request-message">잘못된 요청입니다.</p>';
       break;
   }
   modal.style.display = 'flex'; // 모달 열기
