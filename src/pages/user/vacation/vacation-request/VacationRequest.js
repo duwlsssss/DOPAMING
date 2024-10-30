@@ -60,6 +60,7 @@ export const RenderUserVacationRequest = async container => {
           const userData = snapshot.val();
           const userPosition = userData.user_position || '';
           const userPhone = userData.user_phone || '';
+          const userName = userData.user_name; // user_name 가져오기
 
           // 사용자 입력값 가져오기 (빈 값은 무시)
           const absenceData = {
@@ -71,7 +72,7 @@ export const RenderUserVacationRequest = async container => {
             ...(title && { abs_title: title }),
             ...(koreanType && { abs_type: koreanType }),
             user_id: userId,
-            user_name: currentUser.displayName || currentUser.email,
+            user_name: userName || currentUser.displayName, // user_name으로 변경
             user_position: userPosition, // 사용자 포지션 추가
             user_phone: userPhone, // 사용자 전화번호 추가
           };
