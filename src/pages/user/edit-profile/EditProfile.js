@@ -2,18 +2,16 @@ import { fetchUserData } from '../../../../server/api/user'; // fetchUserData �
 import { getItem } from '../../../utils/storage';
 import {
   Button,
-  validInput,
+  //validInput,
   EditProfileForm,
   ProfileImage,
   attachProfileImageEvents,
-  Modal,
+  //Modal,
 } from '../../../components';
 import {
   applyProfileImage,
   listenForProfileImageUpdate,
 } from '../../../utils/handleProfileImg';
-
-let userPassword = '';
 
 export const RenderUserEditProfile = async container => {
   // 기본 HTML 구조 설정
@@ -67,7 +65,7 @@ export const RenderUserEditProfile = async container => {
     container.querySelector('#phone').value = currUser.user_phone ?? '';
     container.querySelector('#email').value = currUser.user_email ?? '';
 
-    userPassword = currUser.user_password; // 비밀번호 저장
+    //userPassword = currUser.user_password; // 비밀번호 저장
   }
 
   // 버튼 추가
@@ -80,14 +78,9 @@ export const RenderUserEditProfile = async container => {
       shape: 'block',
       padding: 'var(--space-medium)',
       fontWeight: 700,
-      onClick: e => {
+      onClick: async e => {
         e.preventDefault();
-        if (validInput(userPassword)) {
-          // 모달 열기
-          Modal('edit-profile');
-        } else {
-          alert('입력이 유효하지 않습니다.');
-        }
+        //await updateUserData(container, userId); // 컨테이너와 사용자 ID 전달
       },
     });
     buttonPosition.append(submitBtn);
