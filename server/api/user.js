@@ -111,7 +111,6 @@ export const fetchTimePunchData = async userId => {
 };
 
 // 4. 출 퇴근 외출 복귀 데이터 저장하기
-
 export const saveTimePunchData = async (userId, actionType, userName) => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   const now = new Date(); // 현재 Date 객체 생성
@@ -172,8 +171,7 @@ export const saveTimePunchData = async (userId, actionType, userName) => {
 };
 
 // 5. 내 정보 수정하기.
-
-export const updateUserData = async (container, userId) => {
+export const updateUserData = async (container, userId, userImage = null) => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
 
@@ -186,7 +184,7 @@ export const updateUserData = async (container, userId) => {
     user_sex: container.querySelector('#gender').value === 'male' ? '남' : '여',
     user_position:
       container.querySelector('#role').value === 'manager' ? '매니저' : '학생',
-    //user_image: currUser.user_image, // 사용자 이미지 URL
+    user_image: userImage,
   };
 
   try {

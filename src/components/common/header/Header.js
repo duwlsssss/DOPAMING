@@ -2,10 +2,6 @@ import Router from '../../../routes/Router';
 import './Header.css';
 import { Button } from '../../ui/button/Button';
 import { clearStorage } from '../../../utils/storage';
-import {
-  applyProfileImage,
-  listenForProfileImageUpdate,
-} from '../../../utils/handleProfileImg';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { fetchUserData } from '../../../../server/api/user';
 
@@ -29,10 +25,14 @@ export async function RenderHeader(header, editProfilePath) {
 
       let userName = '';
       let isAdmin = false;
+      let userProfileImg;
 
       if (userData) {
         userName = userData.user_name;
         isAdmin = userData.user_type;
+        userProfileImg = userData.user_image
+          ? `url(${userData.user_image})`
+          : `url('/assets/imgs/profile/profile_null.jpg')`;
       } else {
         console.error('사용자 데이터가 존재하지 않습니다.');
       }
@@ -65,11 +65,14 @@ export async function RenderHeader(header, editProfilePath) {
       if (isAdmin) {
         profileImgPosition.style.backgroundImage = `url(/assets/imgs/profile/profile_null.jpg)`; // 관리자는 프로필 고정
       } else {
-        // 처음에 프로필 사진 적용
-        applyProfileImage(profileImgPosition);
-        // 업데이트 반영
-        listenForProfileImageUpdate(profileImgPosition);
+        profileImgPosition.style.backgroundImage = userProfileImg;
       }
+
+      // 프로필 이미지 업데이트 반영
+      window.addEventListener('profileImageUpdated', async () => {
+        const updatedUserData = await fetchUserData(userId); // 새로고침 없이 최신 데이터 가져오기
+        profileImgPosition.style.backgroundImage = `url(${updatedUserData.user_image || '/assets/imgs/profile/profile_null.jpg'})`;
+      });
     });
   } catch (e) {
     console.error('사용자 데이터를 가져오는 중 오류 발생 ! :', e);

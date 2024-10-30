@@ -1,4 +1,4 @@
-import { fetchUserData } from '../../../../server/api/user'; // fetchUserData 가져오기
+import { fetchUserData, updateUserData } from '../../../../server/api/user';
 import { getItem } from '../../../utils/storage';
 import {
   Button,
@@ -8,10 +8,6 @@ import {
   Modal,
 } from '../../../components';
 import { validateProfileInput } from '../../../utils/validation';
-import {
-  applyProfileImage,
-  listenForProfileImageUpdate,
-} from '../../../utils/handleProfileImg';
 
 // validInput에 넘길 비번
 // let userPassword = '';
@@ -36,44 +32,12 @@ export const RenderUserEditProfile = async container => {
   const userId = getItem('userID'); // 저장된 사용자 ID 가져오기
   const currUser = await fetchUserData(userId); // Firebase에서 사용자 데이터 가져오기
 
-  if (currUser) {
-    const profileImgPosition = container.querySelector('.real-profileImg');
-    applyProfileImage(profileImgPosition);
-    listenForProfileImageUpdate(profileImgPosition);
-
-    container.querySelector('#role').value =
-      currUser.user_position === '매니저' ? 'manager' : 'student';
-    container.querySelector('#name').value = currUser.user_name ?? '';
-    container.querySelector('#gender').value =
-      currUser.user_sex === '남' ? 'male' : 'female';
-    container.querySelector('#birthDate').value = currUser.user_birthday ?? '';
-    container.querySelector('#phone').value = currUser.user_phone ?? '';
-    container.querySelector('#email').value = currUser.user_email ?? '';
-
-    // userPassword = currUser.user_password;
-  }
+  const profileImgPosition = container.querySelector('.real-profileImg');
 
   if (currUser) {
-    const profileImgPosition = container.querySelector('.real-profileImg');
-
     if (currUser.user_image) {
-      const img = new Image();
-      img.src = currUser.user_image;
-
-      // 이미지가 성공적으로 로드되었을 때
-      img.onload = () => {
-        profileImgPosition.style.backgroundImage = `url(${currUser.user_image})`; // 배경 이미지 설정
-      };
-
-      // 이미지 로드 실패 시
-      img.onerror = () => {
-        console.error('이미지를 로드할 수 없습니다: ', currUser.user_image);
-        profileImgPosition.style.backgroundImage = `url('/path/to/default-image.png')`; // 기본 이미지 경로
-      };
+      profileImgPosition.style.backgroundImage = `url(${currUser.user_image})`;
     }
-
-    applyProfileImage(profileImgPosition);
-    listenForProfileImageUpdate(profileImgPosition);
 
     // 사용자 정보 입력 필드에 값 설정
     container.querySelector('#role').value =
@@ -102,20 +66,25 @@ export const RenderUserEditProfile = async container => {
       onClick: async e => {
         e.preventDefault();
         if (validateProfileInput(container)) {
-          // 모달 열기
+          const userImage = profileImgPosition.style.backgroundImage.slice(
+            5,
+            -2,
+          );
+          // updateUserData에 사용자 정보와 이미지 URL 전달
+          await updateUserData(container, userId, userImage);
+          // 프로필 이미지 업데이트 이벤트 발생시킴-다른 컴포넌트에 반영하기 위해
+          window.dispatchEvent(new Event('profileImageUpdated'));
           Modal('edit-profile-success');
         } else {
-          // 모달 대체 필요
           Modal('edit-profile-fail');
         }
-        //await updateUserData(container, userId); // 컨테이너와 사용자 ID 전달
       },
     });
     buttonPosition.append(submitBtn);
   }
 
   // ProfileImage 이벤트 리스너 추가
-  attachProfileImageEvents(container);
+  attachProfileImageEvents(container, userId);
 
   // 비밀번호 눈 아이콘 토글
   function togglePasswordVisibility(passwordField, visibilityIcon) {
