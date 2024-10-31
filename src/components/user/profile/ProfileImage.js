@@ -77,6 +77,7 @@ export const attachProfileImageEvents = container => {
   // Change event 리스너를 설정
   fileInput.addEventListener('change', () => {
     const files = fileInput.files; // 선택한 파일들 가져오기
+
     if (files.length > 0) {
       const file = files[0];
       const reader = new FileReader(); // FileReader 객체 생성

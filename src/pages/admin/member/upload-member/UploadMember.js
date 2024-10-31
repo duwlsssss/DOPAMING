@@ -1,3 +1,4 @@
+import { adminFetchMemberUpload } from '../../../../../server/api/admin';
 import {
   Button,
   EditProfileForm,
@@ -12,8 +13,9 @@ export const RenderAdminUploadMember = async container => {
     text: '업로드하기',
     color: 'skyblue-light',
     shape: 'block',
-    onClick: () => console.log('업로드 기능 수행'),
+    onClick: () => adminFetchMemberUpload(),
   });
+
   container.innerHTML = /*html*/ `
     <h1>직원 업로드</h1>  
       <div class="member-edit-form-container">

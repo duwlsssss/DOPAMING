@@ -106,8 +106,10 @@ export const fetchUserData = async userId => {
 
   try {
     const snapshot = await get(userRef); // 데이터 가져오기
+    console.log(snapshot.val());
     if (snapshot.exists()) {
       const userData = snapshot.val(); // 데이터 값 가져오기
+      console.log(userData);
       return userData; // 사용자 객체 데이터 반환
     } else {
       console.log('사용자 데이터가 존재하지 않습니다.');
