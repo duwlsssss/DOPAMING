@@ -126,6 +126,7 @@ export async function Modal(type, options = {}) {
             modalContent.appendChild(
               userModalContent('punch-in-success', modalInstance),
             );
+
             break;
 
           case 'punch-out':

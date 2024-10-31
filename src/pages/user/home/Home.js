@@ -34,15 +34,11 @@ export const RenderUserHome = async container => {
       const noticeData = await getAllNotices(); // 공지 데이터 가져오기
       const absData = await getUserAbs(userId); // 결석 데이터 가져오기
       const timePunchData = await fetchTimePunchData(userId); // 출근/퇴근 데이터 가져오기
-      console.log('출근/퇴근 데이터 가져오기 완료:', timePunchData); // 출근/퇴근 데이터 로그
 
       // 오늘 날짜에 해당하는 데이터 필터링
       const todayData = timePunchData.filter(
         punch => punch.punch_date === today,
       );
-
-      console.log('오늘 날짜의 출퇴근 데이터:', todayData); // 오늘 날짜 출퇴근 데이터 로그
-
       // container가 null인지 확인
       if (!container) {
         console.error('container 요소가 존재하지 않습니다.');

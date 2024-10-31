@@ -27,35 +27,19 @@ export const WorkInfo = async (userId, date) => {
       userName = filteredUserData.user_name || userName;
 
       punchInTime = filteredUserData.punch_in
-        ? new Date(filteredUserData.punch_in).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          })
+        ? formatTime(filteredUserData.punch_in)
         : punchInTime;
 
       punchOutTime = filteredUserData.punch_out
-        ? new Date(filteredUserData.punch_out).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          })
+        ? formatTime(filteredUserData.punch_out)
         : punchOutTime;
 
       breakOutTime = filteredUserData.break_out
-        ? new Date(filteredUserData.break_out).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          })
+        ? formatTime(filteredUserData.break_out)
         : breakOutTime;
 
       breakInTime = filteredUserData.break_in
-        ? new Date(filteredUserData.break_in).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          })
+        ? formatTime(filteredUserData.break_in)
         : breakInTime;
     } else {
       console.log('해당 날짜와 사용자에 대한 출퇴근 데이터가 없습니다.');
@@ -102,4 +86,20 @@ export const WorkInfo = async (userId, date) => {
     console.error('오류 발생!', error);
     return { userInfo: null, html: '', currentTime: '' };
   }
+};
+
+// 시간 포맷팅 함수
+const formatTime = timeString => {
+  const timeParts = timeString.split(' ');
+  if (timeParts.length > 1) {
+    const time = new Date(timeParts[0] + 'T' + timeParts[1]);
+    if (!isNaN(time.getTime())) {
+      return time.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+    }
+  }
+  return '--시 --분'; // 유효하지 않은 경우 기본값 반환
 };
