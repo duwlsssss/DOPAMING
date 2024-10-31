@@ -1,14 +1,12 @@
-import { ApiClient } from '../../../apis/ApiClient';
 import { RenderNotFound } from '../../../pages';
 import { ADMIN_PATH } from '../../../utils/constants';
 import { Button } from '../../ui/button/Button';
 import navigate from '../../../utils/navigation';
 import './NoticeDetailItem.css';
 import { Modal } from '../../ui/modal/Modal';
+import { noticeAPI } from '../../../../server/api/admin';
 
 export const RenderAdminNoticeDetailItem = async (container, postId) => {
-  const NOTICE_DATA = '../../../../server/data/company_posts.json';
-
   const modifyButton = new Button({
     text: '수정',
     color: 'green',
@@ -24,16 +22,14 @@ export const RenderAdminNoticeDetailItem = async (container, postId) => {
   });
 
   try {
-    const response = await ApiClient.get(NOTICE_DATA);
-    const posts = response.data;
-
-    const post = posts.find(post => post.post_id === postId);
+    const post = await noticeAPI.getNoticeById(postId);
 
     if (!post) {
       RenderNotFound(container);
+      return;
     }
 
-    container.addEventListener('click', e => {
+    container.addEventListener('click', async e => {
       // 뒤로 가기
       if (e.target.closest('.back-to-noticeList')) {
         history.back();
@@ -46,11 +42,10 @@ export const RenderAdminNoticeDetailItem = async (container, postId) => {
 
       // 삭제 버튼
       if (e.target.textContent === '삭제') {
-        const isDelete = Modal('notice-delete');
-
-        if (isDelete) {
-          alert('삭제되었습니다.');
-          navigate(ADMIN_PATH.NOTICE);
+        try {
+          await Modal('notice-delete', { postId });
+        } catch (error) {
+          console.error('모달 처리 중 오류 발생:', error);
         }
       }
     });

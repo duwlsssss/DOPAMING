@@ -40,9 +40,11 @@ export async function RenderAdminMemberDetail(container, memberId) {
     <span >${memberDetailData.user_email}</span>
   </header>
 `;
+
   //휴가 관련 정보
   const vactionDetailRender = memberVacationDetail => {
-    if (memberVacationDetail.length > 0) {
+    console.log(memberVacationDetail);
+    if (memberVacationDetail) {
       return `
       <div class="member-detail-list">               
         ${Accordion({

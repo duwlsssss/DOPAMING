@@ -1,21 +1,16 @@
 import './VacationRequest.css';
-import {
-  Button,
-  validInput,
-  VacationRequestForm,
-} from '../../../../components';
+import { Button, VacationRequestForm } from '../../../../components';
+import { getDatabase, ref, push, onValue } from 'firebase/database';
+import { getAuth } from 'firebase/auth';
 
 export const RenderUserVacationRequest = async container => {
   // 기본 HTML 구조 설정
   container.innerHTML = `
     <div class="vacation-request-title">부재 신청</div>
-      <div class="vacation-request-form">
-      </div>
-    </div>
+    <div class="vacation-request-form"></div>
   `;
 
   const formComponent = VacationRequestForm();
-
   const formContainer = container.querySelector('.vacation-request-form');
   formComponent.renderForm(formContainer);
 
@@ -28,13 +23,82 @@ export const RenderUserVacationRequest = async container => {
     shape: 'block',
     padding: 'var(--space-medium)',
     fontWeight: 700,
-    onClick: e => {
+    onClick: async e => {
       e.preventDefault();
-      if (validInput()) {
-        alert('모든 입력이 유효합니다.');
-        // 추가적인 작업 수행 가능
+
+      // 입력값을 비동기적으로 가져옴
+      const formData = await formComponent.getFormData();
+      const {
+        abs_type: type,
+        abs_title: title,
+        abs_start_date: startDate,
+        abs_end_date: endDate,
+        abs_content: content,
+        user_file,
+      } = formData;
+
+      // 부재 종류를 한국어로 변환
+      const typeMapping = {
+        officialLeave: '공가',
+        sickLeave: '병가',
+        annualLeave: '연차',
+      };
+      const koreanType = typeMapping[type] || '';
+
+      const db = getDatabase();
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      // 로그인된 사용자 확인
+      if (!currentUser) {
+        alert('로그인된 사용자가 없습니다.');
+        return;
       }
+
+      // 사용자 정보 가져오기
+      const userId = currentUser.uid;
+      const userRef = ref(db, `Users/${userId}`);
+
+      onValue(userRef, async snapshot => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          const userPosition = userData.user_position || '';
+          const userPhone = userData.user_phone || '';
+          const userName = userData.user_name || currentUser.displayName; // user_name 가져오기
+
+          // 사용자 입력값 가져오기 (빈 값은 무시)
+          const absenceData = {
+            ...(content && { abs_content: content }),
+            abs_created_at: new Date().toISOString().split('T')[0],
+            ...(endDate && { abs_end_date: endDate }),
+            ...(startDate && { abs_start_date: startDate }),
+            abs_status: '대기',
+            ...(title && { abs_title: title }),
+            ...(koreanType && { abs_type: koreanType }),
+            user_id: userId,
+            user_name: userName,
+            user_position: userPosition,
+            user_phone: userPhone,
+            user_file: user_file, // user_file을 absenceData에 추가
+          };
+
+          // 데이터베이스에 업데이트 (사용자 ID 하위에 부재 신청 추가)
+          const absenceRef = ref(db, `absences/${userId}`); // 사용자 ID 하위에 저장
+          try {
+            // push()를 사용하여 고유 ID 생성
+            await push(absenceRef, absenceData);
+            alert('부재 신청이 완료되었습니다.');
+          } catch (error) {
+            console.error('Error updating data:', error);
+            alert('부재 신청 중 오류가 발생했습니다.');
+          }
+        } else {
+          alert('사용자 정보를 찾을 수 없습니다.');
+        }
+      });
     },
   });
-  buttonPosition.append(submitBtn);
+
+  // 버튼을 DOM에 추가
+  buttonPosition.appendChild(submitBtn);
 };

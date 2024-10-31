@@ -1,16 +1,20 @@
+// VacationRequestForm.js
 import './VacationRequestForm.css';
 import { Button } from '../../../ui/button/Button';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Firebase Storage 가져오기
+
 export const VacationRequestForm = () => {
+  const storage = getStorage(); // Firebase Storage 초기화
+
   const form = `
       <fieldset class="vacation-request-form-inputs">
-
         <div class="input-box">
             <label class="vacation-input" for="vacation-type">부재 종류</label>
             <select class="input-select" id="vacation-type">
               <option value="">선택하세요</option>
               <option value="officialLeave">공가</option>
               <option value="sickLeave">병가</option>
-              <option value="annualLeave">휴가</option>
+              <option value="annualLeave">연차</option>
             </select>
           </div>
         
@@ -29,9 +33,9 @@ export const VacationRequestForm = () => {
           <input class="input-field" type="date" id="vacation-end-date">
         </div>
 
-        <div class="input-box" id="vacation-content">
-          <label class="vacation-input" for="vacation-content">부재 사유</label>
-          <textarea class="input-field" id="vacation-content" placeholder="부재 사유를 입력해주세요."></textarea> 
+        <div class="input-box">
+          <label class="vacation-input" for="vacation-content-textarea">부재 사유</label>
+          <textarea class="input-field" id="vacation-content-textarea" placeholder="부재 사유를 입력해주세요."></textarea> 
         </div>
         
         <div class="input-box proof-file">
@@ -39,22 +43,18 @@ export const VacationRequestForm = () => {
           <div class="proof-file-preview"></div>
           <input type="file" id="fileInput" accept=".pdf, .zip, .jpg, .png"/> 
         </div>
-
       </fieldset>
-      `;
+  `;
 
-  // vacation-content 줄바꿈 발생하면 자동 높이 조정
   const handleResizeHeight = textarea => {
     textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px'; // 스크롤 높이에 맞춰 조정
+    textarea.style.height = textarea.scrollHeight + 'px';
   };
 
-  // 파일 업로드 이벤트를 처리하는 함수
   const attachProofFileEvents = container => {
     const fileInput = container.querySelector('#fileInput');
-    const buttonPosition = container.querySelector('.input-box.proof-file'); // 업로드 버튼 위치
+    const buttonPosition = container.querySelector('.input-box.proof-file');
 
-    // 업로드 버튼 추가
     const proofFileUploadBtn = new Button({
       className: 'proof-file-upload-btn',
       text: '첨부파일 업로드',
@@ -68,48 +68,106 @@ export const VacationRequestForm = () => {
     });
     buttonPosition.appendChild(proofFileUploadBtn);
 
-    // 파일 선택 시 미리보기와 다운로드 기능 설정
     fileInput.addEventListener('change', () => {
       const files = fileInput.files;
       const filePreviewContainer = container.querySelector(
         '.proof-file-preview',
       );
-      filePreviewContainer.innerHTML = ''; // 기존 파일 목록 초기화
+      filePreviewContainer.innerHTML = '';
 
       if (files.length > 0) {
         const file = files[0];
+        const storageRef = ref(storage, `vacation/${file.name}`);
 
-        const reader = new FileReader();
-        reader.onload = event => {
-          const filePreview = document.createElement('div');
-          filePreview.classList.add('file-title');
-          filePreview.textContent = file.name;
+        uploadBytes(storageRef, file)
+          .then(() => {
+            getDownloadURL(storageRef).then(downloadURL => {
+              const filePreview = document.createElement('div');
+              filePreview.classList.add('file-title');
+              filePreview.textContent = file.name;
 
-          // 파일 클릭 시 다운로드 기능 추가
-          filePreview.addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.href = event.target.result;
-            link.download = file.name;
-            link.click();
+              filePreview.addEventListener('click', () => {
+                const link = document.createElement('a');
+                link.href = downloadURL;
+                link.download = file.name;
+                link.click();
+              });
+
+              filePreviewContainer.appendChild(filePreview);
+            });
+          })
+          .catch(error => {
+            console.error('Upload failed:', error);
+            alert('파일 업로드에 실패했습니다.');
           });
-
-          filePreviewContainer.appendChild(filePreview);
-        };
-
-        reader.readAsDataURL(file); // 파일을 base64로 읽기
       } else {
         alert('파일을 선택해 주세요.');
       }
     });
   };
 
-  // 폼을 DOM에 삽입, textarea에 이벤트리스너 추가
-  const renderForm = container => {
+  const setFormData = absData => {
+    if (absData) {
+      document.querySelector('#vacation-type').value = absData.abs_type || '';
+      document.querySelector('#vacation-title').value = absData.abs_title || '';
+      document.querySelector('#vacation-start-date').value =
+        absData.abs_start_date || '';
+      document.querySelector('#vacation-end-date').value =
+        absData.abs_end_date || '';
+      document.querySelector('#vacation-content-textarea').value =
+        absData.abs_content || '';
+    } else {
+      console.error('부재 데이터가 유효하지 않습니다.', absData);
+      // Optional: 기본값 설정
+      document.querySelector('#vacation-type').value = '';
+      document.querySelector('#vacation-title').value = '';
+      document.querySelector('#vacation-start-date').value = '';
+      document.querySelector('#vacation-end-date').value = '';
+      document.querySelector('#vacation-content-textarea').value = '';
+    }
+  };
+
+  const getFormData = async () => {
+    const formData = {
+      abs_title: document.querySelector('#vacation-title').value,
+      abs_content: document.querySelector('#vacation-content-textarea').value,
+      abs_start_date: document.querySelector('#vacation-start-date').value,
+      abs_end_date: document.querySelector('#vacation-end-date').value,
+      abs_type: document.querySelector('#vacation-type').value,
+      user_file: '', // 기본값으로 빈 문자열 설정
+    };
+
+    const fileInput = document.querySelector('#fileInput');
+    if (fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const storageRef = ref(storage, `vacation/${file.name}`);
+      try {
+        const downloadURL = await getDownloadURL(storageRef);
+        formData.user_file = downloadURL; // URL을 formData에 저장
+      } catch (err) {
+        console.error('Error getting file URL:', err);
+      }
+    }
+
+    return formData;
+  };
+
+  const renderForm = (container, absData) => {
     container.innerHTML = form;
-    const textarea = container.querySelector('.input-box #vacation-content');
+
+    // 기존 값을 설정
+    if (absData) {
+      setFormData(absData); // setFormData 호출
+    }
+
+    const textarea = container.querySelector('#vacation-content-textarea');
     textarea.addEventListener('input', () => handleResizeHeight(textarea));
     attachProofFileEvents(container);
   };
 
-  return { renderForm };
+  return {
+    renderForm,
+    getFormData,
+    setFormData, // setFormData 메서드 반환
+  };
 };

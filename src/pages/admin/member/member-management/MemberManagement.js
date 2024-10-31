@@ -37,6 +37,7 @@ export const RenderAdminMemberManagement = async container => {
 
   // 데이터를 페이지와 검색어에 따라 필터링하고 페이지네이션 적용
   const paginateUsers = (fetchDataUser, page, itemsPerPage) => {
+    console.log(fetchDataUser);
     // 사용자 필터링 조건
     filteredUsers = fetchDataUser.filter(user => {
       const matchesPosition =
