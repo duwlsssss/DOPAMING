@@ -18,10 +18,10 @@ export const WorkInfo = async (userId, date) => {
 
     // 기본 사용자 정보 초기화
     let userName = '사용자';
-    let punchInTime = '--시 --분';
-    let punchOutTime = '--시 --분';
-    let breakOutTime = '--시 --분';
-    let breakInTime = '--시 --분';
+    let punchInTime = '00시 00분';
+    let punchOutTime = '00시 00분';
+    let breakOutTime = '00시 00분';
+    let breakInTime = '00시 00분';
 
     if (filteredUserData) {
       userName = filteredUserData.user_name || userName;

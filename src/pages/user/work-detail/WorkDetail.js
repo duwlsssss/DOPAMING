@@ -17,6 +17,15 @@ const updatePunchInfo = (container, selectedDate) => {
     user => user.punch_date === selectedDate,
   );
 
+  const formatTime = date => {
+    if (date && !isNaN(date.getTime())) {
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      return `${hours}시 ${minutes}분`;
+    }
+    return '--시 --분';
+  };
+
   if (selectedUserData) {
     const punchInTime = new Date(selectedUserData.punch_in);
     const punchOutTime = new Date(selectedUserData.punch_out);
@@ -28,10 +37,10 @@ const updatePunchInfo = (container, selectedDate) => {
       : null;
 
     punchInfoTime.innerHTML = `
-      <p class="punch-in-time">${punchInTime.getHours()}시 ${punchInTime.getMinutes()}분</p>
-      <p class="punch-out-time">${punchOutTime.getHours()}시 ${punchOutTime.getMinutes()}분</p>
-      ${breakOutTime ? `<p class="break-outtime">${breakOutTime.getHours()}시 ${breakOutTime.getMinutes()}분</p>` : `<p class="break-outtime">--시 --분</p>`}
-      ${breakInTime ? `<p class="break-in-time">${breakInTime.getHours()}시 ${breakInTime.getMinutes()}분</p>` : `<p class="break-in-time">--시 --분</p>`}
+      <p class="punch-in-time">${formatTime(punchInTime)}</p>
+      <p class="punch-out-time">${formatTime(punchOutTime)}</p>
+      <p class="break-outtime">${formatTime(breakOutTime)}</p>
+      <p class="break-in-time">${formatTime(breakInTime)}</p>
     `;
   } else {
     punchInfoTime.innerHTML = `
