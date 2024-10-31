@@ -79,5 +79,6 @@ export const RenderAdminUploadNotice = container => {
   `;
   attachProfileImageEvents(container);
   const buttonEl = document.querySelector('.admin-notice-button-container');
+  console.log(buttonEl);
   buttonEl.append(submitButton);
 };
