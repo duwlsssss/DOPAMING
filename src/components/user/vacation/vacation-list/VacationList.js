@@ -19,7 +19,7 @@ const toggleEditMode = async (vcId, container, itemData) => {
   );
   const detail = contentContainer
     .closest('.accordion-item')
-    .querySelector('.accordion-detail'); // 아코디언 detail 요소
+    .querySelector('.accordion-detail');
 
   const isEditMode = contentElement.classList.contains('edit-mode');
 
@@ -56,10 +56,7 @@ const toggleEditMode = async (vcId, container, itemData) => {
   };
 
   if (!isEditMode) {
-    // 수정 모드로 전환
     contentElement.classList.add('edit-mode');
-
-    // 기존 버튼 숨김
     buttonGroup
       .querySelectorAll('.user-vcEdit-button, .user-vcDelete-button')
       .forEach(btn => (btn.style.display = 'none'));
@@ -183,7 +180,7 @@ const renderButtons = (status, vcId, container, itemData) => {
   return buttonGroup;
 };
 
-// 아코디언 헤더
+// 아코디언 헤더 렌더링
 const renderHeader = item => `
   <header class="user-vacation-info">
     <span class="user-vacation-abs-type">${item.abs_type}</span>
@@ -195,7 +192,7 @@ const renderHeader = item => `
   </header>
 `;
 
-// 아코디언 콘텐츠
+// 아코디언 콘텐츠 렌더링
 const renderContent = item => {
   const vcId = `content-${item.abs_id}`;
 
@@ -268,18 +265,9 @@ export const RenderUserVacationList = async (container, userAbsData) => {
     return;
   }
 
-  // 아코디언 렌더링
-  container.innerHTML = `
-    <section class="user-vacation-list-section">
-      <div class="user-vacation-list">
-        ${Accordion({
-          items: userAbsData,
-          renderHeader,
-          renderContent,
-        })}
-      </div>
-    </section>
-  `;
+  const db = getDatabase();
+  const auth = getAuth(); // Firebase 인증 가져오기
+  const currentUser = auth.currentUser; // 현재 로그인한 사용자
 
   userAbsData.forEach(item => {
     const vcId = `content-${item.abs_id}`;
@@ -298,4 +286,82 @@ export const RenderUserVacationList = async (container, userAbsData) => {
     const inner = container.querySelector('.user-vacation-list-section');
     inner.innerHTML = ` <div class="user-vacation-filter-error-message">찾으시는 부재 신청 내역이 없습니다.</div>`;
   }
+
+  const userId = currentUser.uid; // 현재 로그인한 사용자 ID로 변경
+  const absencesRef = ref(db, `absences/${userId}`);
+  const storage = getStorage(); // Firebase Storage 초기화
+
+  // Firebase에서 데이터 가져오기
+  onValue(absencesRef, snapshot => {
+    const userAbsData = [];
+    if (snapshot.exists()) {
+      snapshot.forEach(childSnapshot => {
+        const absenceData = childSnapshot.val();
+        userAbsData.push({ abs_id: childSnapshot.key, ...absenceData });
+      });
+
+      console.log('부재 신청 데이터:', userAbsData); // 데이터 확인
+
+      // 아코디언 렌더링
+      container.innerHTML = `
+        <section class="user-vacation-list-section">
+          <div class="user-vacation-list">
+            ${Accordion({
+              items: userAbsData,
+              renderHeader,
+              renderContent,
+            })}
+          </div>
+        </section>
+      `;
+
+      userAbsData.forEach(item => {
+        const vcId = `content-${item.abs_id}`;
+        const contentContainer = container.querySelector(`#${vcId}`);
+
+        const downloadButton = contentContainer.querySelector(
+          '.user-vcDownload-btn',
+        );
+        if (downloadButton) {
+          console.log('다운로드 버튼을 찾았습니다.'); // 버튼 확인 로그
+          downloadButton.addEventListener('click', async () => {
+            console.log('다운로드 버튼 클릭 이벤트 발생');
+
+            // 파일 다운로드 로직
+            const userFilePath = item.user_file; // 다운로드할 파일 경로
+
+            const fileRef = storageRef(storage, userFilePath); // Firebase Storage 참조 생성
+
+            try {
+              const userFileUrl = await getDownloadURL(fileRef); // 다운로드 URL 가져오기
+
+              // 새로운 창에서 다운로드 URL 열기
+              window.open(userFileUrl, '_blank'); // 새로운 창에서 열기
+            } catch (error) {
+              console.error('파일 다운로드 오류:', error);
+            }
+          });
+        } else {
+          console.error('다운로드 버튼을 찾을 수 없습니다.');
+        }
+
+        const buttonGroupPlaceholder = contentContainer.querySelector(
+          '.user-approval-button-group-placeholder',
+        );
+
+        // absData를 전달하여 renderButtons 호출
+        const buttonGroup = renderButtons(
+          item.abs_status,
+          vcId,
+          item.abs_id,
+          item,
+          container,
+        ); // absData 추가
+        buttonGroupPlaceholder.replaceWith(buttonGroup);
+      });
+    } else {
+      console.log('부재 데이터가 존재하지 않습니다.');
+      container.innerHTML = `<div class="user-vacation-filter-error-message">부재 데이터가 존재하지 않습니다.</div>`;
+    }
+  });
 };

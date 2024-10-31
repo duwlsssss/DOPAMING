@@ -1,6 +1,10 @@
-import { ApiClient } from '../../../../apis/ApiClient';
+import {
+  adminFetchMeber,
+  adminFetchTime,
+} from '../../../../../server/api/admin';
 import { Button } from '../../../../components';
 import { Pagenation } from '../../../../components/index';
+import { checkAttendance } from '../../../../utils/checkAttendance';
 import { ADMIN_PATH } from '../../../../utils/constants';
 import navigate from '../../../../utils/navigation';
 import './MemberManagement.css';
@@ -28,21 +32,14 @@ export const RenderAdminMemberManagement = async container => {
     className: 'uploadButton',
   });
 
-  const USER_URL = '../../../../../server/data/users.json';
-  async function fetchUsers() {
-    try {
-      const userData = await ApiClient(USER_URL);
-      return userData;
-    } catch (e) {
-      console.error(e);
-    }
-  }
+  const fetchDataUser = await adminFetchMeber();
+  const fetchTime = await adminFetchTime();
 
-  const users = await fetchUsers();
   // 데이터를 페이지와 검색어에 따라 필터링하고 페이지네이션 적용
-  const paginateUsers = (users, page, itemsPerPage) => {
+  const paginateUsers = (fetchDataUser, page, itemsPerPage) => {
+    console.log(fetchDataUser);
     // 사용자 필터링 조건
-    filteredUsers = users.filter(user => {
+    filteredUsers = fetchDataUser.filter(user => {
       const matchesPosition =
         positionValue === '전체' || user.user_position.includes(positionValue);
       const matchesSearch = user.user_name
@@ -58,7 +55,7 @@ export const RenderAdminMemberManagement = async container => {
 
   // 페이지 변경 시 사용자 목록을 업데이트하는 함수
   const updateUserList = page => {
-    const paginatedUsers = paginateUsers(users.data, page, itemsPerPage);
+    const paginatedUsers = paginateUsers(fetchDataUser, page, itemsPerPage);
     const userSection = container.querySelector('.user-section');
 
     if (paginatedUsers.length === 0) {
@@ -73,23 +70,26 @@ export const RenderAdminMemberManagement = async container => {
         width: 150,
         text: '상세보기',
         color: 'skyblue',
-        id: user.user_id,
         shape: 'block',
         className: 'detail_button',
-        onClick: () => handleNavgiateMemberDatail(user.user_id, USER_URL),
+        onClick: () => handleNavgiateMemberDatail(user.user_id, fetchDataUser),
       });
 
       const userWrapper = document.getElementById(`member-${user.user_id}`);
+
       userWrapper.querySelector('.user-list').appendChild(buttonElement);
     });
   };
 
   // 초기 렌더링
-  const initialUsers = paginateUsers(users.data, currentPage, itemsPerPage);
+  const initialUsers = paginateUsers(fetchDataUser, currentPage, itemsPerPage);
   const userList = renderUserList(initialUsers);
+
   function renderUserList(users) {
     return users
       .map(user => {
+        const isUserPresent = checkAttendance(fetchTime, user);
+
         return `
         <div class="user-wrapper"  id="member-${user.user_id}" member-id="${user.user_id}">
           <label>
@@ -98,9 +98,10 @@ export const RenderAdminMemberManagement = async container => {
             </span>        
           </label>
           <div class="user-item">
-            <div class="circle1">              
+            <div class="member-status ${isUserPresent ? 'active' : ''}">    
+              
             </div>
-            <div class="circle">      
+            <div class="img-container">      
               <img src="${user.user_image}" alt="프로필 이미지" class="img"/>        
             </div>
             <div class="user-list">
@@ -154,7 +155,7 @@ export const RenderAdminMemberManagement = async container => {
   }
 
   const paginationContainer = Pagenation(
-    users.data.length,
+    fetchDataUser.length,
     itemsPerPage,
     currentPage,
     page => {

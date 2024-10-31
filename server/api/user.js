@@ -19,6 +19,32 @@ import {
   remove,
 } from 'firebase/database';
 import { formatDate } from '../../src/utils/currentTime';
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from 'firebase/storage'; // storageRef를 ref로 가져옵니다.
+
+// 0. 로그인 id 및 상태 변경 감지
+export const getCurrentUserId = callback => {
+  if (typeof callback !== 'function') {
+    throw new Error('callback must be a function');
+  }
+
+  const auth = getAuth();
+
+  // 로그인 상태 변경 감지
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      // 사용자가 로그인했을 때
+      callback(user.uid);
+    } else {
+      // 사용자가 로그아웃했을 때
+      callback(null);
+    }
+  });
+};
 
 // 1. 로그인
 export const userLogin = async (email, password) => {
@@ -37,6 +63,7 @@ export const userLogin = async (email, password) => {
       email === 'admin@naver.com' ? ADMIN_PATH.HOME : USER_PATH.HOME;
     setItem('userRole', email === 'admin@naver.com' ? 'admin' : 'user');
     setItem('userID', user.uid); // 로컬 스토리지에 사용자 ID 저장
+    setItem('userName', user.displayName || '이름이 설정되지 않음'); // 로컬 스토리지에 사용자 이름 저장
 
     // 해당 경로로 리다이렉트
     window.location.replace(redirectPath);
@@ -49,18 +76,33 @@ export const userLogin = async (email, password) => {
 export const getUserIdName = () => {
   return new Promise((resolve, reject) => {
     const auth = getAuth();
-    onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, async user => {
       if (user) {
-        const currentUserInfo = {
-          id: user.uid, // 로그인한 사용자의 ID 저장
-          name: user.displayName || '이름이 설정되지 않음', // 사용자 이름 저장 (없으면 기본값)
-        };
-        console.log('로그인한 사용자 ID:', currentUserInfo.id);
-        console.log('로그인한 사용자 이름:', currentUserInfo.name);
-        resolve(currentUserInfo); // 사용자 정보를 resolve로 반환
+        const userId = user.uid; // 로그인한 사용자의 ID
+        const db = getDatabase();
+        const userRef = ref(db, `Users/${userId}`); // Realtime Database의 사용자 경로 참조
+
+        try {
+          const snapshot = await get(userRef); // 데이터 가져오기
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            const currentUserInfo = {
+              id: userId,
+              name: userData.user_name || '사용자 이름이 없습니다', // Realtime Database에서 user_name 가져오기
+              user_image: userData.user_image || '', // 사용자 이미지 URL 가져오기
+            };
+            console.log('로그인한 사용자 ID:', currentUserInfo.id);
+            console.log('로그인한 사용자 이름:', currentUserInfo.name);
+            resolve(currentUserInfo); // 사용자 정보를 resolve로 반환
+          } else {
+            reject(new Error('사용자 데이터가 존재하지 않습니다.'));
+          }
+        } catch (error) {
+          reject(new Error('사용자 데이터 가져오기 실패: ' + error.message));
+        }
       } else {
         console.log('사용자가 로그아웃했습니다.');
-        reject(new Error('사용자가 로그아웃했습니다.')); // 로그아웃 시 reject
+        reject(new Error('사용자가 로그아웃했습니다.'));
       }
     });
   });
@@ -89,8 +131,10 @@ export const fetchUserData = async userId => {
 
   try {
     const snapshot = await get(userRef); // 데이터 가져오기
+    console.log(snapshot.val());
     if (snapshot.exists()) {
       const userData = snapshot.val(); // 데이터 값 가져오기
+      console.log(userData);
       return userData; // 사용자 객체 데이터 반환
     } else {
       console.log('사용자 데이터가 존재하지 않습니다.');
@@ -102,7 +146,27 @@ export const fetchUserData = async userId => {
   }
 };
 
-// 3. 출/퇴근 데이터 가져오기
+// 모든 사용자 데이터 가져오기
+export const fetchAllUsersData = async () => {
+  const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
+  const usersRef = ref(db, 'Users'); // Users 경로 참조
+
+  try {
+    const snapshot = await get(usersRef); // 데이터 가져오기
+    if (snapshot.exists()) {
+      const usersData = snapshot.val(); // 데이터 값 가져오기
+      return Object.values(usersData); // 사용자 객체 배열 반환
+    } else {
+      console.log('사용자 데이터가 존재하지 않습니다.');
+      return []; // 데이터가 없을 경우 빈 배열 반환
+    }
+  } catch (error) {
+    console.error('사용자 데이터 가져오기 실패:', error.message); // 오류 메시지 출력
+    return []; // 오류 발생 시 빈 배열 반환
+  }
+};
+
+// 4. 출/퇴근 데이터 가져오기
 export const fetchTimePunchData = async userId => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   const timePunchRef = ref(db, 'Time-punch'); // 출/퇴근, 외출/복귀 데이터테이블
@@ -111,19 +175,23 @@ export const fetchTimePunchData = async userId => {
     const snapshot = await get(timePunchRef); // 데이터 가져오기
     if (snapshot.exists()) {
       const timePunchData = snapshot.val(); // 데이터 값 가져오기
+      console.log('전체 출퇴근 데이터:', timePunchData); // 전체 데이터 로그
 
       // 현재 로그인한 사용자의 출근/퇴근 데이터 필터링
       const userTimePunch = [];
 
       // 각 사용자 ID와 날짜를 순회하여 해당 사용자 데이터를 필터링
-      Object.entries(timePunchData).forEach(([userPunchData]) => {
-        Object.entries(userPunchData).forEach(([punchDetails]) => {
-          if (punchDetails.user_id === userId) {
-            userTimePunch.push(punchDetails); // 해당 사용자 데이터 추가
-          }
-        });
+      Object.entries(timePunchData).forEach(([userIdKey, userPunchData]) => {
+        if (userIdKey === userId) {
+          console.log('사용자 ID:', userIdKey); // 사용자 ID 로그
+          Object.entries(userPunchData).forEach(([dateKey, punchDetails]) => {
+            console.log(`날짜: ${dateKey}, 출퇴근 세부정보:`, punchDetails); // 날짜 및 세부정보 로그
+            userTimePunch.push({ punch_date: dateKey, ...punchDetails }); // 해당 사용자 데이터 추가
+          });
+        }
       });
 
+      console.log('사용자 출퇴근 데이터:', userTimePunch); // 필터링된 사용자 데이터 로그
       return userTimePunch.length > 0 ? userTimePunch : []; // 사용자 데이터 반환
     } else {
       console.log('Time-punch 데이터가 존재하지 않습니다.');
@@ -198,6 +266,7 @@ export const saveTimePunchData = async (userId, actionType, userName) => {
 // 5. 내 정보 수정하기
 export const updateUserData = async (container, userId, userImage = null) => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
+  const storage = getStorage(); // 스토리지 인스턴스 가져오기
   const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
 
   // 현재 데이터 가져오기_공백 입력시 업데이트 전에 있던 DB 값 사용하기 위함
@@ -236,9 +305,36 @@ export const updateUserData = async (container, userId, userImage = null) => {
     user_image: userImage || currentUserData.user_image,
   };
 
+  // 파일 입력 처리
+  const fileInput = container.querySelector('#profileImageInput'); // 파일 입력 요소 선택
+  if (fileInput) {
+    // null 체크 추가
+    if (fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const storagePath = `user_images/${userId}/${file.name}`; // 저장할 경로
+      const imageRef = storageRef(storage, storagePath);
+
+      try {
+        // 파일 업로드
+        await uploadBytes(imageRef, file);
+        // 업로드 후 다운로드 URL 가져오기
+        const downloadURL = await getDownloadURL(imageRef);
+        updatedData.user_image = downloadURL; // 사용자 이미지 URL 업데이트
+      } catch (error) {
+        console.error('이미지 업로드 실패:', error.message);
+        Modal('update-fail'); // 오류 발생 시 모달 표시
+        return; // 함수 종료
+      }
+    }
+  } else {
+    console.error('파일 입력 요소를 찾을 수 없습니다.');
+  }
+
+  // 사용자 데이터 업데이트
   try {
     await update(userRef, updatedData);
     console.log('사용자 데이터가 성공적으로 수정되었습니다.');
+    Modal('edit-profile-success');
   } catch (error) {
     console.error('사용자 데이터 수정 실패:', error.message);
     Modal('edit-profile-fail');
@@ -472,5 +568,26 @@ export const getNoticeById = async post_id => {
   } catch (error) {
     console.error('개별 공지사항 불러오기 중 오류 발생:', error);
     throw error;
+  }
+};
+
+// 사용자 이미지 저장하기
+export const saveUserImage = async (userId, imageUrl) => {
+  const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
+  const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
+
+  try {
+    // 사용자 데이터 업데이트
+    await set(
+      userRef,
+      {
+        user_image: imageUrl, // 이미지 URL 저장
+        // 다른 사용자 데이터도 포함할 수 있습니다.
+      },
+      { merge: true },
+    ); // 기존 데이터 유지하면서 병합
+    console.log('사용자 이미지가 성공적으로 저장되었습니다.');
+  } catch (error) {
+    console.error('사용자 이미지 저장 실패:', error.message);
   }
 };

@@ -1,4 +1,5 @@
 import './userModal.css';
+import { getUserIdName } from '../../../../../server/api/user'; // 사용자 정보를 가져오는 함수 임포트
 
 function getSuccessMessage(type) {
   const messages = {
@@ -34,9 +35,14 @@ function getErrorMessage(type) {
 function addEventListeners(fragment, modalInstance) {
   const confirmButton = fragment.querySelector('.confirm-button');
   if (confirmButton) {
-    confirmButton.addEventListener('click', () => {
+    confirmButton.addEventListener('click', async () => {
       const actionType = confirmButton.getAttribute('data-type');
-      modalInstance.handleConfirm(actionType); // 클릭 시 actionType 전달
+
+      // 현재 로그인한 사용자 정보 가져오기
+      const userInfo = await getUserIdName();
+      const userName = userInfo.name; // 사용자 이름 가져오기
+
+      modalInstance.handleConfirm(actionType, userName); // 클릭 시 actionType과 userName 전달
     });
   }
 
@@ -68,7 +74,6 @@ export function userModalContent(type, modalInstance) {
 
   let content;
   switch (type) {
-    // QUESTION
     case 'punch-in':
       content = ` 
         <div class="modal-question-container">

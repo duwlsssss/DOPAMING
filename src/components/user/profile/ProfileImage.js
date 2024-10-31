@@ -5,7 +5,7 @@ import { updateUserData } from '../../../../server/api/user';
 export const ProfileImage = (
   paragraphOne = 'Upload',
   paragraphTwo = 'Your',
-  paragraphThree = 'Profle',
+  paragraphThree = 'Profile',
   description = '프로필',
 ) => {
   return `
@@ -25,7 +25,8 @@ export const ProfileImage = (
         </p>
       </div>
       <div class="user-profileImg-button-container">
-      <input type="file" id="fileInput" accept="image/jpeg, image/png"/>
+        <input type="file" id="profileImageInput" accept="image/jpeg, image/png" style="display: none;" />
+      </div>
     </section>
   `;
 };
@@ -45,9 +46,10 @@ export const attachProfileImageEvents = (container, userId) => {
     padding: 'var(--space-small)',
     onClick: e => {
       e.preventDefault();
-      fileInput.click();
+      fileInput.click(); // fileInput이 null이 아닐 때 클릭
     },
   });
+
   const imgDeleteBtn = Button({
     className: 'img-delete-btn',
     text: '기본 이미지로 변경',
@@ -69,6 +71,7 @@ export const attachProfileImageEvents = (container, userId) => {
   // Change event 리스너를 설정
   fileInput.addEventListener('change', async () => {
     const files = fileInput.files; // 선택한 파일들 가져오기
+
     if (files.length > 0) {
       const file = files[0];
       const reader = new FileReader(); // FileReader 객체 생성

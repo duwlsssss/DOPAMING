@@ -80,6 +80,7 @@ function isAdminAction(actionType) {
     'vacation-permit-fail',
     'vacation-permit-cancle-fail',
     'vacation-reject-fail',
+    'notice-edit-success',
     'vacation-reject-cancle-fail',
     'notice-upload-fail',
     'employee-registration-fail',
@@ -257,6 +258,7 @@ export async function Modal(type, options = {}) {
     case 'vacation-permit-cancle-success':
     case 'vacation-reject-success':
     case 'vacation-reject-cancle-success':
+    case 'notice-edit-success':
     case 'notice-upload-success':
     case 'employee-registration-success':
       modalContent.appendChild(adminModalContent(type, modalInstance));
@@ -280,7 +282,8 @@ export async function Modal(type, options = {}) {
       modalContent.appendChild(adminModalContent(type, modalInstance));
       break;
     default:
-      modalContent.innerHTML = '<p>잘못된 요청입니다.</p>';
+      modalContent.innerHTML =
+        '<p class="error-request-message">잘못된 요청입니다.</p>';
       break;
   }
   modal.style.display = 'flex'; // 모달 열기

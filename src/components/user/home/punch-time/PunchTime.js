@@ -9,11 +9,25 @@ import { USER_PATH } from '../../../../utils/constants';
 import { Modal } from '../../../ui/modal/Modal';
 import { formatDate } from '../../../../utils/currentTime';
 import { getAuth } from 'firebase/auth'; // Firebase Authentication 가져오기
-import { fetchUserData } from '../../../../../server/api/user'; // 사용자 데이터 가져오는 API
+import {
+  fetchUserData,
+  fetchTimePunchData,
+} from '../../../../../server/api/user'; // 사용자 및 출퇴근 데이터 가져오는 API
 
-export const RenderPunchTime = (container, todayData) => {
+export const RenderPunchTime = async container => {
   container.classList.add('punch-time');
   const today = formatDate(new Date());
+
+  const auth = getAuth(); // Firebase Authentication
+  const user = auth.currentUser; // 현재 로그인한 사용자
+
+  if (!user) {
+    console.error('사용자가 로그인하지 않았습니다.');
+    return;
+  }
+
+  const userId = user.uid; // 사용자 고유 ID
+  const todayData = await fetchTimePunchData(userId); // 출퇴근 데이터 가져오기
 
   // 오늘 날짜에 해당하는 출퇴근 데이터를 가져옵니다.
   const punchInTime =
@@ -24,6 +38,12 @@ export const RenderPunchTime = (container, todayData) => {
     todayData.length > 0 ? formatUserTime(todayData[0].break_out) : '--시 --분';
   const breakInTime =
     todayData.length > 0 ? formatUserTime(todayData[0].break_in) : '--시 --분';
+
+  // 출퇴근 데이터 로그 출력
+  console.log('출근 시간:', punchInTime);
+  console.log('퇴근 시간:', punchOutTime);
+  console.log('외출 시간:', breakOutTime);
+  console.log('복귀 시간:', breakInTime);
 
   container.innerHTML = `
     <div class="curr-time-title">현재 시각</div>
@@ -73,19 +93,13 @@ export const RenderPunchTime = (container, todayData) => {
       shape: 'block',
       fontSize: 'var(--font-small)',
       onClick: async () => {
-        const auth = getAuth();
-        const user = auth.currentUser;
-
-        if (user) {
-          const userData = await fetchUserData(user.uid);
-          if (userData) {
-            console.log('로그인된 사용자 ID:', userData.user_id); // 올바른 ID 로그
-            Modal(actionType); // 해당 모달 열기
-          } else {
-            console.error('사용자 데이터를 가져오지 못했습니다.');
-          }
+        const userData = await fetchUserData(userId);
+        if (userData) {
+          console.log('로그인된 사용자 ID:', userData.user_id); // 올바른 ID 로그
+          console.log(`${actionType} 버튼 클릭됨`); // 버튼 클릭 로그
+          Modal(actionType); // 해당 모달 열기
         } else {
-          console.log('사용자가 로그인하지 않았습니다.');
+          console.error('사용자 데이터를 가져오지 못했습니다.');
         }
       },
     });
