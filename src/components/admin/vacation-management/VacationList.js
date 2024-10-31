@@ -1,61 +1,16 @@
-import axios from 'axios';
-
 import { Accordion } from '../../ui/accordion/Accordion';
 import { Button } from '../../ui/button/Button';
-import { sortByName } from '../../../utils/sortByName';
 import { Pagenation } from '../../common/pagenation/Pagenation';
+import { Modal } from '../../ui/modal/Modal';
+import { vacationStore } from '../../../utils/vacationStore';
 import './VacationList.css';
 
-export const RenderAdminVacationManagementList = async (
-  container,
-  filter = { type: 'vacation-all', status: 'approved-all' },
-  currentPage = 1,
-) => {
+export const RenderAdminVacationManagementList = async container => {
   container.innerHTML = `<div class="loading">휴가 정보를 가져오는 중입니다.</div>`;
 
   try {
-    const [absencesResponse, usersResponse] = await Promise.all([
-      axios.get('../../../../server/data/absences.json'),
-      axios.get('../../../../server/data/users.json'),
-    ]);
-
-    const absences = absencesResponse.data;
-    const users = usersResponse.data;
-
-    let absenceUsersData = absences.map(absence => {
-      const user = users.find(user => user.user_id === absence.user_id);
-      return {
-        ...absence,
-        user_name: user.user_name,
-        user_image: user.user_image,
-        user_phone: user.user_phone,
-        user_position: user.user_position,
-      };
-    });
-    let sortedAbsenceUsersData = sortByName(absenceUsersData);
-
-    // 필터링
-    if (filter.type !== 'vacation-all') {
-      const absType = {
-        vacation: '휴가',
-        sick: '병가',
-        official: '공가',
-      };
-      sortedAbsenceUsersData = sortedAbsenceUsersData.filter(
-        absence => absence.abs_type === absType[filter.type],
-      );
-    }
-
-    if (filter.status !== 'approved-all') {
-      const statusType = {
-        approved: '승인',
-        rejected: '거부',
-        pending: '대기',
-      };
-      sortedAbsenceUsersData = sortedAbsenceUsersData.filter(
-        absence => absence.abs_status === statusType[filter.status],
-      );
-    }
+    await vacationStore.initialize();
+    const sortedVacations = vacationStore.getFilteredVacations();
 
     // 다운로드 버튼
     const downloadButton = new Button({
@@ -66,7 +21,7 @@ export const RenderAdminVacationManagementList = async (
     });
 
     // 승인, 거부, 대기 버튼
-    const renderButtons = status => {
+    const renderButtons = (status, item) => {
       switch (status) {
         case '승인': {
           const cancelApproveButton = new Button({
@@ -74,8 +29,13 @@ export const RenderAdminVacationManagementList = async (
             color: 'gray',
             shape: 'block',
             padding: 'var(--space-small) var(--space-large)',
+            onClick: () => {
+              Modal('vacation-permit-cancel', {
+                absenceId: item.absences_id,
+                userId: item.user_id,
+              });
+            },
           });
-
           return `
             <div class="approval-button-group">
               ${cancelApproveButton.outerHTML}
@@ -88,8 +48,13 @@ export const RenderAdminVacationManagementList = async (
             color: 'gray',
             shape: 'block',
             padding: 'var(--space-small) var(--space-large)',
+            onClick: () => {
+              Modal('vacation-reject-cancel', {
+                absenceId: item.absences_id,
+                userId: item.user_id,
+              });
+            },
           });
-
           return `
             <div class="approval-button-group">
               ${cancelDenyButton.outerHTML}
@@ -102,15 +67,25 @@ export const RenderAdminVacationManagementList = async (
             color: 'skyblue-light',
             shape: 'block',
             padding: 'var(--space-small) var(--space-large)',
+            onClick: () => {
+              Modal('vacation-permit', {
+                absenceId: item.absences_id,
+                userId: item.user_id,
+              });
+            },
           });
-
           const rejectButton = new Button({
             text: '거부하기',
             color: 'coral',
             shape: 'block',
             padding: 'var(--space-small) var(--space-large)',
+            onClick: () => {
+              Modal('vacation-reject', {
+                absenceId: item.absences_id,
+                userId: item.user_id,
+              });
+            },
           });
-
           return `
             <div class="approval-button-group">
               ${approveButton.outerHTML}
@@ -139,7 +114,7 @@ export const RenderAdminVacationManagementList = async (
 
     // 아코디언 컨텐츠
     const renderContent = (item, index) => `
-      <article class="detail-content">
+      <article class="detail-content" data-absence-id="${item.absences_id}" data-user-id="${item.user_id}">
         <div class="detail-grid">
           <section class="detail-item">
             <h3 class="detail-label">휴가 제목</h3>
@@ -168,62 +143,84 @@ export const RenderAdminVacationManagementList = async (
             <p class="detail-value content-box" data-index="${index}">${item.abs_content}</p>
           </section>
         </div>
-
-        ${renderButtons(item.abs_status)}
+        ${renderButtons(item.abs_status, item)}
       </article>
     `;
 
     const itemsPerPage = 6;
-    const startIndex = (currentPage - 1) * itemsPerPage;
+    const startIndex = (vacationStore.currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const diplayedAbsencesList = sortedAbsenceUsersData.slice(
-      startIndex,
-      endIndex,
-    );
+    const displayedVacations = sortedVacations.slice(startIndex, endIndex);
 
     // 아코디언 렌더링
     container.innerHTML = `
       <section class="admin-vacation-list-section">
         <div class="admin-vacation-list">
-            ${Accordion({
-              items: diplayedAbsencesList,
-              renderHeader,
-              renderContent,
-            })}
+          ${Accordion({
+            items: displayedVacations,
+            renderHeader,
+            renderContent,
+          })}
         </div>
       </section>
     `;
 
+    // 페이지네이션 컨테이너
     const paginationContainer = document.createElement('div');
     paginationContainer.className = 'pagination';
 
     const handlePageChange = newPage => {
-      RenderAdminVacationManagementList(container, filter, newPage);
+      vacationStore.setPage(newPage);
+      RenderAdminVacationManagementList(container);
     };
 
     const paginationElement = Pagenation(
-      sortedAbsenceUsersData.length,
+      sortedVacations.length,
       itemsPerPage,
-      currentPage,
+      vacationStore.currentPage,
       handlePageChange,
     );
 
     paginationContainer.appendChild(paginationElement);
     container.appendChild(paginationContainer);
-  } catch (error) {
-    let errorMessage = '데이터를 불러오는 중 오류가 발생했습니다.';
 
-    if (axios.isAxiosError(error)) {
-      if (error.response) {
-        errorMessage = `Error ${error.response.status}: ${error.response.data.message || errorMessage}`;
-      } else if (error.request) {
-        errorMessage = '서버로부터 응답을 받지 못했습니다.';
+    // 버튼 이벤트 리스너
+    container.addEventListener('click', async e => {
+      const button = e.target.closest('button');
+      if (!button) return;
+
+      const article = button.closest('.detail-content');
+      if (!article) return;
+
+      const absenceId = article.dataset.absenceId;
+      const userId = article.dataset.userId;
+
+      if (!absenceId || !userId) return;
+
+      try {
+        switch (button.textContent) {
+          case '승인하기':
+            await Modal('vacation-permit', { userId, absenceId });
+            break;
+          case '거부하기':
+            await Modal('vacation-reject', { userId, absenceId });
+            break;
+          case '승인 취소':
+            await Modal('vacation-permit-cancel', { userId, absenceId });
+            break;
+          case '거부 취소':
+            await Modal('vacation-reject-cancel', { userId, absenceId });
+            break;
+        }
+      } catch (error) {
+        console.error('휴가 상태 변경 중 오류 발생:', error);
       }
-    }
-
+    });
+  } catch (error) {
+    console.error('Error:', error);
     container.innerHTML = `
       <div class="admin-vacation-section error">
-        ${errorMessage}
+        ${error.message || '데이터를 불러오는 중 오류가 발생했습니다.'}
       </div>
     `;
   }

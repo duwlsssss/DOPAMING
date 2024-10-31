@@ -50,18 +50,35 @@ export const userLogin = async (email, password) => {
       password,
     );
 
-    const user = userCredential.user; // 사용자 정보 가져오기
+    const user = userCredential.user;
 
-    // 이메일에 따라 리다이렉트 경로, 역할 설정
-    const redirectPath =
-      email === 'admin@naver.com' ? ADMIN_PATH.HOME : USER_PATH.HOME;
-    setItem('userRole', email === 'admin@naver.com' ? 'admin' : 'user');
-    setItem('userID', user.uid); // 로컬 스토리지에 사용자 ID 저장
-    setItem('userName', user.displayName || '이름이 설정되지 않음'); // 로컬 스토리지에 사용자 이름 저장
+    // 관리자 계정인 경우
+    if (email === 'admin@naver.com') {
+      setItem('userRole', 'admin');
+      setItem('userID', user.uid);
+      setItem('userName', '관리자');
+      window.location.replace(ADMIN_PATH.HOME);
+      return;
+    }
 
-    // 해당 경로로 리다이렉트
-    window.location.replace(redirectPath);
-  } catch {
+    // 일반 사용자인 경우
+    const db = getDatabase();
+    const userRef = ref(db, `Users/${user.uid}`);
+
+    // 사용자 데이터 확인
+    const snapshot = await get(userRef);
+    if (snapshot.exists()) {
+      const userData = snapshot.val();
+      setItem('userRole', 'user');
+      setItem('userID', user.uid);
+      setItem('userName', userData.user_name || '이름이 설정되지 않음');
+      window.location.replace(USER_PATH.HOME);
+    } else {
+      // 사용자 데이터가 없는 경우 에러 처리
+      throw new Error('사용자 데이터가 존재하지 않습니다.');
+    }
+  } catch (error) {
+    console.error('로그인 실패:', error);
     Modal('login-fail');
   }
 };
@@ -73,6 +90,17 @@ export const getUserIdName = () => {
     onAuthStateChanged(auth, async user => {
       if (user) {
         const userId = user.uid; // 로그인한 사용자의 ID
+
+        if (user.email === 'admin@naver.com') {
+          const adminInfo = {
+            id: userId,
+            name: '관리자',
+            user_image: '/assets/imgs/profile/profile_null.jpg',
+            isAdmin: true,
+          };
+          return resolve(adminInfo);
+        }
+
         const db = getDatabase();
         const userRef = ref(db, `Users/${userId}`); // Realtime Database의 사용자 경로 참조
 
@@ -84,6 +112,7 @@ export const getUserIdName = () => {
               id: userId,
               name: userData.user_name || '사용자 이름이 없습니다', // Realtime Database에서 user_name 가져오기
               user_image: userData.user_image || '', // 사용자 이미지 URL 가져오기
+              isAdmin: false,
             };
             // console.log('로그인한 사용자 ID:', currentUserInfo.id);
             // console.log('로그인한 사용자 이름:', currentUserInfo.name);
@@ -120,23 +149,38 @@ export const userLogout = () => {
 
 // 2. 사용자 데이터 가져오기
 export const fetchUserData = async userId => {
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+
+  if (currentUser?.email === 'admin@naver.com') {
+    return {
+      user_id: userId,
+      user_name: '관리자',
+      user_email: 'admin@naver.com',
+      user_position: '관리자',
+      user_image: '/assets/imgs/profile/profile_null.jpg',
+      isAdmin: true,
+    };
+  }
+
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
 
   try {
     const snapshot = await get(userRef); // 데이터 가져오기
-    // console.log(snapshot.val());
     if (snapshot.exists()) {
       const userData = snapshot.val(); // 데이터 값 가져오기
-      // console.log(userData);
-      return userData; // 사용자 객체 데이터 반환
+      return {
+        ...userData,
+        isAdmin: false,
+      };
     } else {
       console.log('사용자 데이터가 존재하지 않습니다.');
-      return null; // 데이터가 없을 경우 null 반환
+      return null;
     }
   } catch (error) {
-    console.error('사용자 데이터 가져오기 실패:', error.message); // 오류 메시지 출력
-    return null; // 오류 발생 시 null 반환
+    console.error('사용자 데이터 가져오기 실패:', error.message);
+    return null;
   }
 };
 
