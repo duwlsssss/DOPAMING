@@ -31,7 +31,7 @@ export const RenderUserNoticeList = async container => {
 
     container.innerHTML = `
       <header class="user-notice-list-header">
-        <div class="user-notice-title"><span class="strong">${bcName}</span>의 공지목록입니다.</div> 
+        <div class="user-notice-title"></div> 
         <div class="user-notice-search">
           <input type="text" class="user-notice-search-input" placeholder="Search"/>
           <span class="material-symbols-rounded">search</span> 
@@ -41,6 +41,18 @@ export const RenderUserNoticeList = async container => {
         ${renderNoticeItems(posts)}
       </div>
     `;
+
+    // MEDIA
+    const NoticeListTitle = container.querySelector('.user-notice-title');
+    const updateNoticeTitleText = () => {
+      if (window.innerWidth <= 767) {
+        NoticeListTitle.innerHTML = '공지 목록';
+      } else {
+        NoticeListTitle.innerHTML = `<span class="strong">${bcName}</span>의 공지목록입니다.`;
+      }
+    };
+    updateNoticeTitleText();
+    window.addEventListener('resize', updateNoticeTitleText);
 
     //notice-item-container클릭시 notice-detail 페이지로 이동하게 함
     //모든 notice-item-container에 클릭 이벤트 핸들러 연결함
