@@ -23,17 +23,16 @@ export const RenderUserPeer = async container => {
     const userMarkup = filteredUsers
       .map(
         user => `
-    <div class="peer-frame">
-      <div class="image-circle">
-        <img src='${user.user_image || '/assets/imgs/profile/profile_null.jpg'}'/>
-      </div>
-      <p class="peer-name">${user.user_name}</p>
-      <p class="peer-email">${user.user_email}</p>
-    </div>
-    `,
+        <div class="peer-frame">
+          <div class="image-circle">
+            <img src='${user.user_image || '/assets/imgs/profile/profile_null.jpg'}'/>
+          </div>
+          <p class="peer-name">${user.user_name}</p>
+          <p class="peer-email">${user.user_email}</p>
+        </div>
+        `,
       )
       .join('');
-
     container.innerHTML = userMarkup; // 모든 사용자 렌더링
   };
 

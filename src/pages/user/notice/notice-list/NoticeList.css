@@ -116,14 +116,6 @@
   .user-notice-list-header {
     margin-bottom: var(--space-medium);
   }
-  .user-notice-list-header .user-notice-title {
-    display: none;
-  }
-  .user-notice-list-header .user-notice-search {
-    justify-content: center;
-    gap: 0.5rem;
-    padding-top: var(--space-small);
-  }
 }
 
 @media (width <= 350px) {
