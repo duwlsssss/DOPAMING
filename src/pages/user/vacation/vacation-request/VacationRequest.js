@@ -86,7 +86,9 @@ export const RenderUserVacationRequest = async container => {
         };
         try {
           await addUserAbsence(userId, newAbsenceData);
-          Modal('vacation-request-success', USER_PATH.VACATION);
+          Modal('vacation-request-success', {
+            redirectPath: USER_PATH.VACATION,
+          });
         } catch (error) {
           console.error('부재 신청 중 오류 발생:', error);
           Modal('vacation-request-fail');

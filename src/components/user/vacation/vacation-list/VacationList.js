@@ -1,13 +1,12 @@
 import { Accordion } from '../../../ui/accordion/Accordion';
 import { Button } from '../../../ui/button/Button';
-// import { Modal } from '../../../ui/modal/Modal';
+import { Modal } from '../../../ui/modal/Modal';
 import './VacationList.css';
 import { validateVacationRequestInput } from '../../../../utils/validation';
 import { VacationRequestForm } from '../../../user/form/vacation-request-form/VacationRequestForm';
 import {
   getUserAbsById,
   updateUserAbsence,
-  deleteUserAbsence,
 } from '../../../../../server/api/user';
 
 // 수정 모드 토글 함수
@@ -121,10 +120,14 @@ const toggleEditMode = async (vcId, container, itemData) => {
                 itemData.user_id,
                 itemData.abs_id,
               );
+              Modal('vacation-edit-success');
               exitEditMode(updatedData);
             } catch (error) {
-              console.error('수정 중 오류 발생:', error);
+              console.log('부재 수정 중 오류 발생 : ', error);
+              Modal('vacation-edit-fail');
             }
+          } else {
+            Modal('vacation-edit-fail');
           }
         },
       });
@@ -162,13 +165,15 @@ const renderButtons = (status, vcId, container, itemData) => {
       padding: 'var(--space-small) var(--space-large)',
       onClick: async () => {
         try {
-          await deleteUserAbsence(itemData.user_id, itemData.abs_id);
-          const itemElement = document
-            .getElementById(vcId)
-            .closest('.accordion-item');
-          itemElement.remove();
+          const options = {
+            userId: itemData.user_id,
+            absId: itemData.abs_id,
+            vcId: vcId,
+          };
+          Modal('vacation-delete', options);
         } catch (error) {
-          console.error('삭제 중 오류 발생:', error);
+          console.log('부재 삭제 중 오류 발생 : ', error);
+          Modal('vacation-delete-fail');
         }
       },
     });

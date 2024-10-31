@@ -1,8 +1,12 @@
 import { adminModalContent } from './admin/adminModal';
 import './Modal.css';
 import { userModalContent } from './user/userModal';
-import { getUserIdName } from '../../../../server/api/user';
-import { saveTimePunchData } from '../../../../server/api/user';
+import {
+  getUserIdName,
+  saveTimePunchData,
+  deleteUserAbsence,
+} from '../../../../server/api/user';
+import navigate from '../../../utils/navigation';
 
 function createModalElement() {
   const modal = document.createElement('div');
@@ -90,12 +94,12 @@ function closeModal(modal, redirectUrl = '') {
 
     // 설정된 redirectUrl이 있으면 해당 URL로 이동
     if (redirectUrl) {
-      window.location.href = redirectUrl;
+      navigate(redirectUrl);
     }
   }
 }
 
-export async function Modal(type, redirectPath = '') {
+export async function Modal(type, options = {}) {
   const { modal, modalContent } = createModalElement();
   document.body.appendChild(modal);
 
@@ -104,7 +108,8 @@ export async function Modal(type, redirectPath = '') {
   let modalInstance = {
     userId: null,
     userName: null,
-    close: () => closeModal(modal, redirectPath),
+    ...options,
+    close: () => closeModal(modal, modalInstance.redirectPath), // 모달 닫힐 때 redirectPath 사용
     handleConfirm: async actionType => {
       modalContent.innerHTML = ''; // 내용 초기화
 
@@ -155,6 +160,32 @@ export async function Modal(type, redirectPath = '') {
             );
             break;
 
+          case 'vacation-delete':
+            try {
+              const { userId, absId, vcId } = modalInstance;
+              const result = await deleteUserAbsence(userId, absId);
+              if (result) {
+                //true면
+                modalContent.appendChild(
+                  userModalContent('vacation-delete-success', modalInstance),
+                );
+                const itemElement = document
+                  .getElementById(vcId)
+                  .closest('.accordion-item');
+                itemElement.remove();
+              } else {
+                modalContent.appendChild(
+                  userModalContent('vacation-delete-fail', modalInstance),
+                );
+              }
+            } catch (error) {
+              console.error('사용자 부재 삭제 중 오류 발생:', error);
+              modalContent.appendChild(
+                userModalContent('vacation-delete-fail', modalInstance),
+              );
+            }
+            break;
+
           default:
             console.log('잘못된 요청 처리:', actionType);
             if (isUserAction(actionType)) {
@@ -177,7 +208,7 @@ export async function Modal(type, redirectPath = '') {
       }
     },
     handleCancel: () => {
-      closeModal(modal, redirectPath); // 모달을 닫습니다.
+      closeModal(modal, modalInstance.redirectPath); // 모달을 닫습니다.
     },
   };
 
@@ -199,6 +230,7 @@ export async function Modal(type, redirectPath = '') {
     case 'punch-out':
     case 'break-out':
     case 'break-in':
+    case 'vacation-delete':
       modalContent.appendChild(userModalContent(type, modalInstance));
       break;
     case 'employee-delete':
@@ -215,6 +247,8 @@ export async function Modal(type, redirectPath = '') {
     case 'break-in-success':
     case 'edit-profile-success':
     case 'vacation-request-success':
+    case 'vacation-delete-success':
+    case 'vacation-edit-success':
       modalContent.appendChild(userModalContent(type, modalInstance));
       break;
     case 'employee-delete-success':
@@ -233,6 +267,8 @@ export async function Modal(type, redirectPath = '') {
     case 'break-in-fail':
     case 'vacation-request-fail':
     case 'edit-profile-fail':
+    case 'vacation-delete-fail':
+    case 'vacation-edit-fail':
       modalContent.appendChild(userModalContent(type, modalInstance));
       break;
     case 'vacation-permit-fail':
