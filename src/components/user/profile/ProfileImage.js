@@ -1,14 +1,10 @@
 import './ProfileImage.css';
 import { Button } from '../../../components';
-import {
-  deleteProfileImage,
-  uploadProfileImg,
-} from '../../../utils/handleProfileImg';
 
 export const ProfileImage = (
   paragraphOne = 'Upload',
   paragraphTwo = 'Your',
-  paragraphThree = 'Profile',
+  paragraphThree = 'Profle',
   description = '프로필',
 ) => {
   return `
@@ -28,19 +24,13 @@ export const ProfileImage = (
         </p>
       </div>
       <div class="user-profileImg-button-container">
-        <input type="file" id="profileImageInput" accept="image/jpeg, image/png" style="display: none;" />
-      </div>
+      <input type="file" id="fileInput" accept="image/jpeg, image/png"/>
     </section>
   `;
 };
 
 export const attachProfileImageEvents = container => {
-  const fileInput = container.querySelector('#profileImageInput'); // 파일 입력 요소 선택
-  if (!fileInput) {
-    console.error('profileImageInput 요소를 찾을 수 없습니다.');
-    return; // 파일 입력 요소가 없으면 함수 종료
-  }
-
+  const fileInput = container.querySelector('#fileInput');
   const profileImgPosition = container.querySelector('.real-profileImg');
   const buttonPosition = container.querySelector(
     '.user-profileImg-button-container',
@@ -54,20 +44,19 @@ export const attachProfileImageEvents = container => {
     padding: 'var(--space-small)',
     onClick: e => {
       e.preventDefault();
-      fileInput.click(); // fileInput이 null이 아닐 때 클릭
+      fileInput.click();
     },
   });
-
   const imgDeleteBtn = Button({
     className: 'img-delete-btn',
     text: '기본 이미지로 변경',
     color: 'white',
     shape: 'line',
     padding: 'var(--space-small)',
-    onClick: e => {
+    onClick: async e => {
       e.preventDefault();
       // 프로필 사진 삭제
-      deleteProfileImage(profileImgPosition);
+      profileImgPosition.style.backgroundImage = null;
     },
   });
 
@@ -75,18 +64,17 @@ export const attachProfileImageEvents = container => {
   buttonPosition.append(imgDeleteBtn);
 
   // Change event 리스너를 설정
-  fileInput.addEventListener('change', () => {
+  fileInput.addEventListener('change', async () => {
     const files = fileInput.files; // 선택한 파일들 가져오기
-
     if (files.length > 0) {
       const file = files[0];
       const reader = new FileReader(); // FileReader 객체 생성
 
       // 파일 읽기가 완료되었을 때 실행되는 이벤트
-      reader.onload = event => {
-        // 선택된 파일의 데이터 URL을 로컬 스토리지에 저장, 사용
-        // 프로필 사진 삭제 수정 && 업로드
-        uploadProfileImg(profileImgPosition, event.target.result);
+      reader.onload = async event => {
+        const imageDataUrl = event.target.result; // base64 이미지 데이터
+        // 미리보기 UI 업데이트
+        profileImgPosition.style.backgroundImage = `url(${imageDataUrl})`;
       };
 
       // 파일 읽기 시작

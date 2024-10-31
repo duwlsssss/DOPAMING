@@ -1,35 +1,17 @@
 import { Accordion } from '../../../ui/accordion/Accordion';
 import { Button } from '../../../ui/button/Button';
+import { Modal } from '../../../ui/modal/Modal';
 import './VacationList.css';
+import { validateVacationRequestInput } from '../../../../utils/validation';
 import { VacationRequestForm } from '../../../user/form/vacation-request-form/VacationRequestForm';
-import { getDatabase, ref, onValue, remove, update } from 'firebase/database'; // 필요한 함수들 임포트
-import { getAuth } from 'firebase/auth'; // Firebase 인증 임포트
 import {
-  getDownloadURL,
-  getStorage,
-  ref as storageRef,
-} from 'firebase/storage'; // Firebase Storage 함수들 임포트
+  getUserAbsById,
+  updateUserAbsence,
+} from '../../../../../server/api/user';
 
-// 다운로드 버튼 생성 함수
-const createDownloadButton = (userName, absType) => {
-  return new Button({
-    className: 'user-vcDownload-btn',
-    text: '다운로드',
-    color: 'skyblue',
-    shape: 'block',
-    padding: 'var(--space-xsmall) var(--space-small)',
-    onClick: () => {
-      console.log(
-        `다운로드 버튼 클릭: ${userName}의 ${absType} 파일을 다운로드합니다.`,
-      );
-    },
-  });
-};
-
-const toggleEditMode = (vcId, absData) => {
-  // absData가 올바르게 전달되었는지 로그 확인
-  console.log('toggleEditMode에서 전달된 absData:', absData);
-
+// 수정 모드 토글 함수
+const toggleEditMode = async (vcId, container, itemData) => {
+  // console.log('선택된 부재 id: ', vcId);
   const contentContainer = document.getElementById(vcId);
   const contentElement = contentContainer.querySelector('.user-detail-content');
   const buttonGroup = contentContainer.querySelector(
@@ -37,115 +19,133 @@ const toggleEditMode = (vcId, absData) => {
   );
   const detail = contentContainer
     .closest('.accordion-item')
-    .querySelector('.accordion-detail');
+    .querySelector('.accordion-detail'); // 아코디언 detail 요소
 
   const isEditMode = contentElement.classList.contains('edit-mode');
 
-  if (!isEditMode) {
-    contentElement.classList.add('edit-mode');
-    buttonGroup
-      .querySelectorAll('.user-vcEdit-button, .user-vcDelete-button')
-      .forEach(btn => (btn.style.display = 'none'));
-    const originalContent = contentElement.innerHTML;
-    contentElement.dataset.originalContent = originalContent;
+  let cancelEditBtn, submitButton;
 
-    const formComponent = VacationRequestForm();
-
-    // 기존 데이터 전달하여 폼 초기화
-    formComponent.renderForm(contentElement, absData);
-    formComponent.setFormData(absData); // 이 함수는 absData의 내용을 폼 필드에 설정하는 함수입니다.
-
-    const cancelEditBtn = new Button({
-      className: 'user-vcCancelEdit-button',
-      text: '수정 취소',
-      color: 'coral',
-      shape: 'block',
-      padding: 'var(--space-small) var(--space-large)',
-      onClick: () => {
-        contentElement.innerHTML = contentElement.dataset.originalContent;
-        contentElement.classList.remove('edit-mode');
-        buttonGroup.removeChild(cancelEditBtn);
-        buttonGroup.removeChild(submitButton);
-        detail.style.maxHeight = 'none';
-        buttonGroup
-          .querySelectorAll('.user-vcEdit-button, .user-vcDelete-button')
-          .forEach(btn => (btn.style.display = 'block'));
-      },
-    });
-    buttonGroup.appendChild(cancelEditBtn);
-
-    const submitButton = new Button({
-      className: 'user-vcSubmit-button',
-      text: '수정 완료',
-      color: 'skyblue-light',
-      shape: 'block',
-      padding: 'var(--space-small) var(--space-large)',
-      onClick: async () => {
-        const db = getDatabase();
-        const auth = getAuth();
-        const currentUser = auth.currentUser;
-
-        // absData가 유효한지 확인
-        if (!absData) {
-          alert('부재 데이터가 없습니다. 다시 시도해 주세요.');
-          return;
-        }
-
-        // 수정된 내용을 가져오기 (await 추가)
-        const updatedContent = await formComponent.getFormData(); // 수정된 데이터 가져오기
-        console.log('수정된 데이터:', updatedContent); // 추가된 로그
-
-        // 부재 종류를 한국어로 변환
-        const typeMapping = {
-          officialLeave: '공가',
-          sickLeave: '병가',
-          annualLeave: '연차',
-        };
-
-        if (updatedContent.abs_type) {
-          updatedContent.abs_type =
-            typeMapping[updatedContent.abs_type] || updatedContent.abs_type; // 한국어로 변환
-        }
-
-        if (updatedContent) {
-          const absencesRef = ref(
-            db,
-            `absences/${currentUser.uid}/${absData.abs_id}`,
-          ); // 부재 ID 경로 설정
-          try {
-            await update(absencesRef, updatedContent); // 데이터베이스 업데이트
-            alert('부재 신청이 수정되었습니다.');
-            contentElement.innerHTML = contentElement.dataset.originalContent; // 원래 내용으로 복원
-            contentElement.classList.remove('edit-mode');
-            buttonGroup.removeChild(cancelEditBtn);
-            buttonGroup.removeChild(submitButton);
-            detail.style.maxHeight = 'none';
-            buttonGroup
-              .querySelectorAll('.user-vcEdit-button, .user-vcDelete-button')
-              .forEach(btn => (btn.style.display = 'block'));
-          } catch (error) {
-            console.error('부재 신청 수정 중 오류 발생:', error);
-            alert('부재 신청 수정 중 오류가 발생했습니다.');
-          }
-        }
-      },
-    });
-
-    buttonGroup.appendChild(submitButton);
-    detail.style.maxHeight = `${detail.scrollHeight}px`; // 높이 업데이트
-  } else {
-    contentElement.innerHTML = contentElement.dataset.originalContent;
+  // 수정 모드 종료
+  const exitEditMode = (updatedData = null) => {
     contentElement.classList.remove('edit-mode');
-    buttonGroup.querySelector('.skyblue-light')?.remove();
+
+    // 수정 취소,수정 완료 버튼 제거
+    if (cancelEditBtn) buttonGroup.removeChild(cancelEditBtn);
+    if (submitButton) buttonGroup.removeChild(submitButton);
+
+    // 원래 버튼 복원
     buttonGroup
       .querySelectorAll('.user-vcEdit-button, .user-vcDelete-button')
       .forEach(btn => (btn.style.display = 'block'));
-    detail.style.maxHeight = 'none'; // 높이 초기화
+
+    // 아코디언 높이 초기화
+    detail.style.maxHeight = 'none';
+
+    // 업데이트된 데이터가 있으면, renderContent로 다시 렌더링
+    if (updatedData) {
+      // 업데이트된 콘텐츠 렌더링 후, 기존의 버튼 그룹을 유지하면서 다시 추가
+      const updatedContent = renderContent(updatedData);
+      contentContainer.innerHTML = updatedContent;
+
+      // 업데이트된 contentContainer에 기존 buttonGroup을 다시 삽입
+      const buttonGroupContainer = contentContainer.querySelector(
+        '.user-approval-button-group-container',
+      );
+      buttonGroupContainer.appendChild(buttonGroup);
+
+      appendDownloadButton(itemData, contentContainer);
+    }
+  };
+
+  if (!isEditMode) {
+    // 수정 모드로 전환
+    contentElement.classList.add('edit-mode');
+
+    // 기존 버튼 숨김
+    buttonGroup
+      .querySelectorAll('.user-vcEdit-button, .user-vcDelete-button')
+      .forEach(btn => (btn.style.display = 'none'));
+
+    // 원래 내용을 백업_수정 취소시 사용
+    const originalContent = contentElement.innerHTML;
+    contentElement.dataset.originalContent = originalContent;
+
+    try {
+      // 최신 데이터 가져오기
+      const latestData = await getUserAbsById(
+        itemData.user_id,
+        itemData.abs_id,
+      );
+
+      // VacationRequestForm을 최신 데이터로 생성
+      const formComponent = VacationRequestForm(true, {
+        type: latestData.abs_type,
+        title: latestData.abs_title,
+        startDate: latestData.abs_start_date,
+        endDate: latestData.abs_end_date,
+        content: latestData.abs_content,
+        proof_document: latestData.abs_proof_document,
+        proof_documentUrl: latestData.abs_proof_document_base64,
+      });
+
+      // 폼 렌더링
+      formComponent.renderForm(contentElement);
+
+      // 수정 취소 버튼 추가
+      cancelEditBtn = new Button({
+        className: 'user-vcCancelEdit-button',
+        text: '수정 취소',
+        color: 'coral',
+        shape: 'block',
+        padding: 'var(--space-small) var(--space-large)',
+        onClick: () => {
+          // 수정 취소 시, 원래 내용 복구 및 수정 모드 종료
+          contentElement.innerHTML = contentElement.dataset.originalContent;
+          exitEditMode();
+        },
+      });
+      buttonGroup.appendChild(cancelEditBtn);
+
+      // 수정 완료 버튼 추가
+      submitButton = new Button({
+        className: 'user-vcSubmit-button',
+        text: '수정 완료',
+        color: 'skyblue-light',
+        shape: 'block',
+        padding: 'var(--space-small) var(--space-large)',
+        onClick: async () => {
+          // 수정 완료 시 유효성 검사 통과 후 수정 모드 종료
+          if (validateVacationRequestInput(true)) {
+            try {
+              const updatedData = await updateUserAbsence(
+                container,
+                itemData.user_id,
+                itemData.abs_id,
+              );
+              Modal('vacation-edit-success');
+              exitEditMode(updatedData);
+            } catch (error) {
+              console.log('부재 수정 중 오류 발생 : ', error);
+              Modal('vacation-edit-fail');
+            }
+          } else {
+            Modal('vacation-edit-fail');
+          }
+        },
+      });
+      buttonGroup.appendChild(submitButton);
+
+      detail.style.maxHeight = `${detail.scrollHeight}px`; // 높이 업데이트
+    } catch (error) {
+      console.error('최신 데이터를 가져오는 중 오류 발생:', error);
+    }
+  } else {
+    exitEditMode(); // 이미 수정 모드인 경우 수정 모드 종료
   }
 };
 
-// 수정 및 삭제 버튼 렌더링
-const renderButtons = (status, vcId, absId, absData) => {
+// 수정하기, 삭제 버튼
+const renderButtons = (status, vcId, container, itemData) => {
   const buttonGroup = document.createElement('div');
   buttonGroup.className = 'user-approval-button-group';
 
@@ -156,7 +156,7 @@ const renderButtons = (status, vcId, absId, absData) => {
       color: 'green-light',
       shape: 'block',
       padding: 'var(--space-small) var(--space-large)',
-      onClick: () => toggleEditMode(vcId, absData), // absData 전달
+      onClick: () => toggleEditMode(vcId, container, itemData), // 수정 모드 토글
     });
 
     const deleteBtn = new Button({
@@ -166,37 +166,16 @@ const renderButtons = (status, vcId, absId, absData) => {
       shape: 'block',
       padding: 'var(--space-small) var(--space-large)',
       onClick: async () => {
-        const db = getDatabase();
-        const auth = getAuth();
-        const currentUser = auth.currentUser;
-
-        if (!currentUser) {
-          alert('로그인된 사용자가 없습니다.');
-          return;
-        }
-
-        const absencesRef = ref(db, `absences/${currentUser.uid}/${absId}`); // 삭제할 부재 ID 경로 설정
-
-        const confirmDelete = confirm(
-          '정말로 이 부재 신청을 삭제하시겠습니까?',
-        ); // 사용자 확인
-
-        if (confirmDelete) {
-          try {
-            await remove(absencesRef); // Firebase에서 데이터 삭제
-            alert('부재 신청이 삭제되었습니다.');
-
-            // UI에서 해당 항목 제거 (필요 시)
-            const contentContainer = document.getElementById(
-              `content-${absId}`,
-            );
-            if (contentContainer) {
-              contentContainer.remove(); // UI에서 삭제
-            }
-          } catch (error) {
-            console.error('부재 신청 삭제 중 오류 발생:', error);
-            alert('부재 신청 삭제 중 오류가 발생했습니다.');
-          }
+        try {
+          const options = {
+            userId: itemData.user_id,
+            absId: itemData.abs_id,
+            vcId: vcId,
+          };
+          Modal('vacation-delete', options);
+        } catch (error) {
+          console.log('부재 삭제 중 오류 발생 : ', error);
+          Modal('vacation-delete-fail');
         }
       },
     });
@@ -206,7 +185,7 @@ const renderButtons = (status, vcId, absId, absData) => {
   return buttonGroup;
 };
 
-// 아코디언 헤더 렌더링
+// 아코디언 헤더
 const renderHeader = item => `
   <header class="user-vacation-info">
     <span class="user-vacation-abs-type">${item.abs_type}</span>
@@ -218,14 +197,9 @@ const renderHeader = item => `
   </header>
 `;
 
-// 아코디언 콘텐츠 렌더링
+// 아코디언 콘텐츠
 const renderContent = item => {
   const vcId = `content-${item.abs_id}`;
-  const downloadButton = createDownloadButton(
-    item.user_file,
-    item.user_name,
-    item.abs_type,
-  ); // user_file URL, user_name, abs_type 전달
 
   return `
     <article class="user-detail-content-container" id="${vcId}">
@@ -247,8 +221,8 @@ const renderContent = item => {
         <section class="user-detail-item">
           <h3 class="user-detail-label">첨부 파일</h3>
           <div class="user-download-file">
-            <p class="user-detail-value">FE_${item.user_name}_${item.abs_type}.pdf</p> <!-- 고정된 파일 이름 표시 -->
-            ${downloadButton.outerHTML} <!-- 버튼 HTML 추가 -->
+            <p class="user-detail-value">${item.abs_proof_document}</p>
+            <div class="download-button-container"></div> 
           </div>
         </section>
 
@@ -258,101 +232,72 @@ const renderContent = item => {
         </section>
       </div>
 
-      <div class="user-approval-button-group-placeholder"></div>
+      <div class="user-approval-button-group-container"></div>
+      
     </article>
   `;
 };
 
-export const RenderUserVacationList = async container => {
+// 다운로드 버튼 추가
+const appendDownloadButton = (item, container) => {
+  const downloadButton = new Button({
+    className: 'user-vcDownload-btn',
+    text: '다운로드',
+    color: 'skyblue',
+    shape: 'block',
+    padding: 'var(--space-xsmall) var(--space-small)',
+    onClick: () => {
+      if (item.abs_proof_document_base64) {
+        const link = document.createElement('a');
+        link.href = item.abs_proof_document_base64;
+        link.download = item.abs_proof_document || 'downloaded-file';
+        link.click();
+      } else {
+        console.log('다운로드할 파일이 없습니다.');
+      }
+    },
+  });
+  const buttonPosition = container.querySelector(
+    `#content-${item.abs_id} .download-button-container`,
+  );
+  buttonPosition.appendChild(downloadButton);
+};
+
+// 사용자 휴가 리스트 렌더링
+export const RenderUserVacationList = async (container, userAbsData) => {
   if (!container) {
     console.error('Container가 준비되지 않음');
     return;
   }
 
-  const db = getDatabase();
-  const auth = getAuth(); // Firebase 인증 가져오기
-  const currentUser = auth.currentUser; // 현재 로그인한 사용자
+  // 아코디언 렌더링
+  container.innerHTML = `
+    <section class="user-vacation-list-section">
+      <div class="user-vacation-list">
+        ${Accordion({
+          items: userAbsData,
+          renderHeader,
+          renderContent,
+        })}
+      </div>
+    </section>
+  `;
 
-  if (!currentUser) {
-    console.error('로그인된 사용자가 없습니다.');
-    return;
-  }
+  userAbsData.forEach(item => {
+    const vcId = `content-${item.abs_id}`;
+    const contentContainer = container.querySelector(`#${vcId}`);
+    const buttonGroupContainer = contentContainer.querySelector(
+      '.user-approval-button-group-container',
+    );
+    const buttonGroup = renderButtons(item.abs_status, vcId, container, item);
 
-  const userId = currentUser.uid; // 현재 로그인한 사용자 ID로 변경
-  const absencesRef = ref(db, `absences/${userId}`);
-  const storage = getStorage(); // Firebase Storage 초기화
+    appendDownloadButton(item, contentContainer);
 
-  // Firebase에서 데이터 가져오기
-  onValue(absencesRef, snapshot => {
-    const userAbsData = [];
-    if (snapshot.exists()) {
-      snapshot.forEach(childSnapshot => {
-        const absenceData = childSnapshot.val();
-        userAbsData.push({ abs_id: childSnapshot.key, ...absenceData });
-      });
-
-      console.log('부재 신청 데이터:', userAbsData); // 데이터 확인
-
-      // 아코디언 렌더링
-      container.innerHTML = `
-        <section class="user-vacation-list-section">
-          <div class="user-vacation-list">
-            ${Accordion({
-              items: userAbsData,
-              renderHeader,
-              renderContent,
-            })}
-          </div>
-        </section>
-      `;
-
-      userAbsData.forEach(item => {
-        const vcId = `content-${item.abs_id}`;
-        const contentContainer = container.querySelector(`#${vcId}`);
-
-        const downloadButton = contentContainer.querySelector(
-          '.user-vcDownload-btn',
-        );
-        if (downloadButton) {
-          console.log('다운로드 버튼을 찾았습니다.'); // 버튼 확인 로그
-          downloadButton.addEventListener('click', async () => {
-            console.log('다운로드 버튼 클릭 이벤트 발생');
-
-            // 파일 다운로드 로직
-            const userFilePath = item.user_file; // 다운로드할 파일 경로
-
-            const fileRef = storageRef(storage, userFilePath); // Firebase Storage 참조 생성
-
-            try {
-              const userFileUrl = await getDownloadURL(fileRef); // 다운로드 URL 가져오기
-
-              // 새로운 창에서 다운로드 URL 열기
-              window.open(userFileUrl, '_blank'); // 새로운 창에서 열기
-            } catch (error) {
-              console.error('파일 다운로드 오류:', error);
-            }
-          });
-        } else {
-          console.error('다운로드 버튼을 찾을 수 없습니다.');
-        }
-
-        const buttonGroupPlaceholder = contentContainer.querySelector(
-          '.user-approval-button-group-placeholder',
-        );
-
-        // absData를 전달하여 renderButtons 호출
-        const buttonGroup = renderButtons(
-          item.abs_status,
-          vcId,
-          item.abs_id,
-          item,
-          container,
-        ); // absData 추가
-        buttonGroupPlaceholder.replaceWith(buttonGroup);
-      });
-    } else {
-      console.log('부재 데이터가 존재하지 않습니다.');
-      container.innerHTML = `<div class="user-vacation-filter-error-message">부재 데이터가 존재하지 않습니다.</div>`;
-    }
+    buttonGroupContainer.replaceWith(buttonGroup);
   });
+
+  if (userAbsData.length === 0) {
+    const inner = container.querySelector('.user-vacation-list-section');
+    inner.innerHTML = ` <div class="user-vacation-filter-error-message">찾으시는 부재 신청 내역이 없습니다.</div>`;
+  }
 };

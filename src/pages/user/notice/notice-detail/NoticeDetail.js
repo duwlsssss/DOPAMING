@@ -1,13 +1,10 @@
-import axios from 'axios';
 import './NoticeDetail.css';
 import { RenderNotFound } from '../../../not-found/NotFound';
+import { getNoticeById } from '../../../../../server/api/user';
 
 export const RenderUserNoticeDetail = async (container, postId) => {
   try {
-    const response = await axios.get('../../server/data/company_posts.json');
-    const posts = response.data;
-
-    const post = posts.find(post => post.post_id === postId);
+    const post = await getNoticeById(postId);
 
     if (!post) {
       RenderNotFound(document.querySelector('#root'));

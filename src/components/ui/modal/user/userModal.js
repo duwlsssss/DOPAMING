@@ -10,7 +10,9 @@ function getSuccessMessage(type) {
       '외출이 정상적으로 처리되었습니다.<br>잠시 쉬어볼까요!',
     'break-in-success': '복귀가 정상적으로 처리되었습니다.<br>다시 힘내봐요!',
     'edit-profile-success': '프로필 수정이 정상적으로 처리되었습니다!',
-    'vacation-success': '휴가 신청이 정상적으로 처리되었습니다!',
+    'vacation-request-success': '부재 신청이 정상적으로 처리되었습니다!',
+    'vacation-delete-success': '부재 신청이 정상적으로 삭제되었습니다!',
+    'vacation-edit-success': '부재 신청이 정상적으로 수정되었습니다!',
   };
   return messages[type] || '저장되었습니다!';
 }
@@ -21,9 +23,10 @@ function getErrorMessage(type) {
     'punch-out-fail': '퇴근 절차에서 오류가 발생했어요!',
     'break-out-fail': '외출 절차에서 오류가 발생했어요!',
     'break-in-fail': '복귀 절차에서 오류가 발생했어요!',
-    'vacation-fail': '휴가 신청 절차에서 오류가 발생했어요!',
     'edit-profile-fail': '프로필 수정 절차에서 오류가 발생했어요!',
-    'login-fail': '로그인 절차에서 오류가 발생했어요!',
+    'vacation-request-fail': '부재 신청 절차에서 오류가 발생했어요!',
+    'vacation-delete-fail': '부재 삭제 절차에서 오류가 발생했어요!',
+    'vacation-edit-fail': '부재 수정 절차에서 오류가 발생했어요!',
   };
   return messages[type] || '오류가 발생했습니다!';
 }
@@ -56,15 +59,6 @@ function addEventListeners(fragment, modalInstance) {
   if (closeButton) {
     closeButton.addEventListener('click', () => {
       modalInstance.close(); // Modal 인스턴스의 close 메서드 호출
-    });
-  }
-
-  // 다시 시도 버튼 이벤트 리스너 추가
-  const retryButton = fragment.querySelector('.retry-button');
-  if (retryButton) {
-    retryButton.addEventListener('click', () => {
-      const actionType = retryButton.getAttribute('data-type');
-      modalInstance.handleConfirm(actionType); // 재시도 시 actionType 전달
     });
   }
 }
@@ -132,16 +126,16 @@ export function userModalContent(type, modalInstance) {
         </div>`;
       break;
 
-    case 'vacation':
+    case 'vacation-delete':
       content = `
-      <div class="modal-question-container">
-        <p class="modal-time">정말로 부재를 신청하시겠습니까?</p>
-        <div class="button-container">
-          <span class="material-symbols-rounded">Help</span>
-          <button class="confirm-button" data-type="vacation">예</button>
-          <button class="cancel-button">아니요</button>
-        </div>
-      </div>`;
+        <div class="user-question-message">
+            <span class="material-symbols-rounded">help</span>
+            <p>선택한 부재를 삭제하시겠습니까?</p>
+            <div class="button-container">
+              <button class="confirm-button" data-type="vacation-delete">예</button>
+              <button class="cancel-button">아니요</button>
+            </div>
+        </div>`;
       break;
 
     // SUCCESS
@@ -150,7 +144,9 @@ export function userModalContent(type, modalInstance) {
     case 'break-out-success':
     case 'break-in-success':
     case 'edit-profile-success':
-    case 'vacation-success':
+    case 'vacation-request-success':
+    case 'vacation-delete-success':
+    case 'vacation-edit-success':
       content = `
         <div class="success-message">
           <span class="material-symbols-rounded">check_circle</span>
@@ -164,15 +160,16 @@ export function userModalContent(type, modalInstance) {
     case 'punch-out-fail':
     case 'break-out-fail':
     case 'break-in-fail':
-    case 'vacation-fail':
+    case 'vacation-request-fail':
     case 'edit-profile-fail':
     case 'login-fail':
+    case 'vacation-delete-fail':
+    case 'vacation-edit-fail':
       content = `
         <div class="error-message">
           <span class="material-symbols-rounded">warning</span>
           <p>${getErrorMessage(type)}</p>
           <div class="user-modal-button-group">
-            <button class="retry-button" data-type="${type}">다시 시도</button>
             <button class="close-button">닫기</button>
           </div>
         </div>`;

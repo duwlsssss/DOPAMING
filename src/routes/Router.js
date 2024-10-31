@@ -47,12 +47,12 @@ export default function Router() {
   // 로그인하지 않은 사용자
   if (!role) {
     // 로그인 페이지가 아닌 다른 페이지에 접근하려고 할 때
-    if (path !== '/login') {
+    if (path !== '/login' && role === 'user') {
       window.location.replace('/login');
       return;
     }
 
-    RenderLogIn(root, '../../server/data/users.json');
+    RenderLogIn(root);
     return;
   }
 
@@ -144,7 +144,7 @@ export default function Router() {
   // 경로에서 동적 매개변수 추출
 
   //postId 추출
-  const paramsFormNotice = extractParams(`${USER_PATH.NOTICE}/:postId`, path);
+  const userNoticeId = extractParams(`${USER_PATH.NOTICE}/:postId`, path);
   const paramsFormAdminNotice = extractParams(
     `${ADMIN_PATH.NOTICE}/:noticeId`,
     path,
@@ -159,7 +159,7 @@ export default function Router() {
     `${ADMIN_PATH.MEMBER}/:memberId`,
     path,
   );
-  const postId = paramsFormNotice ? paramsFormNotice.postId : null;
+  const userPostId = userNoticeId ? userNoticeId.postId : null;
   const noticeId = paramsFormAdminNotice
     ? paramsFormAdminNotice.noticeId
     : null;
@@ -191,9 +191,9 @@ export default function Router() {
     RenderUserHome(contentEl);
   } else if (path === USER_PATH.NOTICE) {
     RenderUserNoticeList(contentEl);
-  } else if (postId) {
+  } else if (userPostId) {
     // postId가 있는 경우(동적 경로가 매칭된 경우)
-    RenderUserNoticeDetail(contentEl, postId);
+    RenderUserNoticeDetail(contentEl, userPostId);
   } else if (path === USER_PATH.EDIT_PROFILE) {
     RenderUserEditProfile(contentEl);
   } else if (path === USER_PATH.VACATION) {

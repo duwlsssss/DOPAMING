@@ -1,9 +1,8 @@
-import Router from '../../../routes/Router';
 import './Header.css';
 import { Button } from '../../ui/button/Button';
-import { clearStorage } from '../../../utils/storage';
-import { listenForProfileImageUpdate } from '../../../utils/handleProfileImg';
-import { getCurrentUserId, fetchUserData } from '../../../../server/api/user';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { userLogout } from '../../../../server/api/user';
+import { fetchUserData } from '../../../../server/api/user';
 
 export async function RenderHeader(header, editProfilePath) {
   try {
@@ -12,57 +11,50 @@ export async function RenderHeader(header, editProfilePath) {
       return;
     }
 
-    // 현재 로그인한 ID를 가져오기
-    getCurrentUserId(async userId => {
-      if (!userId) {
+    const auth = getAuth(); // 현재 로그인한 ID
+
+    onAuthStateChanged(auth, async user => {
+      if (!user) {
         console.error('사용자가 로그인하지 않았습니다.');
         return;
       }
 
-      console.log('로그인한 사용자 ID:', userId);
-
-      // Realtime Database에서 사용자 데이터 가져오기
+      const userId = user.uid; // 사용자 고유 ID
       const userData = await fetchUserData(userId);
-      console.log('사용자 데이터:', userData); // 사용자 데이터 로그
 
-      let userName = '사용자 이름 없음';
-      let userImage = '/assets/imgs/profile/profile_null.jpg'; // 기본 프로필 이미지
+      // 기본 이미지 경로 설정
+      const defaultProfileImg = '/assets/imgs/profile/profile_null.jpg';
+
+      let userName = '';
       let isAdmin = false;
+      let userProfileImg = `url(${defaultProfileImg})`;
 
       if (userData) {
-        userName = userData.user_name || '사용자 이름 없음';
-        userImage = userData.user_image || userImage; // user_image 필드 사용
-        isAdmin = userData.user_role === 'admin';
-
-        // 값 확인을 위한 로그 추가
-        console.log('사용자 이름:', userName);
-        console.log('사용자 이미지:', userImage); // 업데이트된 프로필 이미지 로그
-        console.log('관리자 여부:', isAdmin);
+        userName = userData.user_name;
+        isAdmin = userData.user_type;
+        userProfileImg = userData.user_image
+          ? `url(${userData.user_image})`
+          : `url(${defaultProfileImg})`;
       } else {
         console.error('사용자 데이터가 존재하지 않습니다.');
       }
 
-      // 헤더 내용 설정
       header.innerHTML = `
         <div class="header-items">
-          <div class="user-name">${userName}</div>
+          <div class="user-name"> ${isAdmin ? '관리자' : userName}</div>
         </div>
-        <figure class="profile-circle" style="cursor: ${isAdmin ? 'default' : 'pointer'}; background-image: url(${userImage});">
+        <figure class="profile-circle" style="cursor: ${isAdmin ? 'default' : 'pointer'}">
           ${isAdmin ? '' : `<a href="${editProfilePath}" class="hidden-link">.</a>`}
         </figure>
         <div class="header-mobile">DOPAMING</div>
       `;
 
-      // 로그아웃 버튼 생성
       const logoutBtn = Button({
         className: 'logout-btn',
         text: '로그아웃',
         color: 'white',
         shape: 'line',
-        onClick: () => {
-          clearStorage();
-          Router();
-        },
+        onClick: userLogout,
       });
 
       const headerItem = header.querySelector('.header-items');
@@ -72,8 +64,14 @@ export async function RenderHeader(header, editProfilePath) {
       if (isAdmin) {
         profileImgPosition.style.backgroundImage = `url(/assets/imgs/profile/profile_null.jpg)`; // 관리자는 프로필 고정
       } else {
-        listenForProfileImageUpdate(profileImgPosition);
+        profileImgPosition.style.backgroundImage = userProfileImg;
       }
+
+      // 프로필 이미지 업데이트 반영
+      window.addEventListener('profileImageUpdated', async () => {
+        const updatedUserData = await fetchUserData(userId); // 새로고침 없이 최신 데이터 가져오기
+        profileImgPosition.style.backgroundImage = `url(${updatedUserData.user_image || '/assets/imgs/profile/profile_null.jpg'})`;
+      });
     });
   } catch (e) {
     console.error('사용자 데이터를 가져오는 중 오류 발생 ! :', e);

@@ -1,18 +1,25 @@
 import './VacationRequest.css';
-import { Button, VacationRequestForm } from '../../../../components';
-import { getDatabase, ref, push, onValue } from 'firebase/database';
-import { getAuth } from 'firebase/auth';
+import { Button, VacationRequestForm, Modal } from '../../../../components';
+import { validateVacationRequestInput } from '../../../../utils/validation';
+import { USER_PATH } from '../../../../utils/constants';
+import { addUserAbsence } from '../../../../../server/api/user';
+import { getItem } from '../../../../utils/storage';
 
 export const RenderUserVacationRequest = async container => {
   // 기본 HTML 구조 설정
   container.innerHTML = `
     <div class="vacation-request-title">부재 신청</div>
-    <div class="vacation-request-form"></div>
+      <div class="vacation-request-form">
+      </div>
+    </div>
   `;
 
   const formComponent = VacationRequestForm();
+
   const formContainer = container.querySelector('.vacation-request-form');
   formComponent.renderForm(formContainer);
+
+  const userId = getItem('userID');
 
   // 버튼 추가
   const buttonPosition = container.querySelector('.vacation-request-form');
@@ -26,79 +33,71 @@ export const RenderUserVacationRequest = async container => {
     onClick: async e => {
       e.preventDefault();
 
-      // 입력값을 비동기적으로 가져옴
-      const formData = await formComponent.getFormData();
-      const {
-        abs_type: type,
-        abs_title: title,
-        abs_start_date: startDate,
-        abs_end_date: endDate,
-        abs_content: content,
-        user_file,
-      } = formData;
+      if (validateVacationRequestInput(false)) {
+        // 데이터 모으기
+        const vacationTypeValue =
+          formContainer.querySelector('#vacation-type').value;
+        let vacationType;
 
-      // 부재 종류를 한국어로 변환
-      const typeMapping = {
-        officialLeave: '공가',
-        sickLeave: '병가',
-        annualLeave: '연차',
-      };
-      const koreanType = typeMapping[type] || '';
-
-      const db = getDatabase();
-      const auth = getAuth();
-      const currentUser = auth.currentUser;
-
-      // 로그인된 사용자 확인
-      if (!currentUser) {
-        alert('로그인된 사용자가 없습니다.');
-        return;
-      }
-
-      // 사용자 정보 가져오기
-      const userId = currentUser.uid;
-      const userRef = ref(db, `Users/${userId}`);
-
-      onValue(userRef, async snapshot => {
-        if (snapshot.exists()) {
-          const userData = snapshot.val();
-          const userPosition = userData.user_position || '';
-          const userPhone = userData.user_phone || '';
-          const userName = userData.user_name || currentUser.displayName; // user_name 가져오기
-
-          // 사용자 입력값 가져오기 (빈 값은 무시)
-          const absenceData = {
-            ...(content && { abs_content: content }),
-            abs_created_at: new Date().toISOString().split('T')[0],
-            ...(endDate && { abs_end_date: endDate }),
-            ...(startDate && { abs_start_date: startDate }),
-            abs_status: '대기',
-            ...(title && { abs_title: title }),
-            ...(koreanType && { abs_type: koreanType }),
-            user_id: userId,
-            user_name: userName,
-            user_position: userPosition,
-            user_phone: userPhone,
-            user_file: user_file, // user_file을 absenceData에 추가
-          };
-
-          // 데이터베이스에 업데이트 (사용자 ID 하위에 부재 신청 추가)
-          const absenceRef = ref(db, `absences/${userId}`); // 사용자 ID 하위에 저장
-          try {
-            // push()를 사용하여 고유 ID 생성
-            await push(absenceRef, absenceData);
-            alert('부재 신청이 완료되었습니다.');
-          } catch (error) {
-            console.error('Error updating data:', error);
-            alert('부재 신청 중 오류가 발생했습니다.');
-          }
+        if (vacationTypeValue === 'officialLeave') {
+          vacationType = '공가';
+        } else if (vacationTypeValue === 'sickLeave') {
+          vacationType = '병가';
+        } else if (vacationTypeValue === 'annualLeave') {
+          vacationType = '휴가';
         } else {
-          alert('사용자 정보를 찾을 수 없습니다.');
+          vacationType = '';
         }
-      });
+        const vacationTitle =
+          formContainer.querySelector('#vacation-title').value;
+        const vacationStartDate = formContainer.querySelector(
+          '#vacation-start-date',
+        ).value;
+        const vacationEndDate =
+          formContainer.querySelector('#vacation-end-date').value;
+        const vacationContent =
+          formContainer.querySelector('#vacation-content').value;
+        const fileInput = formContainer.querySelector('#fileInput');
+        const proofDocument = fileInput.files[0] || null;
+
+        // 파일을 base64로 변환_다운로드 되게
+        let proofDocumentBase64 = null;
+        if (proofDocument) {
+          const reader = new FileReader();
+          proofDocumentBase64 = await new Promise((resolve, reject) => {
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(proofDocument);
+          });
+        }
+
+        // 새 부재 데이터 객체 생성
+        const newAbsenceData = {
+          abs_type: vacationType,
+          abs_title: vacationTitle,
+          abs_start_date: vacationStartDate,
+          abs_end_date: vacationEndDate,
+          abs_content: vacationContent,
+          abs_proof_document: proofDocument ? proofDocument.name : null,
+          abs_proof_document_base64: proofDocumentBase64,
+          user_id: userId,
+          abs_created_at: new Date().toISOString().split('T')[0],
+          abs_status: '대기', // 초기 상태
+        };
+        try {
+          await addUserAbsence(userId, newAbsenceData);
+          Modal('vacation-request-success', {
+            redirectPath: USER_PATH.VACATION,
+          });
+        } catch (error) {
+          console.error('부재 신청 중 오류 발생:', error);
+          Modal('vacation-request-fail');
+        }
+      } else {
+        // 유효성 검사 실패 시 실패 모달 표시
+        Modal('vacation-request-fail');
+      }
     },
   });
-
-  // 버튼을 DOM에 추가
-  buttonPosition.appendChild(submitBtn);
+  buttonPosition.append(submitBtn);
 };

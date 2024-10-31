@@ -9,40 +9,15 @@ import {
 import { formatDate } from '../../../utils/currentTime';
 import { INFO } from '../../../utils/constants';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { fetchTimePunchData } from '../../../../server/api/user'; // 사용자 데이터 가져오기
-import axios from 'axios'; // axios 추가
-
-// 공지 데이터 가져오기
-const fetchNoticeData = async () => {
-  try {
-    const response = await axios.get('../../server/data/company_posts.json');
-    const posts = response.data.sort(
-      (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
-    ); // 업데이트 일자 기준 내림차순 정렬
-
-    console.log('공지 데이터:', posts); // 공지 데이터 로그
-    return posts;
-  } catch (error) {
-    console.error('공지 데이터를 가져오는 중 오류 발생 ! :', error);
-  }
-};
-
-// 부재 데이터 가져오기
-const fetchAbsData = async userId => {
-  try {
-    const response = await axios.get('../../server/data/absences.json');
-    const absences = response.data.filter(
-      absence => absence.user_id === userId,
-    );
-
-    console.log('부재 데이터:', absences); // 부재 데이터 로그
-    return absences;
-  } catch (error) {
-    console.error('부재 데이터를 가져오는 중 오류 발생 ! :', error);
-  }
-};
+import {
+  fetchTimePunchData,
+  getUserAbs,
+  getAllNotices,
+} from '../../../../server/api/user'; // 사용자 데이터 가져오기
 
 export const RenderUserHome = async container => {
+  container.innerHTML = `<div class="loading">사용자 정보를 가져오는 중입니다.</div>`;
+
   const auth = getAuth(); // 인증 인스턴스 가져오기
 
   onAuthStateChanged(auth, async user => {
@@ -56,10 +31,8 @@ export const RenderUserHome = async container => {
     console.log('로그인한 사용자 ID:', userId); // 로그인한 사용자 ID 로그
 
     try {
-      const noticeData = await fetchNoticeData(); // 공지 데이터 가져오기
-      console.log('공지 데이터 가져오기 완료:', noticeData); // 공지 데이터 로그
-      const absData = await fetchAbsData(userId); // 결석 데이터 가져오기
-      console.log('부재 데이터 가져오기 완료:', absData); // 부재 데이터 로그
+      const noticeData = await getAllNotices(); // 공지 데이터 가져오기
+      const absData = await getUserAbs(userId); // 결석 데이터 가져오기
       const timePunchData = await fetchTimePunchData(userId); // 출근/퇴근 데이터 가져오기
       console.log('출근/퇴근 데이터 가져오기 완료:', timePunchData); // 출근/퇴근 데이터 로그
 

@@ -4,17 +4,21 @@ import { ADMIN_PATH, USER_PATH } from '../../src/utils/constants';
 import {
   signInWithEmailAndPassword,
   getAuth,
+  signOut,
   onAuthStateChanged,
 } from 'firebase/auth'; // 로그인 함수
+import { clearStorage } from '../../src/utils/storage';
 import { Modal } from '../../src/components/ui/modal/Modal';
-import { getDatabase, ref, get, set } from 'firebase/database';
-import { formatDate } from '../../src/utils/currentTime';
 import {
-  getStorage,
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL,
-} from 'firebase/storage'; // storageRef를 ref로 가져옵니다.
+  getDatabase,
+  ref,
+  get,
+  set,
+  push,
+  update,
+  remove,
+} from 'firebase/database';
+import { formatDate } from '../../src/utils/currentTime';
 
 // 0. 로그인 id 및 상태 변경 감지
 export const getCurrentUserId = callback => {
@@ -81,8 +85,8 @@ export const getUserIdName = () => {
               name: userData.user_name || '사용자 이름이 없습니다', // Realtime Database에서 user_name 가져오기
               user_image: userData.user_image || '', // 사용자 이미지 URL 가져오기
             };
-            console.log('로그인한 사용자 ID:', currentUserInfo.id);
-            console.log('로그인한 사용자 이름:', currentUserInfo.name);
+            // console.log('로그인한 사용자 ID:', currentUserInfo.id);
+            // console.log('로그인한 사용자 이름:', currentUserInfo.name);
             resolve(currentUserInfo); // 사용자 정보를 resolve로 반환
           } else {
             reject(new Error('사용자 데이터가 존재하지 않습니다.'));
@@ -98,18 +102,33 @@ export const getUserIdName = () => {
   });
 };
 
-// 3. 사용자 데이터 가져오기
+// 3. 로그아웃
+export const userLogout = () => {
+  const auth = getAuth();
+
+  signOut(auth)
+    .then(() => {
+      // 로그아웃 성공 시 로컬 스토리지 초기화
+      clearStorage();
+      // 로그아웃 후 로그인 페이지로 리다이렉트
+      window.location.replace('/login');
+    })
+    .catch(error => {
+      console.error('로그아웃 중 오류 발생:', error);
+    });
+};
+
+// 2. 사용자 데이터 가져오기
 export const fetchUserData = async userId => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
-  console.log('userId : ', userId);
   const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
 
   try {
     const snapshot = await get(userRef); // 데이터 가져오기
-    console.log(snapshot.val());
+    // console.log(snapshot.val());
     if (snapshot.exists()) {
       const userData = snapshot.val(); // 데이터 값 가져오기
-      console.log(userData);
+      // console.log(userData);
       return userData; // 사용자 객체 데이터 반환
     } else {
       console.log('사용자 데이터가 존재하지 않습니다.');
@@ -178,7 +197,7 @@ export const fetchTimePunchData = async userId => {
   }
 };
 
-// 5. 출 퇴근 외출 복귀 데이터 저장하기
+// 4. 출 퇴근 외출 복귀 데이터 저장하기
 export const saveTimePunchData = async (userId, actionType, userName) => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   const now = new Date(); // 현재 Date 객체 생성
@@ -238,67 +257,283 @@ export const saveTimePunchData = async (userId, actionType, userName) => {
   }
 };
 
-// 6. 내 정보 수정하기.
-export const updateUserData = async (container, userId) => {
+// 5. 내 정보 수정하기
+export const updateUserData = async (container, userId, userImage = null) => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
-  const storage = getStorage(); // 스토리지 인스턴스 가져오기
   const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
 
-  // 현재 사용자 정보 가져오기
-  let currUser;
-  try {
-    currUser = await getUserIdName(); // 현재 로그인한 사용자 정보 가져오기
-  } catch (error) {
-    console.error('사용자 정보 가져오기 실패:', error.message);
-    Modal('update-fail'); // 오류 발생 시 모달 표시
-    return; // 함수 종료
-  }
+  // 현재 데이터 가져오기_공백 입력시 업데이트 전에 있던 DB 값 사용하기 위함
+  const snapshot = await get(userRef);
+  const currentUserData = snapshot.exists() ? snapshot.val() : {};
 
   // 입력값 가져오기
   const updatedData = {
-    user_name: container.querySelector('#name').value,
-    user_email: container.querySelector('#email').value,
-    user_phone: container.querySelector('#phone').value,
-    user_birthday: container.querySelector('#birthDate').value,
-    user_sex: container.querySelector('#gender').value === 'male' ? '남' : '여',
+    user_name:
+      container.querySelector('.user-profile-inputs #name').value ||
+      currentUserData.user_name,
+    user_email:
+      container.querySelector('.user-profile-inputs #email').value ||
+      currentUserData.user_email,
+    user_phone:
+      container.querySelector('.user-profile-inputs #phone').value ||
+      currentUserData.user_phone,
+    user_birthday:
+      container.querySelector('.user-profile-inputs #birthDate').value ||
+      currentUserData.user_birthday,
+    user_sex:
+      container.querySelector('.user-profile-inputs #gender').value === 'male'
+        ? '남'
+        : container.querySelector('.user-profile-inputs #gender').value ===
+            'female'
+          ? '여'
+          : currentUserData.user_sex,
     user_position:
-      container.querySelector('#role').value === 'manager' ? '매니저' : '학생',
-    user_image: currUser.user_image || '', // 사용자 이미지 URL
+      container.querySelector('.user-profile-inputs #role').value === 'manager'
+        ? '매니저'
+        : container.querySelector('.user-profile-inputs #role').value ===
+            'student'
+          ? '학생'
+          : currentUserData.user_position,
+    // user_password: container.querySelector('.user-profile-inputs #confirm-password').value || currentUserData.user_password,
+    user_image: userImage || null,
   };
 
-  // 파일 입력 처리
-  const fileInput = container.querySelector('#profileImageInput'); // 파일 입력 요소 선택
-  if (fileInput) {
-    // null 체크 추가
-    if (fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      const storagePath = `user_images/${userId}/${file.name}`; // 저장할 경로
-      const imageRef = storageRef(storage, storagePath);
-
-      try {
-        // 파일 업로드
-        await uploadBytes(imageRef, file);
-        // 업로드 후 다운로드 URL 가져오기
-        const downloadURL = await getDownloadURL(imageRef);
-        updatedData.user_image = downloadURL; // 사용자 이미지 URL 업데이트
-      } catch (error) {
-        console.error('이미지 업로드 실패:', error.message);
-        Modal('update-fail'); // 오류 발생 시 모달 표시
-        return; // 함수 종료
-      }
-    }
-  } else {
-    console.error('파일 입력 요소를 찾을 수 없습니다.');
-  }
-
-  // 사용자 데이터 업데이트
   try {
-    await set(userRef, updatedData);
+    await update(userRef, updatedData);
     console.log('사용자 데이터가 성공적으로 수정되었습니다.');
-    Modal('edit-profile-success');
   } catch (error) {
     console.error('사용자 데이터 수정 실패:', error.message);
-    Modal('update-fail'); // 오류 발생 시 모달 표시
+    Modal('edit-profile-fail');
+  }
+};
+
+// 부재 관련 API
+// 사용자별 부재 가져오기
+export const getUserAbs = async userId => {
+  const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
+  const absRef = ref(db, `absences/${userId}`); // userId 별로 부재 데이터 접근
+
+  try {
+    // userId로 부재 데이터 가져오기
+    const absSnapshot = await get(absRef);
+    if (!absSnapshot.exists()) {
+      return [];
+    }
+
+    // userId로 유저 데이터 가져오기
+    const userData = await fetchUserData(userId);
+    if (!userData) {
+      console.log('해당 사용자 데이터가 없습니다.');
+      return [];
+    }
+
+    // 합쳐서 반환
+    const absences = [];
+    absSnapshot.forEach(childSnapshot => {
+      absences.push({
+        abs_id: childSnapshot.key,
+        ...childSnapshot.val(),
+        user_name: userData.user_name,
+        user_phone: userData.user_phone,
+        user_position: userData.user_position,
+        user_leftHoliday: userData.user_leftHoliday,
+        user_totalHoliday: userData.user_totalHoliday,
+      });
+    });
+
+    return absences;
+  } catch (error) {
+    console.error('사용자별 부재 불러오기 중 오류 발생:', error);
+    throw error;
+  }
+};
+
+// abs_id로 특정 부재 가져오기
+export const getUserAbsById = async (userId, absenceId) => {
+  const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
+  const absRef = ref(db, `absences/${userId}/${absenceId}`); // 특정 부재 데이터 접근
+
+  try {
+    const absSnapshot = await get(absRef);
+    if (!absSnapshot.exists()) {
+      console.log('해당 부재 데이터가 없습니다.');
+      return null;
+    }
+
+    // userId로 유저 데이터 가져오기
+    const userData = await fetchUserData(userId);
+    if (!userData) {
+      console.log('해당 사용자 데이터가 없습니다.');
+      return null;
+    }
+
+    // 부재 데이터와 유저 데이터 합쳐서 반환
+    return {
+      abs_id: absenceId,
+      ...absSnapshot.val(),
+      user_name: userData.user_name,
+      user_phone: userData.user_phone,
+      user_position: userData.user_position,
+      user_leftHoliday: userData.user_leftHoliday,
+      user_totalHoliday: userData.user_totalHoliday,
+    };
+  } catch (error) {
+    console.error('부재 데이터 불러오기 중 오류 발생:', error);
+    throw error;
+  }
+};
+
+// 부재 추가
+export const addUserAbsence = async (userId, newAbsenceData) => {
+  const db = getDatabase();
+  const absRef = ref(db, `absences/${userId}`);
+
+  try {
+    const newAbsRef = await push(absRef, newAbsenceData); // 새 부재 데이터 추가
+    console.log('부재 데이터가 성공적으로 추가되었습니다.');
+    return { abs_id: newAbsRef.key, ...newAbsenceData }; // 추가된 데이터 반환
+  } catch (error) {
+    console.error('부재 데이터 추가 중 오류 발생:', error);
+    throw error;
+  }
+};
+
+// 부재 업데이트
+export const updateUserAbsence = async (container, userId, absenceId) => {
+  const db = getDatabase();
+  const absenceRef = ref(db, `absences/${userId}/${absenceId}`);
+
+  // 현재 데이터 가져오기_공백 입력시 업데이트 전에 있던 DB 값 사용하기 위함
+  const snapshot = await get(absenceRef);
+  const currentAbsData = snapshot.exists() ? snapshot.val() : {};
+
+  const vacationTypeValue = container.querySelector(
+    '.vacation-request-form-inputs #vacation-type',
+  ).value;
+
+  let vacationType;
+
+  if (vacationTypeValue === 'officialLeave') {
+    vacationType = '공가';
+  } else if (vacationTypeValue === 'sickLeave') {
+    vacationType = '병가';
+  } else if (vacationTypeValue === 'annualLeave') {
+    vacationType = '휴가';
+  } else {
+    //선택 안하면
+    vacationType = currentAbsData.abs_type;
+  }
+
+  const fileInput = container.querySelector(
+    '.vacation-request-form-inputs #fileInput',
+  );
+  const proofDocument = fileInput?.files[0] || null;
+
+  // 파일을 base64로 변환_다운로드 되게
+  let proofDocumentBase64 = null;
+  if (proofDocument) {
+    const reader = new FileReader();
+    proofDocumentBase64 = await new Promise((resolve, reject) => {
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(proofDocument);
+    });
+  }
+
+  const updatedData = {
+    abs_type: vacationType,
+    abs_title:
+      container.querySelector('.vacation-request-form-inputs #vacation-title')
+        .value || currentAbsData.abs_title,
+    abs_start_date:
+      container.querySelector(
+        '.vacation-request-form-inputs #vacation-start-date',
+      ).value || currentAbsData.abs_start_date,
+    abs_end_date:
+      container.querySelector(
+        '.vacation-request-form-inputs #vacation-end-date',
+      ).value || currentAbsData.abs_end_date,
+    abs_content:
+      container.querySelector('.vacation-request-form-inputs #vacation-content')
+        .value || currentAbsData.abs_content,
+    abs_proof_document: proofDocument
+      ? proofDocument.name
+      : currentAbsData.abs_proof_document,
+    abs_proof_document_base64:
+      proofDocumentBase64 || currentAbsData.abs_proof_document_base64,
+  };
+
+  try {
+    await update(absenceRef, updatedData); // absence 데이터 업데이트
+    console.log('부재 데이터가 성공적으로 업데이트되었습니다.');
+    return updatedData; // 업데이트된 데이터를 반환
+  } catch (error) {
+    console.error('부재 데이터 업데이트 중 오류 발생:', error);
+    throw error;
+  }
+};
+
+// 부재 삭제
+export const deleteUserAbsence = async (userId, absenceId) => {
+  const db = getDatabase();
+  const absenceRef = ref(db, `absences/${userId}/${absenceId}`);
+
+  try {
+    await remove(absenceRef); // absence 데이터 삭제
+    console.log('부재 데이터가 성공적으로 삭제되었습니다.');
+    return true;
+  } catch (error) {
+    console.error('부재 데이터 삭제 중 오류 발생:', error);
+    throw error;
+  }
+};
+
+//모든 공지 가져오기
+export const getAllNotices = async () => {
+  const db = getDatabase();
+  const noticesRef = ref(db, 'Notices');
+
+  try {
+    const snapshot = await get(noticesRef);
+    if (!snapshot.exists()) {
+      return [];
+    }
+
+    const notices = [];
+    snapshot.forEach(childSnapshot => {
+      notices.push({
+        post_id: childSnapshot.key,
+        ...childSnapshot.val(),
+      });
+    });
+
+    return notices.sort(
+      (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
+    );
+  } catch (error) {
+    console.error('모든 공지사항 불러오기 중 오류 발생:', error);
+    throw error;
+  }
+};
+
+// 개별 공지사항 불러오기
+export const getNoticeById = async post_id => {
+  const db = getDatabase();
+  const noticeRef = ref(db, `Notices/${post_id}`);
+
+  try {
+    const snapshot = await get(noticeRef);
+    if (!snapshot.exists()) {
+      throw new Error('해당 공지사항이 존재하지 않습니다.');
+    }
+
+    return {
+      post_id: snapshot.key,
+      ...snapshot.val(),
+    };
+  } catch (error) {
+    console.error('개별 공지사항 불러오기 중 오류 발생:', error);
+    throw error;
   }
 };
 
