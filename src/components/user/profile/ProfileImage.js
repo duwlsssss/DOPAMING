@@ -1,11 +1,10 @@
 import './ProfileImage.css';
 import { Button } from '../../../components';
-import { updateUserData } from '../../../../server/api/user';
 
 export const ProfileImage = (
   paragraphOne = 'Upload',
   paragraphTwo = 'Your',
-  paragraphThree = 'Profile',
+  paragraphThree = 'Profle',
   description = '프로필',
 ) => {
   return `
@@ -25,13 +24,12 @@ export const ProfileImage = (
         </p>
       </div>
       <div class="user-profileImg-button-container">
-        <input type="file" id="profileImageInput" accept="image/jpeg, image/png" style="display: none;" />
-      </div>
+      <input type="file" id="fileInput" accept="image/jpeg, image/png"/>
     </section>
   `;
 };
 
-export const attachProfileImageEvents = (container, userId) => {
+export const attachProfileImageEvents = container => {
   const fileInput = container.querySelector('#fileInput');
   const profileImgPosition = container.querySelector('.real-profileImg');
   const buttonPosition = container.querySelector(
@@ -46,10 +44,9 @@ export const attachProfileImageEvents = (container, userId) => {
     padding: 'var(--space-small)',
     onClick: e => {
       e.preventDefault();
-      fileInput.click(); // fileInput이 null이 아닐 때 클릭
+      fileInput.click();
     },
   });
-
   const imgDeleteBtn = Button({
     className: 'img-delete-btn',
     text: '기본 이미지로 변경',
@@ -59,9 +56,7 @@ export const attachProfileImageEvents = (container, userId) => {
     onClick: async e => {
       e.preventDefault();
       // 프로필 사진 삭제
-      profileImgPosition.style.backgroundImage = '';
-      // 이미지 URL을 빈 문자열로 Firebase에 저장
-      await updateUserData(container, userId, '');
+      profileImgPosition.style.backgroundImage = null;
     },
   });
 
@@ -71,7 +66,6 @@ export const attachProfileImageEvents = (container, userId) => {
   // Change event 리스너를 설정
   fileInput.addEventListener('change', async () => {
     const files = fileInput.files; // 선택한 파일들 가져오기
-
     if (files.length > 0) {
       const file = files[0];
       const reader = new FileReader(); // FileReader 객체 생성
@@ -81,8 +75,6 @@ export const attachProfileImageEvents = (container, userId) => {
         const imageDataUrl = event.target.result; // base64 이미지 데이터
         // 미리보기 UI 업데이트
         profileImgPosition.style.backgroundImage = `url(${imageDataUrl})`;
-        // Firebase Database에 이미지 URL 저장
-        await updateUserData(container, userId, imageDataUrl);
       };
 
       // 파일 읽기 시작

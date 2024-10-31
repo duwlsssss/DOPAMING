@@ -26,12 +26,9 @@ export const RenderUserEditProfile = async container => {
     </div>
   `;
 
-  // 현재 로그인한 사용자 ID 가져오기
-  getCurrentUserId(async userId => {
-    if (userId) {
-      const currUser = await fetchUserData(userId);
-      if (currUser) {
-        const profileImgPosition = container.querySelector('.real-profileImg');
+  // 사용자 데이터 가져오기
+  const userId = getItem('userID'); // 저장된 사용자 ID 가져오기
+  const currUser = await fetchUserData(userId); // Firebase에서 사용자 데이터 가져오기
 
   const profileImgPosition = container.querySelector('.real-profileImg');
 

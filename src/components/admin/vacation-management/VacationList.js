@@ -159,23 +159,9 @@ export const RenderAdminVacationManagementList = async (
             </section>
           </div>
 
-          <section class="detail-item">
-            <h3 class="detail-label">첨부 파일</h3>
-            <div class="download-file">
-              <p class="detail-value">${item.abs_proof_document}</p>
-              ${downloadButton.outerHTML}
-            </div>
-          </section>
-
-          <section class="detail-item detail-content-box">
-            <h3 class="detail-label">휴가 내용</h3>
-            <p class="detail-value content-box" data-index="${index}">${item.abs_content}</p>
-          </section>
-        </div>
-
-        ${renderButtons(item.abs_status)}
-      </article>
-    `;
+        </article>
+      `;
+    };
 
     const itemsPerPage = 6;
     const startIndex = (currentPage - 1) * itemsPerPage;

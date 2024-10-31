@@ -19,12 +19,6 @@ import {
   remove,
 } from 'firebase/database';
 import { formatDate } from '../../src/utils/currentTime';
-import {
-  getStorage,
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL,
-} from 'firebase/storage'; // storageRef를 ref로 가져옵니다.
 
 // 0. 로그인 id 및 상태 변경 감지
 export const getCurrentUserId = callback => {
@@ -91,8 +85,8 @@ export const getUserIdName = () => {
               name: userData.user_name || '사용자 이름이 없습니다', // Realtime Database에서 user_name 가져오기
               user_image: userData.user_image || '', // 사용자 이미지 URL 가져오기
             };
-            console.log('로그인한 사용자 ID:', currentUserInfo.id);
-            console.log('로그인한 사용자 이름:', currentUserInfo.name);
+            // console.log('로그인한 사용자 ID:', currentUserInfo.id);
+            // console.log('로그인한 사용자 이름:', currentUserInfo.name);
             resolve(currentUserInfo); // 사용자 정보를 resolve로 반환
           } else {
             reject(new Error('사용자 데이터가 존재하지 않습니다.'));
@@ -131,10 +125,10 @@ export const fetchUserData = async userId => {
 
   try {
     const snapshot = await get(userRef); // 데이터 가져오기
-    console.log(snapshot.val());
+    // console.log(snapshot.val());
     if (snapshot.exists()) {
       const userData = snapshot.val(); // 데이터 값 가져오기
-      console.log(userData);
+      // console.log(userData);
       return userData; // 사용자 객체 데이터 반환
     } else {
       console.log('사용자 데이터가 존재하지 않습니다.');
@@ -266,7 +260,6 @@ export const saveTimePunchData = async (userId, actionType, userName) => {
 // 5. 내 정보 수정하기
 export const updateUserData = async (container, userId, userImage = null) => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
-  const storage = getStorage(); // 스토리지 인스턴스 가져오기
   const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
 
   // 현재 데이터 가져오기_공백 입력시 업데이트 전에 있던 DB 값 사용하기 위함
@@ -302,39 +295,12 @@ export const updateUserData = async (container, userId, userImage = null) => {
           ? '학생'
           : currentUserData.user_position,
     // user_password: container.querySelector('.user-profile-inputs #confirm-password').value || currentUserData.user_password,
-    user_image: userImage || currentUserData.user_image,
+    user_image: userImage || null,
   };
 
-  // 파일 입력 처리
-  const fileInput = container.querySelector('#profileImageInput'); // 파일 입력 요소 선택
-  if (fileInput) {
-    // null 체크 추가
-    if (fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      const storagePath = `user_images/${userId}/${file.name}`; // 저장할 경로
-      const imageRef = storageRef(storage, storagePath);
-
-      try {
-        // 파일 업로드
-        await uploadBytes(imageRef, file);
-        // 업로드 후 다운로드 URL 가져오기
-        const downloadURL = await getDownloadURL(imageRef);
-        updatedData.user_image = downloadURL; // 사용자 이미지 URL 업데이트
-      } catch (error) {
-        console.error('이미지 업로드 실패:', error.message);
-        Modal('update-fail'); // 오류 발생 시 모달 표시
-        return; // 함수 종료
-      }
-    }
-  } else {
-    console.error('파일 입력 요소를 찾을 수 없습니다.');
-  }
-
-  // 사용자 데이터 업데이트
   try {
     await update(userRef, updatedData);
     console.log('사용자 데이터가 성공적으로 수정되었습니다.');
-    Modal('edit-profile-success');
   } catch (error) {
     console.error('사용자 데이터 수정 실패:', error.message);
     Modal('edit-profile-fail');
