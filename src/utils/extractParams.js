@@ -4,7 +4,7 @@ const extractParams = (path, currentPath) => {
   const regexPath = path.replace(/:(\w+)/g, (_, key) => {
     // key는 동적 매개변수 이름 (: 다음에 오는 거)
     keys.push(key); // e.g. keys 배열에 postId를 넣음
-    return '([\\w-]+)'; // :postId 부분을 ([\\w-]+)로 대체
+    return '([^/]+)'; // 슬래시 제외한 모든 문자 매칭
   }); // e.g. /notice/([\\w-]+)
 
   // 만든 정규 표현식으로 currentPath 나누기

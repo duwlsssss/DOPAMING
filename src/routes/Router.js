@@ -144,7 +144,7 @@ export default function Router() {
   // 경로에서 동적 매개변수 추출
 
   //postId 추출
-  const paramsFormNotice = extractParams(`${USER_PATH.NOTICE}/:postId`, path);
+  const userNoticeId = extractParams(`${USER_PATH.NOTICE}/:postId`, path);
   const paramsFormAdminNotice = extractParams(
     `${ADMIN_PATH.NOTICE}/:noticeId`,
     path,
@@ -159,7 +159,7 @@ export default function Router() {
     `${ADMIN_PATH.MEMBER}/:memberId`,
     path,
   );
-  const postId = paramsFormNotice ? paramsFormNotice.postId : null;
+  const userPostId = userNoticeId ? userNoticeId.postId : null;
   const noticeId = paramsFormAdminNotice
     ? paramsFormAdminNotice.noticeId
     : null;
@@ -191,9 +191,9 @@ export default function Router() {
     RenderUserHome(contentEl);
   } else if (path === USER_PATH.NOTICE) {
     RenderUserNoticeList(contentEl);
-  } else if (postId) {
+  } else if (userPostId) {
     // postId가 있는 경우(동적 경로가 매칭된 경우)
-    RenderUserNoticeDetail(contentEl, postId);
+    RenderUserNoticeDetail(contentEl, userPostId);
   } else if (path === USER_PATH.EDIT_PROFILE) {
     RenderUserEditProfile(contentEl);
   } else if (path === USER_PATH.VACATION) {

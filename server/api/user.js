@@ -246,7 +246,7 @@ export const updateUserData = async (container, userId, userImage = null) => {
 };
 
 // 부재 관련 API
-// 부재 가져오기
+// 사용자별 부재 가져오기
 export const getUserAbs = async userId => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   const absRef = ref(db, `absences/${userId}`); // userId 별로 부재 데이터 접근
@@ -422,6 +422,55 @@ export const deleteUserAbsence = async (userId, absenceId) => {
     return true;
   } catch (error) {
     console.error('부재 데이터 삭제 중 오류 발생:', error);
+    throw error;
+  }
+};
+
+//모든 공지 가져오기
+export const getAllNotices = async () => {
+  const db = getDatabase();
+  const noticesRef = ref(db, 'Notices');
+
+  try {
+    const snapshot = await get(noticesRef);
+    if (!snapshot.exists()) {
+      return [];
+    }
+
+    const notices = [];
+    snapshot.forEach(childSnapshot => {
+      notices.push({
+        post_id: childSnapshot.key,
+        ...childSnapshot.val(),
+      });
+    });
+
+    return notices.sort(
+      (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
+    );
+  } catch (error) {
+    console.error('모든 공지사항 불러오기 중 오류 발생:', error);
+    throw error;
+  }
+};
+
+// 개별 공지사항 불러오기
+export const getNoticeById = async post_id => {
+  const db = getDatabase();
+  const noticeRef = ref(db, `Notices/${post_id}`);
+
+  try {
+    const snapshot = await get(noticeRef);
+    if (!snapshot.exists()) {
+      throw new Error('해당 공지사항이 존재하지 않습니다.');
+    }
+
+    return {
+      post_id: snapshot.key,
+      ...snapshot.val(),
+    };
+  } catch (error) {
+    console.error('개별 공지사항 불러오기 중 오류 발생:', error);
     throw error;
   }
 };
