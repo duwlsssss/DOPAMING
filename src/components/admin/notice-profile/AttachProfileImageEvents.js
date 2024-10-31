@@ -3,7 +3,7 @@ import { Button } from '../../ui/button/Button';
 
 export const attachProfileImageEvents = container => {
   // 이미지 관련 이벤트 수정된 설정
-  const fileInput = container.querySelector('#profileImageInput');
+  const fileInput = container.querySelector('#fileInput');
 
   const profileImgPosition = container.querySelector('.real-profileImg');
   const buttonPosition = container.querySelector(
