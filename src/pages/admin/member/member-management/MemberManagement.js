@@ -1,6 +1,7 @@
 import {
   adminFetchMeber,
   adminFetchTime,
+  adminMemberListDelete,
 } from '../../../../../server/api/admin';
 import { Button } from '../../../../components';
 import { Pagenation } from '../../../../components/index';
@@ -15,14 +16,23 @@ export const RenderAdminMemberManagement = async container => {
   let searchValue = ''; // 검색어 저장
   let positionValue = ''; //직급
   let filteredUsers = '';
-
+  let selectedIds = [];
   const deleteButton = Button({
     width: 80,
     text: '삭제',
     color: 'coral',
     shape: 'block',
     className: 'deleteButton',
+    onClick: () => {
+      if (selectedIds.length === 0) {
+        alert('삭제할 회원을 선택해 주세요.');
+        return;
+      }
+      adminMemberListDelete(selectedIds); // 선택된 모든 ID를 삭제 함수에 전달
+      selectedIds = []; // 삭제 후 배열 초기화
+    },
   });
+
   const uploadButton = Button({
     width: 80,
     text: '업로드',
@@ -93,9 +103,9 @@ export const RenderAdminMemberManagement = async container => {
         return `
         <div class="user-wrapper"  id="member-${user.user_id}" member-id="${user.user_id}">
           <label>
-            <input type="checkbox" id=${user.user_id}>
+            <input type="checkbox" id=${user.user_id} class="checkbox-checked"/>
             <span class="custom-checkbox">
-            </span>        
+            </span>
           </label>
           <div class="user-item">
             <div class="member-status ${isUserPresent ? 'active' : ''}">    
@@ -153,6 +163,21 @@ export const RenderAdminMemberManagement = async container => {
       });
     });
   }
+
+  // 부모 요소인 container에 이벤트 리스너 추가
+  container.addEventListener('change', event => {
+    if (event.target.type === 'checkbox') {
+      const checkboxId = event.target.id;
+      if (event.target.checked) {
+        // 체크된 상태일 때 ID를 추가
+        selectedIds.push(checkboxId);
+      } else {
+        // 체크 해제 시 ID를 배열에서 제거
+        selectedIds = selectedIds.filter(id => id !== checkboxId);
+      }
+      console.log('현재 선택된 ID들:', selectedIds);
+    }
+  });
 
   const paginationContainer = Pagenation(
     fetchDataUser.length,

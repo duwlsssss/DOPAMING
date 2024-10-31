@@ -1,6 +1,7 @@
 import {
   adminFetchMemberDetail,
   adminFetchVacation,
+  adminMemberDelete,
 } from '../../../../../server/api/admin';
 import { Button } from '../../../../components';
 import { Accordion } from '../../../../components/ui/accordion/Accordion';
@@ -16,7 +17,8 @@ export async function RenderAdminMemberDetail(container, memberId) {
     color: 'coral',
     shape: 'block',
     className: 'detail_button',
-    onClick: () => console.log('log'),
+
+    onClick: () => adminMemberDelete(memberId),
   });
 
   const downloadButton = new Button({
@@ -43,7 +45,6 @@ export async function RenderAdminMemberDetail(container, memberId) {
 
   //휴가 관련 정보
   const vactionDetailRender = memberVacationDetail => {
-    console.log(memberVacationDetail);
     if (memberVacationDetail) {
       return `
       <div class="member-detail-list">               
@@ -97,7 +98,7 @@ export async function RenderAdminMemberDetail(container, memberId) {
     <div class="member-detail-container">    
       <div class="member-detail-header">
       <h1>직원 상세</h1>
-        ${buttonElement.outerHTML}
+        
       </div>
       <div class="member-detail-wapper">
         <div class="member-detail-items">
@@ -137,4 +138,6 @@ export async function RenderAdminMemberDetail(container, memberId) {
       </div>
     </div>
   `;
+  const buttonEl = document.querySelector('.member-detail-header');
+  buttonEl.append(buttonElement);
 }
