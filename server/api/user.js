@@ -200,20 +200,44 @@ export const updateUserData = async (container, userId, userImage = null) => {
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
 
+  // 현재 데이터 가져오기_공백 입력시 업데이트 전에 있던 DB 값 사용하기 위함
+  const snapshot = await get(userRef);
+  const currentUserData = snapshot.exists() ? snapshot.val() : {};
+
   // 입력값 가져오기
   const updatedData = {
-    user_name: container.querySelector('#name').value,
-    user_email: container.querySelector('#email').value,
-    user_phone: container.querySelector('#phone').value,
-    user_birthday: container.querySelector('#birthDate').value,
-    user_sex: container.querySelector('#gender').value === 'male' ? '남' : '여',
+    user_name:
+      container.querySelector('.user-profile-inputs #name').value ||
+      currentUserData.user_name,
+    user_email:
+      container.querySelector('.user-profile-inputs #email').value ||
+      currentUserData.user_email,
+    user_phone:
+      container.querySelector('.user-profile-inputs #phone').value ||
+      currentUserData.user_phone,
+    user_birthday:
+      container.querySelector('.user-profile-inputs #birthDate').value ||
+      currentUserData.user_birthday,
+    user_sex:
+      container.querySelector('.user-profile-inputs #gender').value === 'male'
+        ? '남'
+        : container.querySelector('.user-profile-inputs #gender').value ===
+            'female'
+          ? '여'
+          : currentUserData.user_sex,
     user_position:
-      container.querySelector('#role').value === 'manager' ? '매니저' : '학생',
-    user_image: userImage,
+      container.querySelector('.user-profile-inputs #role').value === 'manager'
+        ? '매니저'
+        : container.querySelector('.user-profile-inputs #role').value ===
+            'student'
+          ? '학생'
+          : currentUserData.user_position,
+    // user_password: container.querySelector('.user-profile-inputs #confirm-password').value || currentUserData.user_password,
+    user_image: userImage || currentUserData.user_image,
   };
 
   try {
-    await set(userRef, updatedData);
+    await update(userRef, updatedData);
     console.log('사용자 데이터가 성공적으로 수정되었습니다.');
   } catch (error) {
     console.error('사용자 데이터 수정 실패:', error.message);
@@ -262,6 +286,41 @@ export const getUserAbs = async userId => {
   }
 };
 
+// abs_id로 특정 부재 가져오기
+export const getUserAbsById = async (userId, absenceId) => {
+  const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
+  const absRef = ref(db, `absences/${userId}/${absenceId}`); // 특정 부재 데이터 접근
+
+  try {
+    const absSnapshot = await get(absRef);
+    if (!absSnapshot.exists()) {
+      console.log('해당 부재 데이터가 없습니다.');
+      return null;
+    }
+
+    // userId로 유저 데이터 가져오기
+    const userData = await fetchUserData(userId);
+    if (!userData) {
+      console.log('해당 사용자 데이터가 없습니다.');
+      return null;
+    }
+
+    // 부재 데이터와 유저 데이터 합쳐서 반환
+    return {
+      abs_id: absenceId,
+      ...absSnapshot.val(),
+      user_name: userData.user_name,
+      user_phone: userData.user_phone,
+      user_position: userData.user_position,
+      user_leftHoliday: userData.user_leftHoliday,
+      user_totalHoliday: userData.user_totalHoliday,
+    };
+  } catch (error) {
+    console.error('부재 데이터 불러오기 중 오류 발생:', error);
+    throw error;
+  }
+};
+
 // 부재 추가
 export const addUserAbsence = async (userId, newAbsenceData) => {
   const db = getDatabase();
@@ -278,14 +337,74 @@ export const addUserAbsence = async (userId, newAbsenceData) => {
 };
 
 // 부재 업데이트
-export const updateUserAbsence = async (userId, absenceId, updatedData) => {
+export const updateUserAbsence = async (container, userId, absenceId) => {
   const db = getDatabase();
   const absenceRef = ref(db, `absences/${userId}/${absenceId}`);
+
+  // 현재 데이터 가져오기_공백 입력시 업데이트 전에 있던 DB 값 사용하기 위함
+  const snapshot = await get(absenceRef);
+  const currentAbsData = snapshot.exists() ? snapshot.val() : {};
+
+  const vacationTypeValue = container.querySelector(
+    '.vacation-request-form-inputs #vacation-type',
+  ).value;
+
+  let vacationType;
+
+  if (vacationTypeValue === 'officialLeave') {
+    vacationType = '공가';
+  } else if (vacationTypeValue === 'sickLeave') {
+    vacationType = '병가';
+  } else if (vacationTypeValue === 'annualLeave') {
+    vacationType = '휴가';
+  } else {
+    //선택 안하면
+    vacationType = currentAbsData.abs_type;
+  }
+
+  const fileInput = container.querySelector(
+    '.vacation-request-form-inputs #fileInput',
+  );
+  const proofDocument = fileInput?.files[0] || null;
+
+  // 파일을 base64로 변환_다운로드 되게
+  let proofDocumentBase64 = null;
+  if (proofDocument) {
+    const reader = new FileReader();
+    proofDocumentBase64 = await new Promise((resolve, reject) => {
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(proofDocument);
+    });
+  }
+
+  const updatedData = {
+    abs_type: vacationType,
+    abs_title:
+      container.querySelector('.vacation-request-form-inputs #vacation-title')
+        .value || currentAbsData.abs_title,
+    abs_start_date:
+      container.querySelector(
+        '.vacation-request-form-inputs #vacation-start-date',
+      ).value || currentAbsData.abs_start_date,
+    abs_end_date:
+      container.querySelector(
+        '.vacation-request-form-inputs #vacation-end-date',
+      ).value || currentAbsData.abs_end_date,
+    abs_content:
+      container.querySelector('.vacation-request-form-inputs #vacation-content')
+        .value || currentAbsData.abs_content,
+    abs_proof_document: proofDocument
+      ? proofDocument.name
+      : currentAbsData.abs_proof_document,
+    abs_proof_document_base64:
+      proofDocumentBase64 || currentAbsData.abs_proof_document_base64,
+  };
 
   try {
     await update(absenceRef, updatedData); // absence 데이터 업데이트
     console.log('부재 데이터가 성공적으로 업데이트되었습니다.');
-    return true;
+    return updatedData; // 업데이트된 데이터를 반환
   } catch (error) {
     console.error('부재 데이터 업데이트 중 오류 발생:', error);
     throw error;

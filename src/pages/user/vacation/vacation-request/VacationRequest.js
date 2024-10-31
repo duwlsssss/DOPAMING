@@ -86,14 +86,14 @@ export const RenderUserVacationRequest = async container => {
         };
         try {
           await addUserAbsence(userId, newAbsenceData);
-          Modal('vacation-success', USER_PATH.VACATION);
+          Modal('vacation-request-success', USER_PATH.VACATION);
         } catch (error) {
           console.error('부재 신청 중 오류 발생:', error);
-          Modal('vacation-fail');
+          Modal('vacation-request-fail');
         }
       } else {
         // 유효성 검사 실패 시 실패 모달 표시
-        Modal('vacation-fail');
+        Modal('vacation-request-fail');
       }
     },
   });

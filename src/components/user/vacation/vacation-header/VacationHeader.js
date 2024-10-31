@@ -28,7 +28,7 @@ export const RenderUserVacationHeader = (container, UserAbsData) => {
   const statusFilter = container.querySelector('#statusFilter');
   const vacationListContainer = document.querySelector(
     '#userVacationListSection',
-  ); //dom에서 찾아야 함
+  );
 
   const filteredList = () => {
     const filters = {

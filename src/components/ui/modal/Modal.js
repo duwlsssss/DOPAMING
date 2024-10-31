@@ -36,18 +36,23 @@ function isUserAction(actionType) {
     'punch-out',
     'break-out',
     'break-in',
+    'vacation-delete', //휴가 삭제 확인
     'punch-in-success',
     'punch-out-success',
     'break-out-success',
     'break-in-success',
     'edit-profile-success',
-    'vacation-success',
+    'vacation-request-success', //휴가 신청
+    'vacation-edit-success', //휴가 수정
+    'vacation-delete-success', //휴가 삭재
     'punch-in-fail',
     'punch-out-fail',
     'break-out-fail',
     'break-in-fail',
-    'vacation-fail',
+    'vacation-request-fail',
     'edit-profile-fail',
+    'vacation-edit-fail',
+    'vacation-delete-fail',
   ].includes(actionType);
 }
 
@@ -209,7 +214,7 @@ export async function Modal(type, redirectPath = '') {
     case 'break-out-success':
     case 'break-in-success':
     case 'edit-profile-success':
-    case 'vacation-success':
+    case 'vacation-request-success':
       modalContent.appendChild(userModalContent(type, modalInstance));
       break;
     case 'employee-delete-success':
@@ -226,7 +231,7 @@ export async function Modal(type, redirectPath = '') {
     case 'punch-out-fail':
     case 'break-out-fail':
     case 'break-in-fail':
-    case 'vacation-fail':
+    case 'vacation-request-fail':
     case 'edit-profile-fail':
       modalContent.appendChild(userModalContent(type, modalInstance));
       break;
