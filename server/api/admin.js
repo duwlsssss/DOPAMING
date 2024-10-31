@@ -20,8 +20,8 @@ const database = getDatabase(app);
 // 휴가 관련 API
 export const AbsenceAPI = {
   // 휴가 승인
-  approveAbsence: async abs_id => {
-    const absenceRef = ref(database, `Absences/${abs_id}`);
+  approveAbsence: async (userId, absenceId) => {
+    const absenceRef = ref(database, `absences/${userId}/${absenceId}`);
 
     try {
       const snapshot = await get(absenceRef);
@@ -41,8 +41,8 @@ export const AbsenceAPI = {
   },
 
   // 휴가 거부
-  rejectAbsence: async abs_id => {
-    const absenceRef = ref(database, `Absences/${abs_id}`);
+  rejectAbsence: async (userId, absenceId) => {
+    const absenceRef = ref(database, `absences/${userId}/${absenceId}`);
 
     try {
       const snapshot = await get(absenceRef);
@@ -62,8 +62,8 @@ export const AbsenceAPI = {
   },
 
   // 거부 취소
-  cancelRejection: async abs_id => {
-    const absenceRef = ref(database, `Absences/${abs_id}`);
+  cancelRejection: async (userId, absenceId) => {
+    const absenceRef = ref(database, `absences/${userId}/${absenceId}`);
 
     try {
       const snapshot = await get(absenceRef);
@@ -83,8 +83,8 @@ export const AbsenceAPI = {
   },
 
   // 승인 취소
-  cancelApproval: async abs_id => {
-    const absenceRef = ref(database, `Absences/${abs_id}`);
+  cancelApproval: async (userId, absenceId) => {
+    const absenceRef = ref(database, `absences/${userId}/${absenceId}`);
 
     try {
       const snapshot = await get(absenceRef);
@@ -317,7 +317,6 @@ export const adminFetchVacation = async memberId => {
       );
       return vacactionEntries;
     } else {
-      console.log('No data available');
       return null;
     }
   } catch (error) {
