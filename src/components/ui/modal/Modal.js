@@ -218,6 +218,7 @@ export async function Modal(type, options = {}) {
                 );
                 setTimeout(() => {
                   navigate(ADMIN_PATH.VACATION);
+                  location.reload();
                 }, 1000);
               }
             } catch (error) {
@@ -242,6 +243,7 @@ export async function Modal(type, options = {}) {
                 );
                 setTimeout(() => {
                   navigate(ADMIN_PATH.VACATION);
+                  location.reload();
                 }, 1000);
               }
             } catch (error) {
@@ -263,6 +265,7 @@ export async function Modal(type, options = {}) {
                 );
                 setTimeout(() => {
                   navigate(ADMIN_PATH.VACATION);
+                  location.reload();
                 }, 1000);
               }
             } catch (error) {
@@ -291,6 +294,7 @@ export async function Modal(type, options = {}) {
                 );
                 setTimeout(() => {
                   navigate(ADMIN_PATH.VACATION);
+                  location.reload();
                 }, 1000);
               }
             } catch (error) {

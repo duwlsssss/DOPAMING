@@ -1,6 +1,7 @@
 import { RenderTitle } from '../../common/title/Title';
 import './VacationHeader.css';
 import { RenderAdminVacationManagementList } from './VacationList';
+import { vacationStore } from '../../../utils/vacationStore';
 
 export const RenderAdminVacationManagementHeader = container => {
   container.innerHTML = `
@@ -26,20 +27,21 @@ export const RenderAdminVacationManagementHeader = container => {
   const typeFilter = container.querySelector('#typeFilter');
   const statusFilter = container.querySelector('#statusFilter');
 
-  const filteredList = () => {
-    const filters = {
+  const handleFilterChange = async () => {
+    vacationStore.setFilter({
       type: typeFilter.value,
       status: statusFilter.value,
-    };
+    });
+
     const vacationListContainer = document.querySelector(
       '#adminVacationMangementListSection',
     );
-    RenderAdminVacationManagementList(vacationListContainer, filters);
+    await RenderAdminVacationManagementList(vacationListContainer);
   };
 
-  typeFilter.addEventListener('change', filteredList);
-  statusFilter.addEventListener('change', filteredList);
+  typeFilter.addEventListener('change', handleFilterChange);
+  statusFilter.addEventListener('change', handleFilterChange);
 
-  const titleContainer = document.querySelector('#adminVactionTitleContainer');
+  const titleContainer = container.querySelector('#adminVactionTitleContainer');
   RenderTitle(titleContainer, '휴가/공가 관리');
 };

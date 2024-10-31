@@ -1,66 +1,16 @@
 import { Accordion } from '../../ui/accordion/Accordion';
 import { Button } from '../../ui/button/Button';
-import { sortByName } from '../../../utils/sortByName';
 import { Pagenation } from '../../common/pagenation/Pagenation';
-import {
-  adminFetchVacation,
-  adminFetchMeber,
-} from '../../../../server/api/admin';
 import { Modal } from '../../ui/modal/Modal';
+import { vacationStore } from '../../../utils/vacationStore';
 import './VacationList.css';
 
-export const RenderAdminVacationManagementList = async (
-  container,
-  filter = { type: 'vacation-all', status: 'approved-all' },
-  currentPage = 1,
-) => {
+export const RenderAdminVacationManagementList = async container => {
   container.innerHTML = `<div class="loading">휴가 정보를 가져오는 중입니다.</div>`;
 
   try {
-    const users = await adminFetchMeber();
-    if (!users) {
-      throw new Error('직원 정보를 불러올 수 없습니다.');
-    }
-
-    let allVacations = [];
-    for (const user of users) {
-      const vacations = await adminFetchVacation(user.user_id);
-      if (vacations) {
-        const vacationsWithUserInfo = vacations.map(vacation => ({
-          ...vacation,
-          user_id: user.user_id,
-          user_name: user.user_name,
-          user_position: user.user_position,
-          user_phone: user.user_phone,
-          user_image: user.user_image,
-        }));
-        allVacations = [...allVacations, ...vacationsWithUserInfo];
-      }
-    }
-
-    let sortedVacations = sortByName(allVacations);
-
-    if (filter.type !== 'vacation-all') {
-      const absType = {
-        vacation: '휴가',
-        sick: '병가',
-        official: '공가',
-      };
-      sortedVacations = sortedVacations.filter(
-        vacation => vacation.abs_type === absType[filter.type],
-      );
-    }
-
-    if (filter.status !== 'approved-all') {
-      const statusType = {
-        approved: '승인',
-        rejected: '거부',
-        pending: '대기',
-      };
-      sortedVacations = sortedVacations.filter(
-        vacation => vacation.abs_status === statusType[filter.status],
-      );
-    }
+    await vacationStore.initialize();
+    const sortedVacations = vacationStore.getFilteredVacations();
 
     // 다운로드 버튼
     const downloadButton = new Button({
@@ -198,7 +148,7 @@ export const RenderAdminVacationManagementList = async (
     `;
 
     const itemsPerPage = 6;
-    const startIndex = (currentPage - 1) * itemsPerPage;
+    const startIndex = (vacationStore.currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const displayedVacations = sortedVacations.slice(startIndex, endIndex);
 
@@ -220,13 +170,14 @@ export const RenderAdminVacationManagementList = async (
     paginationContainer.className = 'pagination';
 
     const handlePageChange = newPage => {
-      RenderAdminVacationManagementList(container, filter, newPage);
+      vacationStore.setPage(newPage);
+      RenderAdminVacationManagementList(container);
     };
 
     const paginationElement = Pagenation(
       sortedVacations.length,
       itemsPerPage,
-      currentPage,
+      vacationStore.currentPage,
       handlePageChange,
     );
 
