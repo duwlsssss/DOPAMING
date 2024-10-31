@@ -9,6 +9,9 @@ import {
   update,
 } from 'firebase/database';
 import firebaseConfig from '../firebaseConfig';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { Modal } from '../../src/components';
+import navigate from '../../src/utils/navigation';
 
 const app = initializeApp(firebaseConfig);
 
@@ -254,30 +257,23 @@ export const adminFetchMemberDetail = async user_id => {
     console.log(error);
   }
 };
-
-//직원 업로드
-
-export const adminFetchMemberUpload = async () => {
+// 직원 업로드 함수
+export const adminFetchMemberUpload = async value => {
   const db = getDatabase();
-  const memberRef = ref(db, `Users`);
-  const getValue = id => document.getElementById(id).value;
-  const imageElement = document.querySelector('.real-profileImg');
-  console.log(imageElement.getAttribute('data-image'));
-  const adminMemberValue = {
-    user_image: imageElement.getAttribute('data-image'),
-    user_position: getValue('role'),
-    user_name: getValue('name'),
-    user_sex: getValue('gender'),
-    user_birthday: getValue('birthDate'),
-    user_phone: getValue('phone'),
-    user_email: getValue('email'),
-  };
+  const auth = getAuth();
 
   try {
-    await set(memberRef, adminMemberValue);
-    console.log('사용자 데이터가 성공적으로 수정되었습니다.');
+    const user = await createUserWithEmailAndPassword(
+      auth,
+      value.user_email,
+      '123456',
+    );
+    const memberRef = ref(db, `Users/${user.user.uid}`); // Users/{uid} 경로 설정
+    await set(memberRef, { ...value, user_id: user.user.uid }); // 데이터베이스에 데이터 설정
+    Modal('employee-registration-success', {});
+    navigate('/admin/member');
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -313,7 +309,6 @@ export const adminFetchVacation = async memberId => {
 
     if (snapshot.exists()) {
       const vacactionData = snapshot.val(); // 데이터 가져오기
-      console.log(vacactionData);
       const vacactionEntries = Object.entries(vacactionData).map(
         ([key, value]) => ({
           absences_id: key, // 키를 id로 추가
@@ -325,6 +320,54 @@ export const adminFetchVacation = async memberId => {
       console.log('No data available');
       return null;
     }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//직원 삭제
+
+export const adminMemberDelete = async userId => {
+  const db = getDatabase();
+  const userRef = ref(db, `Users/${userId}`);
+
+  try {
+    const snapshot = await get(userRef);
+    if (snapshot.exists()) {
+      await remove(userRef);
+      Modal('employee-delete-success', {});
+      navigate('/admin/member');
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 직원 수정
+
+//직원 목록에서 삭제하기
+
+export const adminMemberListDelete = async userIds => {
+  const db = getDatabase();
+
+  try {
+    const deletePromises = userIds.map(async userId => {
+      const userRef = ref(db, `Users/${userId}`);
+      const snapshot = await get(userRef);
+
+      if (snapshot.exists()) {
+        await remove(userRef);
+        console.log(`User ${userId} deleted successfully`);
+      } else {
+        console.log(`User ${userId} does not exist`);
+      }
+    });
+
+    await Promise.all(deletePromises);
+    Modal('employee-delete-success', {});
+    navigate('/admin/member');
   } catch (error) {
     console.log(error);
   }

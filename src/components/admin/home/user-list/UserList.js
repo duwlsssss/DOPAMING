@@ -5,14 +5,14 @@ import { sortByName } from '../../../../utils/sortByName';
 import { Button } from '../../../ui/button/Button';
 import { ADMIN_PATH } from '../../../../utils/constants';
 import './UserList.css';
+import { adminFetchMeber } from '../../../../../server/api/admin';
 
 export const RenderUserList = async (container, filter = 'all') => {
   container.innerHTML = `<div class="admin-loading">직원 정보를 가져오는 중입니다.</div>`;
 
   try {
-    const response = await axios.get('../../../../server/data/users.json');
-    const users = response.data;
-
+    const response = await adminFetchMeber();
+    const users = response;
     // 필터링
     const filteredUsers =
       filter === 'all'
