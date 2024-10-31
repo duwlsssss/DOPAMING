@@ -26,7 +26,15 @@ export const RenderAdminVacationManagementList = async (
     for (const user of users) {
       const vacations = await adminFetchVacation(user.user_id);
       if (vacations) {
-        allVacations = [...allVacations, ...vacations];
+        const vacationsWithUserInfo = vacations.map(vacation => ({
+          ...vacation,
+          user_id: user.user_id,
+          user_name: user.user_name,
+          user_position: user.user_position,
+          user_phone: user.user_phone,
+          user_image: user.user_image,
+        }));
+        allVacations = [...allVacations, ...vacationsWithUserInfo];
       }
     }
 
