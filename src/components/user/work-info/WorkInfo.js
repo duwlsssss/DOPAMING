@@ -1,9 +1,10 @@
 import './WorkInfo.css';
-import { fetchTimePunchData } from '../../../../server/api/user';
+import { fetchTimePunchData, fetchUserData } from '../../../../server/api/user';
 
 export const WorkInfo = async (userId, date) => {
   try {
     const userTimePunchData = await fetchTimePunchData(userId); // 사용자 출퇴근 데이터 가져오기
+    const userData = await fetchUserData(userId); // 사용자 이름 가져오기
 
     // date가 Date 객체가 아니라면 형식 변환
     if (!(date instanceof Date)) {
@@ -17,15 +18,13 @@ export const WorkInfo = async (userId, date) => {
     );
 
     // 기본 사용자 정보 초기화
-    let userName = '사용자';
+    let userName = userData?.user_name || '사용자';
     let punchInTime = '00시 00분';
     let punchOutTime = '00시 00분';
     let breakOutTime = '00시 00분';
     let breakInTime = '00시 00분';
 
     if (filteredUserData) {
-      userName = filteredUserData.user_name || userName;
-
       punchInTime = filteredUserData.punch_in
         ? formatTime(filteredUserData.punch_in)
         : punchInTime;
