@@ -8,8 +8,7 @@
 
 ### **효율적인 수강생 관리와 소통을 위한 가상의 학습 플랫폼 회사 도파밍의 인트라넷 서비스입니다.**
 
-> **코드 한 줄에 도파민 한 방울을 경험하고 싶으세요?** <br />
-> **코딩의 즐거움을 극대화하는 도파밍 학습 플랫폼에 지금 합류하세요** 💫
+> **코드 한 줄에 도파민 한 방울을 경험하고 싶으세요?** <br /> > **코딩의 즐거움을 극대화하는 도파밍 학습 플랫폼에 지금 합류하세요** 💫
 
 &nbsp;
 
@@ -110,7 +109,7 @@ npm run dev
 - **develop**: 개발 단계에서 main 역할을 하는 브랜치
 - **feat**: 기능 단위로 독립적인 개발 환경을 위하여 사용하고 merge 후 각 브랜치를 삭제
   - feat 브랜치 이름 규칙: `feat/기능명` e.g. feat/admin-login
-    
+
 &nbsp;
 
 ## 🕓 프로젝트 진행 과정
@@ -166,26 +165,24 @@ npm run dev
 
 - **직원 관리 페이지**
 
+  - 직원 상세보기 및 휴가 신청 내역 조회
+
+    ![Alt text](https://github.com/user-attachments/assets/bf06417c-aef3-4c50-8336-83bf8a2b63a1)
+
+    ![Alt text](https://github.com/user-attachments/assets/21a89039-7576-4f2f-831e-64ac4a32236d)
+
   - 직원 구분(수강생/매니저)및 직원 검색 기능
-  - 페이지네이션(6개/페이지)
-  
-    ![Alt text](DOPAMING-Chrome2024-11-0111-28-08-ezgif.com-video-to-gif-converter.gif)
 
-  - 직원 상세보기 및 부재 신청 내역 조회
+  - 페이지네이션(6명/페이지)
 
-    - 아코디언 UI로 상세 내용 조회
-    
-      ![관리자 직원 상세](https://github.com/user-attachments/assets/eaf98736-e4fb-40b9-90d0-3288408a12ed)
- 
-  - 직원 업로드, 삭제
-  
-    ![Alt text](DOPAMING-Chrome2024-11-0111-29-04-ezgif.com-video-to-gif-converter.gif)
-  
-    ![Alt text](DOPAMING-Chrome2024-11-0111-28-37-ezgif.com-video-to-gif-converter.gif)
-    
+    ![Alt text](https://github.com/user-attachments/assets/c72ccfec-784e-4b81-a9d4-5b5456651992)
+
 - **휴가/공가 관리 페이지**
 
   - 휴가 종류 및 승인 상태 필터링
+
+    - 아코디언 UI로 상세 내용 조회
+    - 페이지네이션(6개/페이지)
 
     ![vacation3-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/cc3db015-b3f4-48e8-9886-7aa42b34b3ed)
 
@@ -193,18 +190,18 @@ npm run dev
 
     ![approval-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/3305c05a-7da1-42a4-b2d7-7c748e082d41)
 
-    
 - **공지 관리 페이지**
-    
+
   - 공지사항 검색 기능
-    
-      ![search-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/dd9b5b63-d380-481a-8198-41cad522ce5c)
+
+    - 페이지네이션(8개/페이지)
+
+    ![search-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/dd9b5b63-d380-481a-8198-41cad522ce5c)
 
   - 공지사항 CRUD 구현
-  
-      ![notice (1)](https://github.com/user-attachments/assets/11d4dca1-b332-4a73-b6a7-a9aae6d1d482)
- 
-    
+
+    ![notice (1)](https://github.com/user-attachments/assets/11d4dca1-b332-4a73-b6a7-a9aae6d1d482)
+
 ### 🧑 사용자
 
 - ### 사용자 홈 페이지
@@ -228,13 +225,13 @@ npm run dev
     ![사진 등록](https://github.com/user-attachments/assets/5b0c4241-d174-425b-8f15-6b96698366ab)
 
 - ### 출결 관리 페이지
-  
+
   - 기본적으로 오늘 날짜에 해당하는 출/퇴근, 외출, 복귀의 기록을 출력
   - 날짜를 선택하여 해당 날짜의 기록을 확인 가능
   - 화살표 이미지를 클릭하여 달을 이동하며 기록을 확인 가능
-    
+
     ![출/퇴근 기록](https://github.com/user-attachments/assets/af10d060-114a-44d6-875e-80a86410a12f)
-  
+
 - ### 휴가/공가 관리 페이지
 
   - 부재 종류로 필터링
@@ -242,9 +239,8 @@ npm run dev
     ![부재 필터링](https://github.com/user-attachments/assets/f281a788-c239-401e-b663-900407e262e4)
 
   - 모든 항목을 입력한 후 부재 신청
-    
-    ![부재 신청](https://github.com/user-attachments/assets/7bd4be2f-05ee-44cc-830d-ae22def58dda)
 
+    ![부재 신청](https://github.com/user-attachments/assets/7bd4be2f-05ee-44cc-830d-ae22def58dda)
 
   - 부재 수정과 삭제
 
@@ -288,7 +284,7 @@ npm run dev
 - **TRY**
   - 수정 상황 빠르게 공유
   - 컴포넌트를 더 세분화하여 코드 재사용 증대
- 
+
 &nbsp;
 
 ### 🍀김여진
