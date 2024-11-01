@@ -39,11 +39,12 @@
 /* 각 공지 */
 .notice-gallery .notice-list .notice-item-container .notice-item {
   line-height: 2;
+  overflow: hidden;
 }
 
 .notice-gallery .notice-list .notice-item-container .notice-item .notice-image {
   width: 100%;
-  height: 200px;
+  height: 180px;
 }
 
 .notice-gallery
@@ -71,6 +72,7 @@
 
 .notice-gallery .notice-list .notice-item-container .notice-item .notice-title {
   font-weight: 700;
+  font-size: var(--font-small);
   overflow: hidden;
   text-overflow: ellipsis;
 }

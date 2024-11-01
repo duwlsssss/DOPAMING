@@ -38,3 +38,7 @@
 .modal.show {
   display: flex;
 }
+
+.error-request-message {
+  margin: var(--space-large);
+}

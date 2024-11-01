@@ -144,20 +144,18 @@ export const VacationRequestForm = (isEditMode = false, initialData = {}) => {
         initialData.endDate || '';
       container.querySelector('#vacation-content').value =
         initialData.content || '';
-      // 파일 이름이 있을 경우 .file-title 안에 내용을 넣음
+
       if (initialData.proof_document) {
         const filePreviewContainer = container.querySelector(
           '.proof-file-preview',
         );
         const filePreview = document.createElement('div');
         filePreview.classList.add('file-title');
-
         filePreview.textContent = initialData.proof_document;
 
-        // 클릭 시 원래 파일 이름 다운로드 링크 활성화
         filePreview.addEventListener('click', () => {
           const link = document.createElement('a');
-          link.href = initialData.proof_documentUrl; // assume URL or base64 data exists in proof_documentUrl
+          link.href = initialData.proof_documentUrl;
           link.download = initialData.proof_document;
           link.click();
         });

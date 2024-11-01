@@ -1,21 +1,16 @@
 import { Accordion } from '../../../ui/accordion/Accordion';
 import { Button } from '../../../ui/button/Button';
-// import { Modal } from '../../../ui/modal/Modal';
+import { Modal } from '../../../ui/modal/Modal';
 import './VacationList.css';
 import { validateVacationRequestInput } from '../../../../utils/validation';
 import { VacationRequestForm } from '../../../user/form/vacation-request-form/VacationRequestForm';
-
-// 다운로드 버튼
-const downloadButton = new Button({
-  className: 'user-vcDownload-btn',
-  text: '다운로드',
-  color: 'skyblue',
-  shape: 'block',
-  padding: 'var(--space-xsmall) var(--space-small)',
-});
+import {
+  getUserAbsById,
+  updateUserAbsence,
+} from '../../../../../server/api/user';
 
 // 수정 모드 토글 함수
-const toggleEditMode = (vcId, itemData) => {
+const toggleEditMode = async (vcId, container, itemData) => {
   // console.log('선택된 부재 id: ', vcId);
   const contentContainer = document.getElementById(vcId);
   const contentElement = contentContainer.querySelector('.user-detail-content');
@@ -31,10 +26,10 @@ const toggleEditMode = (vcId, itemData) => {
   let cancelEditBtn, submitButton;
 
   // 수정 모드 종료
-  const exitEditMode = () => {
+  const exitEditMode = (updatedData = null) => {
     contentElement.classList.remove('edit-mode');
 
-    // 수정 취소 및 수정 완료 버튼 제거
+    // 수정 취소,수정 완료 버튼 제거
     if (cancelEditBtn) buttonGroup.removeChild(cancelEditBtn);
     if (submitButton) buttonGroup.removeChild(submitButton);
 
@@ -45,6 +40,21 @@ const toggleEditMode = (vcId, itemData) => {
 
     // 아코디언 높이 초기화
     detail.style.maxHeight = 'none';
+
+    // 업데이트된 데이터가 있으면, renderContent로 다시 렌더링
+    if (updatedData) {
+      // 업데이트된 콘텐츠 렌더링 후, 기존의 버튼 그룹을 유지하면서 다시 추가
+      const updatedContent = renderContent(updatedData);
+      contentContainer.innerHTML = updatedContent;
+
+      // 업데이트된 contentContainer에 기존 buttonGroup을 다시 삽입
+      const buttonGroupContainer = contentContainer.querySelector(
+        '.user-approval-button-group-container',
+      );
+      buttonGroupContainer.appendChild(buttonGroup);
+
+      appendDownloadButton(itemData, contentContainer);
+    }
   };
 
   if (!isEditMode) {
@@ -56,62 +66,86 @@ const toggleEditMode = (vcId, itemData) => {
       .querySelectorAll('.user-vcEdit-button, .user-vcDelete-button')
       .forEach(btn => (btn.style.display = 'none'));
 
-    // 원래 내용을 백업
+    // 원래 내용을 백업_수정 취소시 사용
     const originalContent = contentElement.innerHTML;
     contentElement.dataset.originalContent = originalContent;
 
-    // VacationRequestForm을 HTML 문자열로 가져와 DOM 요소로 변환해 삽입
-    const formComponent = VacationRequestForm(true, {
-      type: itemData.abs_type,
-      title: itemData.abs_title,
-      startDate: itemData.abs_start_date,
-      endDate: itemData.abs_end_date,
-      content: itemData.abs_content,
-      proof_document: itemData.abs_proof_document,
-    });
-    formComponent.renderForm(contentElement);
+    try {
+      // 최신 데이터 가져오기
+      const latestData = await getUserAbsById(
+        itemData.user_id,
+        itemData.abs_id,
+      );
 
-    // 수정 취소 버튼 추가
-    cancelEditBtn = new Button({
-      className: 'user-vcCancelEdit-button',
-      text: '수정 취소',
-      color: 'coral',
-      shape: 'block',
-      padding: 'var(--space-small) var(--space-large)',
-      onClick: () => {
-        // 수정 취소 시, 원래 내용 복구 및 수정 모드 종료
-        contentElement.innerHTML = contentElement.dataset.originalContent;
-        exitEditMode();
-      },
-    });
-    buttonGroup.appendChild(cancelEditBtn);
+      // VacationRequestForm을 최신 데이터로 생성
+      const formComponent = VacationRequestForm(true, {
+        type: latestData.abs_type,
+        title: latestData.abs_title,
+        startDate: latestData.abs_start_date,
+        endDate: latestData.abs_end_date,
+        content: latestData.abs_content,
+        proof_document: latestData.abs_proof_document,
+        proof_documentUrl: latestData.abs_proof_document_base64,
+      });
 
-    // 수정 완료 버튼 추가
-    submitButton = new Button({
-      className: 'user-vcSubmit-button',
-      text: '수정 완료',
-      color: 'skyblue-light',
-      shape: 'block',
-      padding: 'var(--space-small) var(--space-large)',
-      onClick: () => {
-        // 수정 완료 시 유효성 검사 통과 후 수정 모드 종료
-        if (validateVacationRequestInput(true)) {
-          // 일단 원래 내용 복구 및 수정 모드 종료
+      // 폼 렌더링
+      formComponent.renderForm(contentElement);
+
+      // 수정 취소 버튼 추가
+      cancelEditBtn = new Button({
+        className: 'user-vcCancelEdit-button',
+        text: '수정 취소',
+        color: 'coral',
+        shape: 'block',
+        padding: 'var(--space-small) var(--space-large)',
+        onClick: () => {
+          // 수정 취소 시, 원래 내용 복구 및 수정 모드 종료
           contentElement.innerHTML = contentElement.dataset.originalContent;
           exitEditMode();
-        }
-      },
-    });
-    buttonGroup.appendChild(submitButton);
+        },
+      });
+      buttonGroup.appendChild(cancelEditBtn);
 
-    detail.style.maxHeight = `${detail.scrollHeight}px`; // 높이 업데이트
+      // 수정 완료 버튼 추가
+      submitButton = new Button({
+        className: 'user-vcSubmit-button',
+        text: '수정 완료',
+        color: 'skyblue-light',
+        shape: 'block',
+        padding: 'var(--space-small) var(--space-large)',
+        onClick: async () => {
+          // 수정 완료 시 유효성 검사 통과 후 수정 모드 종료
+          if (validateVacationRequestInput(true)) {
+            try {
+              const updatedData = await updateUserAbsence(
+                container,
+                itemData.user_id,
+                itemData.abs_id,
+              );
+              Modal('vacation-edit-success');
+              exitEditMode(updatedData);
+            } catch (error) {
+              console.log('부재 수정 중 오류 발생 : ', error);
+              Modal('vacation-edit-fail');
+            }
+          } else {
+            Modal('vacation-edit-fail');
+          }
+        },
+      });
+      buttonGroup.appendChild(submitButton);
+
+      detail.style.maxHeight = `${detail.scrollHeight}px`; // 높이 업데이트
+    } catch (error) {
+      console.error('최신 데이터를 가져오는 중 오류 발생:', error);
+    }
   } else {
     exitEditMode(); // 이미 수정 모드인 경우 수정 모드 종료
   }
 };
 
 // 수정하기, 삭제 버튼
-const renderButtons = (status, vcId, itemData) => {
+const renderButtons = (status, vcId, container, itemData) => {
   const buttonGroup = document.createElement('div');
   buttonGroup.className = 'user-approval-button-group';
 
@@ -122,7 +156,7 @@ const renderButtons = (status, vcId, itemData) => {
       color: 'green-light',
       shape: 'block',
       padding: 'var(--space-small) var(--space-large)',
-      onClick: () => toggleEditMode(vcId, itemData), // 수정 모드 토글
+      onClick: () => toggleEditMode(vcId, container, itemData), // 수정 모드 토글
     });
 
     const deleteBtn = new Button({
@@ -131,7 +165,19 @@ const renderButtons = (status, vcId, itemData) => {
       color: 'coral',
       shape: 'block',
       padding: 'var(--space-small) var(--space-large)',
-      onClick: () => {},
+      onClick: async () => {
+        try {
+          const options = {
+            userId: itemData.user_id,
+            absId: itemData.abs_id,
+            vcId: vcId,
+          };
+          Modal('vacation-delete', options);
+        } catch (error) {
+          console.log('부재 삭제 중 오류 발생 : ', error);
+          Modal('vacation-delete-fail');
+        }
+      },
     });
 
     buttonGroup.append(editBtn, deleteBtn);
@@ -154,6 +200,7 @@ const renderHeader = item => `
 // 아코디언 콘텐츠
 const renderContent = item => {
   const vcId = `content-${item.abs_id}`;
+
   return `
     <article class="user-detail-content-container" id="${vcId}">
       <div class="user-detail-content">
@@ -174,8 +221,8 @@ const renderContent = item => {
         <section class="user-detail-item">
           <h3 class="user-detail-label">첨부 파일</h3>
           <div class="user-download-file">
-            <p class="user-detail-value">FE_${item.user_name}_${item.abs_type}.pdf</p>
-            ${downloadButton.outerHTML}
+            <p class="user-detail-value">${item.abs_proof_document}</p>
+            <div class="download-button-container"></div> 
           </div>
         </section>
 
@@ -185,10 +232,35 @@ const renderContent = item => {
         </section>
       </div>
 
-      <div class="user-approval-button-group-placeholder"></div>
+      <div class="user-approval-button-group-container"></div>
       
     </article>
   `;
+};
+
+// 다운로드 버튼 추가
+const appendDownloadButton = (item, container) => {
+  const downloadButton = new Button({
+    className: 'user-vcDownload-btn',
+    text: '다운로드',
+    color: 'skyblue',
+    shape: 'block',
+    padding: 'var(--space-xsmall) var(--space-small)',
+    onClick: () => {
+      if (item.abs_proof_document_base64) {
+        const link = document.createElement('a');
+        link.href = item.abs_proof_document_base64;
+        link.download = item.abs_proof_document || 'downloaded-file';
+        link.click();
+      } else {
+        console.log('다운로드할 파일이 없습니다.');
+      }
+    },
+  });
+  const buttonPosition = container.querySelector(
+    `#content-${item.abs_id} .download-button-container`,
+  );
+  buttonPosition.appendChild(downloadButton);
 };
 
 // 사용자 휴가 리스트 렌더링
@@ -214,11 +286,14 @@ export const RenderUserVacationList = async (container, userAbsData) => {
   userAbsData.forEach(item => {
     const vcId = `content-${item.abs_id}`;
     const contentContainer = container.querySelector(`#${vcId}`);
-    const buttonGroupPlaceholder = contentContainer.querySelector(
-      '.user-approval-button-group-placeholder',
+    const buttonGroupContainer = contentContainer.querySelector(
+      '.user-approval-button-group-container',
     );
-    const buttonGroup = renderButtons(item.abs_status, vcId, item);
-    buttonGroupPlaceholder.replaceWith(buttonGroup);
+    const buttonGroup = renderButtons(item.abs_status, vcId, container, item);
+
+    appendDownloadButton(item, contentContainer);
+
+    buttonGroupContainer.replaceWith(buttonGroup);
   });
 
   if (userAbsData.length === 0) {

@@ -32,20 +32,29 @@ export const validateLoginInput = (container, email, password) => {
 export const validateProfileInput = container => {
   const phone =
     container.querySelector('.user-profile-inputs input#phone')?.value ?? '';
+  const email =
+    container.querySelector('.user-profile-inputs #email')?.value ?? '';
   const password =
     container.querySelector('.user-profile-inputs input#password')?.value ?? '';
   const confirmPassword =
     container.querySelector('.user-profile-inputs input#confirm-password')
       ?.value ?? '';
-  const email = container.querySelector('#email')?.value ?? '';
 
   // 각 오류 메시지 요소 선택
-  const phoneError = container.querySelector('#phoneError');
-  const passwordError = container.querySelector('#passwordError');
-  const confirmPasswordError = container.querySelector('#confirmPasswordError');
-  const emailError = container.querySelector('#emailError');
+  const phoneError = container.querySelector(
+    '.user-profile-inputs #phoneError',
+  );
+  const emailError = container.querySelector(
+    '.user-profile-inputs #emailError',
+  );
+  const passwordError = container.querySelector(
+    '.user-profile-inputs #passwordError',
+  );
+  const confirmPasswordError = container.querySelector(
+    '.user-profile-inputs #confirmPasswordError',
+  );
 
-  // 오류 메시지 초기화
+  // 오류 메시지 초기화;
   phoneError.textContent = '';
   passwordError.textContent = '';
   confirmPasswordError.textContent = '';
@@ -54,10 +63,13 @@ export const validateProfileInput = container => {
   let isValid = true;
 
   // 전화번호 검증
-  if (!/^\d{3}-\d{4}-\d{4}$/.test(phone)) {
-    phoneError.textContent =
-      '전화번호 형식이 올바르지 않습니다. 형식: xxx-xxxx-xxxx';
-    isValid = false;
+  if (phone.trim()) {
+    // 입력된 경우에만 검사
+    if (!/^\d{3}-\d{4}-\d{4}$/.test(phone)) {
+      phoneError.textContent =
+        '전화번호 형식이 올바르지 않습니다. 형식: xxx-xxxx-xxxx';
+      isValid = false;
+    }
   }
 
   // 비밀번호 검증
@@ -72,19 +84,22 @@ export const validateProfileInput = container => {
     } else {
       passwordError.textContent = ''; // 오류가 없으면 메시지 초기화
     }
-  }
 
-  // 비밀번호 확인 검증
-  if (password !== confirmPassword) {
-    confirmPasswordError.textContent =
-      '비밀번호와 비밀번호 확인이 일치하지 않습니다.';
-    isValid = false;
+    // 비밀번호 확인 검증
+    if (password !== confirmPassword) {
+      confirmPasswordError.textContent =
+        '비밀번호와 비밀번호 확인이 일치하지 않습니다.';
+      isValid = false;
+    }
   }
 
   // 이메일 검증
-  if (!/\S+@\S+\.\S+/.test(email)) {
-    emailError.textContent = '유효한 이메일 주소를 입력해주세요.';
-    isValid = false;
+  if (email.trim()) {
+    // 입력된 경우에만 검사
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      emailError.textContent = '유효한 이메일 주소를 입력해주세요.';
+      isValid = false;
+    }
   }
 
   return isValid;
@@ -113,12 +128,24 @@ export const validateVacationRequestInput = isEditMode => {
   const fileInput = document.querySelector(
     '.vacation-request-form-inputs input#fileInput',
   );
-  const vcTypeError = document.querySelector('#vcTypeError');
-  const vcTitleError = document.querySelector('#vcTitleError');
-  const vcStartError = document.querySelector('#vcStartError');
-  const vcEndError = document.querySelector('#vcEndError');
-  const vcContentError = document.querySelector('#vcContentError');
-  const vcFileError = document.querySelector('#vcFileError');
+  const vcTypeError = document.querySelector(
+    '.vacation-request-form-inputs #vcTypeError',
+  );
+  const vcTitleError = document.querySelector(
+    '.vacation-request-form-inputs #vcTitleError',
+  );
+  const vcStartError = document.querySelector(
+    '.vacation-request-form-inputs #vcStartError',
+  );
+  const vcEndError = document.querySelector(
+    '.vacation-request-form-inputs #vcEndError',
+  );
+  const vcContentError = document.querySelector(
+    '.vacation-request-form-inputs #vcContentError',
+  );
+  const vcFileError = document.querySelector(
+    '.vacation-request-form-inputs #vcFileError',
+  );
 
   vcTypeError.textContent = '';
   vcTitleError.textContent = '';

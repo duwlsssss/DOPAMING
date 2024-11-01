@@ -1,21 +1,23 @@
-import axios from 'axios';
 import { RenderNoticeItem } from '../../../../components';
-// import { getItem } from '../../../../utils/storage';
+import {
+  getAllNotices,
+  getUserIdName,
+  fetchUserData,
+} from '../../../../../server/api/user';
 import navigate from '../../../../utils/navigation';
 import './NoticeList.css';
 
 export const RenderUserNoticeList = async container => {
-  try {
-    const response = await axios.get('../../server/data/company_posts.json');
-    const posts = response.data.sort(
-      (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
-    ); //업데이트 일자 기준 내림차순 정렬
+  container.innerHTML = `<div class="loading">공지 정보를 가져오는 중입니다.</div>`;
 
-    const usersResponse = await axios.get('../../server/data/users.json');
-    let users = usersResponse.data;
-    // const userId = getItem('userID');
-    const userId = '231231232'; // 임의로 설정
-    const bcName = users.find(user => user.user_id === userId).user_bootcamp;
+  try {
+    const posts = await getAllNotices();
+
+    const userInfo = await getUserIdName();
+
+    const user = await fetchUserData(userInfo.id);
+
+    const bcName = user.user_bootcamp;
 
     const renderNoticeItems = filteredPosts => {
       return filteredPosts
@@ -29,7 +31,7 @@ export const RenderUserNoticeList = async container => {
 
     container.innerHTML = `
       <header class="user-notice-list-header">
-        <div class="user-notice-title"><span class="strong">${bcName}</span>의 공지목록입니다.</div> 
+        <div class="user-notice-title"></div> 
         <div class="user-notice-search">
           <input type="text" class="user-notice-search-input" placeholder="Search"/>
           <span class="material-symbols-rounded">search</span> 
@@ -39,6 +41,18 @@ export const RenderUserNoticeList = async container => {
         ${renderNoticeItems(posts)}
       </div>
     `;
+
+    // MEDIA
+    const NoticeListTitle = container.querySelector('.user-notice-title');
+    const updateNoticeTitleText = () => {
+      if (window.innerWidth <= 767) {
+        NoticeListTitle.innerHTML = '공지 목록';
+      } else {
+        NoticeListTitle.innerHTML = `<span class="strong">${bcName}</span>의 공지목록입니다.`;
+      }
+    };
+    updateNoticeTitleText();
+    window.addEventListener('resize', updateNoticeTitleText);
 
     //notice-item-container클릭시 notice-detail 페이지로 이동하게 함
     //모든 notice-item-container에 클릭 이벤트 핸들러 연결함

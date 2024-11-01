@@ -64,10 +64,10 @@ select {
   width: 210px;
 }
 
-.user .circle {
+.user .img-container {
   width: 10px;
 }
-.user-item .circle {
+.user-item .img-container {
   width: 10px;
 }
 
@@ -77,7 +77,15 @@ select {
   align-items: center;
 }
 
-.circle1 {
+.member-status {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background-color: var(--color-regular-gray);
+  margin-left: 20px;
+}
+
+.member-status.active {
   width: 17px;
   height: 17px;
   border-radius: 50%;
@@ -183,7 +191,7 @@ input[type='checkbox']:checked + .custom-checkbox::after {
   .user-item {
     display: flex;
   }
-  .user-item .circle {
+  .user-item .img-container {
     display: none;
   }
 

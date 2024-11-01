@@ -1,39 +1,15 @@
-import { ApiClient } from '../../../../apis/ApiClient';
-import { Button } from '../../../../components';
+import {
+  adminFetchMemberDetail,
+  adminFetchVacation,
+} from '../../../../../server/api/admin';
+import { Button, Modal } from '../../../../components';
 import { Accordion } from '../../../../components/ui/accordion/Accordion';
 import './MemberDetail.css';
 
-const MEMBER_INFORMATION_URL = '../../../../../server/data/users.json';
-const MEMBER_VACATION_URL = '../../../../../server/data/absences.json';
 export async function RenderAdminMemberDetail(container, memberId) {
-  const handleMemberInformation = async () => {
-    try {
-      const data = await ApiClient.get(MEMBER_INFORMATION_URL);
-      return data.data.find(member => member.user_id === memberId);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const handleMemberDetailVacation = async () => {
-    try {
-      const data = await ApiClient.get(MEMBER_VACATION_URL);
-      const filterData = data.data.find(member => member.user_id === memberId);
-      return [
-        {
-          ...filterData,
-          member_name: memberDetail.user_name,
-          member_postition: memberDetail.user_position,
-          member_phone: memberDetail.user_phone,
-        },
-      ];
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const memberDetail = await handleMemberInformation();
-  const memberVacationDetail = await handleMemberDetailVacation();
+  const memberDetailData = await adminFetchMemberDetail(memberId);
+  const memberVactionDetail = await adminFetchVacation(memberId);
+  let selectedIds = [memberId];
 
   const buttonElement = Button({
     width: 40,
@@ -41,7 +17,11 @@ export async function RenderAdminMemberDetail(container, memberId) {
     color: 'coral',
     shape: 'block',
     className: 'detail_button',
-    onClick: () => console.log('log'),
+
+    onClick: async () => {
+      Modal('employee-delete', { selectedIds });
+      selectedIds = [];
+    },
   });
 
   const downloadButton = new Button({
@@ -54,19 +34,21 @@ export async function RenderAdminMemberDetail(container, memberId) {
   <header class="member-detail-info">
     <div class="member-detail-status-dot active">
     </div>
-    <img src="${memberDetail.user_image}" alt="${
-      memberDetail.user_name
+    <img src="${memberDetailData.user_image}" alt="${
+      memberDetailData.user_name
     }" class="admin-vacation-avatar">
-    <span >${memberDetail.user_position}</span>
-    <span >${memberDetail.user_birthday.replace('-', '.')}</span>
-    <span >${memberDetail.user_name}</span>
-    <span >${memberDetail.user_phone}</span>
-    <span >${memberDetail.user_sex}</span>
-    <span >${memberDetail.user_email}</span>
+    <span >${memberDetailData.user_position}</span>
+    <span >${memberDetailData.user_birthday.replace('-', '.')}</span>
+    <span >${memberDetailData.user_name}</span>
+    <span >${memberDetailData.user_phone}</span>
+    <span >${memberDetailData.user_sex}</span>
+    <span >${memberDetailData.user_email}</span>
   </header>
 `;
+
+  //휴가 관련 정보
   const vactionDetailRender = memberVacationDetail => {
-    if (memberVacationDetail.length > 0) {
+    if (memberVacationDetail) {
       return `
       <div class="member-detail-list">               
         ${Accordion({
@@ -103,7 +85,7 @@ export async function RenderAdminMemberDetail(container, memberId) {
             <section class="member-detail-item">
               <h3 class="member-detail-label">첨부 파일</h3>
               <div class="member-download-file">
-                <p class="member-detail-value">FE_${value.abs_type}_${value.abs_type}.pdf</p>
+                <p class="member-detail-value">${value.abs_proof_document}</p>
                 ${downloadButton.outerHTML}
               </div>
             </section>
@@ -119,28 +101,28 @@ export async function RenderAdminMemberDetail(container, memberId) {
     <div class="member-detail-container">    
       <div class="member-detail-header">
       <h1>직원 상세</h1>
-        ${buttonElement.outerHTML}
+        
       </div>
       <div class="member-detail-wapper">
         <div class="member-detail-items">
           <div class="profile-top">
             <img src="${
-              memberDetail.user_image
+              memberDetailData.user_image
             }" alt="프로필 이미지" class="profile-img-item"/>          
           </div>       
           <div class="profile-information">         
             <div class="profle-information-left">
-              <span>직책:${memberDetail.user_position}</span>
-              <span>전화번호:${memberDetail.user_phone}</span>                 
-              <span>이름:${memberDetail.user_name}</span>
+              <span>직책:${memberDetailData.user_position}</span>
+              <span>전화번호:${memberDetailData.user_phone}</span>                 
+              <span>이름:${memberDetailData.user_name}</span>
             </div>
             <div class="profle-information-right">
-              <span>생년월일:${memberDetail.user_birthday.replace(
+              <span>생년월일:${memberDetailData.user_birthday.replace(
                 '-',
                 '.',
               )}</span>                
-              <span>성별:${memberDetail.user_sex}</span>
-              <span>이메일:${memberDetail.user_email}</span>        
+              <span>성별:${memberDetailData.user_sex}</span>
+              <span>이메일:${memberDetailData.user_email}</span>        
             </div>
           </div>
         </div>      
@@ -151,13 +133,14 @@ export async function RenderAdminMemberDetail(container, memberId) {
           <h1>부재 신청 내역</h1>
           <div class="member-detail-footer-item">
           <div class="member-detail-item-wrapper"> 
-          ${vactionDetailRender(memberVacationDetail)}                           
+          ${vactionDetailRender(memberVactionDetail)}                           
           </div>
         </div>
         </div>     
-        </div>            
-          
+        </div>                      
       </div>
     </div>
   `;
+  const buttonEl = document.querySelector('.member-detail-header');
+  buttonEl.append(buttonElement);
 }

@@ -1,12 +1,7 @@
-import Router from '../../../routes/Router';
 import './Header.css';
 import { Button } from '../../ui/button/Button';
-import { clearStorage } from '../../../utils/storage';
-import {
-  applyProfileImage,
-  listenForProfileImageUpdate,
-} from '../../../utils/handleProfileImg';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { userLogout } from '../../../../server/api/user';
 import { fetchUserData } from '../../../../server/api/user';
 
 export async function RenderHeader(header, editProfilePath) {
@@ -27,12 +22,19 @@ export async function RenderHeader(header, editProfilePath) {
       const userId = user.uid; // 사용자 고유 ID
       const userData = await fetchUserData(userId);
 
+      // 기본 이미지 경로 설정
+      const defaultProfileImg = '/assets/imgs/profile/profile_null.jpg';
+
       let userName = '';
       let isAdmin = false;
+      let userProfileImg = `url(${defaultProfileImg})`;
 
       if (userData) {
         userName = userData.user_name;
         isAdmin = userData.user_type;
+        userProfileImg = userData.user_image
+          ? `url(${userData.user_image})`
+          : `url(${defaultProfileImg})`;
       } else {
         console.error('사용자 데이터가 존재하지 않습니다.');
       }
@@ -52,10 +54,7 @@ export async function RenderHeader(header, editProfilePath) {
         text: '로그아웃',
         color: 'white',
         shape: 'line',
-        onClick: () => {
-          clearStorage(); // 로그아웃 누르면 로컬 스토리지 정리
-          Router();
-        },
+        onClick: userLogout,
       });
 
       const headerItem = header.querySelector('.header-items');
@@ -65,11 +64,14 @@ export async function RenderHeader(header, editProfilePath) {
       if (isAdmin) {
         profileImgPosition.style.backgroundImage = `url(/assets/imgs/profile/profile_null.jpg)`; // 관리자는 프로필 고정
       } else {
-        // 처음에 프로필 사진 적용
-        applyProfileImage(profileImgPosition);
-        // 업데이트 반영
-        listenForProfileImageUpdate(profileImgPosition);
+        profileImgPosition.style.backgroundImage = userProfileImg;
       }
+
+      // 프로필 이미지 업데이트 반영
+      window.addEventListener('profileImageUpdated', async () => {
+        const updatedUserData = await fetchUserData(userId); // 새로고침 없이 최신 데이터 가져오기
+        profileImgPosition.style.backgroundImage = `url(${updatedUserData.user_image || '/assets/imgs/profile/profile_null.jpg'})`;
+      });
     });
   } catch (e) {
     console.error('사용자 데이터를 가져오는 중 오류 발생 ! :', e);

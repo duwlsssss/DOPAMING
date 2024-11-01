@@ -1,7 +1,8 @@
 button[data-type='break-in'],
 button[data-type='break-out'],
 button[data-type='punch-in'],
-button[data-type='punch-out'] {
+button[data-type='punch-out'],
+button[data-type='vacation-delete'] {
   width: calc(var(--space-large) * 3);
   height: calc(var(--space-medium) * 3);
   background-color: var(--color-skyblue);
@@ -11,7 +12,8 @@ button[data-type='punch-out'] {
 button[data-type='break-in']:hover,
 button[data-type='break-out']:hover,
 button[data-type='punch-in']:hover,
-button[data-type='punch-out']:hover {
+button[data-type='punch-out']:hover,
+button[data-type='vacation-delete']:hover {
   background-color: #83b8f5;
 }
 
@@ -54,6 +56,17 @@ button[data-type='punch-out']:hover {
   justify-content: center;
   margin-top: var(--space-large);
   width: 100%;
+}
+
+/* 부재 삭제 관련 */
+.user-question-message {
+  text-align: center;
+  font-size: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  margin: var(--space-large);
 }
 
 /* modal의 버튼에만 해당 */

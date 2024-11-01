@@ -1,14 +1,10 @@
 import './WorkInfo.css';
-import axios from 'axios';
+import { fetchTimePunchData, fetchUserData } from '../../../../server/api/user';
 
 export const WorkInfo = async (userId, date) => {
-  const jsonFilePath = '../../../../server/data/time_punch.json';
-
   try {
-    const response = await axios.get(jsonFilePath);
-    const users = Array.isArray(response.data) ? response.data : []; // 배열인지 확인 후 기본값 설정
-
-    // console.log('전체 사용자 데이터:', users);
+    const userTimePunchData = await fetchTimePunchData(userId); // 사용자 출퇴근 데이터 가져오기
+    const userData = await fetchUserData(userId); // 사용자 이름 가져오기
 
     // date가 Date 객체가 아니라면 형식 변환
     if (!(date instanceof Date)) {
@@ -16,62 +12,36 @@ export const WorkInfo = async (userId, date) => {
     }
     const dateString = date.toISOString().split('T')[0]; // "YYYY-MM-DD" 형식
 
-    // 특정 사용자 필터링 (punch_date 사용)
-    const filteredUsers = users.filter(
-      user => user.user_id === userId && user.punch_date === dateString,
+    // 특정 날짜의 데이터 필터링
+    const filteredUserData = userTimePunchData.find(
+      data => data.punch_date === dateString,
     );
-
-    console.log(
-      `Filtering with userId: ${userId} and punchDate: ${dateString}`,
-    );
-    // console.log('필터링된 사용자 데이터:', filteredUsers);
 
     // 기본 사용자 정보 초기화
-    let userName = '사용자';
-    let punchInTime = '--시 --분';
-    let punchOutTime = '--시 --분';
-    let breakOutTime = '--시 --분';
-    let breakInTime = '--시 --분';
+    let userName = userData?.user_name || '사용자';
+    let punchInTime = '00시 00분';
+    let punchOutTime = '00시 00분';
+    let breakOutTime = '00시 00분';
+    let breakInTime = '00시 00분';
 
-    if (filteredUsers.length > 0) {
-      const selectedUserData = filteredUsers[0];
-      userName = selectedUserData.user_name || userName;
-
-      // 추가 디버깅 로그
-      console.log('선택된 사용자 데이터:', selectedUserData);
-      console.log('사용자 이름:', userName);
-
-      punchInTime = selectedUserData.punch_in
-        ? new Date(selectedUserData.punch_in).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          })
+    if (filteredUserData) {
+      punchInTime = filteredUserData.punch_in
+        ? formatTime(filteredUserData.punch_in)
         : punchInTime;
 
-      punchOutTime = selectedUserData.punch_out
-        ? new Date(selectedUserData.punch_out).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          })
+      punchOutTime = filteredUserData.punch_out
+        ? formatTime(filteredUserData.punch_out)
         : punchOutTime;
 
-      breakOutTime = selectedUserData.break_out
-        ? new Date(selectedUserData.break_out).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          })
+      breakOutTime = filteredUserData.break_out
+        ? formatTime(filteredUserData.break_out)
         : breakOutTime;
 
-      breakInTime = selectedUserData.break_in
-        ? new Date(selectedUserData.break_in).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          })
+      breakInTime = filteredUserData.break_in
+        ? formatTime(filteredUserData.break_in)
         : breakInTime;
+    } else {
+      console.log('해당 날짜와 사용자에 대한 출퇴근 데이터가 없습니다.');
     }
 
     const currentTime = new Date().toLocaleTimeString([], {
@@ -107,12 +77,28 @@ export const WorkInfo = async (userId, date) => {
       `;
 
     return {
-      userInfo: filteredUsers.length > 0 ? filteredUsers[0] : null,
+      userInfo: filteredUserData || null,
       html: htmlOutput,
       currentTime,
     };
   } catch (error) {
-    console.error('사용자 데이터를 가져오는 중 오류 발생! :', error);
+    console.error('오류 발생!', error);
     return { userInfo: null, html: '', currentTime: '' };
   }
+};
+
+// 시간 포맷팅 함수
+const formatTime = timeString => {
+  const timeParts = timeString.split(' ');
+  if (timeParts.length > 1) {
+    const time = new Date(timeParts[0] + 'T' + timeParts[1]);
+    if (!isNaN(time.getTime())) {
+      return time.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+    }
+  }
+  return '--시 --분'; // 유효하지 않은 경우 기본값 반환
 };
