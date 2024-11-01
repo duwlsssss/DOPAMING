@@ -1,0 +1,204 @@
+.user-top {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.user-update {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.search {
+  height: 42px;
+  width: 300px;
+  border-radius: var(--base-border-radius);
+  background-color: #eeeeee;
+  outline: none;
+  padding-left: 10px;
+}
+
+select {
+  border-radius: var(--base-border-radius);
+  padding: 10px;
+}
+
+.user-section {
+  background-color: var(--color-pale-gray);
+  width: 100%;
+  height: 600px;
+  margin-top: 17px;
+  border-radius: var(--base-border-radius);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.user-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.user-item {
+  border: 1px solid #000000;
+  border-radius: var(--base-border-radius);
+  height: 60px;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+}
+
+.user-list p {
+  display: flex;
+  align-items: center;
+  border-left: 1px solid black;
+  height: 40px;
+  justify-content: center;
+  width: 210px;
+}
+
+.user .img-container {
+  width: 10px;
+}
+.user-item .img-container {
+  width: 10px;
+}
+
+.user-item .user-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.member-status {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background-color: var(--color-regular-gray);
+  margin-left: 20px;
+}
+
+.member-status.active {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background-color: var(--color-green);
+  margin-left: 20px;
+}
+
+.user-item .user-list p:nth-child(1) {
+  border: none;
+  padding: 0;
+}
+
+.user-item .user-list p:last-child {
+  border: none;
+  padding: 0;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+.custom-checkbox {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 2px solid #313131;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* 체크된 상태의 스타일 */
+input[type='checkbox']:checked + .custom-checkbox {
+  background-color: var(--color-skyblue);
+}
+
+/* 체크된 상태의 표시 */
+input[type='checkbox']:checked + .custom-checkbox::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.search_no_data {
+  color: var(--color-coral-dark);
+  margin: 20px;
+}
+
+.img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+}
+
+/* 반응형 스타일 */
+
+@media (max-width: 1500px) {
+  .user-item .user-list p:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .user-item .user-list p:nth-child(3),
+  .user-item .user-list p:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .user-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .user-section {
+    padding: var(--space-small);
+  }
+
+  .user-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 10px;
+    height: 100px;
+    margin-top: 20px;
+  }
+  .user-update {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .user-top h1 {
+    margin-bottom: 10px;
+  }
+  .user-item {
+    display: flex;
+  }
+  .user-item .img-container {
+    display: none;
+  }
+
+  .user-item .user-list p {
+    width: 100px;
+  }
+  .search {
+    width: 200px;
+  }
+}

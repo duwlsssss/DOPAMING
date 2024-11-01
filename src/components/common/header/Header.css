@@ -3,20 +3,47 @@
   font-size: var(--font-medium);
   text-align: center;
 }
-.user-name {
+.header-items .user-name {
   margin-bottom: var(--space-small);
 }
 
-.circle {
+.profile-circle {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: #d9d9d9;
+  overflow: hidden;
+  background: url('/assets/imgs/profile/profile_null.jpg') no-repeat center; /* 기본 값 넣어둠 */
+  background-size: cover;
 }
 
-.logout {
-  padding: 5px;
-  border: 2px solid black;
-  border-radius: 5px;
-  font-size: var(--font-medium);
+.profile-circle a.hidden-link {
+  display: block;
+  opacity: 0;
+  width: 80px;
+  height: 80px;
+  z-index: 1;
+  /* background-color: black;  */
+}
+
+.header-mobile {
+  display: none;
+}
+
+@media (width<=767px) {
+  .profile-circle,
+  .header-items .user-name {
+    display: none;
+  }
+
+  .header-items {
+    order: 1;
+  }
+
+  .logout-btn {
+    padding: var(--space-xsmall) var(--space-small) !important;
+  }
+
+  .header-mobile {
+    display: block;
+  }
 }

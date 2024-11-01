@@ -1,6 +1,47 @@
-.members-container {
-  min-width: auto;
-  max-width: 1200px;
-  padding: 0 20px;
-  margin: 0 auto;
+.user-edit-title {
+  width: 100%;
+  font-weight: 700;
+  margin-bottom: var(--space-medium);
+}
+
+.user-edit-form-container {
+  width: 100%;
+  padding: var(--space-large);
+  border-radius: var(--base-border-radius);
+  background-color: var(--color-pale-gray);
+}
+
+.user-edit-form {
+  display: flex;
+  gap: 2rem;
+}
+
+.user-edit-form .user-edit-profileImg {
+  flex: 4;
+  flex-basis: 0;
+}
+
+.user-edit-form .user-edit-profile {
+  flex: 6;
+  flex-basis: 0;
+}
+
+.user-edit-form-container .edit-submit-btn {
+  width: 100%;
+  margin-top: var(--space-medium);
+}
+
+@media (width<=1200px) {
+  .user-edit-form-container {
+    padding: var(--space-large) var(--space-xlarge);
+  }
+  .user-edit-form {
+    flex-direction: column;
+  }
+}
+
+@media (width <= 1000px) {
+  .user-edit-form-container {
+    padding: var(--space-xsmall) var(--space-small);
+  }
 }

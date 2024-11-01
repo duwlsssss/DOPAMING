@@ -1,0 +1,73 @@
+button[color='white'][shape='line'] {
+  background-color: var(--color-white);
+  border: 1.5px solid var(--color-black);
+}
+button[color='white'][shape='line']:hover {
+  background-color: var(--color-dark-gray);
+  border: 1.5px solid var(--color-dark-gray);
+  color: var(--color-white);
+}
+
+button[color='transparent'][shape='line'] {
+  background-color: transparent;
+  border: 1.5px solid var(--color-black);
+}
+button[color='transparent'][shape='line']:hover {
+  background-color: var(--color-white);
+}
+
+button[color='skyblue'][shape='block'] {
+  background-color: var(--color-skyblue);
+}
+button[color='skyblue'][shape='block']:hover {
+  background-color: var(--color-blue);
+}
+
+button[color='skyblue-light'][shape='block'] {
+  background-color: var(--color-skyblue-light);
+}
+button[color='skyblue-light'][shape='block']:hover {
+  background-color: var(--color-skyblue-light-dark);
+}
+
+button[color='coral'][shape='block'] {
+  background-color: var(--color-coral);
+}
+button[color='coral'][shape='block']:hover {
+  background-color: var(--color-coral-dark);
+}
+
+button[color='green'][shape='block'] {
+  background-color: var(--color-green);
+}
+button[color='green'][shape='block']:hover {
+  background-color: var(--color-green-dark);
+}
+
+button[color='green-light'][shape='block'] {
+  background-color: var(--color-green-light);
+}
+button[color='green-light'][shape='block']:hover {
+  background-color: var(--color-green-light-dark);
+}
+
+button[color='green-muted'][shape='block'] {
+  background-color: var(--color-green-muted);
+}
+button[color='green-muted'][shape='block']:hover {
+  background-color: var(--color-green-muted-dark);
+}
+
+button[color='caramel'][shape='block'] {
+  background-color: var(--color-caramel);
+}
+button[color='caramel'][shape='block']:hover {
+  background-color: var(--color-caramel-dark);
+}
+
+button[color='gray'][shape='block'] {
+  background-color: var(--color-light-gray);
+}
+button[color='gray'][shape='block']:hover {
+  background-color: var(--color-regular-gray);
+}

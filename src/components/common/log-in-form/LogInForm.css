@@ -1,0 +1,115 @@
+.login-container {
+  width: 100%;
+  padding: var(--space-xlarge);
+  text-align: center;
+}
+
+.login-container h2 {
+  line-height: 1.5;
+  font-size: var(--font-large);
+  font-weight: 700;
+  margin-bottom: var(--space-large);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-medium);
+  padding: var(--space-large);
+  border: 1px solid var(--color-light-gray);
+  border-radius: var(--base-border-radius);
+}
+
+.login-form .input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-small);
+}
+
+.login-form .input-group label {
+  font-size: var(--font-medium);
+  margin-left: 4px;
+}
+
+.login-form .input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 8px;
+  font-size: var(--font-medium);
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.login-form .input-group input:hover {
+  transition: border-color 0.3s ease;
+  border-color: var(--color-blue);
+}
+
+.login-form .input-group input:focus {
+  border-color: var(--color-blue);
+}
+
+.login-form .input-group .error-message {
+  margin: 0 0 0 var(--space-small); /* form 안의 p 태그 조작 - 우선 순위 높여서 */
+  font-size: var(--font-small);
+  color: var(--color-coral);
+}
+
+.login-form .input-group .input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.login-form .input-group #password {
+  width: 100%;
+  padding-right: 2.5rem; /* 아이콘 공간 확보 */
+}
+
+.login-form .input-group #toggle-password {
+  position: absolute;
+  font-size: var(--font-large);
+  right: 0.5rem; /* input 오른쪽에 여백 설정 */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--color-regular-gray);
+}
+
+.login-form .login-btn-container .login-btn {
+  width: 100%;
+}
+
+.forgot-password a {
+  color: #666;
+  text-decoration: none;
+  font-size: var(--font-small);
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+  color: #4a90e2;
+  transition: color 0.2s ease;
+}
+
+@media (width <= 1200px) {
+  .login-form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+@media (width <= 767px) {
+  .login-container {
+    padding: var(--space-large);
+  }
+
+  .login-form {
+    padding: var(--space-medium);
+  }
+
+  .login-form .login-btn-container .login-btn {
+    padding: var(--space-small) 0 !important;
+  }
+}

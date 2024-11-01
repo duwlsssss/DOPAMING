@@ -5,13 +5,14 @@
   margin-bottom: var(--space-large);
   font-size: var(--font-large);
   font-weight: 700;
+  cursor: pointer;
 }
 
 .logo-circle {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: var(--color-light-gray);
+  min-width: 50px;
+  min-height: 50px;
+  background: url('/assets/imgs/logo/logo.png') no-repeat center;
+  background-size: contain;
 }
 
 .menu {
@@ -24,21 +25,43 @@
   gap: var(--space-medium);
   padding: var(--space-medium);
   font-size: var(--font-medium);
+  line-height: 1.5;
+  word-break: keep-all;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
   cursor: pointer;
 }
 
 .menu-item a:hover {
-  border-radius: 10px;
-  background-color: var(--color-sky-blue);
+  background-color: var(--color-skyblue);
 }
 
 a.menu-link.active {
-  border-radius: 10px;
-  background-color: var(--color-sky-blue);
+  background-color: var(--color-skyblue);
 }
 
 @media (width<=900px) {
   .navbar-top h1 {
     display: none;
+  }
+}
+
+@media (width<=767px) {
+  .navbar-top {
+    display: none;
+  }
+  .menu {
+    display: flex;
+    align-content: center;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-top: 0;
+  }
+  .menu-item a {
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-xsmall);
+    padding: var(--space-small);
+    font-size: var(--font-small);
   }
 }

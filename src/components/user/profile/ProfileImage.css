@@ -1,0 +1,70 @@
+.user-profileImg-container {
+  position: relative;
+  width: 100%;
+}
+
+.user-profileImg-container .profileImg-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  padding: var(--space-large);
+  border-radius: var(--base-border-radius);
+  background-color: var(--color-regular-gray);
+  overflow: hidden;
+}
+
+.user-profileImg-container .user-profileImg-button-container {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin-top: var(--space-medium);
+}
+.user-profileImg-container .img-upload-btn,
+.user-profileImg-container .img-delete-btn {
+  flex: 1;
+  flex-basis: 0;
+  flex-basis: 0;
+  width: 100%;
+}
+
+.user-profileImg-container .profileImg-box .real-profileImg {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: absolute; /* 상위 요소 기준 배치 */
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.user-profileImg-container .profileImg-box .inside-circle {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 50%;
+  background-color: var(--color-white);
+}
+
+/* Upload Your Profile  */
+.user-profileImg-container .profileImg-box .inside-circle .circle-text {
+  line-height: 1.5;
+  font-size: var(--font-large);
+}
+
+/* (단, jpg/png/jpeg 확장자 파일만 적용됩니다.) */
+.user-profileImg-container .profileImg-box .profile-description-constraint {
+  margin-top: -0.5rem;
+  font-size: var(--font-small);
+}
+
+.user-profileImg-container #fileInput {
+  display: none; /* 파일 입력 숨김 */
+}

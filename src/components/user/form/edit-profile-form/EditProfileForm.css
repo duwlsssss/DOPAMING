@@ -1,0 +1,90 @@
+.user-profile-inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.35rem;
+  width: 100%;
+}
+
+.user-profile-inputs .input-container {
+  width: 100%;
+  display: flex;
+}
+
+.user-profile-inputs .input-container .user-input {
+  flex: 2;
+  flex-basis: 0;
+  margin-top: 0.6rem;
+}
+
+.user-profile-inputs .input-container .input-box {
+  flex: 8;
+  flex-basis: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem; /* 최소 공백*/
+  position: relative; /* 비번 눈 아이콘 배치용 */
+}
+
+.user-profile-inputs .input-container .input-box .error-message {
+  margin: 0 0 0 10px;
+  font-size: var(--font-small);
+  color: var(--color-coral);
+}
+
+.user-profile-inputs .input-container .input-box .input-field,
+.user-profile-inputs .input-container .input-box .input-select {
+  width: 100%;
+  height: 40px;
+  padding: var(--space-small);
+  border: 1.5px solid var(--color-light-gray);
+  border-radius: 10px;
+  outline: none;
+  background-color: var(--color-white);
+  transition: border-color 0.3s;
+}
+
+.user-profile-inputs .input-container .input-box .input-field:hover,
+.user-profile-inputs .input-container .input-box .input-select:hover {
+  border: 1.5px solid var(--color-regular-gray);
+}
+
+.user-profile-inputs .input-container .input-box .input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.user-profile-inputs .input-container .input-box .input-wrapper #password {
+  width: 100%;
+  padding-right: 2.5rem; /* 아이콘 공간 확보 */
+}
+
+.user-profile-inputs
+  .input-container
+  .input-box
+  .input-wrapper
+  #toggle-password,
+.user-profile-inputs
+  .input-container
+  .input-box
+  .input-wrapper
+  #toggle-confirm-password {
+  position: absolute;
+  right: 0.5rem; /* input 오른쪽에 여백 설정 */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--color-regular-gray);
+}
+
+@media (width <= 767px) {
+  .user-profile-inputs .input-container .user-input {
+    flex: 3;
+  }
+
+  .user-profile-inputs .input-container .input-box {
+    flex: 7;
+  }
+}

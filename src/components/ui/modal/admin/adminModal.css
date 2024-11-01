@@ -1,0 +1,72 @@
+button[data-type='employee-delete'],
+button[data-type='notice-delete'],
+button[data-type='vacation-permit'],
+button[data-type='vacation-reject'],
+button[data-type='vacation-reject-cancel'],
+button[data-type='vacation-permit-cancel'] {
+  width: calc(var(--space-large) * 3);
+  height: calc(var(--space-medium) * 3);
+  background-color: var(--color-skyblue);
+  transition: background-color 0.3s;
+}
+
+button[data-type='employee-delete']:hover,
+button[data-type='notice-delete']:hover,
+button[data-type='vacation-permit']:hover,
+button[data-type='vacation-reject']:hover,
+button[data-type='vacation-reject-cancel']:hover,
+button[data-type='vacation-permit-cancel']:hover {
+  background-color: #83b8f5;
+}
+
+.admin-modal-button-group {
+  display: flex;
+  justify-content: center;
+  /* gap: var(--space-small); */
+  margin-top: var(--space-small);
+}
+
+.modal button {
+  font-size: var(--font-medium);
+}
+
+.cancel-button {
+  background-color: var(--color-coral);
+  width: calc(var(--space-large) * 3);
+  height: calc(var(--space-medium) * 3);
+  transition: background-color 0.3s;
+}
+
+.cancel-button:hover {
+  background-color: #f49d9d;
+}
+
+.question-message,
+.error-message,
+.success-message {
+  text-align: center;
+  font-size: 1.2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: var(--space-large);
+}
+
+.question-message p,
+.error-message p,
+.success-message p {
+  line-height: 1.5;
+  margin: var(--space-small) 0;
+}
+
+.admin-close-button {
+  width: calc(var(--space-large) * 3);
+  height: calc(var(--space-medium) * 3);
+  background-color: var(--color-light-gray);
+  transition: background-color 0.3s ease-in-out;
+  margin-top: var(--space-small);
+}
+
+.admin-close-button:hover {
+  background-color: #c3c2c2;
+}
