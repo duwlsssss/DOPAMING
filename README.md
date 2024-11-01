@@ -184,26 +184,25 @@ npm run dev
     ![Alt text](DOPAMING-Chrome2024-11-0111-28-37-ezgif.com-video-to-gif-converter.gif)
     
 - **휴가/공가 관리 페이지**
-  
-  - 휴가 조회 및 승인/거부 관리
-
-    ![approval-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/3305c05a-7da1-42a4-b2d7-7c748e082d41)
 
   - 휴가 종류 및 승인 상태 필터링
 
     ![vacation3-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/cc3db015-b3f4-48e8-9886-7aa42b34b3ed)
 
+  - 휴가 조회 및 승인/거부 관리
+
+    ![approval-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/3305c05a-7da1-42a4-b2d7-7c748e082d41)
+
     
 - **공지 관리 페이지**
-
-  - 공지사항 CRUD 구현
-
-      ![notice (1)](https://github.com/user-attachments/assets/11d4dca1-b332-4a73-b6a7-a9aae6d1d482)
     
   - 공지사항 검색 기능
     
       ![search-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/dd9b5b63-d380-481a-8198-41cad522ce5c)
 
+  - 공지사항 CRUD 구현
+  
+      ![notice (1)](https://github.com/user-attachments/assets/11d4dca1-b332-4a73-b6a7-a9aae6d1d482)
  
     
 ### 🧑 사용자
