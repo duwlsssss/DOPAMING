@@ -1,91 +1,110 @@
-import { Modal } from '../../../components';
-import './Course.css'; // Modal 클래스 임포트
+import './Course.css';
 
 export const RenderUserCourse = container => {
   container.innerHTML = `
-    <div class="course-question">
-      <button id="employee-delete-button">직원 삭제</button>
-      <button id="notice-delete-button">공지 삭제</button>
-      <button id="vacation-permit-button">부재 요청 승인</button>
-      <button id="vacation-permit-cancle">부재 요청 승인 취소</button>
-      <button id="vacation-reject-button">부재 요청 거부</button>
-      <button id="vacation-reject-cancle-button">부재 요청 거부 취소</button>
-    </div>
-    <div class="course-success">
-      <button id="employee-delete-success">직원 삭제 성공</button>
-      <button id="notice-delete-success">공지 삭제 성공</button>
-      <button id="vacation-permit-success">부재 요청 승인 성공</button>
-      <button id="vacation-permit-cancle-success">부재 요청 승인 취소 성공</button>
-      <button id="vacation-reject-success">부재 요청 거부 성공</button>
-      <button id="vacation-reject-cancle-success">부재 요청 거부 취소 성공</button>
-      <button id="notice-upload-success">공지 업로드</button>
-      <button id="employee-registration-success">직원 등록</button>
-    </div>
-    <div class="course-fail">
-      <button id="vacation-permit-fail">부재 요청 실패</button>
-      <button id="vacation-permit-cancle-fail">부재 요청 승인 취소 실패</button>
-      <button id="vacation-reject-fail">부재 요청 거부 실패</button>
-      <button id="vacation-reject-cancle-fail">부재 요청 거부 취소 실패</button>
-      <button id="notice-upload-fail">공지 업로드 실패</button>
-      <button id="employee-registration-fail">직원 등록 실패</button>
+    <div class="course-body">
+      <!-- 뱃지 -->
+      <div class="badge">CURRICULUM</div>
+
+      <h2>
+        30년차 실무 노하우를 담은
+        <br>
+        데브캠프만의 커리큘럼
+      </h2>
+      <p>
+        우아한형제들 기술이사의 개발 노하우와 현업에서 사용하는 기술만을 담은 React 기반 커리큘럼으로
+        <br>
+        프론트엔드 개발의 기초부터 실전 협업 프로젝트까지 전부 경험할 수 있습니다.
+      </p>
+
+      <!-- 메인 레이아웃 -->
+      <div class="main-layout">
+        <!-- 3단 그리드 컨테이너 -->
+        <div class="grid-container">
+          <!-- 첫 번째 칼럼 -->
+          <div class="grid-column">
+            <div class="grid-title">기본 개념 및 이론</div>
+            <div class="grid-item">Git/Github</div>
+            <div class="grid-item">HTML/CSS</div>
+            <div class="grid-item">JavaScript</div>
+            <div class="grid-item">
+              서비스 기획
+              <p>문제 정의/구조화 및 프로젝트 설계 실습</p>
+            </div>
+          </div>
+
+          <!-- 두 번째 칼럼 -->
+          <div class="grid-column">
+            <div class="grid-title">앱 개발 심화</div>
+            <div class="grid-item">
+              React with TypeScript
+              <p>SPA를 기반으로 하는 프레임워크 학습 및 Virtual DOM 이해</p>
+            </div>
+            <div class="grid-item">
+              AI 활용
+              <p>AI 엔지니어 업무 이해 및 트렌드</p>
+              <p>생성형 AI 개요 및 프롬프트 엔지니어링</p>
+            </div>
+          </div>
+
+          <!-- 세 번째 칼럼 -->
+          <div class="grid-column">
+            <div class="grid-title">서비스 운영 및 모니터링</div>
+            <div class="grid-item">
+              Next.js
+              <p>SSR을 기반으로 하는 웹사이트 개발</p>
+            </div>
+            <div class="grid-item">운영체제/네트워크</div>
+            <div class="grid-item">협업 프로젝트 매니징</div>
+          </div>
+        </div>
+
+        <!-- 우측 사이드바 -->
+        <div class="sidebar">
+          <ul>
+            <li>
+              <h1>바로가기</h1>
+            </li>
+            <li>
+              <a href="" target="_blank">
+                <img src="/public/assets/imgs/course/notion.svg" alt="노션 아이콘" /> 부트캠프 노션
+              </a>
+            </li>
+            <li>
+              <a href="" target="_blank">
+                <img src="/public/assets/imgs/course/video-lecture.svg" alt="강의장 아이콘" /> 실시간 강의장
+              </a>
+            </li>
+            <li>
+              <a href="" target="_blank">
+                <img src="/public/assets/imgs/course/zoom.svg" alt="줌 아이콘" /> Zoom 입장
+              </a>
+            </li>
+            <li>
+              <a href="" target="_blank">
+                <img src="/public/assets/imgs/course/question.svg" alt="물음표 아이콘" /> 문의하기
+              </a>
+            </li>
+            <li>
+              <a href="" target="_blank">
+                <img src="/public/assets/imgs/course/home.svg" alt="홈 아이콘" /> 패스트캠퍼스 홈페이지
+              </a>
+            </li>
+          </ul>
+        </div>
+      
+
+        <!-- 강사 프로필 -->
+        <div class="instructor-profile">
+          <img src="/public/assets/imgs/course/teacher.png" alt="강사님 프로필" />
+          <div>
+            <h3>강사 한마디</h3>
+            <p>
+              프로그래밍 기초부터 심화학습, 서비스를 직접 설계해 제작하는 프로젝트까지 유기적으로 연결되는 반복학습을 통해 스스로 문제를 해결할 줄 아는 개발자가 되는 방법을 가르쳐드리겠습니다.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   `;
-
-  const setupButtonListener = (buttonId, modalType) => {
-    const button = document.getElementById(buttonId);
-    if (button) {
-      button.addEventListener('click', () => {
-        Modal(modalType); // 모달 인스턴스 생성
-      });
-    } else {
-      console.error(`Button with ID ${buttonId} not found.`);
-    }
-  };
-
-  // 질문 버튼들에 대한 이벤트 리스너
-  setupButtonListener('employee-delete-button', 'employee-delete');
-  setupButtonListener('notice-delete-button', 'notice-delete');
-  setupButtonListener('vacation-permit-button', 'vacation-permit');
-  setupButtonListener('vacation-permit-cancle', 'vacation-permit-cancle');
-  setupButtonListener('vacation-reject-button', 'vacation-reject');
-  setupButtonListener(
-    'vacation-reject-cancle-button',
-    'vacation-reject-cancle',
-  );
-
-  // 성공 버튼들에 대한 이벤트 리스너
-  setupButtonListener('employee-delete-success', 'employee-delete-success');
-  setupButtonListener('notice-delete-success', 'notice-delete-success');
-  setupButtonListener('vacation-permit-success', 'vacation-permit-success');
-  setupButtonListener(
-    'vacation-permit-cancle-success',
-    'vacation-permit-cancle-success',
-  );
-  setupButtonListener('vacation-reject-success', 'vacation-reject-success');
-  setupButtonListener(
-    'vacation-reject-cancle-success',
-    'vacation-reject-cancle-success',
-  );
-  setupButtonListener('notice-upload-success', 'notice-upload-success');
-  setupButtonListener(
-    'employee-registration-success',
-    'employee-registration-success',
-  );
-
-  // 실패 버튼들에 대한 이벤트 리스너
-  setupButtonListener('vacation-permit-fail', 'vacation-permit-fail');
-  setupButtonListener(
-    'vacation-permit-cancle-fail',
-    'vacation-permit-cancle-fail',
-  );
-  setupButtonListener('vacation-reject-fail', 'vacation-reject-fail');
-  setupButtonListener(
-    'vacation-reject-cancle-fail',
-    'vacation-reject-cancle-fail',
-  );
-  setupButtonListener('notice-upload-fail', 'notice-upload-fail');
-  setupButtonListener(
-    'employee-registration-fail',
-    'employee-registration-fail',
-  );
 };
