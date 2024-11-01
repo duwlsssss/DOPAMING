@@ -72,17 +72,6 @@ npm run dev
 
 ## 📌 우리의 컨벤션
 
-### 커밋 컨벤션
-
-- `feat`: 새로운 기능 추가
-- `style`: css 수정 및 코드의 의미에 영향을 미치지 않는 변경사항
-- `fix`: 버그 수정
-- `refactor`: 리팩토링, 기능 변화 없이 코드 구조 개선
-- `chore`: 코드 수정 외 잡다한 작업 (빌드 과정이나 설정 변경 등)
-- `docs`: 문서 변경
-- `test`: 테스트 코드 추가 또는 수정
-- `revert`: 이전 커밋을 되돌림
-
 ### 파일 컨벤션
 
 - 폴더명: lowercase 또는 kebab-case
@@ -98,6 +87,21 @@ npm run dev
 
 선언 순서, [컬러톤, 공통 스타일 속성](src/styles/global.css)을 설정한 후 개발했습니다.
 
+### 커밋 컨벤션
+
+- `feat`: 새로운 기능 추가
+- `style`: css 수정 및 코드의 의미에 영향을 미치지 않는 변경사항
+- `fix`: 버그 수정
+- `refactor`: 리팩토링, 기능 변화 없이 코드 구조 개선
+- `chore`: 코드 수정 외 잡다한 작업 (빌드 과정이나 설정 변경 등)
+- `docs`: 문서 변경
+- `test`: 테스트 코드 추가 또는 수정
+- `revert`: 이전 커밋을 되돌림
+
+**정해진 규칙에 따라 자동적으로 코드 스타일을 정리해 코드의 일관성을 유지하고자 했습니다.** <br/>
+**코드 품질 관리는 `eslint`로, 코드 포맷팅은 `prettier`로, 커밋 메시지 관리는 `commitlint`로 했습니다. 팀원들과 소통하여 코딩 컨벤션을 구축했습니다.** <br/>
+**그리고 `husky`를 사용해 규칙에 맞지 않으면 커밋을 제한했습니다.** <br/>
+
 ### 브랜치 전략
 
 **main, develop** 브랜치와 **feat** 보조 브랜치를 사용했습니다.
@@ -106,11 +110,7 @@ npm run dev
 - **develop**: 개발 단계에서 main 역할을 하는 브랜치
 - **feat**: 기능 단위로 독립적인 개발 환경을 위하여 사용하고 merge 후 각 브랜치를 삭제
   - feat 브랜치 이름 규칙: `feat/기능명` e.g. feat/admin-login
-
-**정해진 규칙에 따라 자동적으로 코드 스타일을 정리해 코드의 일관성을 유지하고자 했습니다.** <br/>
-**코드 품질 관리는 `eslint`로, 코드 포맷팅은 `prettier`로 했습니다. 팀원들과 소통하여 코딩 컨벤션을 구축했습니다.** <br/>
-**그리고 `husky`를 사용해 규칙에 맞지 않으면 커밋을 제한했습니다.** <br/>
-
+    
 &nbsp;
 
 ## 🕓 프로젝트 진행 과정
@@ -159,12 +159,14 @@ npm run dev
 
 - **관리자 홈 페이지**
 
-  - 최신 직원 목록 10명 조회
   - 최신 공지사항 목록 조회
+    
+    - 최신 직원 목록 10명 조회
 
     ![main](https://github.com/user-attachments/assets/e39ec959-f0ce-4aad-9b81-738c088262a9)
 
 - **직원 관리 페이지**
+  
   - 직원 상세보기 및 휴가 신청 내역 조회
     
     ![Alt text](DOPAMING-Chrome2024-11-0111-29-04-ezgif.com-video-to-gif-converter.gif)
@@ -172,21 +174,24 @@ npm run dev
     ![Alt text](DOPAMING-Chrome2024-11-0111-28-37-ezgif.com-video-to-gif-converter.gif)
     
   - 직원 구분(수강생/매니저)및 직원 검색 기능
-  - 페이지네이션(6명/페이지)
+
+    - 페이지네이션(6명/페이지)
     
     ![Alt text](DOPAMING-Chrome2024-11-0111-28-08-ezgif.com-video-to-gif-converter.gif)
     
 - **휴가/공가 관리 페이지**
+  
   - 휴가 조회 및 승인/거부 관리
 
     ![approval-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/3305c05a-7da1-42a4-b2d7-7c748e082d41)
 
   - 휴가 종류 및 승인 상태 필터링
+    
+    - 아코디언 UI로 상세 내용 조회
+    - 페이지네이션(6개/페이지)
 
     ![vacation3-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/cc3db015-b3f4-48e8-9886-7aa42b34b3ed)
 
-  - 아코디언 UI로 상세 내용 조회
-  - 페이지네이션(6개/페이지)
     
 - **공지 관리 페이지**
 
@@ -196,60 +201,67 @@ npm run dev
     
   - 공지사항 검색 기능
     
+    - 페이지네이션(8개/페이지)
+    
     ![search-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/dd9b5b63-d380-481a-8198-41cad522ce5c)
 
-  - 페이지네이션(8개/페이지)
+ 
     
 ### 🧑 사용자
 
 - ### 사용자 홈 페이지
 
-  - 공지 목록, 부재 신청 목록을 간단히 확인할 수 있습니다.
-  - 진도율과 남을 수강일을 표시합니다.
-  - 현 시각을 표시하는 시계를 표시합니다.
-  - 출근, 퇴근, 외출, 복귀 버튼 누르면 모달을 띄우고 처리합니다.
+  - 공지 목록, 부재 신청 목록을 간단히 확인가능
+  - 진도율과 남을 수강일을 표시
+  - 현 시각을 표시하는 시계를 표시
+  - 출근, 퇴근, 외출, 복귀 버튼 누르면 모달을 띄우고 처리
 
     ![사용자 메인](https://github.com/user-attachments/assets/9a944ecd-d093-4454-b04c-b906c7639e7a)
 
 - ### 내 정보 수정 페이지
 
-  - 사용자의 입력에 대한 유효성 검사를 한 후 통과하지 못하면 오류를 표시합니다.
-  - 입력값이 없으면 이전 데이터를 사용합니다.
+  - 사용자의 입력에 대한 유효성 검사를 한 후 통과하지 못하면 오류를 표시
+  - 입력값이 없으면 이전 데이터를 사용
 
     ![내용 수정](https://github.com/user-attachments/assets/86646934-eb32-4931-acb1-9c020ed16a66)
 
-  - 프로필 사진을 기본 이미지로 변경도 가능합니다.
+  - 프로필 사진을 기본 이미지로 변경도 가능
 
     ![사진 등록](https://github.com/user-attachments/assets/5b0c4241-d174-425b-8f15-6b96698366ab)
 
 - ### 출결 관리 페이지
-  - 기본적으로 오늘 날짜에 해당하는 출/퇴근, 외출, 복귀의 기록을 출력합니다.
-  - 날짜를 선택하여 해당 날짜의 기록을 확인 할 수 있습니다.
-  - 화살표 이미지를 클릭하여 달을 이동하며 기록을 확인 할 수 있습니다.
+  
+  - 기본적으로 오늘 날짜에 해당하는 출/퇴근, 외출, 복귀의 기록을 출력
+  - 날짜를 선택하여 해당 날짜의 기록을 확인 가능
+  - 화살표 이미지를 클릭하여 달을 이동하며 기록을 확인 가능
+    
     ![출/퇴근 기록](https://github.com/user-attachments/assets/af10d060-114a-44d6-875e-80a86410a12f)
+  
 - ### 휴가/공가 관리 페이지
 
-  - 부재 종류로 필터링을 할 수 있습니다.
+  - 부재 종류로 필터링
 
     ![부재 필터링](https://github.com/user-attachments/assets/f281a788-c239-401e-b663-900407e262e4)
 
-  - 모든 항목을 입력한 후 부재 신청을 할 수 있습니다.
-  - gif 변환 후 넣어야 함
+  - 모든 항목을 입력한 후 부재 신청
+    
+    ![부재 신청](https://github.com/user-attachments/assets/7bd4be2f-05ee-44cc-830d-ae22def58dda)
 
-  - 부재 수정과 삭제가 가능합니다.
+
+  - 부재 수정과 삭제
 
     ![부재 수정](https://github.com/user-attachments/assets/8379edc9-b6ab-4b37-a0ce-c56c86daf9f9)
 
 - ### 공지 목록 페이지
 
-  - 공지 제목과 설명으로 공지를 검색할 수 있습니다.
-  - 각 공지를 클릭하면 상세 페이지로 이동합니다.
+  - 공지 제목과 설명으로 공지를 검색 가능
+  - 각 공지를 클릭하면 상세 페이지로 이동
 
     ![공지 목록](https://github.com/user-attachments/assets/5ae5bd12-1370-4709-b902-7fe53360bc32)
 
 - ### 수강생 목록 페이지
 
-  - 수강생 이름과 이메일로 수강생을 검색할 수 있습니다.
+  - 수강생 이름과 이메일로 수강생을 검색 가능
 
     ![수강생](https://github.com/user-attachments/assets/58274128-50d9-4e00-afce-d826fe25db9e)
 
@@ -358,3 +370,8 @@ npm run dev
 &nbsp;
 
 ## 🚀 앞으로의 계획
+
+- 최대한 공통 컴포넌트를 통해 재사용하기
+- 컨벤션에 맞지 않는 부분 수정하기
+- 컴포넌트 리렌더링 세세하게 바꾸기
+- 사용자 경험 향상을 위한 피드백 시스템 구축
