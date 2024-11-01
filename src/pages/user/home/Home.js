@@ -28,7 +28,6 @@ export const RenderUserHome = async container => {
 
     const today = formatDate(new Date()); // 오늘 날짜를 YYYY-MM-DD 형식으로 포맷
     const userId = user.uid; // 현재 로그인한 사용자의 고유 ID
-    console.log('로그인한 사용자 ID:', userId); // 로그인한 사용자 ID 로그
 
     try {
       const noticeData = await getAllNotices(); // 공지 데이터 가져오기
@@ -104,7 +103,6 @@ export const RenderUserHome = async container => {
           INFO.BC_START_DATE,
           INFO.BC_END_DATE,
         );
-        console.log('과정 설명 렌더링 완료'); // 과정 설명 렌더링 로그
       } else {
         console.error(
           '.course-explain-container article 요소가 존재하지 않습니다.',
@@ -116,7 +114,6 @@ export const RenderUserHome = async container => {
       );
       if (noticeGalleryContainer) {
         RenderNoticeGallery(noticeGalleryContainer, noticeData);
-        console.log('공지 갤러리 렌더링 완료'); // 공지 갤러리 렌더링 로그
       } else {
         console.error(
           '.notice-gallery-container article 요소가 존재하지 않습니다.',
@@ -128,7 +125,6 @@ export const RenderUserHome = async container => {
       );
       if (vacationTableContainer) {
         RenderVacationTable(vacationTableContainer, absData);
-        console.log('부재 테이블 렌더링 완료'); // 부재 테이블 렌더링 로그
       } else {
         console.error(
           '.vacation-table-container article 요소가 존재하지 않습니다.',

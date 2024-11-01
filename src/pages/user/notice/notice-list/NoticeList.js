@@ -105,7 +105,7 @@ export const RenderUserNoticeList = async container => {
           .toLowerCase()
           .includes(searchTerm);
         return titleMatch || descriptionMatch || dateMatch;
-      }); //post_title, post_description, updated_at 중 하나라도 검색한 거랑 같은 post들 반환
+      });
 
       //검색 결과 업데이트에 따라 필터링된 공지 렌더링
       updateNotices(filteredPosts);

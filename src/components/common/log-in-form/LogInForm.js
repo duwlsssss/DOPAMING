@@ -64,19 +64,6 @@ export const RenderLogInForm = container => {
 
       // API호출
       userLogin(email, password);
-
-      // const user = users.find(
-      //   user => user.user_email === email && user.user_password === password,
-      // );
-
-      // if (user) {
-      //   const userRole = user.user_type ? 'admin' : 'user';
-      //   setItem('userRole', userRole);
-      //   setItem('userID', user.user_id);
-
-      //   const redirectPath =
-      //     userRole === 'admin' ? ADMIN_PATH.HOME : USER_PATH.HOME;
-      //   window.location.replace(redirectPath);
     },
   });
 

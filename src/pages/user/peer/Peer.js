@@ -1,4 +1,3 @@
-import './Peer.css';
 import { setupSearch } from '../../../components/user/peer-list/PeerList';
 import { fetchAllUsersData } from '../../../../server/api/user'; // 모든 사용자 데이터 가져오는 함수
 

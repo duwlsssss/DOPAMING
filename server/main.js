@@ -25,7 +25,6 @@ function fetchUserData() {
   const user = auth.currentUser; // 현재 로그인한 사용자 정보 가져오기
 
   if (user) {
-    console.log('현재 로그인한 사용자 정보:', user); // 사용자 정보 콘솔 출력
     const userId = user.uid; // 사용자 ID
 
     // Firebase Realtime Database에서 사용자 데이터 가져오기
@@ -64,7 +63,6 @@ function displayUserData(userData) {
     .then(url => {
       const profilePicture = document.createElement('img');
       profilePicture.src = url; // 다운로드 URL을 이미지 소스로 설정
-      console.log(url);
       profilePicture.alt = '프로필 사진';
       profilePicture.style.width = '300px'; // 크기 조정
       profilePicture.style.height = '300px'; // 크기 조정
@@ -78,7 +76,6 @@ function displayUserData(userData) {
 // 로그인 상태를 확인하는 리스너 추가
 onAuthStateChanged(auth, user => {
   if (user) {
-    console.log('로그인한 사용자:', user);
     fetchUserData(); // 사용자 데이터 가져오기
   } else {
     console.log('로그인한 사용자가 없습니다.');

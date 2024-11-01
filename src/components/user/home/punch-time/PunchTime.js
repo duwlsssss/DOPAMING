@@ -101,8 +101,6 @@ export const RenderPunchTime = async container => {
       onClick: async () => {
         const userData = await fetchUserData(userId);
         if (userData) {
-          console.log('로그인된 사용자 ID:', userData.user_id); // 올바른 ID 로그
-          console.log(`${actionType} 버튼 클릭됨`); // 버튼 클릭 로그
           Modal(actionType); // 해당 모달 열기
         } else {
           console.error('사용자 데이터를 가져오지 못했습니다.');
