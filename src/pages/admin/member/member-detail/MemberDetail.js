@@ -1,15 +1,15 @@
 import {
   adminFetchMemberDetail,
   adminFetchVacation,
-  adminMemberDelete,
 } from '../../../../../server/api/admin';
-import { Button } from '../../../../components';
+import { Button, Modal } from '../../../../components';
 import { Accordion } from '../../../../components/ui/accordion/Accordion';
 import './MemberDetail.css';
 
 export async function RenderAdminMemberDetail(container, memberId) {
   const memberDetailData = await adminFetchMemberDetail(memberId);
   const memberVactionDetail = await adminFetchVacation(memberId);
+  let selectedIds = [memberId];
 
   const buttonElement = Button({
     width: 40,
@@ -18,7 +18,10 @@ export async function RenderAdminMemberDetail(container, memberId) {
     shape: 'block',
     className: 'detail_button',
 
-    onClick: () => adminMemberDelete(memberId),
+    onClick: async () => {
+      Modal('employee-delete', { selectedIds });
+      selectedIds = [];
+    },
   });
 
   const downloadButton = new Button({

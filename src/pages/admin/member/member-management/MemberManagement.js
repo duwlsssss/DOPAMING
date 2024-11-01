@@ -1,9 +1,8 @@
 import {
   adminFetchMeber,
   adminFetchTime,
-  adminMemberListDelete,
 } from '../../../../../server/api/admin';
-import { Button } from '../../../../components';
+import { Button, Modal } from '../../../../components';
 import { Pagenation } from '../../../../components/index';
 import { checkAttendance } from '../../../../utils/checkAttendance';
 import { ADMIN_PATH } from '../../../../utils/constants';
@@ -23,13 +22,18 @@ export const RenderAdminMemberManagement = async container => {
     color: 'coral',
     shape: 'block',
     className: 'deleteButton',
-    onClick: () => {
-      if (selectedIds.length === 0) {
-        alert('삭제할 회원을 선택해 주세요.');
-        return;
+    onClick: async () => {
+      try {
+        if (selectedIds.length === 0) {
+          alert('삭제할 회원을 선택해 주세요.');
+          return;
+        } else {
+          Modal('employee-delete', { selectedIds });
+        }
+        selectedIds = []; // 삭제 후 배열 초기화
+      } catch (error) {
+        console.error(error);
       }
-      adminMemberListDelete(selectedIds); // 선택된 모든 ID를 삭제 함수에 전달
-      selectedIds = []; // 삭제 후 배열 초기화
     },
   });
 
@@ -47,7 +51,6 @@ export const RenderAdminMemberManagement = async container => {
 
   // 데이터를 페이지와 검색어에 따라 필터링하고 페이지네이션 적용
   const paginateUsers = (fetchDataUser, page, itemsPerPage) => {
-    console.log(fetchDataUser);
     // 사용자 필터링 조건
     filteredUsers = fetchDataUser.filter(user => {
       const matchesPosition =
@@ -184,7 +187,10 @@ export const RenderAdminMemberManagement = async container => {
     itemsPerPage,
     currentPage,
     page => {
+      console.log(page);
       currentPage = page;
+      console.log(currentPage);
+
       updateUserList(page);
     },
   );
