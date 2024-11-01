@@ -7,7 +7,11 @@ import {
   deleteUserAbsence,
 } from '../../../../server/api/user';
 import navigate from '../../../utils/navigation';
-import { AbsenceAPI, noticeAPI } from '../../../../server/api/admin';
+import {
+  adminMemberListDelete,
+  AbsenceAPI,
+  noticeAPI,
+} from '../../../../server/api/admin';
 import { ADMIN_PATH } from '../../../utils/constants';
 
 function createModalElement() {
@@ -115,7 +119,6 @@ export async function Modal(type, options = {}) {
     close: () => closeModal(modal, modalInstance.redirectPath), // 모달 닫힐 때 redirectPath 사용
     handleConfirm: async actionType => {
       modalContent.innerHTML = ''; // 내용 초기화
-
       try {
         // actionType에 따라 적절한 모달 콘텐츠 호출
         switch (actionType) {
@@ -128,9 +131,21 @@ export async function Modal(type, options = {}) {
             modalContent.appendChild(
               userModalContent('punch-in-success', modalInstance),
             );
-
             break;
-
+          case 'employee-delete':
+            try {
+              const { selectedIds } = modalInstance;
+              const result = await adminMemberListDelete(selectedIds);
+              if (result.length) {
+                modalContent.appendChild(
+                  adminModalContent('employee-delete-success', modalInstance),
+                );
+                navigate('/admin/member');
+              }
+            } catch (error) {
+              console.error(error);
+            }
+            break;
           case 'punch-out':
             await saveTimePunchData(
               modalInstance.userId,

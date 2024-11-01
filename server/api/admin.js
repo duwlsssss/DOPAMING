@@ -230,7 +230,6 @@ export const adminFetchMeber = async () => {
       }));
       return membersArray; // 데이터 반환
     } else {
-      console.log('No data available');
       return null;
     }
   } catch (error) {
@@ -250,7 +249,6 @@ export const adminFetchMemberDetail = async user_id => {
 
       return data; // 데이터 반환
     } else {
-      console.log('No data available');
       return null;
     }
   } catch (error) {
@@ -291,7 +289,6 @@ export const adminFetchTime = async () => {
       }));
       return timeEntries; // 데이터 반환
     } else {
-      console.log('No data available');
       return null;
     }
   } catch (error) {
@@ -326,28 +323,6 @@ export const adminFetchVacation = async memberId => {
 
 //직원 삭제
 
-export const adminMemberDelete = async userId => {
-  const db = getDatabase();
-  const userRef = ref(db, `Users/${userId}`);
-
-  try {
-    const snapshot = await get(userRef);
-    if (snapshot.exists()) {
-      await remove(userRef);
-      Modal('employee-delete-success', {});
-      navigate('/admin/member');
-    } else {
-      return null;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-// 직원 수정
-
-//직원 목록에서 삭제하기
-
 export const adminMemberListDelete = async userIds => {
   const db = getDatabase();
 
@@ -358,15 +333,14 @@ export const adminMemberListDelete = async userIds => {
 
       if (snapshot.exists()) {
         await remove(userRef);
-        console.log(`User ${userId} deleted successfully`);
+        return { success: true, message: '선택한 직원이 삭제되었습니다.' };
       } else {
         console.log(`User ${userId} does not exist`);
       }
     });
-
-    await Promise.all(deletePromises);
-    Modal('employee-delete-success', {});
-    navigate('/admin/member');
+    // 삭제되는 사람이 여려명일 경우 병렬처리를 통해 처리하도록 함
+    const result = await Promise.all(deletePromises);
+    return result;
   } catch (error) {
     console.log(error);
   }

@@ -33,11 +33,10 @@
   margin-top: 25px;
 }
 
-.member-edit-profile .user-profile-inputs .input-box:last-child {
+.member-edit-form .user-profile-inputs .input-container:nth-child(7) {
   display: none;
 }
-
-.member-edit-profile .user-profile-inputs .input-box:nth-child(7) {
+.member-edit-profile .user-profile-inputs .input-container:last-child {
   display: none;
 }
 
