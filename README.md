@@ -165,22 +165,23 @@ npm run dev
     ![main](https://github.com/user-attachments/assets/e39ec959-f0ce-4aad-9b81-738c088262a9)
 
 - **직원 관리 페이지**
-    
+
   - 직원 구분(수강생/매니저)및 직원 검색 기능
+  - 페이지네이션(6개/페이지)
+  
+    ![Alt text](DOPAMING-Chrome2024-11-0111-28-08-ezgif.com-video-to-gif-converter.gif)
 
-    - 페이지네이션(6명/페이지)
+  - 직원 상세보기 및 부재 신청 내역 조회
+
+    - 아코디언 UI로 상세 내용 조회
     
-      ![Alt text](DOPAMING-Chrome2024-11-0111-28-08-ezgif.com-video-to-gif-converter.gif)
-
-    - 직원 상세보기 및 부재 신청 내역 조회
-      
       ![관리자 직원 상세](https://github.com/user-attachments/assets/eaf98736-e4fb-40b9-90d0-3288408a12ed)
-   
-    - 직원 업로드, 삭제
-    
-      ![Alt text](DOPAMING-Chrome2024-11-0111-29-04-ezgif.com-video-to-gif-converter.gif)
-    
-      ![Alt text](DOPAMING-Chrome2024-11-0111-28-37-ezgif.com-video-to-gif-converter.gif)
+ 
+  - 직원 업로드, 삭제
+  
+    ![Alt text](DOPAMING-Chrome2024-11-0111-29-04-ezgif.com-video-to-gif-converter.gif)
+  
+    ![Alt text](DOPAMING-Chrome2024-11-0111-28-37-ezgif.com-video-to-gif-converter.gif)
     
 - **휴가/공가 관리 페이지**
   
@@ -189,11 +190,8 @@ npm run dev
     ![approval-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/3305c05a-7da1-42a4-b2d7-7c748e082d41)
 
   - 휴가 종류 및 승인 상태 필터링
-    
-    - 아코디언 UI로 상세 내용 조회
-    - 페이지네이션(6개/페이지)
 
-      ![vacation3-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/cc3db015-b3f4-48e8-9886-7aa42b34b3ed)
+    ![vacation3-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/cc3db015-b3f4-48e8-9886-7aa42b34b3ed)
 
     
 - **공지 관리 페이지**
@@ -203,8 +201,6 @@ npm run dev
       ![notice (1)](https://github.com/user-attachments/assets/11d4dca1-b332-4a73-b6a7-a9aae6d1d482)
     
   - 공지사항 검색 기능
-    
-    - 페이지네이션(8개/페이지)
     
       ![search-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/dd9b5b63-d380-481a-8198-41cad522ce5c)
 
