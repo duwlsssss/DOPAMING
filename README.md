@@ -132,18 +132,25 @@ npm run dev
 
 ## 데이터 구조
 
-![스크린샷 2024-10-31 오후 6.55.38.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/b5df8ca9-ce3d-4838-a145-53af9273b0db/6224b891-a6a8-4335-bc7e-a9869f940a4e/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-10-31_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_6.55.38.png)
+<img width="543" alt="db 구조" src="https://github.com/user-attachments/assets/f75bd56b-c41a-4c5c-9d7b-6394909cfc41">
+
+실제 서비스에는 `firebase`의 [Realtime Database](https://console.firebase.google.com/project/toy-project1-team2/database/toy-project1-team2-default-rtdb/data/~2F)를 사용했습니다.
 
 &nbsp;
 
 ## 주요 페이지와 기능
 
-참고하세요: 필수 구현기능(스크롤, 페이지네이션, crud가 가능한 공지, 직원 프로필, 부재, 디바이스별 화면 구현, DOM 조작, 부재 신청 창 구현, 부재 신청 내역 확인 창, 부재 항목에 따른 필터링 기능, 공지 제목, 설명, 날짜에 따른 검색 기능, 사진, 직무, 이름이 표기된 프로필 구현, 현 시각을 표시하는 시계 (타이머) 구현, 토글 형태의 근무 시작 / 종료 스위치 구현, 모달을 활용한 근무 시작 / 종료 확인 창 구현, 기업 공지 모음 갤러리 구현, 회원 시스템 기능(로그인, 로그아웃))
+_참고하세요: 필수 구현기능(스크롤, 페이지네이션, crud가 가능한 공지, 직원 프로필, 부재, 디바이스별 화면 구현, DOM 조작, 부재 신청 창 구현, 부재 신청 내역 확인 창, 부재 항목에 따른 필터링 기능, 공지 제목, 설명, 날짜에 따른 검색 기능, 사진, 직무, 이름이 표기된 프로필 구현, 현 시각을 표시하는 시계 (타이머) 구현, 토글 형태의 근무 시작 / 종료 스위치 구현, 모달을 활용한 근무 시작 / 종료 확인 창 구현, 기업 공지 모음 갤러리 구현, 회원 시스템 기능(로그인, 로그아웃))_
 
 - 반응형 디자인
   
+  ![반응형](https://github.com/user-attachments/assets/d6aa12ec-68b2-4c6b-88ce-ae2565757312)
+
+  
 ### 🔐 로그인
-- 이메일과 비밀번호를 받아서 데이터베이스에 존재하는 지 확인
+- 이메일과 비밀번호를 받아서 데이터베이스에 존재하는 지 확인 후 타입(관리자 or 사용자)에 따라 홈 페이지로 리다이렉트
+
+    ![로그인](https://github.com/user-attachments/assets/0f75fb9a-99ae-499e-aa7e-14d647368dfd)
 
 ### 🫅 관리자
 
@@ -171,10 +178,15 @@ npm run dev
     - 진도율과 남을 수강일을 표시합니다.
     - 현 시각을 표시하는 시계를 표시합니다.
     - 출근, 퇴근, 외출, 복귀 버튼 누르면 모달을 띄우고 처리합니다.
+      ㅇ
+      
 - **내 정보 수정 페이지**
+  
   - 사용자의 입력에 대한 유효성 검사를 한 후 통과하지 못하면 오류를 표시합니다.
   - 입력값이 없으면 이전 데이터를 사용합니다.
-    ![프로필 내용 수정](https://github.com/user-attachments/assets/58e46774-9847-4725-841f-96ed726c4401)
+    
+    ![내용 수정](https://github.com/user-attachments/assets/86646934-eb32-4931-acb1-9c020ed16a66)
+  
   - 프로필 사진을 기본 이미지로 변경도 가능합니다.
     ![사진 등록](https://github.com/user-attachments/assets/5b0c4241-d174-425b-8f15-6b96698366ab)
 
@@ -182,20 +194,27 @@ npm run dev
   - ㅇ
           
 - **휴가/공가 관리 페이지**
+  
   - 부재 종류로 필터링을 할 수 있습니다.
   - 모든 항목을 입력한 후 부재 신청을 할 수 있습니다.
-    ![부재 추가](https://github.com/user-attachments/assets/2594a83f-ea7c-424c-84cf-ba94ba2c2b0b)
+    
+    - gif 변환 후 넣어야 함
 
   - 부재 수정과 삭제가 가능합니다.
+    
     ![부재 수정](https://github.com/user-attachments/assets/8379edc9-b6ab-4b37-a0ce-c56c86daf9f9)
           
 - **공지 목록 페이지**
+  
   - 공지 제목과 설명으로 공지를 검색할 수 있습니다.
   - 각 공지를 클릭하면 상세 페이지로 이동합니다.
+    
     ![공지 목록](https://github.com/user-attachments/assets/5ae5bd12-1370-4709-b902-7fe53360bc32)
 
 - **수강생 목록 페이지**
+  
   - 수강생 이름과 이메일로 수강생을 검색할 수 있습니다.
+    
     ![수강생](https://github.com/user-attachments/assets/58274128-50d9-4e00-afce-d826fe25db9e)
 
 
