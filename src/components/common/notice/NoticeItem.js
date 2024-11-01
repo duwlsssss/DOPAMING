@@ -1,5 +1,3 @@
-import './NoticeItem.css';
-
 // cantainer, post 2개 전달받는 경우 (DOM에 직접 추가)_사용자 공지 목록 페이지 || post만 전달받는 경우(문자열을 반환해 .innerHTML에 삽입) 나눔
 export const RenderNoticeItem = (postContainer, post = null) => {
   if (postContainer && post) {

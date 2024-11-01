@@ -11,7 +11,6 @@ import {
 
 // 수정 모드 토글 함수
 const toggleEditMode = async (vcId, container, itemData) => {
-  // console.log('선택된 부재 id: ', vcId);
   const contentContainer = document.getElementById(vcId);
   const contentElement = contentContainer.querySelector('.user-detail-content');
   const buttonGroup = contentContainer.querySelector(
@@ -125,7 +124,7 @@ const toggleEditMode = async (vcId, container, itemData) => {
               Modal('vacation-edit-success');
               exitEditMode(updatedData);
             } catch (error) {
-              console.log('부재 수정 중 오류 발생 : ', error);
+              console.error('부재 수정 중 오류 발생 : ', error);
               Modal('vacation-edit-fail');
             }
           } else {
@@ -174,7 +173,7 @@ const renderButtons = (status, vcId, container, itemData) => {
           };
           Modal('vacation-delete', options);
         } catch (error) {
-          console.log('부재 삭제 중 오류 발생 : ', error);
+          console.error('부재 삭제 중 오류 발생 : ', error);
           Modal('vacation-delete-fail');
         }
       },

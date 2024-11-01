@@ -226,7 +226,6 @@ export async function Modal(type, options = {}) {
           case 'vacation-permit':
             try {
               const { userId, absenceId } = modalInstance;
-              console.log('Modal에서 전달하는 값:', { userId, absenceId });
               const result = await AbsenceAPI.approveAbsence(userId, absenceId);
               if (result.success) {
                 modalContent.appendChild(
@@ -296,7 +295,6 @@ export async function Modal(type, options = {}) {
           case 'vacation-reject-cancel':
             try {
               const { userId, absenceId } = modalInstance;
-              console.log('Modal에서 전달하는 값:', { userId, absenceId });
               const result = await AbsenceAPI.cancelRejection(
                 userId,
                 absenceId,
@@ -322,7 +320,6 @@ export async function Modal(type, options = {}) {
             break;
 
           default:
-            console.log('잘못된 요청 처리:', actionType);
             if (isUserAction(actionType)) {
               modalContent.appendChild(
                 userModalContent(actionType, modalInstance),

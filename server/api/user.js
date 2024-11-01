@@ -114,8 +114,7 @@ export const getUserIdName = () => {
               user_image: userData.user_image || '', // 사용자 이미지 URL 가져오기
               isAdmin: false,
             };
-            // console.log('로그인한 사용자 ID:', currentUserInfo.id);
-            // console.log('로그인한 사용자 이름:', currentUserInfo.name);
+
             resolve(currentUserInfo); // 사용자 정보를 resolve로 반환
           } else {
             reject(new Error('사용자 데이터가 존재하지 않습니다.'));
@@ -124,7 +123,6 @@ export const getUserIdName = () => {
           reject(new Error('사용자 데이터 가져오기 실패: ' + error.message));
         }
       } else {
-        console.log('사용자가 로그아웃했습니다.');
         reject(new Error('사용자가 로그아웃했습니다.'));
       }
     });
@@ -175,7 +173,6 @@ export const fetchUserData = async userId => {
         isAdmin: false,
       };
     } else {
-      console.log('사용자 데이터가 존재하지 않습니다.');
       return null;
     }
   } catch (error) {
@@ -195,7 +192,6 @@ export const fetchAllUsersData = async () => {
       const usersData = snapshot.val(); // 데이터 값 가져오기
       return Object.values(usersData); // 사용자 객체 배열 반환
     } else {
-      console.log('사용자 데이터가 존재하지 않습니다.');
       return []; // 데이터가 없을 경우 빈 배열 반환
     }
   } catch (error) {
@@ -228,7 +224,6 @@ export const fetchTimePunchData = async userId => {
 
       return userTimePunch.length > 0 ? userTimePunch : []; // 사용자 데이터 반환
     } else {
-      console.log('Time-punch 데이터가 존재하지 않습니다.');
       return []; // 데이터가 없을 경우 빈 배열 반환
     }
   } catch (error) {
@@ -289,8 +284,6 @@ export const saveTimePunchData = async (userId, actionType, userName) => {
       // 기존 데이터가 없는 경우 새로 생성
       await set(existingDataRef, newData); // 객체로 데이터 저장
     }
-
-    console.log(`${actionType} 데이터가 성공적으로 저장되었습니다.`, newData);
   } catch (error) {
     console.error(`${actionType} 데이터 저장 실패:`, error.message);
     Modal(actionType); // 오류 발생 시 모달 표시
@@ -334,13 +327,11 @@ export const updateUserData = async (container, userId, userImage = null) => {
             'student'
           ? '학생'
           : currentUserData.user_position,
-    // user_password: container.querySelector('.user-profile-inputs #confirm-password').value || currentUserData.user_password,
     user_image: userImage || null,
   };
 
   try {
     await update(userRef, updatedData);
-    console.log('사용자 데이터가 성공적으로 수정되었습니다.');
   } catch (error) {
     console.error('사용자 데이터 수정 실패:', error.message);
     Modal('edit-profile-fail');
@@ -363,7 +354,6 @@ export const getUserAbs = async userId => {
     // userId로 유저 데이터 가져오기
     const userData = await fetchUserData(userId);
     if (!userData) {
-      console.log('해당 사용자 데이터가 없습니다.');
       return [];
     }
 
@@ -396,14 +386,12 @@ export const getUserAbsById = async (userId, absenceId) => {
   try {
     const absSnapshot = await get(absRef);
     if (!absSnapshot.exists()) {
-      console.log('해당 부재 데이터가 없습니다.');
       return null;
     }
 
     // userId로 유저 데이터 가져오기
     const userData = await fetchUserData(userId);
     if (!userData) {
-      console.log('해당 사용자 데이터가 없습니다.');
       return null;
     }
 
@@ -430,7 +418,6 @@ export const addUserAbsence = async (userId, newAbsenceData) => {
 
   try {
     const newAbsRef = await push(absRef, newAbsenceData); // 새 부재 데이터 추가
-    console.log('부재 데이터가 성공적으로 추가되었습니다.');
     return { abs_id: newAbsRef.key, ...newAbsenceData }; // 추가된 데이터 반환
   } catch (error) {
     console.error('부재 데이터 추가 중 오류 발생:', error);
@@ -505,7 +492,6 @@ export const updateUserAbsence = async (container, userId, absenceId) => {
 
   try {
     await update(absenceRef, updatedData); // absence 데이터 업데이트
-    console.log('부재 데이터가 성공적으로 업데이트되었습니다.');
     return updatedData; // 업데이트된 데이터를 반환
   } catch (error) {
     console.error('부재 데이터 업데이트 중 오류 발생:', error);
@@ -520,7 +506,6 @@ export const deleteUserAbsence = async (userId, absenceId) => {
 
   try {
     await remove(absenceRef); // absence 데이터 삭제
-    console.log('부재 데이터가 성공적으로 삭제되었습니다.');
     return true;
   } catch (error) {
     console.error('부재 데이터 삭제 중 오류 발생:', error);
@@ -592,7 +577,6 @@ export const saveUserImage = async (userId, imageUrl) => {
       },
       { merge: true },
     ); // 기존 데이터 유지하면서 병합
-    console.log('사용자 이미지가 성공적으로 저장되었습니다.');
   } catch (error) {
     console.error('사용자 이미지 저장 실패:', error.message);
   }

@@ -1,5 +1,4 @@
 const extractParams = (path, currentPath) => {
-  // e.g. path가 notice/:postId
   const keys = [];
   const regexPath = path.replace(/:(\w+)/g, (_, key) => {
     // key는 동적 매개변수 이름 (: 다음에 오는 거)

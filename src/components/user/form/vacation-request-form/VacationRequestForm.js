@@ -1,4 +1,3 @@
-import './VacationRequestForm.css';
 import { Button } from '../../../ui/button/Button';
 
 export const VacationRequestForm = (isEditMode = false, initialData = {}) => {

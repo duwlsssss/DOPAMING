@@ -178,7 +178,6 @@ export const RenderAdminMemberManagement = async container => {
         // 체크 해제 시 ID를 배열에서 제거
         selectedIds = selectedIds.filter(id => id !== checkboxId);
       }
-      console.log('현재 선택된 ID들:', selectedIds);
     }
   });
 
@@ -187,9 +186,7 @@ export const RenderAdminMemberManagement = async container => {
     itemsPerPage,
     currentPage,
     page => {
-      console.log(page);
       currentPage = page;
-      console.log(currentPage);
 
       updateUserList(page);
     },
