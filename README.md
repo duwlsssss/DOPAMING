@@ -160,8 +160,7 @@ npm run dev
 - **관리자 홈 페이지**
 
   - 최신 공지사항 목록 조회
-    
-    - 최신 직원 목록 10명 조회
+  - 최신 직원 목록 10명 조회
 
     ![main](https://github.com/user-attachments/assets/e39ec959-f0ce-4aad-9b81-738c088262a9)
 
