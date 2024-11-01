@@ -172,7 +172,6 @@ npm run dev
     ![Alt text](https://github.com/user-attachments/assets/21a89039-7576-4f2f-831e-64ac4a32236d)
 
   - 직원 구분(수강생/매니저)및 직원 검색 기능
-
   - 페이지네이션(6명/페이지)
 
     ![Alt text](https://github.com/user-attachments/assets/c72ccfec-784e-4b81-a9d4-5b5456651992)
@@ -198,7 +197,7 @@ npm run dev
 
     ![search-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/dd9b5b63-d380-481a-8198-41cad522ce5c)
 
-  - 공지사항 CRUD 구현
+  - 공지사항 업로드, 수정, 삭제 구현
 
     ![notice (1)](https://github.com/user-attachments/assets/11d4dca1-b332-4a73-b6a7-a9aae6d1d482)
 
@@ -206,7 +205,7 @@ npm run dev
 
 - ### 사용자 홈 페이지
 
-  - 공지 목록, 부재 신청 목록을 간단히 확인가능
+  - 공지 목록, 부재 신청 목록을 간단히 확인 가능
   - 진도율과 남을 수강일을 표시
   - 현 시각을 표시하는 시계를 표시
   - 출근, 퇴근, 외출, 복귀 버튼 누르면 모달을 띄우고 처리
@@ -220,7 +219,7 @@ npm run dev
 
     ![내용 수정](https://github.com/user-attachments/assets/86646934-eb32-4931-acb1-9c020ed16a66)
 
-  - 프로필 사진을 기본 이미지로 변경도 가능
+  - 프로필 사진을 기본 이미지로도 변경 가능
 
     ![사진 등록](https://github.com/user-attachments/assets/5b0c4241-d174-425b-8f15-6b96698366ab)
 
