@@ -51,6 +51,7 @@ export const userLogin = async (email, password) => {
     );
 
     const user = userCredential.user;
+
     // 관리자 계정인 경우
     if (email === 'admin@naver.com') {
       setItem('userRole', 'admin');
@@ -59,9 +60,11 @@ export const userLogin = async (email, password) => {
       window.location.replace(ADMIN_PATH.HOME);
       return;
     }
+
     // 일반 사용자인 경우
     const db = getDatabase();
     const userRef = ref(db, `Users/${user.uid}`);
+
     // 사용자 데이터 확인
     const snapshot = await get(userRef);
     if (snapshot.exists()) {
@@ -87,6 +90,7 @@ export const getUserIdName = () => {
     onAuthStateChanged(auth, async user => {
       if (user) {
         const userId = user.uid; // 로그인한 사용자의 ID
+
         if (user.email === 'admin@naver.com') {
           const adminInfo = {
             id: userId,
@@ -96,6 +100,7 @@ export const getUserIdName = () => {
           };
           return resolve(adminInfo);
         }
+
         const db = getDatabase();
         const userRef = ref(db, `Users/${userId}`); // Realtime Database의 사용자 경로 참조
 
@@ -146,6 +151,7 @@ export const userLogout = () => {
 export const fetchUserData = async userId => {
   const auth = getAuth();
   const currentUser = auth.currentUser;
+
   if (currentUser?.email === 'admin@naver.com') {
     return {
       user_id: userId,
@@ -156,6 +162,7 @@ export const fetchUserData = async userId => {
       isAdmin: true,
     };
   }
+
   const db = getDatabase(); // 데이터베이스 인스턴스 가져오기
   const userRef = ref(db, `Users/${userId}`); // 사용자 경로 참조
 
@@ -206,7 +213,6 @@ export const fetchTimePunchData = async userId => {
     const snapshot = await get(timePunchRef); // 데이터 가져오기
     if (snapshot.exists()) {
       const timePunchData = snapshot.val(); // 데이터 값 가져오기
-      console.log('전체 출퇴근 데이터:', timePunchData); // 전체 데이터 로그
 
       // 현재 로그인한 사용자의 출근/퇴근 데이터 필터링
       const userTimePunch = [];
@@ -214,15 +220,12 @@ export const fetchTimePunchData = async userId => {
       // 각 사용자 ID와 날짜를 순회하여 해당 사용자 데이터를 필터링
       Object.entries(timePunchData).forEach(([userIdKey, userPunchData]) => {
         if (userIdKey === userId) {
-          console.log('사용자 ID:', userIdKey); // 사용자 ID 로그
           Object.entries(userPunchData).forEach(([dateKey, punchDetails]) => {
-            console.log(`날짜: ${dateKey}, 출퇴근 세부정보:`, punchDetails); // 날짜 및 세부정보 로그
             userTimePunch.push({ punch_date: dateKey, ...punchDetails }); // 해당 사용자 데이터 추가
           });
         }
       });
 
-      console.log('사용자 출퇴근 데이터:', userTimePunch); // 필터링된 사용자 데이터 로그
       return userTimePunch.length > 0 ? userTimePunch : []; // 사용자 데이터 반환
     } else {
       console.log('Time-punch 데이터가 존재하지 않습니다.');

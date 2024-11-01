@@ -29,21 +29,27 @@ export const RenderPunchTime = async container => {
   const userId = user.uid; // 사용자 고유 ID
   const todayData = await fetchTimePunchData(userId); // 출퇴근 데이터 가져오기
 
-  // 오늘 날짜에 해당하는 출퇴근 데이터를 가져옵니다.
-  const punchInTime =
-    todayData.length > 0 ? formatUserTime(todayData[0].punch_in) : '--시 --분';
-  const punchOutTime =
-    todayData.length > 0 ? formatUserTime(todayData[0].punch_out) : '--시 --분';
-  const breakOutTime =
-    todayData.length > 0 ? formatUserTime(todayData[0].break_out) : '--시 --분';
-  const breakInTime =
-    todayData.length > 0 ? formatUserTime(todayData[0].break_in) : '--시 --분';
+  const todayPunchData = todayData.filter(data => {
+    const punchDate = formatDate(new Date(data.punch_date)); // 데이터의 날짜 형식
+    return punchDate === today;
+  });
 
-  // 출퇴근 데이터 로그 출력
-  console.log('출근 시간:', punchInTime);
-  console.log('퇴근 시간:', punchOutTime);
-  console.log('외출 시간:', breakOutTime);
-  console.log('복귀 시간:', breakInTime);
+  const punchInTime =
+    todayPunchData.length > 0
+      ? formatUserTime(todayPunchData[0].punch_in)
+      : '--시 --분';
+  const punchOutTime =
+    todayPunchData.length > 0
+      ? formatUserTime(todayPunchData[0].punch_out)
+      : '--시 --분';
+  const breakOutTime =
+    todayPunchData.length > 0
+      ? formatUserTime(todayPunchData[0].break_out)
+      : '--시 --분';
+  const breakInTime =
+    todayPunchData.length > 0
+      ? formatUserTime(todayPunchData[0].break_in)
+      : '--시 --분';
 
   container.innerHTML = `
     <div class="curr-time-title">현재 시각</div>

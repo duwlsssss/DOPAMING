@@ -83,6 +83,13 @@
   text-align: center;
 }
 
+.punch-in-time,
+.punch-out-time,
+.break-out-time,
+.break-in-time {
+  align-self: center;
+}
+
 /* MEDIA */
 @media (max-width: 767px) {
   .work-title,

@@ -7,7 +7,12 @@ import {
   deleteUserAbsence,
 } from '../../../../server/api/user';
 import navigate from '../../../utils/navigation';
-import { adminMemberListDelete } from '../../../../server/api/admin';
+import {
+  adminMemberListDelete,
+  AbsenceAPI,
+  noticeAPI,
+} from '../../../../server/api/admin';
+import { ADMIN_PATH } from '../../../utils/constants';
 
 function createModalElement() {
   const modal = document.createElement('div');
@@ -67,22 +72,22 @@ function isAdminAction(actionType) {
     'employee-delete',
     'notice-delete',
     'vacation-permit',
-    'vacation-permit-cancle',
+    'vacation-permit-cancel',
     'vacation-reject',
-    'vacation-reject-cancle',
+    'vacation-reject-cancel',
     'employee-delete-success',
     'notice-delete-success',
     'vacation-permit-success',
-    'vacation-permit-cancle-success',
+    'vacation-permit-cancel-success',
     'vacation-reject-success',
-    'vacation-reject-cancle-success',
+    'vacation-reject-cancel-success',
     'notice-upload-success',
     'employee-registration-success',
     'vacation-permit-fail',
-    'vacation-permit-cancle-fail',
+    'vacation-permit-cancel-fail',
     'vacation-reject-fail',
     'notice-edit-success',
-    'vacation-reject-cancle-fail',
+    'vacation-reject-cancel-fail',
     'notice-upload-fail',
     'employee-registration-fail',
   ].includes(actionType);
@@ -108,8 +113,8 @@ export async function Modal(type, options = {}) {
   modalContent.innerHTML = ''; // 이전 내용 초기화
 
   let modalInstance = {
-    userId: null,
-    userName: null,
+    // userId: null,
+    // userName: null,
     ...options,
     close: () => closeModal(modal, modalInstance.redirectPath), // 모달 닫힐 때 redirectPath 사용
     handleConfirm: async actionType => {
@@ -200,6 +205,122 @@ export async function Modal(type, options = {}) {
             }
             break;
 
+          case 'notice-delete':
+            try {
+              const { postId } = modalInstance;
+              const result = await noticeAPI.deleteNotice(postId);
+              if (result.success) {
+                modalContent.appendChild(
+                  adminModalContent('notice-delete-success', modalInstance),
+                );
+                setTimeout(() => {
+                  navigate(ADMIN_PATH.NOTICE);
+                }, 1000);
+              }
+            } catch (error) {
+              console.error('공지 삭제 중 오류 발생:', error);
+            }
+            break;
+
+          // 승인
+          case 'vacation-permit':
+            try {
+              const { userId, absenceId } = modalInstance;
+              console.log('Modal에서 전달하는 값:', { userId, absenceId });
+              const result = await AbsenceAPI.approveAbsence(userId, absenceId);
+              if (result.success) {
+                modalContent.appendChild(
+                  adminModalContent('vacation-permit-success', modalInstance),
+                );
+                setTimeout(() => {
+                  navigate(ADMIN_PATH.VACATION);
+                  location.reload();
+                }, 1000);
+              }
+            } catch (error) {
+              console.error('휴가 승인 중 오류 발생: ', error);
+              modalContent.appendChild(
+                adminModalContent('vacation-permit-fail', modalInstance),
+              );
+            }
+            break;
+
+          // 승인 취소
+          case 'vacation-permit-cancel':
+            try {
+              const { userId, absenceId } = modalInstance;
+              const result = await AbsenceAPI.cancelApproval(userId, absenceId);
+              if (result.success) {
+                modalContent.appendChild(
+                  adminModalContent(
+                    'vacation-permit-cancel-success',
+                    modalInstance,
+                  ),
+                );
+                setTimeout(() => {
+                  navigate(ADMIN_PATH.VACATION);
+                  location.reload();
+                }, 1000);
+              }
+            } catch (error) {
+              console.error('휴가 승인 취소 중 오류 발생: ', error);
+              modalContent.appendChild(
+                adminModalContent('vacation-permit-cancel-fail', modalInstance),
+              );
+            }
+            break;
+
+          // 거부
+          case 'vacation-reject':
+            try {
+              const { userId, absenceId } = modalInstance;
+              const result = await AbsenceAPI.rejectAbsence(userId, absenceId);
+              if (result.success) {
+                modalContent.appendChild(
+                  adminModalContent('vacation-reject-success', modalInstance),
+                );
+                setTimeout(() => {
+                  navigate(ADMIN_PATH.VACATION);
+                  location.reload();
+                }, 1000);
+              }
+            } catch (error) {
+              console.error('휴가 거부 중 오류 발생: ', error);
+              modalContent.appendChild(
+                adminModalContent('vacation-reject-fail', modalInstance),
+              );
+            }
+            break;
+
+          // 거부 취소
+          case 'vacation-reject-cancel':
+            try {
+              const { userId, absenceId } = modalInstance;
+              console.log('Modal에서 전달하는 값:', { userId, absenceId });
+              const result = await AbsenceAPI.cancelRejection(
+                userId,
+                absenceId,
+              );
+              if (result.success) {
+                modalContent.appendChild(
+                  adminModalContent(
+                    'vacation-reject-cancel-success',
+                    modalInstance,
+                  ),
+                );
+                setTimeout(() => {
+                  navigate(ADMIN_PATH.VACATION);
+                  location.reload();
+                }, 1000);
+              }
+            } catch (error) {
+              console.error('휴가 거부 취소 중 오류 발생: ', error);
+              modalContent.appendChild(
+                adminModalContent('vacation-reject-cancel-fail', modalInstance),
+              );
+            }
+            break;
+
           default:
             console.log('잘못된 요청 처리:', actionType);
             if (isUserAction(actionType)) {
@@ -227,15 +348,17 @@ export async function Modal(type, options = {}) {
   };
 
   // 현재 로그인한 사용자 정보 가져오기
-  try {
-    const userData = await getUserIdName(); // 사용자 정보 가져오기
-    modalInstance.userId = userData.id; // 사용자 ID 설정
-    modalInstance.userName = userData.name; // 사용자 이름 설정
-  } catch (error) {
-    console.error('사용자 정보 오류:', error); // 에러 로그 출력
-    modalContent.innerHTML = '<p>사용자 정보를 가져오지 못했습니다.</p>';
-    modal.style.display = 'flex'; // 에러 발생 시 모달 열기
-    return; // 더 이상 진행하지 않음
+  if (isUserAction(type)) {
+    try {
+      const userData = await getUserIdName();
+      modalInstance.userId = userData.id;
+      modalInstance.userName = userData.name;
+    } catch (error) {
+      console.error('사용자 정보 오류:', error);
+      modalContent.innerHTML = '<p>사용자 정보를 가져오지 못했습니다.</p>';
+      modal.style.display = 'flex';
+      return;
+    }
   }
 
   // 모달 타입에 따라 내용 추가
@@ -250,9 +373,9 @@ export async function Modal(type, options = {}) {
     case 'employee-delete':
     case 'notice-delete':
     case 'vacation-permit':
-    case 'vacation-permit-cancle':
+    case 'vacation-permit-cancel':
     case 'vacation-reject':
-    case 'vacation-reject-cancle':
+    case 'vacation-reject-cancel':
       modalContent.appendChild(adminModalContent(type, modalInstance));
       break;
     case 'punch-in-success':
@@ -268,9 +391,9 @@ export async function Modal(type, options = {}) {
     case 'employee-delete-success':
     case 'notice-delete-success':
     case 'vacation-permit-success':
-    case 'vacation-permit-cancle-success':
+    case 'vacation-permit-cancel-success':
     case 'vacation-reject-success':
-    case 'vacation-reject-cancle-success':
+    case 'vacation-reject-cancel-success':
     case 'notice-edit-success':
     case 'notice-upload-success':
     case 'employee-registration-success':
@@ -287,9 +410,9 @@ export async function Modal(type, options = {}) {
       modalContent.appendChild(userModalContent(type, modalInstance));
       break;
     case 'vacation-permit-fail':
-    case 'vacation-permit-cancle-fail':
+    case 'vacation-permit-cancel-fail':
     case 'vacation-reject-fail':
-    case 'vacation-reject-cancle-fail':
+    case 'vacation-reject-cancel-fail':
     case 'notice-upload-fail':
     case 'employee-registration-fail':
       modalContent.appendChild(adminModalContent(type, modalInstance));
