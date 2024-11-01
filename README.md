@@ -158,30 +158,35 @@ npm run dev
 
 - **관리자 홈 페이지**
 
-  - 최신 공지사항 목록 조회
-  - 최신 직원 목록 10명 조회
-
+  - 최신 공지사항 목록 표시
+  - 최신 직원 목록 10명 표시
+  - 직급(매니저 or 수강생)으로 필터링 기능
+  
     ![main](https://github.com/user-attachments/assets/e39ec959-f0ce-4aad-9b81-738c088262a9)
 
-- **직원 관리 페이지**
 
-  - 직원 상세보기 및 휴가 신청 내역 조회
+- **직원 관리 페이지**
+  
+  - 직원 구분(수강생/매니저)및 직원 검색 기능
+
+    ![Alt text](https://github.com/user-attachments/assets/c72ccfec-784e-4b81-a9d4-5b5456651992)
+
+  - 직원 업로드, 수정, 삭제 기능
 
     ![Alt text](https://github.com/user-attachments/assets/bf06417c-aef3-4c50-8336-83bf8a2b63a1)
 
     ![Alt text](https://github.com/user-attachments/assets/21a89039-7576-4f2f-831e-64ac4a32236d)
 
-  - 직원 구분(수강생/매니저)및 직원 검색 기능
-  - 페이지네이션(6명/페이지)
-
-    ![Alt text](https://github.com/user-attachments/assets/c72ccfec-784e-4b81-a9d4-5b5456651992)
+  - 직원 상세보기 및 휴가 신청 내역 조회
+    
+    -아코디언 UI로 상세 내용 조회
+  
+      ![관리자 직원 상세](https://github.com/user-attachments/assets/552e97a8-69f2-4a26-936b-23dcdde6f136)
+    
 
 - **휴가/공가 관리 페이지**
 
   - 부재 종류 및 승인 상태 필터링
-
-    - 아코디언 UI로 상세 내용 조회
-    - 페이지네이션(6개/페이지)
 
     ![vacation3-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/cc3db015-b3f4-48e8-9886-7aa42b34b3ed)
 
@@ -193,8 +198,6 @@ npm run dev
 
   - 공지사항 검색 기능
 
-    - 페이지네이션(8개/페이지)
-
     ![search-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/dd9b5b63-d380-481a-8198-41cad522ce5c)
 
   - 공지사항 업로드, 수정, 삭제 구현
@@ -205,8 +208,8 @@ npm run dev
 
 - ### 사용자 홈 페이지
 
-  - 공지 목록, 부재 신청 목록을 간단히 확인 가능
   - 진도율과 남을 수강일을 표시
+  - 공지 목록, 부재 신청 목록을 간단히 확인 가능
   - 현 시각을 표시하는 시계를 표시
   - 출근, 퇴근, 외출, 복귀 버튼 누르면 모달을 띄우고 처리
 
