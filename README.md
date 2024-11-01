@@ -236,7 +236,7 @@ npm run dev
 
 - ### 휴가/공가 관리 페이지
 
-  - 부재 종류, 처리 상태로 필터링
+  - 부재 종류, 승인 상태로 필터링
 
     ![부재 필터링](https://github.com/user-attachments/assets/f281a788-c239-401e-b663-900407e262e4)
 
@@ -259,7 +259,7 @@ npm run dev
 
   - 수강생 이름과 이메일로 수강생을 검색 가능
 
-    ![수강생](https://github.com/user-attachments/assets/58274128-50d9-4e00-afce-d826fe25db9e)
+    ![수강생](https://github.com/user-attachments/assets/5021de5d-97b6-4943-abab-b1be0255690f)
 
 &nbsp;
 
