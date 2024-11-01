@@ -3,7 +3,6 @@ import './Course.css';
 export const RenderUserCourse = container => {
   container.innerHTML = `
     <div class="course-body">
-      <!-- 뱃지 -->
       <div class="badge">CURRICULUM</div>
 
       <h2>
@@ -17,7 +16,6 @@ export const RenderUserCourse = container => {
         프론트엔드 개발의 기초부터 실전 협업 프로젝트까지 전부 경험할 수 있습니다.
       </p>
 
-      <!-- 메인 레이아웃 -->
       <div class="main-layout">
         <!-- 3단 그리드 컨테이너 -->
         <div class="grid-container">
@@ -33,7 +31,6 @@ export const RenderUserCourse = container => {
             </div>
           </div>
 
-          <!-- 두 번째 칼럼 -->
           <div class="grid-column">
             <div class="grid-title">앱 개발 심화</div>
             <div class="grid-item">
@@ -47,7 +44,6 @@ export const RenderUserCourse = container => {
             </div>
           </div>
 
-          <!-- 세 번째 칼럼 -->
           <div class="grid-column">
             <div class="grid-title">서비스 운영 및 모니터링</div>
             <div class="grid-item">
@@ -59,7 +55,6 @@ export const RenderUserCourse = container => {
           </div>
         </div>
 
-        <!-- 우측 사이드바 -->
         <div class="sidebar">
           <ul>
             <li>
@@ -67,36 +62,35 @@ export const RenderUserCourse = container => {
             </li>
             <li>
               <a href="" target="_blank">
-                <img src="/public/assets/imgs/course/notion.svg" alt="노션 아이콘" /> 부트캠프 노션
+                <img src="/assets/imgs/course/notion.svg" alt="노션 아이콘" /> 부트캠프 노션
               </a>
             </li>
             <li>
               <a href="" target="_blank">
-                <img src="/public/assets/imgs/course/video-lecture.svg" alt="강의장 아이콘" /> 실시간 강의장
+                <img src="/assets/imgs/course/video-lecture.svg" alt="강의장 아이콘" /> 실시간 강의장
               </a>
             </li>
             <li>
               <a href="" target="_blank">
-                <img src="/public/assets/imgs/course/zoom.svg" alt="줌 아이콘" /> Zoom 입장
+                <img src="/assets/imgs/course/zoom.svg" alt="줌 아이콘" /> Zoom 입장
               </a>
             </li>
             <li>
               <a href="" target="_blank">
-                <img src="/public/assets/imgs/course/question.svg" alt="물음표 아이콘" /> 문의하기
+                <img src="/assets/imgs/course/question.svg" alt="물음표 아이콘" /> 문의하기
               </a>
             </li>
             <li>
               <a href="" target="_blank">
-                <img src="/public/assets/imgs/course/home.svg" alt="홈 아이콘" /> 패스트캠퍼스 홈페이지
+                <img src="/assets/imgs/course/home.svg" alt="홈 아이콘" /> 패스트캠퍼스 홈페이지
               </a>
             </li>
           </ul>
         </div>
       
 
-        <!-- 강사 프로필 -->
         <div class="instructor-profile">
-          <img src="/public/assets/imgs/course/teacher.png" alt="강사님 프로필" />
+          <img src="/assets/imgs/course/teacher.png" alt="강사님 프로필" />
           <div>
             <h3>강사 한마디</h3>
             <p>
