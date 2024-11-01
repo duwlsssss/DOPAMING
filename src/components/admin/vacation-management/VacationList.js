@@ -12,13 +12,29 @@ export const RenderAdminVacationManagementList = async container => {
     await vacationStore.initialize();
     const sortedVacations = vacationStore.getFilteredVacations();
 
-    // 다운로드 버튼
-    const downloadButton = new Button({
-      text: '다운로드',
-      color: 'skyblue',
-      shape: 'block',
-      padding: 'var(--space-xsmall) var(--space-small)',
-    });
+    const appendDownloadButton = (item, container) => {
+      const downloadButton = new Button({
+        text: '다운로드',
+        color: 'skyblue',
+        shape: 'block',
+        padding: 'var(--space-xsmall) var(--space-small)',
+        disabled: !item.abs_proof_document_base64,
+        onClick: () => {
+          if (item.abs_proof_document_base64) {
+            const link = document.createElement('a');
+            link.href = item.abs_proof_document_base64;
+            link.download = item.abs_proof_document || 'downloaded-file';
+            link.click();
+          } else {
+            console.log('다운로드할 파일이 없습니다.');
+          }
+        },
+      });
+      const buttonPosition = container.querySelector(
+        `#content-${item.absences_id} .download-button-container`,
+      );
+      buttonPosition.appendChild(downloadButton);
+    };
 
     // 승인, 거부, 대기 버튼
     const renderButtons = (status, item) => {
@@ -113,8 +129,12 @@ export const RenderAdminVacationManagementList = async container => {
     `;
 
     // 아코디언 컨텐츠
-    const renderContent = (item, index) => `
-      <article class="detail-content" data-absence-id="${item.absences_id}" data-user-id="${item.user_id}">
+    const renderContent = (item, index) => {
+      const fileName =
+        item.abs_proof_document || `FE_${item.user_name}_${item.abs_type}.pdf`;
+
+      return `
+      <article class="detail-content" id="content-${item.absences_id}" data-absence-id="${item.absences_id}" data-user-id="${item.user_id}">
         <div class="detail-grid">
           <section class="detail-item">
             <h3 class="detail-label">휴가 제목</h3>
@@ -133,8 +153,8 @@ export const RenderAdminVacationManagementList = async container => {
           <section class="detail-item">
             <h3 class="detail-label">첨부 파일</h3>
             <div class="download-file">
-              <p class="detail-value">FE_${item.user_name}_${item.abs_type}.pdf</p>
-              ${downloadButton.outerHTML}
+              <p class="detail-value">${fileName}</p>
+              <div class="download-button-container"></div>
             </div>
           </section>
 
@@ -146,6 +166,7 @@ export const RenderAdminVacationManagementList = async container => {
         ${renderButtons(item.abs_status, item)}
       </article>
     `;
+    };
 
     const itemsPerPage = 6;
     const startIndex = (vacationStore.currentPage - 1) * itemsPerPage;
@@ -164,6 +185,15 @@ export const RenderAdminVacationManagementList = async container => {
         </div>
       </section>
     `;
+
+    displayedVacations.forEach(item => {
+      const contentContainer = container.querySelector(
+        `#content-${item.absences_id}`,
+      );
+      if (contentContainer) {
+        appendDownloadButton(item, container);
+      }
+    });
 
     // 페이지네이션 컨테이너
     const paginationContainer = document.createElement('div');
