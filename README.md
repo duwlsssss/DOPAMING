@@ -178,14 +178,14 @@ npm run dev
 
 - **휴가/공가 관리 페이지**
 
-  - 휴가 종류 및 승인 상태 필터링
+  - 부재 종류 및 승인 상태 필터링
 
     - 아코디언 UI로 상세 내용 조회
     - 페이지네이션(6개/페이지)
 
     ![vacation3-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/cc3db015-b3f4-48e8-9886-7aa42b34b3ed)
 
-  - 휴가 조회 및 승인/거부 관리
+  - 부재 조회 및 승인/거부 관리
 
     ![approval-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/3305c05a-7da1-42a4-b2d7-7c748e082d41)
 
