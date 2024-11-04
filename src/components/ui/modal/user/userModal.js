@@ -59,7 +59,6 @@ function addEventListeners(fragment, modalInstance) {
   if (closeButton) {
     closeButton.addEventListener('click', () => {
       modalInstance.close(); // Modal 인스턴스의 close 메서드 호출
-      window.location.reload();
     });
   }
 }

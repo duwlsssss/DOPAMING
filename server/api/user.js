@@ -503,20 +503,8 @@ export const updateUserAbsence = async (container, userId, absenceId) => {
 export const deleteUserAbsence = async (userId, absenceId) => {
   const db = getDatabase();
   const absenceRef = ref(db, `absences/${userId}/${absenceId}`);
-  const userRef = ref(db, `Users/${userId}`);
-
   try {
-    await remove(absenceRef); // absence 데이터 삭제
-
-    //user 데이터에서 user_leftHoliday + 1
-    const snapshot = await get(userRef);
-    if (snapshot.exists()) {
-      const currentUserData = snapshot.val();
-      const updatedLeftHoliday = currentUserData.user_leftHoliday + 1;
-
-      // Update user_leftHoliday
-      await update(userRef, { user_leftHoliday: updatedLeftHoliday });
-    }
+    await remove(absenceRef); // absence 데이터 삭
     return true;
   } catch (error) {
     console.error('부재 데이터 삭제 중 오류 발생:', error);

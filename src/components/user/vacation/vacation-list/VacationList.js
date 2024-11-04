@@ -27,7 +27,6 @@ const toggleEditMode = async (vcId, container, itemData) => {
   // 수정 모드 종료
   const exitEditMode = (updatedData = null) => {
     contentElement.classList.remove('edit-mode');
-
     // 수정 취소,수정 완료 버튼 제거
     if (cancelEditBtn) buttonGroup.removeChild(cancelEditBtn);
     if (submitButton) buttonGroup.removeChild(submitButton);
@@ -40,7 +39,7 @@ const toggleEditMode = async (vcId, container, itemData) => {
     // 아코디언 높이 초기화
     detail.style.maxHeight = 'none';
 
-    // 업데이트된 데이터가 있으면, renderContent로 다시 렌더링
+    // 업데이트된 데이터가 있으면 해당 항목만 다시 렌더링
     if (updatedData) {
       // 업데이트된 콘텐츠 렌더링 후, 기존의 버튼 그룹을 유지하면서 다시 추가
       const updatedContent = renderContent(updatedData);
@@ -68,6 +67,8 @@ const toggleEditMode = async (vcId, container, itemData) => {
     // 원래 내용을 백업_수정 취소시 사용
     const originalContent = contentElement.innerHTML;
     contentElement.dataset.originalContent = originalContent;
+
+    contentElement.innerHTML = `<div class="loading">휴가 정보를 가져오는 중입니다.</div>`;
 
     try {
       // 최신 데이터 가져오기
