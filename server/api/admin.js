@@ -255,6 +255,7 @@ export const adminFetchMemberDetail = async user_id => {
     console.log(error);
   }
 };
+
 // 직원 업로드 함수
 export const adminFetchMemberUpload = async value => {
   const db = getDatabase();
@@ -267,7 +268,12 @@ export const adminFetchMemberUpload = async value => {
       '123456',
     );
     const memberRef = ref(db, `Users/${user.user.uid}`); // Users/{uid} 경로 설정
-    await set(memberRef, { ...value, user_id: user.user.uid }); // 데이터베이스에 데이터 설정
+    await set(memberRef, {
+      ...value,
+      user_id: user.user.uid,
+      user_totalHoliday: 10,
+      user_leftHoliday: 10,
+    });
     Modal('employee-registration-success', {});
     navigate('/admin/member');
   } catch (error) {
@@ -329,10 +335,17 @@ export const adminMemberListDelete = async userIds => {
   try {
     const deletePromises = userIds.map(async userId => {
       const userRef = ref(db, `Users/${userId}`);
+      const timeRef = ref(db, `Time-punch/${userId}`);
+      const absneceRef = ref(db, `absences/${userId}`);
+
       const snapshot = await get(userRef);
 
       if (snapshot.exists()) {
-        await remove(userRef);
+        await Promise.all([
+          remove(userRef),
+          remove(timeRef),
+          remove(absneceRef),
+        ]);
         return { success: true, message: '선택한 직원이 삭제되었습니다.' };
       } else {
         console.log(`User ${userId} does not exist`);
