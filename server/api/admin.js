@@ -21,17 +21,35 @@ const database = getDatabase(app);
 export const AbsenceAPI = {
   // 휴가 승인
   approveAbsence: async (userId, absenceId) => {
+    const db = getDatabase();
     const absenceRef = ref(database, `absences/${userId}/${absenceId}`);
+    const userRef = ref(db, `Users/${userId}`);
 
     try {
-      const snapshot = await get(absenceRef);
-      if (!snapshot.exists()) {
+      const [absenceSnapshot, userSnapshot] = await Promise.all([
+        get(absenceRef),
+        get(userRef),
+      ]);
+
+      if (!absenceSnapshot.exists()) {
         throw new Error('해당 휴가 정보가 존재하지 않습니다.');
       }
 
-      await update(absenceRef, {
-        abs_status: '승인',
-      });
+      if (!userSnapshot.exists()) {
+        throw new Error('해당 사용자 정보가 존재하지 않습니다.');
+      }
+
+      const userData = userSnapshot.val();
+      const leftHoliday = userData.user_leftHoliday;
+
+      if (leftHoliday <= 0) {
+        throw new Error('잔여 휴가가 없습니다.');
+      }
+
+      await Promise.all([
+        update(absenceRef, { abs_status: '승인' }),
+        update(userRef, { user_leftHoliday: leftHoliday - 1 }),
+      ]);
 
       return { success: true, message: '휴가가 승인되었습니다.' };
     } catch (error) {
@@ -84,17 +102,36 @@ export const AbsenceAPI = {
 
   // 승인 취소
   cancelApproval: async (userId, absenceId) => {
-    const absenceRef = ref(database, `absences/${userId}/${absenceId}`);
+    const db = getDatabase();
+    const absenceRef = ref(db, `absences/${userId}/${absenceId}`);
+    const userRef = ref(db, `Users/${userId}`);
 
     try {
-      const snapshot = await get(absenceRef);
-      if (!snapshot.exists()) {
-        throw new Error('휴가 신청 데이터가 존재하지 않습니다.');
+      const [absenceSnapshot, userSnapshot] = await Promise.all([
+        get(absenceRef),
+        get(userRef),
+      ]);
+
+      if (!absenceSnapshot.exists()) {
+        throw new Error('해당 휴가 정보가 존재하지 않습니다.');
       }
 
-      await update(absenceRef, {
-        abs_status: '대기',
-      });
+      if (!userSnapshot.exists()) {
+        throw new Error('해당 사용자 정보가 존재하지 않습니다.');
+      }
+
+      const userData = userSnapshot.val();
+      const leftHoliday = userData.user_leftHoliday;
+      const totalHoliday = userData.user_totalHoliday;
+
+      if (leftHoliday >= totalHoliday) {
+        throw new Error('이미 최대 휴가 일수입니다.');
+      }
+
+      await Promise.all([
+        update(absenceRef, { abs_status: '대기' }),
+        update(userRef, { user_leftHoliday: leftHoliday + 1 }),
+      ]);
 
       return { success: true, message: '승인이 취소되었습니다.' };
     } catch (error) {
@@ -255,7 +292,6 @@ export const adminFetchMemberDetail = async user_id => {
     console.log(error);
   }
 };
-
 // 직원 업로드 함수
 export const adminFetchMemberUpload = async value => {
   const db = getDatabase();
