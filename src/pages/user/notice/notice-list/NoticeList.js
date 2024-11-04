@@ -1,9 +1,5 @@
 import { RenderNoticeItem } from '../../../../components';
-import {
-  getAllNotices,
-  getUserIdName,
-  fetchUserData,
-} from '../../../../../server/api/user';
+import { getAllNotices } from '../../../../../server/api/user';
 import navigate from '../../../../utils/navigation';
 import './NoticeList.css';
 
@@ -12,12 +8,6 @@ export const RenderUserNoticeList = async container => {
 
   try {
     const posts = await getAllNotices();
-
-    const userInfo = await getUserIdName();
-
-    const user = await fetchUserData(userInfo.id);
-
-    const bcName = user.user_bootcamp;
 
     const renderNoticeItems = filteredPosts => {
       return filteredPosts
@@ -48,7 +38,7 @@ export const RenderUserNoticeList = async container => {
       if (window.innerWidth <= 767) {
         NoticeListTitle.innerHTML = '공지 목록';
       } else {
-        NoticeListTitle.innerHTML = `<span class="strong">${bcName}</span>의 공지목록입니다.`;
+        NoticeListTitle.innerHTML = `<span class="strong">도파밍</span>의 공지목록입니다.`;
       }
     };
     updateNoticeTitleText();
