@@ -144,11 +144,11 @@ const toggleEditMode = async (vcId, container, itemData) => {
 };
 
 // 수정하기, 삭제 버튼
-const renderButtons = (status, vcId, container, itemData) => {
+const renderButtons = (vcId, container, itemData) => {
   const buttonGroup = document.createElement('div');
   buttonGroup.className = 'user-approval-button-group';
 
-  if (status === '대기') {
+  if (itemData.abs_status === '대기') {
     const editBtn = new Button({
       className: 'user-vcEdit-button',
       text: '수정하기',
@@ -170,6 +170,7 @@ const renderButtons = (status, vcId, container, itemData) => {
             userId: itemData.user_id,
             absId: itemData.abs_id,
             vcId: vcId,
+            summaryContainer: document.querySelector('#userVacationSummary'),
           };
           Modal('vacation-delete', options);
         } catch (error) {
@@ -288,7 +289,7 @@ export const RenderUserVacationList = async (container, userAbsData) => {
     const buttonGroupContainer = contentContainer.querySelector(
       '.user-approval-button-group-container',
     );
-    const buttonGroup = renderButtons(item.abs_status, vcId, container, item);
+    const buttonGroup = renderButtons(vcId, container, item);
 
     appendDownloadButton(item, contentContainer);
 
