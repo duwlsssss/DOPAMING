@@ -18,7 +18,7 @@ import {
   update,
   remove,
 } from 'firebase/database';
-import { formatDate } from '../../src/utils/currentTime';
+import { formatDate, formatUserTime } from '../../src/utils/currentTime';
 
 // 0. 로그인 id 및 상태 변경 감지
 export const getCurrentUserId = callback => {
@@ -335,6 +335,58 @@ export const updateUserData = async (container, userId, userImage = null) => {
   } catch (error) {
     console.error('사용자 데이터 수정 실패:', error.message);
     Modal('edit-profile-fail');
+  }
+};
+
+// 6. 사용자 메인 출/퇴근 section Rerender
+
+export const Rerender = async userId => {
+  try {
+    const timePunchData = await fetchTimePunchData(userId);
+
+    const today = formatDate(new Date());
+    const todayPunchData = timePunchData.filter(data => {
+      const punchDate = formatDate(new Date(data.punch_date));
+      return punchDate === today;
+    });
+
+    const punchInTime =
+      todayPunchData.length > 0
+        ? formatUserTime(todayPunchData[0].punch_in)
+        : '--시 --분';
+    const punchOutTime =
+      todayPunchData.length > 0
+        ? formatUserTime(todayPunchData[0].punch_out)
+        : '--시 --분';
+    const breakOutTime =
+      todayPunchData.length > 0
+        ? formatUserTime(todayPunchData[0].break_out)
+        : '--시 --분';
+    const breakInTime =
+      todayPunchData.length > 0
+        ? formatUserTime(todayPunchData[0].break_in)
+        : '--시 --분';
+
+    // 시간 정보 업데이트
+    const punchInElement = document.querySelector(
+      '#punch-in .punch-time-board-box-content',
+    );
+    const punchOutElement = document.querySelector(
+      '#punch-out .punch-time-board-box-content',
+    );
+    const breakOutElement = document.querySelector(
+      '#break-out .punch-time-board-box-content',
+    );
+    const breakInElement = document.querySelector(
+      '#break-in .punch-time-board-box-content',
+    );
+
+    if (punchInElement) punchInElement.textContent = punchInTime;
+    if (punchOutElement) punchOutElement.textContent = punchOutTime;
+    if (breakOutElement) breakOutElement.textContent = breakOutTime;
+    if (breakInElement) breakInElement.textContent = breakInTime;
+  } catch (error) {
+    console.error('출퇴근 데이터 가져오기 실패:', error.message);
   }
 };
 
