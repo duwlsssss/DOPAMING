@@ -32,11 +32,10 @@ export const RenderUserVacationManagement = async container => {
     // 남은 휴가 개수
     const userLeftVc = userData?.user_leftHoliday;
     // 사용 휴가 개수
-    const userUsedVc =
-      userTotalVc - userLeftVc >= 0 ? userTotalVc - userLeftVc : 0;
+    const userUsedVc = userTotalVc - userLeftVc;
 
     container.innerHTML = `
-      <div class="user-vaction-management-title-container"></div>
+      <div class="user-vaction-management-title-container" id="userVacationTitleSection"></div>
       <div class="vacation-management-explain-container">
         <div class="user-info-container">
           <div class="user-info-text">
@@ -70,17 +69,14 @@ export const RenderUserVacationManagement = async container => {
       color: 'skyblue',
       shape: 'block',
       fontSize: 'var(--font-small)',
+      disabled: userLeftVc === 0,
       onClick: () => navigate(USER_PATH.VACATIONREQUSET),
     });
 
-    const titleContainer = container.querySelector(
-      '.user-vaction-management-title-container',
-    );
+    const titleContainer = container.querySelector('#userVacationTitleSection');
     RenderTitle(titleContainer, '잔여 휴가');
 
-    const buttonPosition = container.querySelector(
-      '.user-vaction-management-title-container',
-    );
+    const buttonPosition = container.querySelector('#userVacationTitleSection');
     buttonPosition.appendChild(uploadBtn);
 
     const headerSection = container.querySelector('#userVacationHeaderSection');
@@ -95,7 +91,7 @@ export const RenderUserVacationManagement = async container => {
     console.error('오류 내용:', error);
 
     container.innerHTML = `
-      <div class="admin-vacation-section error">
+      <div class="user-vacation-management-error">
         ${errorMessage}
       </div>
     `;
