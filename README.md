@@ -8,7 +8,8 @@
 
 ### **효율적인 수강생 관리와 소통을 위한 가상의 학습 플랫폼 회사 도파밍의 인트라넷 서비스입니다.**
 
-> **코드 한 줄에 도파민 한 방울을 경험하고 싶으세요?** <br /> > **코딩의 즐거움을 극대화하는 도파밍 학습 플랫폼에 지금 합류하세요** 💫
+> **코드 한 줄에 도파민 한 방울을 경험하고 싶으세요?** <br />
+> **코딩의 즐거움을 극대화하는 도파밍 학습 플랫폼에 지금 합류하세요** 💫
 
 &nbsp;
 
@@ -21,7 +22,6 @@
 |     Library     |                                                               ![VITE](https://img.shields.io/badge/VITE-646CFF?style=for-the-badge&logo=Vite&logoColor=white)                                                                |
 |    Language     | ![HTML5](https://img.shields.io/badge/HTML5-E34F26.svg?style=for-the-badge&logo=HTML5&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=for-the-badge&logo=JavaScript&logoColor=black) |
 |     Styling     |                                                               ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white)                                                                |
-|  Data Fetching  |                                                              ![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=Axios&logoColor=white)                                                              |
 |      BaaS       |                                                         ![Firebase](https://img.shields.io/badge/firebase-DD2C00?style=for-the-badge&logo=firebase&logoColor=white)                                                          |
 |   Formatting    |      ![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white) ![Prettier](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E)      |
 | Package Manager |                                                                 ![Npm](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)                                                                 |
@@ -156,32 +156,37 @@ npm run dev
 
 ### 🫅 관리자
 
-- **관리자 홈 페이지**
+- ### 관리자 홈 페이지
 
-  - 최신 공지사항 목록 조회
-  - 최신 직원 목록 10명 조회
-
+  - 최신 공지사항 목록 표시
+  - 최신 직원 목록 10명 표시
+  - 직급(매니저 or 수강생)으로 필터링 기능
+  
     ![main](https://github.com/user-attachments/assets/e39ec959-f0ce-4aad-9b81-738c088262a9)
 
-- **직원 관리 페이지**
 
-  - 직원 상세보기 및 휴가 신청 내역 조회
+- ### 직원 관리 페이지
+  
+  - 직원 구분(수강생/매니저)및 직원 검색 기능
+
+    ![Alt text](https://github.com/user-attachments/assets/c72ccfec-784e-4b81-a9d4-5b5456651992)
+
+  - 직원 업로드, 수정, 삭제 기능
 
     ![Alt text](https://github.com/user-attachments/assets/bf06417c-aef3-4c50-8336-83bf8a2b63a1)
 
     ![Alt text](https://github.com/user-attachments/assets/21a89039-7576-4f2f-831e-64ac4a32236d)
 
-  - 직원 구분(수강생/매니저)및 직원 검색 기능
-  - 페이지네이션(6명/페이지)
+  - 직원 상세보기 및 휴가 신청 내역 조회
+    
+    -아코디언 UI로 상세 내용 조회
+  
+      ![관리자 직원 상세](https://github.com/user-attachments/assets/552e97a8-69f2-4a26-936b-23dcdde6f136)
+    
 
-    ![Alt text](https://github.com/user-attachments/assets/c72ccfec-784e-4b81-a9d4-5b5456651992)
-
-- **휴가/공가 관리 페이지**
+- ### 휴가/공가 관리 페이지
 
   - 부재 종류 및 승인 상태 필터링
-
-    - 아코디언 UI로 상세 내용 조회
-    - 페이지네이션(6개/페이지)
 
     ![vacation3-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/cc3db015-b3f4-48e8-9886-7aa42b34b3ed)
 
@@ -189,11 +194,9 @@ npm run dev
 
     ![approval-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/3305c05a-7da1-42a4-b2d7-7c748e082d41)
 
-- **공지 관리 페이지**
+- ### 공지 관리 페이지
 
   - 공지사항 검색 기능
-
-    - 페이지네이션(8개/페이지)
 
     ![search-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/dd9b5b63-d380-481a-8198-41cad522ce5c)
 
@@ -205,8 +208,8 @@ npm run dev
 
 - ### 사용자 홈 페이지
 
-  - 공지 목록, 부재 신청 목록을 간단히 확인 가능
   - 진도율과 남을 수강일을 표시
+  - 공지 목록, 부재 신청 목록을 간단히 확인 가능
   - 현 시각을 표시하는 시계를 표시
   - 출근, 퇴근, 외출, 복귀 버튼 누르면 모달을 띄우고 처리
 
@@ -223,7 +226,7 @@ npm run dev
 
     ![사진 등록](https://github.com/user-attachments/assets/5b0c4241-d174-425b-8f15-6b96698366ab)
 
-- ### 출/퇴근 관리 페이지
+- ### 출/퇴근 상세 페이지
 
   - 기본적으로 오늘 날짜에 해당하는 출/퇴근, 외출, 복귀의 기록을 출력
   - 날짜를 선택하여 해당 날짜의 기록을 확인 가능
@@ -233,7 +236,7 @@ npm run dev
 
 - ### 휴가/공가 관리 페이지
 
-  - 부재 종류, 처리 상태로 필터링
+  - 부재 종류, 승인 상태로 필터링
 
     ![부재 필터링](https://github.com/user-attachments/assets/f281a788-c239-401e-b663-900407e262e4)
 
@@ -256,7 +259,7 @@ npm run dev
 
   - 수강생 이름과 이메일로 수강생을 검색 가능
 
-    ![수강생](https://github.com/user-attachments/assets/58274128-50d9-4e00-afce-d826fe25db9e)
+    ![수강생](https://github.com/user-attachments/assets/5021de5d-97b6-4943-abab-b1be0255690f)
 
 &nbsp;
 
@@ -362,9 +365,8 @@ npm run dev
 
 &nbsp;
 
-## 🚀 앞으로의 계획
+## 🌱 앞으로의 계획
 
 - 최대한 공통 컴포넌트를 통해 재사용하기
 - 컨벤션에 맞지 않는 부분 수정하기
 - 컴포넌트 리렌더링 세세하게 바꾸기
-- 사용자 경험 향상을 위한 피드백 시스템 구축
