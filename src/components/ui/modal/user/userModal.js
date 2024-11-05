@@ -1,5 +1,5 @@
 import './userModal.css';
-import { getUserIdName } from '../../../../../server/api/user'; // 사용자 정보를 가져오는 함수 임포트
+import { Rerender, getUserIdName } from '../../../../../server/api/user'; // 사용자 정보를 가져오는 함수 임포트
 
 function getSuccessMessage(type) {
   const messages = {
@@ -57,8 +57,14 @@ function addEventListeners(fragment, modalInstance) {
   // 닫기 버튼 이벤트 리스너 추가
   const closeButton = fragment.querySelector('.close-button');
   if (closeButton) {
-    closeButton.addEventListener('click', () => {
-      modalInstance.close(); // Modal 인스턴스의 close 메서드 호출
+    closeButton.addEventListener('click', async () => {
+      try {
+        const userInfo = await getUserIdName(); // 사용자 정보 가져오기
+        modalInstance.close(); // Modal 인스턴스의 close 메서드 호출
+        Rerender(userInfo.id);
+      } catch (error) {
+        console.error('사용자 정보를 가져오는 데 실패했습니다:', error.message);
+      }
     });
   }
 }
