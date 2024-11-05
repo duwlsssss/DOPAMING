@@ -556,7 +556,7 @@ export const deleteUserAbsence = async (userId, absenceId) => {
   const db = getDatabase();
   const absenceRef = ref(db, `absences/${userId}/${absenceId}`);
   try {
-    await remove(absenceRef); // absence 데이터 삭
+    await remove(absenceRef); // absence 데이터 삭제
     return true;
   } catch (error) {
     console.error('부재 데이터 삭제 중 오류 발생:', error);
