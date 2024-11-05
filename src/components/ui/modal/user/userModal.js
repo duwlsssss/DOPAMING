@@ -60,10 +60,8 @@ function addEventListeners(fragment, modalInstance) {
     closeButton.addEventListener('click', async () => {
       try {
         const userInfo = await getUserIdName(); // 사용자 정보 가져오기
-
         modalInstance.close(); // Modal 인스턴스의 close 메서드 호출
         Rerender(userInfo.id);
-        //window.location.reload(); // 페이지 새로 고침
       } catch (error) {
         console.error('사용자 정보를 가져오는 데 실패했습니다:', error.message);
       }

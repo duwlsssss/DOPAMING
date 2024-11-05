@@ -59,6 +59,11 @@
   border-right: none;
 }
 
+.user-vacation-management-error {
+  text-align: center;
+  color: var(--color-regular-gray);
+}
+
 @media (width <= 767px) {
   .vc-upload-btn {
     padding: var(--space-xsmall) var(--space-small) !important;

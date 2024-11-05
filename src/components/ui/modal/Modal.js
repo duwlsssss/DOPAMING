@@ -3,9 +3,11 @@ import './Modal.css';
 import { userModalContent } from './user/userModal';
 import {
   getUserIdName,
+  fetchUserData,
   saveTimePunchData,
   deleteUserAbsence,
 } from '../../../../server/api/user';
+import { RenderUserVacationSummary } from '../../user/vacation/vacation-summary/VacationSummary';
 import navigate from '../../../utils/navigation';
 import {
   adminMemberListDelete,
@@ -181,17 +183,24 @@ export async function Modal(type, options = {}) {
 
           case 'vacation-delete':
             try {
-              const { userId, absId, vcId } = modalInstance;
+              const { userId, absId, vcId, summaryContainer } = modalInstance;
               const result = await deleteUserAbsence(userId, absId);
               if (result) {
-                //true면
                 modalContent.appendChild(
                   userModalContent('vacation-delete-success', modalInstance),
                 );
+
                 const itemElement = document
                   .getElementById(vcId)
                   .closest('.accordion-item');
-                itemElement.remove();
+                if (itemElement) itemElement.remove();
+
+                const updatedUserData = await fetchUserData(userId);
+                RenderUserVacationSummary(summaryContainer, updatedUserData); // Update summary
+
+                const uploadBtn = document.querySelector('.vc-upload-btn');
+                if (uploadBtn)
+                  uploadBtn.disabled = updatedUserData.user_leftHoliday === 0;
               } else {
                 modalContent.appendChild(
                   userModalContent('vacation-delete-fail', modalInstance),

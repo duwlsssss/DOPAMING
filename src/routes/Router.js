@@ -198,7 +198,7 @@ export default function Router() {
     RenderUserEditProfile(contentEl);
   } else if (path === USER_PATH.VACATION) {
     RenderUserVacationManagement(contentEl);
-  } else if (path === USER_PATH.VACATIONREQUSET) {
+  } else if (path === USER_PATH.VACATIONREQUEST) {
     RenderUserVacationRequest(contentEl);
   } else if (path === USER_PATH.PEER) {
     RenderUserPeer(contentEl);

@@ -67,9 +67,12 @@ export async function RenderHeader(header, editProfilePath) {
         profileImgPosition.style.backgroundImage = userProfileImg;
       }
 
-      // 프로필 이미지 업데이트 반영
-      window.addEventListener('profileImageUpdated', async () => {
-        const updatedUserData = await fetchUserData(userId); // 새로고침 없이 최신 데이터 가져오기
+      const userNameEl = header.querySelector('.user-name');
+
+      // 프로필 업데이트 반영
+      window.addEventListener('profileUpdated', async () => {
+        const updatedUserData = await fetchUserData(userId);
+        userNameEl.textContent = `${updatedUserData.user_name}`;
         profileImgPosition.style.backgroundImage = `url(${updatedUserData.user_image || '/assets/imgs/profile/profile_null.jpg'})`;
       });
     });

@@ -555,7 +555,6 @@ export const updateUserAbsence = async (container, userId, absenceId) => {
 export const deleteUserAbsence = async (userId, absenceId) => {
   const db = getDatabase();
   const absenceRef = ref(db, `absences/${userId}/${absenceId}`);
-
   try {
     await remove(absenceRef); // absence 데이터 삭제
     return true;
