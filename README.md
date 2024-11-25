@@ -1,4 +1,4 @@
-# TEAM2 - 도파밍 DOPAMING
+# 도파밍 DOPAMING
 
 ![Untitled pdf](https://github.com/user-attachments/assets/e085eed7-50db-422b-b5f3-a0608d316602)
 
