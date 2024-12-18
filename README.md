@@ -70,7 +70,7 @@ npm run dev
 
 수강생: chan@naver.com / 123456
 
-매니저: bongbongbong@naver.com / 123456
+매니저: admin@naver.com / 123456
 
 &nbsp;
 
