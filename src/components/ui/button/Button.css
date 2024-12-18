@@ -71,3 +71,7 @@ button[color='gray'][shape='block'] {
 button[color='gray'][shape='block']:hover {
   background-color: var(--color-regular-gray);
 }
+
+button:disabled {
+  pointer-events: none;
+}

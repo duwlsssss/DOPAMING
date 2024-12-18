@@ -13,6 +13,8 @@ import {
   fetchUserData,
   fetchTimePunchData,
 } from '../../../../../server/api/user'; // 사용자 및 출퇴근 데이터 가져오는 API
+import { getItem } from '../../../../utils/storage';
+import { renderAttendanceButtons } from '../../../../utils/renderAttendanceButtons';
 
 export const RenderPunchTime = async container => {
   container.classList.add('punch-time');
@@ -81,7 +83,6 @@ export const RenderPunchTime = async container => {
     </div>
   `;
 
-  // 버튼
   const moreButton = new Button({
     className: 'punch-more-button',
     text: '상세 보기',
@@ -91,6 +92,7 @@ export const RenderPunchTime = async container => {
     onClick: () => navigate(USER_PATH.WORK_DETAIL),
   });
 
+  // 버튼 생성 함수
   const createButton = (text, color, actionType) => {
     return new Button({
       className: `${actionType}-button`,
@@ -128,6 +130,18 @@ export const RenderPunchTime = async container => {
 
   const breakInBtnContainer = container.querySelector('#break-in');
   breakInBtnContainer.appendChild(breakInBtn);
+
+  // 출퇴근 버튼 초기 상태
+  const initialState = {
+    punchIn: { active: true },
+    punchOut: { active: false },
+    breakOut: { active: false },
+    breakIn: { active: false },
+  };
+
+  const buttonState = getItem('buttonState') || initialState;
+
+  renderAttendanceButtons(buttonState);
 
   // 현재 시간 업데이트 함수
   const startClock = () => {
