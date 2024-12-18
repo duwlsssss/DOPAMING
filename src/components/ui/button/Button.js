@@ -31,11 +31,6 @@ export function Button({
   button.setAttribute('color', color); // 예: 'white'
   button.setAttribute('shape', shape); // 예: 'line'
   // 초기 스타일만 컴포넌트에서 하기
-  if (disabled) {
-    button.style.backgroundColor = 'var(--color-regular-gray)';
-    button.style.color = 'var(--color-black)';
-    button.style.cursor = 'not-allowed';
-  }
   if (onClick) {
     button.addEventListener('click', onClick);
   }

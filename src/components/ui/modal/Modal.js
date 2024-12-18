@@ -15,6 +15,8 @@ import {
   noticeAPI,
 } from '../../../../server/api/admin';
 import { ADMIN_PATH } from '../../../utils/constants';
+import { getItem, setItem } from '../../../utils/storage';
+import { renderAttendanceButtons } from '../../../utils/renderAttendanceButtons';
 
 function createModalElement() {
   const modal = document.createElement('div');
@@ -114,9 +116,24 @@ export async function Modal(type, options = {}) {
 
   modalContent.innerHTML = ''; // 이전 내용 초기화
 
+  // 출퇴근 버튼 초기 상태
+  const initialState = {
+    punchIn: { active: true },
+    punchOut: { active: false },
+    breakOut: { active: false },
+    breakIn: { active: false },
+  };
+
+  let buttonState = getItem('buttonState') || initialState;
+
+  // 버튼 상태 업데이트 함수
+  function updateButtonState(newState) {
+    buttonState = { ...buttonState, ...newState };
+    setItem('buttonState', buttonState);
+    renderAttendanceButtons(buttonState);
+  }
+
   let modalInstance = {
-    // userId: null,
-    // userName: null,
     ...options,
     close: () => closeModal(modal, modalInstance.redirectPath), // 모달 닫힐 때 redirectPath 사용
     handleConfirm: async actionType => {
@@ -125,6 +142,12 @@ export async function Modal(type, options = {}) {
         // actionType에 따라 적절한 모달 콘텐츠 호출
         switch (actionType) {
           case 'punch-in':
+            updateButtonState({
+              punchIn: { active: false },
+              punchOut: { active: true },
+              breakOut: { active: true },
+              breakIn: { active: false },
+            });
             await saveTimePunchData(
               modalInstance.userId,
               'punch-in',
@@ -134,6 +157,58 @@ export async function Modal(type, options = {}) {
               userModalContent('punch-in-success', modalInstance),
             );
             break;
+
+          case 'punch-out':
+            updateButtonState({
+              punchIn: { active: true },
+              punchOut: { active: false },
+              breakOut: { active: false },
+              breakIn: { active: false },
+            });
+            await saveTimePunchData(
+              modalInstance.userId,
+              'punch-out',
+              modalInstance.userName,
+            );
+            modalContent.appendChild(
+              userModalContent('punch-out-success', modalInstance),
+            );
+            break;
+
+          case 'break-out':
+            updateButtonState({
+              punchIn: { active: false },
+              punchOut: { active: false },
+              breakOut: { active: false },
+              breakIn: { active: true },
+            });
+            await saveTimePunchData(
+              modalInstance.userId,
+              'break-out',
+              modalInstance.userName,
+            );
+            modalContent.appendChild(
+              userModalContent('break-out-success', modalInstance),
+            );
+            break;
+
+          case 'break-in':
+            updateButtonState({
+              punchIn: { active: false },
+              punchOut: { active: true },
+              breakOut: { active: true },
+              breakIn: { active: false },
+            });
+            await saveTimePunchData(
+              modalInstance.userId,
+              'break-in',
+              modalInstance.userName,
+            );
+            modalContent.appendChild(
+              userModalContent('break-in-success', modalInstance),
+            );
+            break;
+
           case 'employee-delete':
             try {
               const { selectedIds } = modalInstance;
@@ -147,38 +222,6 @@ export async function Modal(type, options = {}) {
             } catch (error) {
               console.error(error);
             }
-            break;
-          case 'punch-out':
-            await saveTimePunchData(
-              modalInstance.userId,
-              'punch-out',
-              modalInstance.userName,
-            );
-            modalContent.appendChild(
-              userModalContent('punch-out-success', modalInstance),
-            );
-            break;
-
-          case 'break-out':
-            await saveTimePunchData(
-              modalInstance.userId,
-              'break-out',
-              modalInstance.userName,
-            );
-            modalContent.appendChild(
-              userModalContent('break-out-success', modalInstance),
-            );
-            break;
-
-          case 'break-in':
-            await saveTimePunchData(
-              modalInstance.userId,
-              'break-in',
-              modalInstance.userName,
-            );
-            modalContent.appendChild(
-              userModalContent('break-in-success', modalInstance),
-            );
             break;
 
           case 'vacation-delete':

@@ -59,18 +59,20 @@
   align-self: center;
 }
 
-/* opacity 줘야해서 따로 뺌 */
-.punch-time .punch-time-board .punch-time-board-box .break-out-btn {
-  background-color: rgba(205, 205, 205, 0.3) !important;
+.punch-time .punch-time-board .punch-time-board-box .break-out-button {
+  background-color: rgba(205, 205, 205, 0.3);
+
+  &:hover {
+    background-color: rgba(150, 150, 150, 0.3);
+  }
 }
-.punch-time .punch-time-board .punch-time-board-box .break-out-btn:hover {
-  background-color: rgba(150, 150, 150, 0.3) !important;
-}
-.punch-time .punch-time-board .punch-time-board-box .break-in-btn {
-  background-color: rgba(59, 191, 10, 0.3) !important;
-}
-.punch-time .punch-time-board .punch-time-board-box .break-in-btn:hover {
-  background-color: rgba(41, 128, 12, 0.3) !important;
+
+.punch-time .punch-time-board .punch-time-board-box .break-in-button {
+  background-color: rgba(59, 191, 10, 0.3);
+
+  &:hover {
+    background-color: rgba(41, 128, 12, 0.3);
+  }
 }
 
 @media (width <= 1400px) {
